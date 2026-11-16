@@ -74,7 +74,7 @@ GPL-3.0, same as the original projects (see `LICENSE`).
 <a id="screenshots"></a>
 <p><picture><source media="(prefers-color-scheme: dark)" srcset="docs/images/headings/h-screens-dark.png"><img src="docs/images/headings/h-screens-light.png" width="560" alt="Screenshots"></picture></p>
 
-<details>
+<details open>
 <summary><b>Show app screenshots</b></summary>
 <br>
 <table align="center">
@@ -159,7 +159,7 @@ GPL 3.0, a mesma dos projetos originais (veja `LICENSE`).
 <a id="imagens"></a>
 <p><picture><source media="(prefers-color-scheme: dark)" srcset="docs/images/headings/h-pt-screens-dark.png"><img src="docs/images/headings/h-pt-screens-light.png" width="560" alt="Imagens do app"></picture></p>
 
-<details>
+<details open>
 <summary><b>Ver imagens do app</b></summary>
 <br>
 <table align="center">
