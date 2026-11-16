@@ -1,5 +1,7 @@
 # Crimson Desert: Pywel Together
 
+**English** | [Português](#português)
+
 ## What is this?
 
 Crimson Desert is a single player game. **Pywel Together** lets two friends play it together online: one player opens their game as the **host**, and the other (the **guest**) enters the host's world with their own character. Both walk around the same map and see each other move, with the same people and enemies around them.
@@ -52,4 +54,52 @@ GPL-3.0, same as the original projects (see `LICENSE`).
 
 ## Português
 
-Co-op online provisório para Crimson Desert: o mod (guest entra no mundo do host) e o app launcher "Pywel Together". Feito para jogarmos enquanto o jogo não tem co-op oficial. **Não é um projeto mantido**; quem quiser continuar ou melhorar, fique à vontade. Ainda em teste: só funciona no build 1.0.0.3663, um guest por vez, VPN, cavalo, inimigos e combate ainda sem teste. Créditos ao **ByJunter** pelos projetos originais.
+**[English](#crimson-desert-pywel-together)** | Português
+
+### O que é isso?
+
+Crimson Desert é um jogo single player. O **Pywel Together** deixa dois amigos jogarem juntos online: um jogador abre o jogo como **host**, e o outro (o **guest**) entra no mundo do host com o próprio personagem. Os dois andam pelo mesmo mapa e veem um ao outro se movendo, com as mesmas pessoas e os mesmos inimigos por perto.
+
+Não precisa mexer em nenhum arquivo do jogo na mão. Abra o app **Pywel Together**, escolha **Host** ou **Guest**, digite o mesmo código da sessão nos dois PCs e o app abre o jogo, carrega o save e coloca o guest dentro do mundo do host. Cada jogador mantém o seu personagem e o seu progresso na história.
+
+É um projeto de fã, feito por dois amigos que queriam jogar juntos, em cima da pesquisa de co-op do **ByJunter** (veja Créditos). Ainda está em teste, então espere bugs.
+
+### Como funciona
+
+Co-op online para **Crimson Desert** (PC, Steam), em duas partes:
+
+- **O mod** (`cdmp.asi`, carregado pelo Ultimate ASI Loader): o guest entra no mundo do host pelo próprio servidor interno do jogo. Mesmo mundo, mesmos NPCs e inimigos.
+- **O launcher** (`launcher/`, app de Windows "Pywel Together"): botões HOST e GUEST que abrem o jogo no papel certo, acham o host pelo código da sessão, copiam os arquivos do mod do host quando forem diferentes, recolocam arquivos apagados pelo antivírus, cuidam dos saves e limpam os logs.
+
+> **Situação: provisório e ainda em teste.** Foi feito para as nossas próprias partidas enquanto o jogo não tem co-op oficial. **Não** é um projeto mantido. Quem quiser continuar ou melhorar, fique à vontade (veja Licença).
+
+### Créditos
+
+Este projeto foi feito em cima do trabalho do **ByJunter**:
+
+- [CrimsonDesertMultiplayer](https://github.com/ByJunter/CrimsonDesertMultiplayer)
+- [CrimsonDesertMultiplayer-NativeServer](https://github.com/ByJunter/CrimsonDesertMultiplayer-NativeServer) (o README original está em `README-NativeServer-ByJunter.md`)
+
+### O que mudamos
+
+- Port do mod NativeServer do build 1.0.0.2976 para o **1.0.0.3663** (endereços, assinaturas e formato dos pacotes).
+- Movimento do outro jogador mais liso (interpolação adaptativa e pacotes de movimento vazios preenchidos no host).
+- O guest não fica mais travado depois de reviver no ponto de salvamento, e o carregamento depois da morte ficou mais curto.
+- App launcher novo.
+
+### Limitações conhecidas
+
+- Só funciona no build **1.0.0.3663** do jogo. Uma atualização da Steam pode quebrar.
+- **Um guest** por enquanto.
+- Na mesma rede local funciona. Pela internet, só com uma VPN que coloque os dois PCs na mesma rede (Radmin, ZeroTier, Tailscale): **ainda não testado**.
+- Ainda sem teste: cavalo e montarias do guest, inimigos nos dois sentidos, combate.
+- Faça backup dos seus saves antes de usar.
+
+### Compilando
+
+- Mod: CMake + Visual Studio 2022, alvo `cdmp_mod` (veja `CMakeLists.txt`).
+- Launcher: .NET, `launcher/build.ps1`.
+
+### Licença
+
+GPL 3.0, a mesma dos projetos originais (veja `LICENSE`).
