@@ -15,7 +15,7 @@ namespace CdmpLauncher
     public static class Updater
     {
         // The mod's GitHub repository ("owner/repo"). Empty until it is published: the button only says so.
-        public const string Repo = "";
+        public const string Repo = "joaoedualves/Crimson-Desert-Pywel-Together";
 
         [DataContract] class Asset { [DataMember(Name = "name")] public string Name = ""; [DataMember(Name = "browser_download_url")] public string Url = ""; }
         [DataContract] class Release { [DataMember(Name = "tag_name")] public string Tag = ""; [DataMember(Name = "name")] public string Title = ""; [DataMember(Name = "assets")] public List<Asset> Assets = new List<Asset>(); }
@@ -44,7 +44,14 @@ namespace CdmpLauncher
             Release r;
             using (var w = Client())
             {
-                var json = await w.DownloadDataTaskAsync("https://api.github.com/repos/" + repo + "/releases/latest");
+                byte[] json;
+                try { json = await w.DownloadDataTaskAsync("https://api.github.com/repos/" + repo + "/releases/latest"); }
+                catch (WebException e) when ((e.Response as HttpWebResponse)?.StatusCode == HttpStatusCode.NotFound)
+                {
+                    // a private repository, or no release published yet
+                    throw new Exception(Lang.T("Nenhuma versão publicada ainda."));
+                }
+                catch (WebException) { throw new Exception(Lang.T("Sem conexão com o GitHub agora. Tente de novo mais tarde.")); }
                 using (var ms = new MemoryStream(json)) r = (Release)new DataContractJsonSerializer(typeof(Release)).ReadObject(ms);
             }
             var asset = r.Assets.FirstOrDefault(a => a.Name.Equals("cdmp.asi", StringComparison.OrdinalIgnoreCase))

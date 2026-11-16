@@ -149,6 +149,8 @@ namespace CdmpLauncher
             ["Abrir o Firewall do Windows"] = "Open Windows Firewall",
             ["Abrir as exclusões do Defender"] = "Open Defender exclusions",
             ["Windows"] = "Windows",
+            ["Nenhuma versão publicada ainda."] = "No version published yet.",
+            ["Sem conexão com o GitHub agora. Tente de novo mais tarde."] = "No connection to GitHub right now. Try again later.",
             ["tecla H"] = "key H",
             ["tecla G"] = "key G",
             ["comando"] = "command",
