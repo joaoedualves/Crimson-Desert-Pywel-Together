@@ -20,10 +20,3 @@ third_party/ultimate-asi-loader/v9.7.4/dinput8.dll
 # Python caches
 __pycache__/
 *.pyc
-
-# launcher build output
-launcher/bin/
-launcher/obj/
-launcher/**/bin/
-launcher/**/obj/
-

@@ -27,6 +27,8 @@ bool horse_follow_active();
 // packet (header + payload). `push` queues one more packet right after it (false: no room).
 using HorsePushFn = bool (*)(std::span<const uint8_t> packet);
 void horse_follow_on_out(uint16_t opcode, std::span<const uint8_t> packet, HorsePushFn push) noexcept;
+// True: the horse's own Ack, not to be sent to user 2 (its rider's synthetic Acks carry it). Before the push.
+bool horse_follow_drop_own(uint16_t opcode, std::span<const uint8_t> packet) noexcept;
 // server inject, a Req of user 2 that was queued for the server (its payload).
 void horse_follow_on_guest_req(uint16_t opcode, std::span<const uint8_t> payload) noexcept;
 // A new guest epoch: user 2's keys are forgotten.

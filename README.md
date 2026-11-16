@@ -49,6 +49,7 @@ This project is built on the work of **ByJunter**:
 - Ported the NativeServer mod from game build 1.0.0.2976 to **1.0.0.3663** (addresses, signatures and packet layouts).
 - Smoother movement of the other player (adaptive interpolation, empty movement packets refilled on the host).
 - Guest no longer stays frozen after reviving at a save point, and the loading after death is shorter.
+- Horses: the other player's horse now moves together with its rider, on both sides.
 - New launcher app.
 
 <a id="known-limits"></a>
@@ -57,7 +58,7 @@ This project is built on the work of **ByJunter**:
 - Works only with game build **1.0.0.3663**. A Steam update can break it.
 - **One guest** for now.
 - Same local network works. Over the internet only through a VPN that gives both PCs a shared network (Radmin, ZeroTier, Tailscale): **not tested yet**.
-- Not tested yet: horse/mounts for the guest, enemies in both directions, combat.
+- Not tested yet: enemies in both directions, combat. Some seated NPCs show without their sitting animation on the guest.
 - Back up your saves before using it.
 
 <a id="building"></a>
@@ -134,6 +135,7 @@ Este projeto foi feito em cima do trabalho do **ByJunter**:
 - Port do mod NativeServer do build 1.0.0.2976 para o **1.0.0.3663** (endereços, assinaturas e formato dos pacotes).
 - Movimento do outro jogador mais liso (interpolação adaptativa e pacotes de movimento vazios preenchidos no host).
 - O guest não fica mais travado depois de reviver no ponto de salvamento, e o carregamento depois da morte ficou mais curto.
+- Cavalos: o cavalo do outro jogador agora anda junto com o cavaleiro, nos dois lados.
 - App launcher novo.
 
 <a id="limitacoes"></a>
@@ -142,7 +144,7 @@ Este projeto foi feito em cima do trabalho do **ByJunter**:
 - Só funciona no build **1.0.0.3663** do jogo. Uma atualização da Steam pode quebrar.
 - **Um guest** por enquanto.
 - Na mesma rede local funciona. Pela internet, só com uma VPN que coloque os dois PCs na mesma rede (Radmin, ZeroTier, Tailscale): **ainda não testado**.
-- Ainda sem teste: cavalo e montarias do guest, inimigos nos dois sentidos, combate.
+- Ainda sem teste: inimigos nos dois sentidos, combate. Alguns NPCs sentados aparecem sem a animação de sentar no guest.
 - Faça backup dos seus saves antes de usar.
 
 <a id="compilando"></a>

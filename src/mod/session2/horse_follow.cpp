@@ -4,6 +4,7 @@
 
 #include <algorithm>
 #include <array>
+#include <mutex>
 #include <atomic>
 #include <cmath>
 #include <cstring>
@@ -32,7 +33,7 @@ hfl::Cadence<16> g_rider_ack, g_horse_ack, g_parent_ack, g_rider_req, g_horse_re
 hfl::KeyRing<64> g_user2_keys;  // keys user 2 sent a MoveActorReq for (it controls them)
 
 hfl::CadenceHist h_rider_ack, h_horse_ack, h_rider_req, h_horse_req;
-std::atomic<uint64_t> c_acks{0}, c_bad_size{0}, c_ridden{0}, c_other_parent{0}, c_horse_own{0};
+std::atomic<uint64_t> c_acks{0}, c_bad_size{0}, c_ridden{0}, c_other_parent{0}, c_horse_own{0}, c_own_dropped{0};
 std::atomic<uint64_t> c_verdict[hfl::kVerdicts] = {};
 std::atomic<uint64_t> c_made{0}, c_push_failed{0}, c_build_failed{0};
 std::atomic<uint64_t> c_reqs{0}, c_req_ridden{0}, c_req_horse_own{0};
@@ -93,6 +94,67 @@ bool horse_follow_configure(const std::string& raw) {
 
 bool horse_follow_active() { return g_mode.load(std::memory_order_relaxed) != 0; }
 
+// 2026-11-16 (r64): the horse's last REAL Ack, the template of its synthetic ones. The guest's client applied the
+// real ~1 Hz Acks but never the synthetic ones (RemoteInterp "horse not updated by mode 2" once the real ones were
+// dropped): those zeroed the velocity (+0x2C..+0x40) and the second transform (+0x8C..+0xB4) a real Ack carries.
+// Now a synthetic Ack is the horse's last real one with only the pose and the ts of its rider's.
+struct HorseTpl {
+    uint32_t key = 0;
+    std::array<uint8_t, hfl::kHeader + hfl::kAckSize> bytes{};
+};
+std::mutex g_tpl_mu;
+std::array<HorseTpl, 8> g_tpl{};
+size_t g_tpl_next = 0;
+std::atomic<uint64_t> c_tpl_used{0}, c_tpl_missing{0};
+void tpl_store(uint32_t key, std::span<const uint8_t> packet) noexcept {
+    if (packet.size() != hfl::kHeader + hfl::kAckSize) return;
+    std::lock_guard lk(g_tpl_mu);
+    HorseTpl* slot = nullptr;
+    for (auto& t : g_tpl) if (t.key == key) slot = &t;
+    if (!slot) { slot = &g_tpl[g_tpl_next]; g_tpl_next = (g_tpl_next + 1) % g_tpl.size(); }
+    slot->key = key;
+    std::memcpy(slot->bytes.data(), packet.data(), packet.size());
+}
+// The synthetic Ack in `horse` (already built from the rider) re-based on the template: true when one was used.
+bool tpl_apply(std::vector<uint8_t>& horse) noexcept {
+    if (horse.size() != hfl::kHeader + hfl::kAckSize) return false;
+    uint32_t key = 0;
+    std::memcpy(&key, horse.data() + hfl::kHeader, 4);
+    std::array<uint8_t, hfl::kHeader + hfl::kAckSize> t{};
+    {
+        std::lock_guard lk(g_tpl_mu);
+        const HorseTpl* slot = nullptr;
+        for (const auto& x : g_tpl) if (x.key == key) slot = &x;
+        if (!slot) return false;
+        t = slot->bytes;
+    }
+    uint8_t* h = horse.data() + hfl::kHeader;
+    uint8_t* o = t.data() + hfl::kHeader;
+    std::memcpy(o + hfl::kPos, h + hfl::kPos, 12);              // pose
+    std::memcpy(o + hfl::kQuat, h + hfl::kQuat, 16);
+    std::memcpy(o + hfl::kAckOwnQuat, h + hfl::kAckOwnQuat, 16);  // world pose
+    std::memcpy(o + hfl::kAckOwnPos, h + hfl::kAckOwnPos, 12);
+    std::memcpy(o + hfl::kAckTs, h + hfl::kAckTs, 8);           // the rider's ts
+    std::memcpy(horse.data(), t.data(), t.size());
+    return true;
+}
+
+// 2026-11-16: with 1, the horse's own ~1 Hz Ack is NOT sent to user 2 while its rider names it: user 2 already gets
+// the horse at the rider's rate (the synthetic Acks above, the rider's ts). Both streams together put two different
+// positions with two different clocks into the horse's interpolation buffer: the horse lagged up to ~1 s behind
+// its rider and jumped (the guest's "riding now ... D horse 900 ms (gaps 982)"). Never a horse user 2 controls.
+bool horse_follow_drop_own(uint16_t opcode, std::span<const uint8_t> packet) noexcept {
+    if (static_cast<Mode>(g_mode.load(std::memory_order_relaxed)) != Mode::On || opcode != hfl::kOpMoveActorAck ||
+        packet.size() != hfl::kHeader + hfl::kAckSize)
+        return false;
+    const hfl::Move m = hfl::read_move(packet.subspan(hfl::kHeader), hfl::kAckSize);
+    if (m.shape != Shape::OnFoot || (m.key >> 28) != 0xB || g_user2_keys.contains(m.key)) return false;
+    tpl_store(m.key, packet);
+    if (!hfl::while_ridden(g_parent_ack.last(m.key), m.ts)) return false;
+    c_own_dropped.fetch_add(1, std::memory_order_relaxed);
+    return true;
+}
+
 void horse_follow_on_out(uint16_t opcode, std::span<const uint8_t> packet, HorsePushFn push) noexcept {
     const auto mode = static_cast<Mode>(g_mode.load(std::memory_order_relaxed));
     if (mode == Mode::Off || opcode != hfl::kOpMoveActorAck || packet.size() < hfl::kHeader) return;
@@ -147,6 +209,8 @@ void horse_follow_on_out(uint16_t opcode, std::span<const uint8_t> packet, Horse
             c_build_failed.fetch_add(1, std::memory_order_relaxed);
             return;
         }
+        if (tpl_apply(horse)) c_tpl_used.fetch_add(1, std::memory_order_relaxed);
+        else c_tpl_missing.fetch_add(1, std::memory_order_relaxed);
         if (push(horse)) {
             c_made.fetch_add(1, std::memory_order_relaxed);
             c_fwd_derived.fetch_add(1, std::memory_order_relaxed);
@@ -319,8 +383,44 @@ hfl::PairCheck pair_check(uint32_t horse, uint64_t now) {
 }
 
 // The reverse direction for one 2697 (a copy of the whole packet). Returns the extra packet's size (0: none).
+// r65: the reverse direction's template (the host client's NetworkThread only: no lock): user 2's horse's last real
+// Ack. The synthetic horse Acks were never applied by the host's client either (the horse ran ahead on its own
+// ~1 Hz Acks, its rider stayed behind): now they are its last real Ack with the rider's pose and ts.
+struct RevTpl {
+    uint32_t key = 0;
+    uint8_t bytes[hfl::kHeader + hfl::kAckSize] = {};
+};
+RevTpl g_rev_tpl[4];
+unsigned g_rev_tpl_next = 0;
+std::atomic<uint64_t> c_rev_tpl_used{0}, c_rev_tpl_missing{0};
+void rev_tpl_store(uint32_t key, std::span<const uint8_t> whole) {
+    if (whole.size() != hfl::kHeader + hfl::kAckSize) return;
+    RevTpl* slot = nullptr;
+    for (auto& t : g_rev_tpl) if (t.key == key) slot = &t;
+    if (!slot) { slot = &g_rev_tpl[g_rev_tpl_next]; g_rev_tpl_next = (g_rev_tpl_next + 1) % 4; }
+    slot->key = key;
+    std::memcpy(slot->bytes, whole.data(), whole.size());
+}
+bool rev_tpl_apply(uint32_t key, uint8_t* extra) {
+    const RevTpl* slot = nullptr;
+    for (const auto& t : g_rev_tpl) if (t.key == key) slot = &t;
+    if (!slot) return false;
+    uint8_t t[hfl::kHeader + hfl::kAckSize];
+    std::memcpy(t, slot->bytes, sizeof t);
+    uint8_t* h = extra + hfl::kHeader;
+    uint8_t* o = t + hfl::kHeader;
+    std::memcpy(o + hfl::kPos, h + hfl::kPos, 12);
+    std::memcpy(o + hfl::kQuat, h + hfl::kQuat, 16);
+    std::memcpy(o + hfl::kAckOwnQuat, h + hfl::kAckOwnQuat, 16);
+    std::memcpy(o + hfl::kAckOwnPos, h + hfl::kAckOwnPos, 12);
+    std::memcpy(o + hfl::kAckTs, h + hfl::kAckTs, 8);
+    std::memcpy(extra, t, sizeof t);
+    return true;
+}
+
 size_t reverse(Mode mode, const hfl::Move& m, std::span<const uint8_t> copy, uint8_t* extra, size_t cap) {
     if (m.shape == Shape::OnFoot) {
+        if ((m.key >> 28) == 0xB) rev_tpl_store(m.key, copy);
         // The horse's own sample, while user 2's rider names it: in the streams (stale = not newer than the last
         // the client got; its buffer drops it, nothing is changed).
         if (!hfl::while_ridden(g_rev_named.last(m.key), m.ts)) return 0;
@@ -351,6 +451,8 @@ size_t reverse(Mode mode, const hfl::Move& m, std::span<const uint8_t> copy, uin
         c_rev_build_failed.fetch_add(1, std::memory_order_relaxed);
         return 0;
     }
+    if (rev_tpl_apply(m.parent, extra)) c_rev_tpl_used.fetch_add(1, std::memory_order_relaxed);
+    else c_rev_tpl_missing.fetch_add(1, std::memory_order_relaxed);
     stream_note(g_rev_all, g_rev_real, iv_rev_all, iv_rev_real, m.parent, m.ts, true, c_rev_derived_stale);
     c_rev_handed.fetch_add(1, std::memory_order_relaxed);
     return hfl::kHeader + hfl::kAckSize;
@@ -481,13 +583,13 @@ std::string horse_follow_describe() {
     return std::format(
         "HorseFollow [{}]: to user 2: Move Acks {} (bad size {}, rider on an 0xB parent {}, other parents {}) | "
         "made {} (push refused {}, build failed {}) | verdicts: no world {}, user 2's horse {}, would make {} | "
-        "last pair 0x{:08X} on 0x{:08X} | rider Ack cadence [{}] | its horse's own Acks {} [{}] || user 2's Move Reqs "
+        "last pair 0x{:08X} on 0x{:08X} | rider Ack cadence [{}] | its horse's own Acks {} (dropped {}; synthetic on its template {}, without {}) [{}] || user 2's Move Reqs "
         "{} (riding {}, last 0x{:08X} on 0x{:08X}) | rider Req cadence [{}] | its horse's own Reqs {} [{}] (this "
         "direction reaches the host's client natively: NOT followed)",
         hfl::mode_name(mode), c_acks.load(), c_bad_size.load(), c_ridden.load(), c_other_parent.load(), c_made.load(),
         c_push_failed.load(), c_build_failed.load(), c_verdict[static_cast<size_t>(Verdict::NoWorld)].load(),
         c_verdict[static_cast<size_t>(Verdict::OwnHorse)].load(), c_verdict[static_cast<size_t>(Verdict::Probe)].load(),
-        g_last_rider.load(), g_last_horse.load(), hist(h_rider_ack), c_horse_own.load(), hist(h_horse_ack),
+        g_last_rider.load(), g_last_horse.load(), hist(h_rider_ack), c_horse_own.load(), c_own_dropped.load(), c_tpl_used.load(), c_tpl_missing.load(), hist(h_horse_ack),
         c_reqs.load(), c_req_ridden.load(), g_last_req_rider.load(), g_last_req_horse.load(), hist(h_rider_req),
         c_req_horse_own.load(), hist(h_horse_req)) +
            gp;

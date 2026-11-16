@@ -736,6 +736,7 @@ void take_frame(uintptr_t rq, uintptr_t self) noexcept {
             g_n.sent_out.fetch_add(ok, std::memory_order_relaxed);
             if (!pushed || ar.extra_failed) g_outgoing_lost.store(true);
         } else {
+            if (to_live && horse_follow_drop_own(opcode, p)) return;  // its rider's synthetic Acks carry it
             pushed = g_outgoing.push(p);
             if (pushed) {
                 g_n.sent_out.fetch_add(1, std::memory_order_relaxed);
