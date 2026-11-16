@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -171,6 +171,9 @@ namespace CdmpLauncher
             using (var u = new UdpClient(0))
             {
                 u.EnableBroadcast = true;
+                // Windows reports an ICMP 'port unreachable' from any broadcast target as WSAECONNRESET on the next receive
+                // (seen on the Legion: 'connection forcibly closed'): turn that off, and skip such errors below.
+                try { u.Client.IOControl(-1744830452 /* SIO_UDP_CONNRESET */, new byte[] { 0, 0, 0, 0 }, null); } catch { }
                 var q = Encoding.UTF8.GetBytes(HostBeacon.Magic + " FIND " + tag);
                 var targets = Util.Broadcasts();
                 targets.Add(IPAddress.Loopback);
@@ -185,7 +188,8 @@ namespace CdmpLauncher
                     var rt = u.ReceiveAsync();
                     var done = await Task.WhenAny(rt, Task.Delay(end - DateTime.UtcNow));
                     if (done != rt) break;
-                    var r = rt.Result;
+                    UdpReceiveResult r;
+                    try { r = rt.Result; } catch { continue; }
                     var msg = Encoding.UTF8.GetString(r.Buffer);
                     var head = HostBeacon.Magic + " HERE " + tag + "\n";
                     if (!msg.StartsWith(head)) continue;
