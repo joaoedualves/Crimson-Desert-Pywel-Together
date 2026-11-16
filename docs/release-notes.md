@@ -1,6 +1,9 @@
 **Pywel Together v1.0** (in testing / em teste)
 
 **Downloads**
+
+### [⬇ Download Pywel-Together-v1.0.zip](https://github.com/joaoedualves/Crimson-Desert-Pywel-Together/releases/download/v1.0/Pywel-Together-v1.0.zip)
+
 - `Pywel-Together-v1.0.zip`: the app with the mod inside. Extract anywhere and open `CD-Pywel-Together.exe`. / O app com o mod dentro. Extraia em qualquer pasta e abra o `CD-Pywel-Together.exe`.
 - **Source code**: the zip/tar.gz below. / O zip/tar.gz logo abaixo.
 
