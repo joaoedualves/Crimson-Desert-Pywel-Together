@@ -1,6 +1,11 @@
+<p align="center">
+  <img src="docs/images/logo.png" width="110" alt="Pywel Together"><br>
+  <img src="docs/images/banner.png" width="640" alt="Crimson Desert: Pywel Together">
+</p>
+
 # Crimson Desert: Pywel Together
 
-**English** | [Português](#português)
+<p align="center"><b>English</b> | <a href="#português">Português</a></p>
 
 ## What is this?
 
@@ -9,6 +14,11 @@ Crimson Desert is a single player game. **Pywel Together** lets two friends play
 You don't need to edit any game file by hand. Open the **Pywel Together** app, choose **Host** or **Guest**, type the same session code on both PCs and the app opens the game, loads the save and puts the guest inside the host's world. Each player keeps their own character and their own story progress.
 
 It's a fan project made by two friends who wanted to play together, built on top of the co-op research of **ByJunter** (see Credits). It is still being tested, so expect bugs.
+
+<p align="center">
+  <img src="docs/images/app-main-en.png" width="420" alt="Main screen">
+  <img src="docs/images/app-mod-en.png" width="470" alt="Mod and files">
+</p>
 
 ## How it works
 
@@ -63,6 +73,10 @@ Crimson Desert é um jogo single player. O **Pywel Together** deixa dois amigos 
 Não precisa mexer em nenhum arquivo do jogo na mão. Abra o app **Pywel Together**, escolha **Host** ou **Guest**, digite o mesmo código da sessão nos dois PCs e o app abre o jogo, carrega o save e coloca o guest dentro do mundo do host. Cada jogador mantém o seu personagem e o seu progresso na história.
 
 É um projeto de fã, feito por dois amigos que queriam jogar juntos, em cima da pesquisa de co-op do **ByJunter** (veja Créditos). Ainda está em teste, então espere bugs.
+
+<p align="center">
+  <img src="docs/images/app-main-pt.png" width="420" alt="Tela principal">
+</p>
 
 ### Como funciona
 
