@@ -74,11 +74,20 @@ GPL-3.0, same as the original projects (see `LICENSE`).
 <a id="screenshots"></a>
 <p><picture><source media="(prefers-color-scheme: dark)" srcset="docs/images/headings/h-screens-dark.png"><img src="docs/images/headings/h-screens-light.png" width="560" alt="Screenshots"></picture></p>
 
-<p align="center">
-  <img src="docs/images/app-main-en.png" width="400" alt="Main screen">
-  &nbsp;
-  <img src="docs/images/app-mod-en.png" width="460" alt="Mod and files">
-</p>
+<details>
+<summary><b>Show app screenshots</b></summary>
+<br>
+<table align="center">
+  <tr>
+    <td align="center" width="50%"><a href="docs/images/shots/shot-main-en.png"><img src="docs/images/shots/shot-main-en.png" width="360" alt="Main screen"></a><br><sub><b>Main screen</b></sub></td>
+    <td align="center" width="50%"><a href="docs/images/shots/shot-mod-en.png"><img src="docs/images/shots/shot-mod-en.png" width="360" alt="Mod and files"></a><br><sub><b>Mod and files</b></sub></td>
+  </tr>
+  <tr>
+    <td align="center" width="50%"><a href="docs/images/shots/shot-tools-en.png"><img src="docs/images/shots/shot-tools-en.png" width="360" alt="Tools"></a><br><sub><b>Tools</b></sub></td>
+    <td align="center" width="50%"><a href="docs/images/shots/shot-settings-en.png"><img src="docs/images/shots/shot-settings-en.png" width="360" alt="Settings"></a><br><sub><b>Settings</b></sub></td>
+  </tr>
+</table>
+</details>
 
 <br>
 <hr>
@@ -150,6 +159,17 @@ GPL 3.0, a mesma dos projetos originais (veja `LICENSE`).
 <a id="imagens"></a>
 <p><picture><source media="(prefers-color-scheme: dark)" srcset="docs/images/headings/h-pt-screens-dark.png"><img src="docs/images/headings/h-pt-screens-light.png" width="560" alt="Imagens do app"></picture></p>
 
-<p align="center">
-  <img src="docs/images/app-main-pt.png" width="400" alt="Tela principal">
-</p>
+<details>
+<summary><b>Ver imagens do app</b></summary>
+<br>
+<table align="center">
+  <tr>
+    <td align="center" width="50%"><a href="docs/images/shots/shot-main-pt.png"><img src="docs/images/shots/shot-main-pt.png" width="360" alt="Tela principal"></a><br><sub><b>Tela principal</b></sub></td>
+    <td align="center" width="50%"><a href="docs/images/shots/shot-mod-pt.png"><img src="docs/images/shots/shot-mod-pt.png" width="360" alt="Mod e arquivos"></a><br><sub><b>Mod e arquivos</b></sub></td>
+  </tr>
+  <tr>
+    <td align="center" width="50%"><a href="docs/images/shots/shot-tools-pt.png"><img src="docs/images/shots/shot-tools-pt.png" width="360" alt="Ferramentas"></a><br><sub><b>Ferramentas</b></sub></td>
+    <td align="center" width="50%"><a href="docs/images/shots/shot-settings-pt.png"><img src="docs/images/shots/shot-settings-pt.png" width="360" alt="Config"></a><br><sub><b>Config</b></sub></td>
+  </tr>
+</table>
+</details>
