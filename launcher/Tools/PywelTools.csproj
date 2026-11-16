@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net48</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <AssemblyName>pywel-tools</AssemblyName>
+    <RootNamespace>PywelTools</RootNamespace>
+    <ApplicationIcon>..\app.ico</ApplicationIcon>
+    <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
+    <Version>1.0.0</Version>
+    <FileVersion>1.0.0.0</FileVersion>
+    <Product>Crimson Desert: Pywel Together</Product>
+    <AssemblyTitle>Pywel Together tools</AssemblyTitle>
+    <Description>Pywel Together helper: key press in the game window, mod file copy.</Description>
+    <Company>Pywel Together</Company>
+    <Copyright>Pywel Together 2026</Copyright>
+    <DebugType>none</DebugType>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+  </PropertyGroup>
+</Project>

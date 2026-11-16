@@ -1,0 +1,38 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net48</TargetFramework>
+    <UseWindowsForms>true</UseWindowsForms>
+    <LangVersion>latest</LangVersion>
+    <Nullable>disable</Nullable>
+    <AssemblyName>CD-Pywel-Together</AssemblyName>
+    <ApplicationIcon>app.ico</ApplicationIcon>
+    <RootNamespace>CdmpLauncher</RootNamespace>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
+    <Version>1.0.0</Version>
+    <FileVersion>1.0.0.0</FileVersion>
+    <Product>Crimson Desert: Pywel Together</Product>
+    <AssemblyTitle>Crimson Desert: Pywel Together - Co-op Online</AssemblyTitle>
+    <Description>Co-op launcher for the Crimson Desert Pywel Together mod: opens the game as host or guest.</Description>
+    <Company>Pywel Together</Company>
+    <Copyright>Pywel Together 2026</Copyright>
+    <NeutralLanguage>en</NeutralLanguage>
+    <DebugType>none</DebugType>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Remove="Tools\**" />
+    <None Remove="Tools\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="fonts\crimson.ttf" LogicalName="assets.fonts.crimson.ttf" />
+    <EmbeddedResource Include="fonts\adelon.ttf" LogicalName="assets.fonts.adelon.ttf" />
+    <EmbeddedResource Include="app.ico" LogicalName="assets.icons.app.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.IO.Compression.FileSystem" />
+    <Reference Include="System.Runtime.Serialization" />
+  </ItemGroup>
+</Project>
