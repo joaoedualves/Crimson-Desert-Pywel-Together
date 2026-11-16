@@ -95,7 +95,7 @@ GPL-3.0, same as the original projects (see `LICENSE`).
 <p align="center">
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="docs/images/headings/h-portugues-dark.png">
-    <img src="docs/images/headings/h-portugues-light.png" width="560" alt="Português">
+    <img src="docs/images/headings/h-portugues-light.png" width="700" alt="Português">
   </picture>
 </p>
 <a id="portugues"></a>
