@@ -1,5 +1,15 @@
 # Crimson Desert: Pywel Together
 
+## What is this?
+
+Crimson Desert is a single player game. **Pywel Together** lets two friends play it together online: one player opens their game as the **host**, and the other (the **guest**) enters the host's world with their own character. Both walk around the same map and see each other moving, fighting and riding, with the same people and enemies around them.
+
+You don't need to edit any game file by hand. Open the **Pywel Together** app, choose **Host** or **Guest**, type the same session code on both PCs and the app opens the game, loads the save and puts the guest inside the host's world. Each player keeps their own character and their own story progress.
+
+It's a fan project made by two friends who wanted to play together, built on top of the co-op research of **ByJunter** (see Credits). It is still being tested, so expect bugs.
+
+## How it works
+
 Online co-op for **Crimson Desert** (PC, Steam), made of two parts:
 
 - **The mod** (`cdmp.asi`, loaded by Ultimate ASI Loader): the guest joins the host's world through the game's own internal server. Same world, same NPCs and enemies.
