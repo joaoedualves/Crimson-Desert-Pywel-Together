@@ -32,6 +32,8 @@ namespace CdmpLauncher
         [DataMember] public string GuestName = "Guest";
         [DataMember] public string SessionCode = "";
         [DataMember] public string ManualHostIp = "";
+        [DataMember] public string Transport = "steam";   // "steam" (padrÃ£o, como o mod original) | "udp" (rede local/VPN, opcional)
+        [DataMember] public string FriendSteamId = "";    // SteamID64 do amigo (opcional; vazio = o mod acha o amigo que estÃ¡ jogando)
         [DataMember] public bool AutoE = true;
         [DataMember] public bool RecordPackets = false;
         [DataMember] public bool AutoSyncFromHost = true;
@@ -59,6 +61,8 @@ namespace CdmpLauncher
         public static string DataDir =>
             Environment.GetEnvironmentVariable("CDMP_LAUNCHER_DATA") is string d && d != "" ? d : Path.Combine(ExeDir, "config");
         public static string FilePath => Path.Combine(DataDir, "settings.json");
+
+        public bool UseSteam => Transport != "udp";
 
         public Profile Current =>
             Profiles.FirstOrDefault(p => p.Name == SelectedProfile) ?? Profiles.LastOrDefault();

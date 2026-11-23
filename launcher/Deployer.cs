@@ -394,6 +394,8 @@ namespace CdmpLauncher
         {
             public string PlayerName;
             public string PeerHost;  // guest only
+            public bool Steam;        // transporte Steam (padrÃ£o do app)
+            public string PeerSteamId = "";  // SteamID64 do amigo; vazio = automÃ¡tico
             public int PeerPort;
             public bool Record;
         }
@@ -469,11 +471,12 @@ namespace CdmpLauncher
             bool ch = false;
             ch |= Ini.Set(lines, "general", "player_name", Clean(o.PlayerName));
             ch |= Ini.Set(lines, "net", "role", RoleName(role));
-            ch |= Ini.Set(lines, "net", "transport", "udp");
+            ch |= Ini.Set(lines, "net", "transport", o.Steam ? "steam" : "udp");
+            if (o.Steam) ch |= Ini.Set(lines, "steam", "peer_steamid", Regex.Replace(o.PeerSteamId ?? "", @"\D", ""));
             ch |= Ini.Set(lines, "net", "peer_port", o.PeerPort.ToString());
             if (role == Role.Host) ch |= Ini.Set(lines, "net", "host_loopback_only", "0");
             if (o.Record) AppLog.Write(Lang.T("ATENÇÃO: gravação de pacotes ligada (record=1): dezenas de MB por minuto. Limpe em Ferramentas."));
-            else ch |= Ini.Set(lines, "net", "peer_host", o.PeerHost);
+            else if (!o.Steam) ch |= Ini.Set(lines, "net", "peer_host", o.PeerHost);
             ch |= Ini.Set(lines, "sniffer", "record", o.Record ? "1" : "0");
             if (ch)
             {

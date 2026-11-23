@@ -40,6 +40,7 @@ namespace CdmpLauncher
         Panel modPage, savePage, toolsPage, cfgPage;
         Label banner, lblLang, lblIp, lblSteam, lblGuestDir, lblRec, lblLogs, lblDumps, lblProfInfo;
         TextBox txtHostName, txtGuestName, txtCode, txtLog, txtGameDir, txtManualIp, txtShareDir;
+        CheckBox chkUdp; TextBox txtFriendId;
         CheckBox chkRecord, chkSync, chkWatch, chkShare;
         Button btnHost, btnGuest, btnStop;
         ListView lvFiles;
@@ -358,6 +359,8 @@ namespace CdmpLauncher
             var p = Page("  Config  ");
             txtGameDir = T(cfg.GameDir, 520);
             txtManualIp = T(cfg.ManualHostIp, 170);
+            txtFriendId = T(cfg.FriendSteamId, 170);
+            chkUdp = C(Lang.T("Usar rede local/VPN (Radmin, ZeroTier, Tailscale) em vez da Steam (opcional)"), !cfg.UseSteam);
             NumericUpDown N(int v, int min, int max) => new NumericUpDown { Minimum = min, Maximum = max, Value = Math.Max(min, Math.Min(max, v)), Width = 80, BackColor = Theme.Ink, ForeColor = Theme.GoldLight, BorderStyle = BorderStyle.FixedSingle, Margin = new Padding(3, 7, 12, 3) };
             numPeer = N(cfg.PeerPort, 1024, 65535); numDisc = N(cfg.DiscoveryPort, 1024, 65535); numFile = N(cfg.FilePort, 1024, 65535);
             numFirst = N(cfg.FirstEDelaySec, 0, 300); numInterval = N(cfg.EIntervalSec, 3, 300); numMax = N(cfg.MaxEPresses, 1, 50);
@@ -369,7 +372,10 @@ namespace CdmpLauncher
             var paths = Group(Lang.T("Pastas"),
                 Row(L(Lang.T("Jogo (bin64):")), txtGameDir, B("...", (s, e) => { var d = PickFolder(txtGameDir.Text); if (d != null) txtGameDir.Text = d; }), B(Lang.T("Detectar"), (s, e) => { var d = Util.FindGameDir(); if (d != "") txtGameDir.Text = d; else Msg(Lang.T("Jogo não encontrado nas bibliotecas do Steam.")); })));
             var net = Group(Lang.T("Rede"),
-                Row(L(Lang.T("IP do host (opcional):")), txtManualIp, L(Lang.T("use para VPN (Radmin/ZeroTier/Tailscale) ou se a busca na rede não achar"), Dim, 9f)),
+                L(Lang.T("Padrão: conexão pela Steam (como o mod original). Os dois precisam ser amigos na Steam."), Dim, 9f),
+                Row(L(Lang.T("SteamID64 do amigo (opcional):")), txtFriendId, L(Lang.T("vazio = acha sozinho o amigo da Steam que está jogando"), Dim, 9f)),
+                Row(chkUdp),
+                Row(L(Lang.T("IP do host (só no modo rede local/VPN):")), txtManualIp, L(Lang.T("use para VPN (Radmin/ZeroTier/Tailscale) ou se a busca na rede não achar"), Dim, 9f)),
                 Row(L(Lang.T("Porta do jogo:")), numPeer, L(Lang.T("busca:")), numDisc, L(Lang.T("arquivos:")), numFile));
             var auto = Group(Lang.T("Carregamento automático e outros"),
                 Row(L(Lang.T("Espera antes do 1º E (s):")), numFirst, L(Lang.T("entre apertos (s):")), numInterval, L(Lang.T("máximo:")), numMax),
@@ -433,15 +439,15 @@ namespace CdmpLauncher
             try
             {
                 if (string.IsNullOrWhiteSpace(cfg.SessionCode)) { txtCode.Text = Util.NewCode(); SaveFields(); AppLog.Write(Lang.T("código da sessão gerado: ") + cfg.SessionCode); }
-                await Task.Run(() => { dep.SyncPackage(); dep.AdoptGameAsi(); }); await Task.Run(() => dep.Deploy(Role.Host, cfg.Current, new Deployer.Overrides { PlayerName = cfg.HostName, PeerPort = cfg.PeerPort, Record = cfg.RecordPackets }, d => false));
+                await Task.Run(() => { dep.SyncPackage(); dep.AdoptGameAsi(); }); await Task.Run(() => dep.Deploy(Role.Host, cfg.Current, new Deployer.Overrides { PlayerName = cfg.HostName, PeerPort = cfg.PeerPort, Record = cfg.RecordPackets, Steam = cfg.UseSteam, PeerSteamId = cfg.FriendSteamId }, d => false));
                 SaveCfg();
-                StartBeacon();
+                if (!cfg.UseSteam) StartBeacon();
                 hostCts?.Cancel();
                 hostCts = new CancellationTokenSource();
                 hostRun = new GameRun(Role.Host, cfg.GameDir, dep.LogAlias(cfg.Current, Role.Host), dep.EnvRole(Role.Host));
                 hostRun.Exited += r => BeginInvoke((Action)(() => OnExited(r)));
                 hostRun.Start();
-                AppLog.Write(Lang.T("host: passe o código ") + cfg.SessionCode + Lang.T(" para o guest"));
+                if (cfg.UseSteam) AppLog.Write(Lang.T("host: conexão pela Steam. O amigo entra pelo app dele (vocês precisam ser amigos na Steam)")); else AppLog.Write(Lang.T("host: passe o código ") + cfg.SessionCode + Lang.T(" para o guest"));
                 if (cfg.AutoE)
                 {
                     var run = hostRun;
@@ -521,7 +527,12 @@ namespace CdmpLauncher
             {
                 string peer;
                 remoteHost = null; hostLostForGuest = false; remoteMisses = 0;
-                if (string.IsNullOrWhiteSpace(cfg.SessionCode))
+                if (cfg.UseSteam)
+                {
+                    peer = "";
+                    AppLog.Write(Lang.T("guest: conexão pela Steam; o mod acha o amigo que está jogando (vocês precisam ser amigos na Steam)"));
+                }
+                else if (string.IsNullOrWhiteSpace(cfg.SessionCode))
                 {
                     if (string.IsNullOrWhiteSpace(cfg.ManualHostIp)) { Msg(Lang.T("Digite o código da sessão (o mesmo do host) ou um IP do host na Config.")); return; }
                     peer = cfg.ManualHostIp.Trim();
@@ -540,7 +551,7 @@ namespace CdmpLauncher
                     await WaitHostWorld(ct);
                 }
                 if (!PreLaunch(Role.Guest)) return;
-                await Task.Run(() => dep.SyncPackage()); await Task.Run(() => dep.Deploy(Role.Guest, cfg.Current, new Deployer.Overrides { PlayerName = cfg.GuestName, PeerHost = peer, PeerPort = remoteHost?.Port ?? cfg.PeerPort, Record = cfg.RecordPackets }, cfg.AutoSyncFromHost && remoteHost != null ? (Func<string, bool>)(d => true) : d => false), ct);
+                await Task.Run(() => dep.SyncPackage()); await Task.Run(() => dep.Deploy(Role.Guest, cfg.Current, new Deployer.Overrides { PlayerName = cfg.GuestName, PeerHost = peer, PeerPort = remoteHost?.Port ?? cfg.PeerPort, Record = cfg.RecordPackets, Steam = cfg.UseSteam, PeerSteamId = cfg.FriendSteamId }, cfg.AutoSyncFromHost && remoteHost != null ? (Func<string, bool>)(d => true) : d => false), ct);
                 SaveCfg();
                 guestRun = new GameRun(Role.Guest, cfg.GameDir, dep.LogAlias(cfg.Current, Role.Guest), dep.EnvRole(Role.Guest));
                 guestRun.Exited += r => BeginInvoke((Action)(() => OnExited(r)));
@@ -1101,6 +1112,8 @@ namespace CdmpLauncher
             {
                 cfg.GameDir = txtGameDir.Text.Trim();
                 cfg.ManualHostIp = txtManualIp.Text.Trim();
+                cfg.Transport = chkUdp.Checked ? "udp" : "steam";
+                cfg.FriendSteamId = new string(txtFriendId.Text.Where(char.IsDigit).ToArray());
                 cfg.PeerPort = (int)numPeer.Value; cfg.DiscoveryPort = (int)numDisc.Value; cfg.FilePort = (int)numFile.Value;
                 cfg.FirstEDelaySec = (int)numFirst.Value; cfg.EIntervalSec = (int)numInterval.Value; cfg.MaxEPresses = (int)numMax.Value;
                 cfg.KeepLogs = (int)numKeep.Value;
