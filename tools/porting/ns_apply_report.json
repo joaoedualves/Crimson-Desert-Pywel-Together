@@ -1,0 +1,6284 @@
+{
+"unmapped": {
+"mod/mod.cpp": [
+"0xf4240"
+],
+"mod/net/keys.h": [
+"0xfffff"
+],
+"mod/net/piece4_test.cpp": [
+"0xf4240"
+],
+"mod/net/steam_transport.cpp": [
+"0xffffff"
+],
+"mod/net/local_capture.cpp": [
+"0xf4240"
+],
+"mod/net/aggro_test.cpp": [
+"0x22e0a30"
+],
+"mod/net/player_hits.cpp": [
+"0xf4240"
+],
+"mod/net/guest_hits.cpp": [
+"0xf4240"
+],
+"mod/game/hook_prepare.cpp": [
+"0x10000"
+],
+"mod/game/safe_memory.cpp": [
+"0x10000"
+],
+"mod/session2/user2_shops.cpp": [
+"0x10000"
+],
+"mod/session2/server.cpp": [
+"0x10000"
+],
+"mod/session2/remote_motion.cpp": [
+"0x17f2a9c",
+"0x87d715",
+"0x87dd5c",
+"0x88e9b4"
+],
+"mod/session2/fast_travel.cpp": [
+"0x10000",
+"0x655110",
+"0x6555c6"
+],
+"mod/session2/guest_save_host.cpp": [
+"0x6cf781c"
+],
+"mod/session2/scene_level_share.cpp": [
+"0x1000000"
+],
+"mod/session2/user2_funnels_logic.h": [
+"0x2896347",
+"0x2a4a32b",
+"0x2b03aa7"
+],
+"mod/session2/catch_seq.cpp": [
+"0x10000",
+"0x51eb000"
+],
+"mod/session2/guest_seq_route_logic.h": [
+"0xc07749",
+"0xc08178",
+"0xc0b5c1",
+"0xc0c761",
+"0xc0cc91"
+],
+"mod/session2/user2_funnels.cpp": [
+"0x10000",
+"0x2a4a32b",
+"0x2b03aa7",
+"0x2bc4c49"
+],
+"mod/session2/guest_lifecycle.cpp": [
+"0x10000"
+],
+"mod/session2/guest_stage_diag_logic.h": [
+"0xaa6e90"
+],
+"mod/session2/weather_sync.cpp": [
+"0x10000",
+"0x51eb000"
+],
+"mod/session2/world_anchor.cpp": [
+"0x29c2915",
+"0x2c38e28"
+],
+"mod/session2/observer_stage.cpp": [
+"0x10000",
+"0x2bc769e"
+],
+"mod/session2/guest_bodyanim_diag.cpp": [
+"0x10000"
+],
+"mod/session2/tree_bend.cpp": [
+"0x10000",
+"0x51eb000"
+],
+"mod/session2/publication_gate_logic.h": [
+"0x10000"
+],
+"mod/session2/guest_s3.cpp": [
+"0x10000"
+],
+"mod/session2/guest_x_interaction.cpp": [
+"0x10000"
+],
+"mod/session2/remote_rope_logic.h": [
+"0x2328ee4"
+],
+"mod/session2/enemy_damage_probe.cpp": [
+"0x209cb30"
+],
+"mod/session2/observer_scene_copy.cpp": [
+"0x10000",
+"0x28797ad"
+],
+"mod/session2/guest_save_guest.cpp": [
+"0xffffff"
+],
+"mod/session2/user2_stages.cpp": [
+"0x10000",
+"0x1c2f0",
+"0x1c308",
+"0x1c318",
+"0x27fbd60",
+"0x2808d80",
+"0x2822d00",
+"0x287da50",
+"0x6cf7dfc",
+"0xc5ede",
+"0xfffff"
+],
+"mod/session2/guest_seq_present.cpp": [
+"0x10000",
+"0x1000000",
+"0x20516b0",
+"0x34bd680",
+"0x34c0b60",
+"0x34cfc20",
+"0x5c75f30",
+"0x5d94f0",
+"0x5d9750",
+"0x5d97b0",
+"0x8b6144",
+"0xb27dde",
+"0xc45747",
+"0xc4e14d"
+],
+"mod/session2/identity_probe.cpp": [
+"0x293fe70",
+"0x35ea90"
+],
+"mod/session2/guest_x_veto.cpp": [
+"0x10000",
+"0x204c410",
+"0x204dc80",
+"0x23698f0",
+"0x5ee160",
+"0x5ee1f0",
+"0x5ee210",
+"0x5ee250",
+"0x5f2970",
+"0x5f2980",
+"0x5f2a27",
+"0x5f2a3a",
+"0x5f4110",
+"0x5f4200",
+"0x5f52e0",
+"0xc07771",
+"0xc07776"
+],
+"mod/session2/shop_trade_probe.cpp": [
+"0x10000",
+"0x1000000",
+"0x23698e7",
+"0x2b36ef0",
+"0x2b36f90",
+"0x2b36fb3",
+"0x2b36fcd",
+"0x2b3707c",
+"0x2b3708c",
+"0x2b37366",
+"0x5db7a20"
+],
+"mod/session2/guest_lifecycle.h": [
+"0xfffff"
+],
+"mod/session2/scene_level_share_logic.h": [
+"0x28308d7"
+],
+"mod/session2/npc_activation_logic.h": [
+"0x10000"
+],
+"mod/session2/identity_fix.cpp": [
+"0x293fe70"
+],
+"mod/session2/guest_seq_present_logic.h": [
+"0x34cfc20",
+"0x5c75f30",
+"0x5db7610",
+"0x5db7a20",
+"0x5de2538",
+"0x5e07ee8",
+"0x5e08488",
+"0x5e085f0",
+"0x5e08690",
+"0x5e99c0",
+"0x5e9b00",
+"0x5ee160",
+"0x5ee1f0",
+"0x5ee210",
+"0x5ee250",
+"0x5ee6c48",
+"0x5f2970",
+"0x5f2980",
+"0x5f4110",
+"0x5f4200",
+"0x5f4280",
+"0x5f52e0",
+"0x5f83df8"
+],
+"mod/session2/remote_motion_logic.h": [
+"0x51eb000"
+],
+"mod/session2/rope_probe.cpp": [
+"0x10000",
+"0x51eb000",
+"0x87b2ca"
+],
+"mod/session2/rope_probe_logic.h": [
+"0x3ecc59"
+],
+"mod/session2/clock_gate.cpp": [
+"0x2bc0a30",
+"0x2bc0a78",
+"0x2bc0cc7"
+],
+"mod/session2/door_trace.cpp": [
+"0x1000000",
+"0x282e694",
+"0x6cf7018",
+"0x6cf701c",
+"0x6cf7024",
+"0x6cf7028"
+],
+"mod/session2/guest_sched_load_logic.h": [
+"0xc5ede"
+],
+"mod/session2/funcnpc_trade_policy.h": [
+"0xc5ede"
+],
+"mod/session2/guest_seq_restore.cpp": [
+"0x10000"
+],
+"mod/session2/guest_sched_bind.cpp": [
+"0x10000",
+"0x143491c",
+"0x43b781",
+"0x8ae385",
+"0x8b6144",
+"0x9f322f",
+"0xc0afd0",
+"0xc0b242",
+"0xc0b5c1",
+"0xc0b5ec",
+"0xc0b612",
+"0xc0b626"
+],
+"mod/session2/remote_interp_logic.h": [
+"0x10000"
+],
+"mod/session2/remote_interp.cpp": [
+"0x10000",
+"0x51eb000"
+],
+"mod/session2/shop_probe.cpp": [
+"0x10000",
+"0x2b36ef0"
+],
+"mod/session2/scene_points.h": [
+"0x206dbe2",
+"0x206de5c",
+"0x206de6b"
+],
+"mod/session2/guest_stage_diag.cpp": [
+"0x10000",
+"0x6cf76a4",
+"0x77ae8a",
+"0x9ed401",
+"0x9ed453",
+"0xc073a0",
+"0xc073bc",
+"0xc076e6",
+"0xc0773f",
+"0xc07749"
+],
+"mod/session2/mount_sync.cpp": [
+"0x10000",
+"0x51eb000",
+"0xa45740"
+],
+"mod/session2/guest_actor_diag.cpp": [
+"0x4fd2e0",
+"0x4fd390",
+"0x4fd3aa",
+"0x4fd3e0",
+"0x4fd488",
+"0x4fd491",
+"0x6cf6c50"
+],
+"mod/session2/freeze_watchdog.cpp": [
+"0x10000",
+"0x8b6144"
+],
+"mod/session2/owner_fanout_writers.h": [
+"-2296",
+"-2584",
+"-3045",
+"0x297efa4",
+"0x29b0bc0",
+"0x29b0c16",
+"0x29bc560",
+"0x29bc5be"
+],
+"mod/session2/child_hold.cpp": [
+"0x1831598"
+],
+"mod/session2/ui_pause.cpp": [
+"0x10000",
+"0x63da70"
+],
+"mod/session2/guest_seq_route.cpp": [
+"0x10000",
+"0x43b0a3",
+"0xc073bc",
+"0xc076e6",
+"0xc0773f",
+"0xc07749",
+"0xc07d25",
+"0xc080d1",
+"0xc0810e",
+"0xc0816e",
+"0xc08178",
+"0xc08188",
+"0xc0afd0",
+"0xc0afe5",
+"0xc0b242",
+"0xc0b50a",
+"0xc0b55e",
+"0xc0b5b7",
+"0xc0b5c1",
+"0xc0b612",
+"0xc0c400",
+"0xc0c5ba",
+"0xc0c6b7",
+"0xc0c757",
+"0xc0c761",
+"0xc0c769",
+"0xc0c930",
+"0xc0caea",
+"0xc0cbe7",
+"0xc0cc87",
+"0xc0cc91",
+"0xc0cc99"
+],
+"mod/session2/offsets_s2.h": [
+"0x65dc3e",
+"0x6da67d8"
+],
+"mod/session2/observer_milestone.cpp": [
+"0x10000"
+],
+"mod/session2/p8_probes.cpp": [
+"0x10000",
+"0x9ed415"
+],
+"mod/session2/guest_seq_foreign.cpp": [
+"0x10000",
+"0x1000000",
+"0x5ec372",
+"0x601c04",
+"0x6021e1",
+"0x6030c8",
+"0x603646",
+"0xa9d47e",
+"0xc05e84",
+"0xc05ee9",
+"0xc05f1d",
+"0xc061ef",
+"0xc0632f"
+],
+"mod/session2/remote_rope.cpp": [
+"0x10000",
+"0x2328ee4",
+"0x2328f02",
+"0x27d914b",
+"0x2903ab1",
+"0x51eb000",
+"0x5923b4",
+"0x59484e",
+"0xb5bf61"
+],
+"mod/session2/companion_probe.cpp": [
+"0x232d543"
+],
+"mod/session2/guest_scene_diag.cpp": [
+"0x10000",
+"0x206de6b"
+],
+"mod/session2/field_share.cpp": [
+"0x2bc04f0",
+"0x40b5b0"
+],
+"mod/session2/npc_family_logic.h": [
+"0x10000"
+],
+"mod/session2/docked_gimmicks_logic.h": [
+"0x28ad170",
+"0x28ade40",
+"0x2970adf"
+],
+"mod/session2/guest_s3_logic.h": [
+"0x48b11e",
+"0x48b3f6"
+],
+"mod/session2/stage_lookup_logic.h": [
+"0xc5ede"
+],
+"mod/session2/guest_sched_load.cpp": [
+"0x10000",
+"0x18643a8",
+"0x1864cd8",
+"0x186a999",
+"0x38adec",
+"0xc5ede"
+],
+"mod/session2/host_scene_diag.cpp": [
+"0x10000",
+"0x206de6b",
+"0x232ff90",
+"0x2a78d06",
+"0x2a78d0d",
+"0x9ed401"
+],
+"mod/session2/docked_gimmicks.cpp": [
+"0x10000",
+"0x28ad170",
+"0x28ade40",
+"0x2970adf",
+"0x51eb000"
+],
+"mod/session2/user2_road_logic.h": [
+"0x10000"
+],
+"mod/session2/guest_seq_play.cpp": [
+"0x10000",
+"0x6cc0218",
+"0x8b6076",
+"0x8b608f",
+"0x8b60af",
+"0x8b60c6",
+"0x8b6102",
+"0x8b613d",
+"0x8b6144",
+"0x8b63ce",
+"0x8b67e3",
+"0xa94660"
+],
+"common/save_guard.cpp": [
+"0x10000",
+"0x1000000",
+"0x200000",
+"0x2000000",
+"0x40000",
+"0x4000000"
+]
+},
+"arrays": [
+[
+"mod/net/local_capture.cpp",
+"kMarker",
+"NO SITE (20 bytes)"
+],
+[
+"mod/net/local_capture.cpp",
+"<anon>",
+"NO SITE (20 bytes)"
+],
+[
+"mod/net/aggro_test.cpp",
+"kIsTargetableHead",
+"same"
+],
+[
+"mod/net/aggro_test.cpp",
+"kSetCurrentTargetHead",
+"same"
+],
+[
+"mod/net/aggro_test.cpp",
+"kCheckAIBattleTypeHead",
+"site 0x22e0a30 unmapped"
+],
+[
+"mod/net/aggro_test.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/net/aggro_test.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/net/aggro_test.cpp",
+"<anon>",
+"site 0x22e0a30 unmapped"
+],
+[
+"mod/net/enemy_relay.cpp",
+"kSig",
+"NO SITE (14 bytes)"
+],
+[
+"mod/net/remote_puppet.cpp",
+"kMarker",
+"NO SITE (20 bytes)"
+],
+[
+"mod/net/remote_puppet.cpp",
+"kMarker",
+"NO SITE (20 bytes)"
+],
+[
+"mod/net/remote_puppet.cpp",
+"<anon>",
+"NO SITE (20 bytes)"
+],
+[
+"mod/net/remote_puppet.cpp",
+"<anon>",
+"NO SITE (20 bytes)"
+],
+[
+"mod/net/horse_diag.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/net/horse_diag.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/net/horse_diag.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/net/horse_diag.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/game/offsets.h",
+"kClientPostPacketHead",
+"same"
+],
+[
+"mod/game/offsets.h",
+"kClientOnRecvPacketHead",
+"same"
+],
+[
+"mod/game/offsets.h",
+"kMinimapIconDecideHead",
+"same"
+],
+[
+"mod/game/offsets.h",
+"kServerOtherEquipWriterHead",
+"same"
+],
+[
+"mod/game/offsets.h",
+"kServerDockingWriterHead",
+"same"
+],
+[
+"mod/game/offsets.h",
+"kPointClimbEnterHead",
+"same"
+],
+[
+"mod/game/offsets.h",
+"kActionLayerAdvanceHead",
+"same"
+],
+[
+"mod/game/offsets.h",
+"kActionLayersAdvanceHead",
+"UPDATED 1 of 16 bytes differ"
+],
+[
+"mod/game/offsets.h",
+"kRideEnterHead",
+"same"
+],
+[
+"mod/game/offsets.h",
+"<anon>",
+"same"
+],
+[
+"mod/game/offsets.h",
+"<anon>",
+"same"
+],
+[
+"mod/game/offsets.h",
+"<anon>",
+"same"
+],
+[
+"mod/game/offsets.h",
+"<anon>",
+"same"
+],
+[
+"mod/game/offsets.h",
+"<anon>",
+"same"
+],
+[
+"mod/game/offsets.h",
+"<anon>",
+"same"
+],
+[
+"mod/game/offsets.h",
+"<anon>",
+"same"
+],
+[
+"mod/game/offsets.h",
+"<anon>",
+"NO SITE (16 bytes)"
+],
+[
+"mod/game/offsets.h",
+"<anon>",
+"same"
+],
+[
+"mod/session2/weather_sync_logic.h",
+"kGetterVf60Bytes",
+"same"
+],
+[
+"mod/session2/weather_sync_logic.h",
+"kUpdateHead",
+"UPDATED 17 of 18 bytes differ"
+],
+[
+"mod/session2/weather_sync_logic.h",
+"kUpdateCallBytes",
+"UPDATED 3 of 5 bytes differ"
+],
+[
+"mod/session2/weather_sync_logic.h",
+"<anon>",
+"same"
+],
+[
+"mod/session2/weather_sync_logic.h",
+"<anon>",
+"site 0x35be90 unmapped"
+],
+[
+"mod/session2/weather_sync_logic.h",
+"<anon>",
+"NO SITE (5 bytes)"
+],
+[
+"mod/session2/remote_motion.cpp",
+"kPointClimbHead",
+"same"
+],
+[
+"mod/session2/remote_motion.cpp",
+"kModeFnBytes",
+"UPDATED 11 of 212 bytes differ"
+],
+[
+"mod/session2/remote_motion.cpp",
+"kModeFnTableBytes",
+"site 0x88e9b4 unmapped"
+],
+[
+"mod/session2/remote_motion.cpp",
+"kIsLocalFnBytes",
+"UPDATED 6 of 74 bytes differ"
+],
+[
+"mod/session2/remote_motion.cpp",
+"kIsLocalTableBytes",
+"site 0x17f2a9c unmapped"
+],
+[
+"mod/session2/remote_motion.cpp",
+"kWallUpGateBytes",
+"UPDATED 9 of 55 bytes differ"
+],
+[
+"mod/session2/remote_motion.cpp",
+"kWallUpCallBytes",
+"UPDATED 2 of 38 bytes differ"
+],
+[
+"mod/session2/remote_motion.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/session2/remote_motion.cpp",
+"<anon>",
+"NO SITE (212 bytes)"
+],
+[
+"mod/session2/remote_motion.cpp",
+"<anon>",
+"site 0x88e9b4 unmapped"
+],
+[
+"mod/session2/remote_motion.cpp",
+"<anon>",
+"NO SITE (74 bytes)"
+],
+[
+"mod/session2/remote_motion.cpp",
+"<anon>",
+"site 0x17f2a9c unmapped"
+],
+[
+"mod/session2/remote_motion.cpp",
+"<anon>",
+"NO SITE (55 bytes)"
+],
+[
+"mod/session2/remote_motion.cpp",
+"<anon>",
+"NO SITE (38 bytes)"
+],
+[
+"mod/session2/npc_action_probe.cpp",
+"kActionBytes",
+"same"
+],
+[
+"mod/session2/npc_action_probe.cpp",
+"kNodeBytes",
+"same"
+],
+[
+"mod/session2/npc_action_probe.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/session2/npc_action_probe.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/session2/fast_travel.cpp",
+"kFastTravelBytes",
+"site 0x655110 unmapped"
+],
+[
+"mod/session2/fast_travel.cpp",
+"kFastTravelPointBytes",
+"same"
+],
+[
+"mod/session2/fast_travel.cpp",
+"kPointCallBytes",
+"site 0x6555c6 unmapped"
+],
+[
+"mod/session2/fast_travel.cpp",
+"<anon>",
+"site 0x655110 unmapped"
+],
+[
+"mod/session2/fast_travel.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/session2/fast_travel.cpp",
+"<anon>",
+"site 0x6555c6 unmapped"
+],
+[
+"mod/session2/guest_save_host.cpp",
+"kLoadSlotHead",
+"UPDATED 1 of 47 bytes differ"
+],
+[
+"mod/session2/guest_save_host.cpp",
+"kSaveHead",
+"UPDATED 4 of 47 bytes differ"
+],
+[
+"mod/session2/guest_save_host.cpp",
+"kFlushHead",
+"same"
+],
+[
+"mod/session2/guest_save_host.cpp",
+"kGetOrCreateHead",
+"UPDATED 4 of 5 bytes differ"
+],
+[
+"mod/session2/guest_save_host.cpp",
+"kAddFileHead",
+"same"
+],
+[
+"mod/session2/guest_save_host.cpp",
+"<anon>",
+"NO SITE (47 bytes)"
+],
+[
+"mod/session2/guest_save_host.cpp",
+"<anon>",
+"NO SITE (47 bytes)"
+],
+[
+"mod/session2/guest_save_host.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/session2/guest_save_host.cpp",
+"<anon>",
+"NO SITE (5 bytes)"
+],
+[
+"mod/session2/guest_save_host.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/session2/tree_bend_logic.h",
+"kVf2Head",
+"same"
+],
+[
+"mod/session2/tree_bend_logic.h",
+"kApplyHead",
+"same"
+],
+[
+"mod/session2/tree_bend_logic.h",
+"kApplyCallBytes",
+"UPDATED 2 of 5 bytes differ"
+],
+[
+"mod/session2/tree_bend_logic.h",
+"kSetBendHead",
+"same"
+],
+[
+"mod/session2/tree_bend_logic.h",
+"kSetBendCallBytes",
+"UPDATED 3 of 5 bytes differ"
+],
+[
+"mod/session2/tree_bend_logic.h",
+"kTickHead",
+"same"
+],
+[
+"mod/session2/tree_bend_logic.h",
+"kTickJumpBytes",
+"UPDATED 3 of 5 bytes differ"
+],
+[
+"mod/session2/tree_bend_logic.h",
+"kGetTargetHead",
+"same"
+],
+[
+"mod/session2/tree_bend_logic.h",
+"kFindTreeHead",
+"same"
+],
+[
+"mod/session2/tree_bend_logic.h",
+"<anon>",
+"same"
+],
+[
+"mod/session2/tree_bend_logic.h",
+"<anon>",
+"same"
+],
+[
+"mod/session2/tree_bend_logic.h",
+"<anon>",
+"NO SITE (5 bytes)"
+],
+[
+"mod/session2/tree_bend_logic.h",
+"<anon>",
+"same"
+],
+[
+"mod/session2/tree_bend_logic.h",
+"<anon>",
+"NO SITE (5 bytes)"
+],
+[
+"mod/session2/tree_bend_logic.h",
+"<anon>",
+"same"
+],
+[
+"mod/session2/tree_bend_logic.h",
+"<anon>",
+"NO SITE (5 bytes)"
+],
+[
+"mod/session2/tree_bend_logic.h",
+"<anon>",
+"same"
+],
+[
+"mod/session2/tree_bend_logic.h",
+"<anon>",
+"same"
+],
+[
+"mod/session2/user2_funnels.cpp",
+"kRankCtx1Bytes",
+"same"
+],
+[
+"mod/session2/user2_funnels.cpp",
+"kRankCtx2Bytes",
+"same"
+],
+[
+"mod/session2/user2_funnels.cpp",
+"kRankCallBytes",
+"same"
+],
+[
+"mod/session2/user2_funnels.cpp",
+"kExecuteTrocBytes",
+"same"
+],
+[
+"mod/session2/user2_funnels.cpp",
+"kVf40Bytes",
+"UPDATED 12 of 103 bytes differ"
+],
+[
+"mod/session2/user2_funnels.cpp",
+"kVf48Bytes",
+"UPDATED 12 of 103 bytes differ"
+],
+[
+"mod/session2/user2_funnels.cpp",
+"kQuestEventCbBytes",
+"UPDATED 3 of 59 bytes differ"
+],
+[
+"mod/session2/user2_funnels.cpp",
+"kOwnerCharBytes",
+"UPDATED 27 of 356 bytes differ"
+],
+[
+"mod/session2/user2_funnels.cpp",
+"kDeadCallCtxBytes",
+"UPDATED 3 of 22 bytes differ"
+],
+[
+"mod/session2/user2_funnels.cpp",
+"kOwnerUserStubBytes",
+"UPDATED 4 of 5 bytes differ"
+],
+[
+"mod/session2/user2_funnels.cpp",
+"kLootCallCtxBytes",
+"UPDATED 3 of 18 bytes differ"
+],
+[
+"mod/session2/user2_funnels.cpp",
+"kFindUserBytes",
+"same"
+],
+[
+"mod/session2/user2_funnels.cpp",
+"kReloadCallCtxBytes",
+"UPDATED 10 of 63 bytes differ"
+],
+[
+"mod/session2/user2_funnels.cpp",
+"kApplyReloadBytes",
+"UPDATED 53 of 57 bytes differ"
+],
+[
+"mod/session2/user2_funnels.cpp",
+"kApplyCallCtxBytes",
+"site 0x2bc4c49 unmapped"
+],
+[
+"mod/session2/user2_funnels.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/session2/user2_funnels.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/session2/user2_funnels.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/session2/user2_funnels.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/session2/user2_funnels.cpp",
+"<anon>",
+"NO SITE (103 bytes)"
+],
+[
+"mod/session2/user2_funnels.cpp",
+"<anon>",
+"NO SITE (103 bytes)"
+],
+[
+"mod/session2/user2_funnels.cpp",
+"<anon>",
+"NO SITE (59 bytes)"
+],
+[
+"mod/session2/user2_funnels.cpp",
+"<anon>",
+"NO SITE (356 bytes)"
+],
+[
+"mod/session2/user2_funnels.cpp",
+"<anon>",
+"NO SITE (22 bytes)"
+],
+[
+"mod/session2/user2_funnels.cpp",
+"<anon>",
+"NO SITE (5 bytes)"
+],
+[
+"mod/session2/user2_funnels.cpp",
+"<anon>",
+"NO SITE (18 bytes)"
+],
+[
+"mod/session2/user2_funnels.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/session2/user2_funnels.cpp",
+"<anon>",
+"NO SITE (63 bytes)"
+],
+[
+"mod/session2/user2_funnels.cpp",
+"<anon>",
+"NO SITE (57 bytes)"
+],
+[
+"mod/session2/user2_funnels.cpp",
+"<anon>",
+"site 0x2bc4c49 unmapped"
+],
+[
+"mod/session2/companion_probe.h",
+"kRestoreSiteBytes",
+"same"
+],
+[
+"mod/session2/companion_probe.h",
+"kRestoreLockBytes",
+"same"
+],
+[
+"mod/session2/companion_probe.h",
+"kRestoreExitBytes",
+"same"
+],
+[
+"mod/session2/companion_probe.h",
+"kRestartCallBytes",
+"UPDATED 1 of 28 bytes differ"
+],
+[
+"mod/session2/companion_probe.h",
+"<anon>",
+"same"
+],
+[
+"mod/session2/companion_probe.h",
+"<anon>",
+"same"
+],
+[
+"mod/session2/companion_probe.h",
+"<anon>",
+"same"
+],
+[
+"mod/session2/companion_probe.h",
+"<anon>",
+"NO SITE (28 bytes)"
+],
+[
+"mod/session2/world_anchor.cpp",
+"kHandlerWriteBytes",
+"site 0x29c2915 unmapped"
+],
+[
+"mod/session2/world_anchor.cpp",
+"kCollectorReadBytes",
+"site 0x2c38e28 unmapped"
+],
+[
+"mod/session2/world_anchor.cpp",
+"<anon>",
+"site 0x29c2915 unmapped"
+],
+[
+"mod/session2/world_anchor.cpp",
+"<anon>",
+"site 0x2c38e28 unmapped"
+],
+[
+"mod/session2/observer_stage.cpp",
+"kPrepareBytes",
+"same"
+],
+[
+"mod/session2/observer_stage.cpp",
+"kPrepareLoopBytes",
+"same"
+],
+[
+"mod/session2/observer_stage.cpp",
+"kPrepareOpcodeBytes",
+"UPDATED 2 of 6 bytes differ"
+],
+[
+"mod/session2/observer_stage.cpp",
+"kDeleteBytes",
+"same"
+],
+[
+"mod/session2/observer_stage.cpp",
+"kDeleteOpcodeBytes",
+"UPDATED 1 of 6 bytes differ"
+],
+[
+"mod/session2/observer_stage.cpp",
+"kBranchBytes",
+"same"
+],
+[
+"mod/session2/observer_stage.cpp",
+"kBranchSeqBytes",
+"same"
+],
+[
+"mod/session2/observer_stage.cpp",
+"kBranchOpcodeBytes",
+"UPDATED 2 of 6 bytes differ"
+],
+[
+"mod/session2/observer_stage.cpp",
+"kMilestoneBytes",
+"same"
+],
+[
+"mod/session2/observer_stage.cpp",
+"kMilestoneOpcodeBytes",
+"UPDATED 2 of 6 bytes differ"
+],
+[
+"mod/session2/observer_stage.cpp",
+"kEntryBytes",
+"UPDATED 2 of 16 bytes differ"
+],
+[
+"mod/session2/observer_stage.cpp",
+"kEntryPredBytes",
+"UPDATED 4 of 9 bytes differ"
+],
+[
+"mod/session2/observer_stage.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/session2/observer_stage.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/session2/observer_stage.cpp",
+"<anon>",
+"NO SITE (6 bytes)"
+],
+[
+"mod/session2/observer_stage.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/session2/observer_stage.cpp",
+"<anon>",
+"NO SITE (6 bytes)"
+],
+[
+"mod/session2/observer_stage.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/session2/observer_stage.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/session2/observer_stage.cpp",
+"<anon>",
+"NO SITE (6 bytes)"
+],
+[
+"mod/session2/observer_stage.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/session2/observer_stage.cpp",
+"<anon>",
+"NO SITE (6 bytes)"
+],
+[
+"mod/session2/observer_stage.cpp",
+"<anon>",
+"NO SITE (16 bytes)"
+],
+[
+"mod/session2/observer_stage.cpp",
+"<anon>",
+"NO SITE (9 bytes)"
+],
+[
+"mod/session2/guest_bodyanim_diag.cpp",
+"kBodyAnimBytes",
+"same"
+],
+[
+"mod/session2/guest_bodyanim_diag.cpp",
+"kArgsBytes",
+"same"
+],
+[
+"mod/session2/guest_bodyanim_diag.cpp",
+"kName0Bytes",
+"same"
+],
+[
+"mod/session2/guest_bodyanim_diag.cpp",
+"kCall0Bytes",
+"UPDATED 3 of 11 bytes differ"
+],
+[
+"mod/session2/guest_bodyanim_diag.cpp",
+"kName1Bytes",
+"same"
+],
+[
+"mod/session2/guest_bodyanim_diag.cpp",
+"kCall1Bytes",
+"UPDATED 3 of 15 bytes differ"
+],
+[
+"mod/session2/guest_bodyanim_diag.cpp",
+"kConfigureBytes",
+"same"
+],
+[
+"mod/session2/guest_bodyanim_diag.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/session2/guest_bodyanim_diag.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/session2/guest_bodyanim_diag.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/session2/guest_bodyanim_diag.cpp",
+"<anon>",
+"NO SITE (11 bytes)"
+],
+[
+"mod/session2/guest_bodyanim_diag.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/session2/guest_bodyanim_diag.cpp",
+"<anon>",
+"NO SITE (15 bytes)"
+],
+[
+"mod/session2/guest_bodyanim_diag.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/session2/guest_s3.cpp",
+"kNullConsumerBytes",
+"same"
+],
+[
+"mod/session2/guest_s3.cpp",
+"kNullReadBytes",
+"UPDATED 1 of 11 bytes differ"
+],
+[
+"mod/session2/guest_s3.cpp",
+"kUpdateBytes",
+"same"
+],
+[
+"mod/session2/guest_s3.cpp",
+"kSpawnBytes",
+"UPDATED 6 of 16 bytes differ"
+],
+[
+"mod/session2/guest_s3.cpp",
+"kSpawnAlBytes",
+"UPDATED 1 of 14 bytes differ"
+],
+[
+"mod/session2/guest_s3.cpp",
+"kSpawnCallBytes",
+"same"
+],
+[
+"mod/session2/guest_s3.cpp",
+"kAckBytes",
+"same"
+],
+[
+"mod/session2/guest_s3.cpp",
+"kStartBytes",
+"same"
+],
+[
+"mod/session2/guest_s3.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/session2/guest_s3.cpp",
+"<anon>",
+"NO SITE (11 bytes)"
+],
+[
+"mod/session2/guest_s3.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/session2/guest_s3.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/session2/guest_s3.cpp",
+"<anon>",
+"NO SITE (14 bytes)"
+],
+[
+"mod/session2/guest_s3.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/session2/guest_s3.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/session2/guest_s3.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/session2/remote_rope_logic.h",
+"kApplyHead",
+"same"
+],
+[
+"mod/session2/remote_rope_logic.h",
+"kApplyCallBytes",
+"UPDATED 3 of 5 bytes differ"
+],
+[
+"mod/session2/remote_rope_logic.h",
+"kInfoCopyBytes",
+"same"
+],
+[
+"mod/session2/remote_rope_logic.h",
+"kMapSiteBytes",
+"UPDATED 24 of 136 bytes differ"
+],
+[
+"mod/session2/remote_rope_logic.h",
+"kResolveHead",
+"same"
+],
+[
+"mod/session2/remote_rope_logic.h",
+"kAttDtorHead",
+"same"
+],
+[
+"mod/session2/remote_rope_logic.h",
+"kReleaseHead",
+"same"
+],
+[
+"mod/session2/remote_rope_logic.h",
+"kReleaseThreadCheckBytes",
+"UPDATED 3 of 6 bytes differ"
+],
+[
+"mod/session2/remote_rope_logic.h",
+"k2471HandlerHead",
+"UPDATED 9 of 26 bytes differ"
+],
+[
+"mod/session2/remote_rope_logic.h",
+"k2471ReleaseBytes",
+"UPDATED 5 of 30 bytes differ"
+],
+[
+"mod/session2/remote_rope_logic.h",
+"kSrvReleaseHead",
+"same"
+],
+[
+"mod/session2/remote_rope_logic.h",
+"kSrvArgsBytes",
+"UPDATED 1 of 24 bytes differ"
+],
+[
+"mod/session2/remote_rope_logic.h",
+"kWriterHead",
+"same"
+],
+[
+"mod/session2/remote_rope_logic.h",
+"kWriterSiteBytes",
+"UPDATED 8 of 57 bytes differ"
+],
+[
+"mod/session2/remote_rope_logic.h",
+"kToNearVf1Bytes",
+"same"
+],
+[
+"mod/session2/remote_rope_logic.h",
+"kTsOwnerCallBytes",
+"same"
+],
+[
+"mod/session2/remote_rope_logic.h",
+"kActReleaseHead",
+"same"
+],
+[
+"mod/session2/remote_rope_logic.h",
+"kActClientCallBytes",
+"UPDATED 3 of 5 bytes differ"
+],
+[
+"mod/session2/remote_rope_logic.h",
+"kActDispatchBytes",
+"site 0x2328ee4 unmapped"
+],
+[
+"mod/session2/remote_rope_logic.h",
+"kActKeepTestBytes",
+"same"
+],
+[
+"mod/session2/remote_rope_logic.h",
+"kActNotifyBytes",
+"same"
+],
+[
+"mod/session2/remote_rope_logic.h",
+"kActSelfReleaseBytes",
+"same"
+],
+[
+"mod/session2/remote_rope_logic.h",
+"<anon>",
+"same"
+],
+[
+"mod/session2/remote_rope_logic.h",
+"<anon>",
+"NO SITE (5 bytes)"
+],
+[
+"mod/session2/remote_rope_logic.h",
+"<anon>",
+"NO SITE (136 bytes)"
+],
+[
+"mod/session2/remote_rope_logic.h",
+"<anon>",
+"same"
+],
+[
+"mod/session2/remote_rope_logic.h",
+"<anon>",
+"same"
+],
+[
+"mod/session2/remote_rope_logic.h",
+"<anon>",
+"same"
+],
+[
+"mod/session2/remote_rope_logic.h",
+"<anon>",
+"NO SITE (6 bytes)"
+],
+[
+"mod/session2/remote_rope_logic.h",
+"<anon>",
+"site 0xb5ee00 unmapped"
+],
+[
+"mod/session2/remote_rope_logic.h",
+"<anon>",
+"NO SITE (30 bytes)"
+],
+[
+"mod/session2/remote_rope_logic.h",
+"<anon>",
+"same"
+],
+[
+"mod/session2/remote_rope_logic.h",
+"<anon>",
+"NO SITE (24 bytes)"
+],
+[
+"mod/session2/remote_rope_logic.h",
+"<anon>",
+"same"
+],
+[
+"mod/session2/remote_rope_logic.h",
+"<anon>",
+"NO SITE (57 bytes)"
+],
+[
+"mod/session2/remote_rope_logic.h",
+"<anon>",
+"same"
+],
+[
+"mod/session2/remote_rope_logic.h",
+"<anon>",
+"NO SITE (5 bytes)"
+],
+[
+"mod/session2/report_guard.cpp",
+"kReporterHead",
+"same"
+],
+[
+"mod/session2/report_guard.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/session2/enemy_damage_probe.cpp",
+"kBytes",
+"site 0x209cb30 unmapped"
+],
+[
+"mod/session2/enemy_damage_probe.cpp",
+"<anon>",
+"site 0x209cb30 unmapped"
+],
+[
+"mod/session2/observer_scene_copy.cpp",
+"kSiteBytes",
+"site 0x28797ad unmapped"
+],
+[
+"mod/session2/observer_scene_copy.cpp",
+"kOwnerCallBytes",
+"UPDATED 15 of 15 bytes differ"
+],
+[
+"mod/session2/observer_scene_copy.cpp",
+"kOwnerMethodBytes",
+"UPDATED 2 of 22 bytes differ"
+],
+[
+"mod/session2/observer_scene_copy.cpp",
+"kOwnerFindBytes",
+"UPDATED 9 of 110 bytes differ"
+],
+[
+"mod/session2/observer_scene_copy.cpp",
+"kEmitHead",
+"same"
+],
+[
+"mod/session2/observer_scene_copy.cpp",
+"kEmitBody",
+"site 0x2a4e4c5 unmapped"
+],
+[
+"mod/session2/observer_scene_copy.cpp",
+"kEmitOpBytes",
+"UPDATED 1 of 6 bytes differ"
+],
+[
+"mod/session2/observer_scene_copy.cpp",
+"kCtorBytes",
+"UPDATED 6 of 75 bytes differ"
+],
+[
+"mod/session2/observer_scene_copy.cpp",
+"kVf1Bytes",
+"UPDATED 3 of 95 bytes differ"
+],
+[
+"mod/session2/observer_scene_copy.cpp",
+"kVf2Bytes",
+"same"
+],
+[
+"mod/session2/observer_scene_copy.cpp",
+"kScopeFindBytes",
+"same"
+],
+[
+"mod/session2/observer_scene_copy.cpp",
+"kRealmBytes",
+"UPDATED 1 of 9 bytes differ"
+],
+[
+"mod/session2/observer_scene_copy.cpp",
+"<anon>",
+"site 0x28797ad unmapped"
+],
+[
+"mod/session2/observer_scene_copy.cpp",
+"<anon>",
+"NO SITE (15 bytes)"
+],
+[
+"mod/session2/observer_scene_copy.cpp",
+"<anon>",
+"NO SITE (22 bytes)"
+],
+[
+"mod/session2/observer_scene_copy.cpp",
+"<anon>",
+"NO SITE (110 bytes)"
+],
+[
+"mod/session2/observer_scene_copy.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/session2/observer_scene_copy.cpp",
+"<anon>",
+"site 0x2a4e4c5 unmapped"
+],
+[
+"mod/session2/observer_scene_copy.cpp",
+"<anon>",
+"NO SITE (6 bytes)"
+],
+[
+"mod/session2/observer_scene_copy.cpp",
+"<anon>",
+"NO SITE (75 bytes)"
+],
+[
+"mod/session2/observer_scene_copy.cpp",
+"<anon>",
+"NO SITE (95 bytes)"
+],
+[
+"mod/session2/observer_scene_copy.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/session2/observer_scene_copy.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/session2/observer_scene_copy.cpp",
+"<anon>",
+"site 0x2d6d2fc unmapped"
+],
+[
+"mod/session2/user2_stages.cpp",
+"kCBytes",
+"same"
+],
+[
+"mod/session2/user2_stages.cpp",
+"kDBytes",
+"site 0x2808d80 unmapped"
+],
+[
+"mod/session2/user2_stages.cpp",
+"kLBytes",
+"site 0x287da50 unmapped"
+],
+[
+"mod/session2/user2_stages.cpp",
+"kUBytes",
+"UPDATED 5 of 9 bytes differ"
+],
+[
+"mod/session2/user2_stages.cpp",
+"kNBytes",
+"UPDATED 11 of 11 bytes differ"
+],
+[
+"mod/session2/user2_stages.cpp",
+"kTBytes",
+"same"
+],
+[
+"mod/session2/user2_stages.cpp",
+"kSBytes",
+"site 0x2822d00 unmapped"
+],
+[
+"mod/session2/user2_stages.cpp",
+"kFBytes",
+"site 0x27fbd60 unmapped"
+],
+[
+"mod/session2/user2_stages.cpp",
+"kPBytes",
+"same"
+],
+[
+"mod/session2/user2_stages.cpp",
+"kOBytes",
+"UPDATED 4 of 5 bytes differ"
+],
+[
+"mod/session2/user2_stages.cpp",
+"kGateBytes",
+"UPDATED 1 of 13 bytes differ"
+],
+[
+"mod/session2/user2_stages.cpp",
+"kGateCtxBytes",
+"UPDATED 3 of 19 bytes differ"
+],
+[
+"mod/session2/user2_stages.cpp",
+"kGate2Bytes",
+"UPDATED 4 of 18 bytes differ"
+],
+[
+"mod/session2/user2_stages.cpp",
+"kGate2CtxBytes",
+"UPDATED 6 of 43 bytes differ"
+],
+[
+"mod/session2/user2_stages.cpp",
+"kEvalBytes",
+"same"
+],
+[
+"mod/session2/user2_stages.cpp",
+"kEvalCtxBytes",
+"UPDATED 7 of 21 bytes differ"
+],
+[
+"mod/session2/user2_stages.cpp",
+"kElemBytes",
+"same"
+],
+[
+"mod/session2/user2_stages.cpp",
+"kArmFnBytes",
+"UPDATED 4 of 5 bytes differ"
+],
+[
+"mod/session2/user2_stages.cpp",
+"kEnqueueFnBytes",
+"UPDATED 4 of 5 bytes differ"
+],
+[
+"mod/session2/user2_stages.cpp",
+"kListFnBytes",
+"same"
+],
+[
+"mod/session2/user2_stages.cpp",
+"kInterestFnBytes",
+"same"
+],
+[
+"mod/session2/user2_stages.cpp",
+"kFindActorBytes",
+"same"
+],
+[
+"mod/session2/user2_stages.cpp",
+"kScopeDtorBytes",
+"same"
+],
+[
+"mod/session2/user2_stages.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/session2/user2_stages.cpp",
+"<anon>",
+"site 0x2808d80 unmapped"
+],
+[
+"mod/session2/user2_stages.cpp",
+"<anon>",
+"site 0x287da50 unmapped"
+],
+[
+"mod/session2/user2_stages.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/session2/user2_stages.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/session2/user2_stages.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/session2/user2_stages.cpp",
+"<anon>",
+"site 0x2822d00 unmapped"
+],
+[
+"mod/session2/user2_stages.cpp",
+"<anon>",
+"site 0x27fbd60 unmapped"
+],
+[
+"mod/session2/user2_stages.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/session2/user2_stages.cpp",
+"<anon>",
+"NO SITE (5 bytes)"
+],
+[
+"mod/session2/user2_stages.cpp",
+"<anon>",
+"NO SITE (13 bytes)"
+],
+[
+"mod/session2/user2_stages.cpp",
+"<anon>",
+"NO SITE (19 bytes)"
+],
+[
+"mod/session2/user2_stages.cpp",
+"<anon>",
+"NO SITE (18 bytes)"
+],
+[
+"mod/session2/user2_stages.cpp",
+"<anon>",
+"NO SITE (43 bytes)"
+],
+[
+"mod/session2/user2_stages.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/session2/user2_stages.cpp",
+"<anon>",
+"NO SITE (21 bytes)"
+],
+[
+"mod/session2/user2_stages.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/session2/user2_stages.cpp",
+"<anon>",
+"NO SITE (5 bytes)"
+],
+[
+"mod/session2/user2_stages.cpp",
+"<anon>",
+"NO SITE (5 bytes)"
+],
+[
+"mod/session2/user2_stages.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/session2/user2_stages.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/session2/user2_stages.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/session2/user2_stages.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/session2/guest_seq_present.cpp",
+"kCamSelSig",
+"site 0x34cfc20 unmapped"
+],
+[
+"mod/session2/guest_seq_present.cpp",
+"kPresetSig",
+"UPDATED 30 of 40 bytes differ"
+],
+[
+"mod/session2/guest_seq_present.cpp",
+"kLetterSig",
+"same"
+],
+[
+"mod/session2/guest_seq_present.cpp",
+"kPostSig",
+"UPDATED 4 of 40 bytes differ"
+],
+[
+"mod/session2/guest_seq_present.cpp",
+"kDialogSig",
+"same"
+],
+[
+"mod/session2/guest_seq_present.cpp",
+"kLoadSig",
+"site 0xc45747 unmapped"
+],
+[
+"mod/session2/guest_seq_present.cpp",
+"kLoadHead",
+"UPDATED 3 of 7 bytes differ"
+],
+[
+"mod/session2/guest_seq_present.cpp",
+"kStartLookup",
+"UPDATED 7 of 25 bytes differ"
+],
+[
+"mod/session2/guest_seq_present.cpp",
+"kTlIdCmp",
+"UPDATED 1 of 6 bytes differ"
+],
+[
+"mod/session2/guest_seq_present.cpp",
+"kTlIdSet",
+"UPDATED 1 of 6 bytes differ"
+],
+[
+"mod/session2/guest_seq_present.cpp",
+"kCamRead",
+"UPDATED 3 of 27 bytes differ"
+],
+[
+"mod/session2/guest_seq_present.cpp",
+"kBlockSet",
+"UPDATED 1 of 7 bytes differ"
+],
+[
+"mod/session2/guest_seq_present.cpp",
+"kRbCall1",
+"same"
+],
+[
+"mod/session2/guest_seq_present.cpp",
+"kRbCall2",
+"same"
+],
+[
+"mod/session2/guest_seq_present.cpp",
+"kRbRet",
+"same"
+],
+[
+"mod/session2/guest_seq_present.cpp",
+"<anon>",
+"site 0x34cfc20 unmapped"
+],
+[
+"mod/session2/guest_seq_present.cpp",
+"<anon>",
+"NO SITE (40 bytes)"
+],
+[
+"mod/session2/guest_seq_present.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/session2/guest_seq_present.cpp",
+"<anon>",
+"NO SITE (40 bytes)"
+],
+[
+"mod/session2/guest_seq_present.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/session2/guest_seq_present.cpp",
+"<anon>",
+"site 0xc45747 unmapped"
+],
+[
+"mod/session2/guest_seq_present.cpp",
+"<anon>",
+"NO SITE (7 bytes)"
+],
+[
+"mod/session2/guest_seq_present.cpp",
+"<anon>",
+"NO SITE (25 bytes)"
+],
+[
+"mod/session2/guest_seq_present.cpp",
+"<anon>",
+"NO SITE (6 bytes)"
+],
+[
+"mod/session2/guest_seq_present.cpp",
+"<anon>",
+"site 0x4c4a0d unmapped"
+],
+[
+"mod/session2/guest_seq_present.cpp",
+"<anon>",
+"NO SITE (27 bytes)"
+],
+[
+"mod/session2/guest_seq_present.cpp",
+"<anon>",
+"NO SITE (7 bytes)"
+],
+[
+"mod/session2/guest_seq_present.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/session2/guest_seq_present.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/session2/guest_seq_present.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/session2/identity_probe.cpp",
+"kLoadHead",
+"same"
+],
+[
+"mod/session2/identity_probe.cpp",
+"kComponentSiteBytes",
+"UPDATED 1 of 40 bytes differ"
+],
+[
+"mod/session2/identity_probe.cpp",
+"kOwnerHead",
+"same"
+],
+[
+"mod/session2/identity_probe.cpp",
+"kPhasesHead",
+"UPDATED 43 of 49 bytes differ"
+],
+[
+"mod/session2/identity_probe.cpp",
+"kAckHead",
+"UPDATED 6 of 50 bytes differ"
+],
+[
+"mod/session2/identity_probe.cpp",
+"kPackerHead",
+"UPDATED 4 of 44 bytes differ"
+],
+[
+"mod/session2/identity_probe.cpp",
+"kVersionThisBytes",
+"same"
+],
+[
+"mod/session2/identity_probe.cpp",
+"kVersionSiteBytes",
+"UPDATED 6 of 17 bytes differ"
+],
+[
+"mod/session2/identity_probe.cpp",
+"kClientStatusBytes",
+"UPDATED 9 of 11 bytes differ"
+],
+[
+"mod/session2/identity_probe.cpp",
+"kClientVersionSiteBytes",
+"UPDATED 9 of 25 bytes differ"
+],
+[
+"mod/session2/identity_probe.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/session2/identity_probe.cpp",
+"<anon>",
+"NO SITE (40 bytes)"
+],
+[
+"mod/session2/identity_probe.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/session2/identity_probe.cpp",
+"<anon>",
+"NO SITE (49 bytes)"
+],
+[
+"mod/session2/identity_probe.cpp",
+"<anon>",
+"NO SITE (50 bytes)"
+],
+[
+"mod/session2/identity_probe.cpp",
+"<anon>",
+"NO SITE (44 bytes)"
+],
+[
+"mod/session2/identity_probe.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/session2/identity_probe.cpp",
+"<anon>",
+"NO SITE (17 bytes)"
+],
+[
+"mod/session2/identity_probe.cpp",
+"<anon>",
+"NO SITE (11 bytes)"
+],
+[
+"mod/session2/identity_probe.cpp",
+"<anon>",
+"NO SITE (25 bytes)"
+],
+[
+"mod/session2/guest_x_veto.cpp",
+"kV1Bytes",
+"site 0x5f2a3a unmapped"
+],
+[
+"mod/session2/guest_x_veto.cpp",
+"kV1CtxBytes",
+"site 0x5f2a27 unmapped"
+],
+[
+"mod/session2/guest_x_veto.cpp",
+"kV1EpilogueBytes",
+"UPDATED 2 of 8 bytes differ"
+],
+[
+"mod/session2/guest_x_veto.cpp",
+"kV0Bytes",
+"same"
+],
+[
+"mod/session2/guest_x_veto.cpp",
+"kClearBytes",
+"site 0xc07776 unmapped"
+],
+[
+"mod/session2/guest_x_veto.cpp",
+"kClearCtxBytes",
+"site 0xc07771 unmapped"
+],
+[
+"mod/session2/guest_x_veto.cpp",
+"kQuestDlgBytes",
+"site 0x204dc80 unmapped"
+],
+[
+"mod/session2/guest_x_veto.cpp",
+"kTimelineEntry",
+"UPDATED 3 of 45 bytes differ"
+],
+[
+"mod/session2/guest_x_veto.cpp",
+"kTimelineBytes",
+"same"
+],
+[
+"mod/session2/guest_x_veto.cpp",
+"kTimelineOut",
+"UPDATED 1 of 8 bytes differ"
+],
+[
+"mod/session2/guest_x_veto.cpp",
+"kTimelineEndBytes",
+"site 0x204c410 unmapped"
+],
+[
+"mod/session2/guest_x_veto.cpp",
+"kBlockInterBytes",
+"site 0x23698f0 unmapped"
+],
+[
+"mod/session2/guest_x_veto.cpp",
+"kSetInterEntry",
+"same"
+],
+[
+"mod/session2/guest_x_veto.cpp",
+"kSetInterBytes",
+"same"
+],
+[
+"mod/session2/guest_x_veto.cpp",
+"kSetInterOut",
+"same"
+],
+[
+"mod/session2/guest_x_veto.cpp",
+"kInputEntry",
+"same"
+],
+[
+"mod/session2/guest_x_veto.cpp",
+"kInputBytes",
+"same"
+],
+[
+"mod/session2/guest_x_veto.cpp",
+"kInputOut",
+"same"
+],
+[
+"mod/session2/guest_x_veto.cpp",
+"kUiControlEntry",
+"same"
+],
+[
+"mod/session2/guest_x_veto.cpp",
+"kUiControlBytes",
+"same"
+],
+[
+"mod/session2/guest_x_veto.cpp",
+"kUiControlOut",
+"same"
+],
+[
+"mod/session2/guest_x_veto.cpp",
+"kPhaseTagBytes",
+"UPDATED 9 of 10 bytes differ"
+],
+[
+"mod/session2/guest_x_veto.cpp",
+"kMinimapEntry",
+"UPDATED 13 of 78 bytes differ"
+],
+[
+"mod/session2/guest_x_veto.cpp",
+"kMinimapBytes",
+"UPDATED 1 of 9 bytes differ"
+],
+[
+"mod/session2/guest_x_veto.cpp",
+"kMinimapOut",
+"UPDATED 2 of 8 bytes differ"
+],
+[
+"mod/session2/guest_x_veto.cpp",
+"kFindPathBytes",
+"same"
+],
+[
+"mod/session2/guest_x_veto.cpp",
+"kStageIconBytes",
+"site 0x5f2980 unmapped"
+],
+[
+"mod/session2/guest_x_veto.cpp",
+"kGuideEntry",
+"same"
+],
+[
+"mod/session2/guest_x_veto.cpp",
+"kGuideBytes",
+"same"
+],
+[
+"mod/session2/guest_x_veto.cpp",
+"kGuideOut",
+"same"
+],
+[
+"mod/session2/guest_x_veto.cpp",
+"kBgGuideBytes",
+"same"
+],
+[
+"mod/session2/guest_x_veto.cpp",
+"kHintBytes",
+"site 0x5f4110 unmapped"
+],
+[
+"mod/session2/guest_x_veto.cpp",
+"kHintEndBytes",
+"site 0x5f4200 unmapped"
+],
+[
+"mod/session2/guest_x_veto.cpp",
+"kFadeBytes",
+"site 0x5f52e0 unmapped"
+],
+[
+"mod/session2/guest_x_veto.cpp",
+"kLetterBytes",
+"site 0x5f2970 unmapped"
+],
+[
+"mod/session2/guest_x_veto.cpp",
+"kSeqCamBytes",
+"site 0x5ee250 unmapped"
+],
+[
+"mod/session2/guest_x_veto.cpp",
+"kDeactCamBytes",
+"site 0x5ee210 unmapped"
+],
+[
+"mod/session2/guest_x_veto.cpp",
+"kDeactCamEndBytes",
+"UPDATED 7 of 17 bytes differ"
+],
+[
+"mod/session2/guest_x_veto.cpp",
+"kDeactFadeBytes",
+"same"
+],
+[
+"mod/session2/guest_x_veto.cpp",
+"kDeactFade2Bytes",
+"site 0x5ee160 unmapped"
+],
+[
+"mod/session2/guest_x_veto.cpp",
+"kPresetBytes",
+"same"
+],
+[
+"mod/session2/guest_x_veto.cpp",
+"kPresetEndBytes",
+"site 0x5ee1f0 unmapped"
+],
+[
+"mod/session2/guest_x_veto.cpp",
+"kLockOnBytes",
+"same"
+],
+[
+"mod/session2/guest_x_veto.cpp",
+"kLookAtBytes",
+"same"
+],
+[
+"mod/session2/guest_x_veto.cpp",
+"kLookAtEndBytes",
+"same"
+],
+[
+"mod/session2/guest_x_veto.cpp",
+"kPostBytes",
+"same"
+],
+[
+"mod/session2/guest_x_veto.cpp",
+"<anon>",
+"site 0x5f2a3a unmapped"
+],
+[
+"mod/session2/guest_x_veto.cpp",
+"<anon>",
+"site 0x5f2a27 unmapped"
+],
+[
+"mod/session2/guest_x_veto.cpp",
+"<anon>",
+"site 0x414e93 unmapped"
+],
+[
+"mod/session2/guest_x_veto.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/session2/guest_x_veto.cpp",
+"<anon>",
+"site 0xc07776 unmapped"
+],
+[
+"mod/session2/guest_x_veto.cpp",
+"<anon>",
+"site 0xc07771 unmapped"
+],
+[
+"mod/session2/guest_x_veto.cpp",
+"<anon>",
+"site 0x204dc80 unmapped"
+],
+[
+"mod/session2/guest_x_veto.cpp",
+"<anon>",
+"NO SITE (45 bytes)"
+],
+[
+"mod/session2/guest_x_veto.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/session2/guest_x_veto.cpp",
+"<anon>",
+"site 0x4193f1 unmapped"
+],
+[
+"mod/session2/guest_x_veto.cpp",
+"<anon>",
+"site 0x204c410 unmapped"
+],
+[
+"mod/session2/guest_x_veto.cpp",
+"<anon>",
+"site 0x23698f0 unmapped"
+],
+[
+"mod/session2/guest_x_veto.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/session2/guest_x_veto.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/session2/guest_x_veto.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/session2/guest_x_veto.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/session2/guest_x_veto.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/session2/guest_x_veto.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/session2/guest_x_veto.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/session2/guest_x_veto.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/session2/guest_x_veto.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/session2/guest_x_veto.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/session2/guest_x_veto.cpp",
+"<anon>",
+"NO SITE (78 bytes)"
+],
+[
+"mod/session2/guest_x_veto.cpp",
+"<anon>",
+"site 0x20777bf unmapped"
+],
+[
+"mod/session2/guest_x_veto.cpp",
+"<anon>",
+"NO SITE (8 bytes)"
+],
+[
+"mod/session2/guest_x_veto.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/session2/guest_x_veto.cpp",
+"<anon>",
+"site 0x5f2980 unmapped"
+],
+[
+"mod/session2/guest_x_veto.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/session2/guest_x_veto.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/session2/guest_x_veto.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/session2/guest_x_veto.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/session2/guest_x_veto.cpp",
+"<anon>",
+"site 0x5f4110 unmapped"
+],
+[
+"mod/session2/guest_x_veto.cpp",
+"<anon>",
+"site 0x5f4200 unmapped"
+],
+[
+"mod/session2/guest_x_veto.cpp",
+"<anon>",
+"site 0x5f52e0 unmapped"
+],
+[
+"mod/session2/guest_x_veto.cpp",
+"<anon>",
+"site 0x5f2970 unmapped"
+],
+[
+"mod/session2/guest_x_veto.cpp",
+"<anon>",
+"site 0x5ee250 unmapped"
+],
+[
+"mod/session2/guest_x_veto.cpp",
+"<anon>",
+"site 0x5ee210 unmapped"
+],
+[
+"mod/session2/guest_x_veto.cpp",
+"<anon>",
+"NO SITE (17 bytes)"
+],
+[
+"mod/session2/guest_x_veto.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/session2/guest_x_veto.cpp",
+"<anon>",
+"site 0x5ee160 unmapped"
+],
+[
+"mod/session2/guest_x_veto.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/session2/guest_x_veto.cpp",
+"<anon>",
+"site 0x5ee1f0 unmapped"
+],
+[
+"mod/session2/guest_x_veto.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/session2/guest_x_veto.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/session2/guest_x_veto.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/session2/guest_x_veto.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/session2/shop_trade_probe.cpp",
+"kSigP1",
+"UPDATED 36 of 40 bytes differ"
+],
+[
+"mod/session2/shop_trade_probe.cpp",
+"kSigP1b",
+"UPDATED 9 of 40 bytes differ"
+],
+[
+"mod/session2/shop_trade_probe.cpp",
+"kSigU2c",
+"UPDATED 20 of 40 bytes differ"
+],
+[
+"mod/session2/shop_trade_probe.cpp",
+"kSigP2",
+"UPDATED 35 of 40 bytes differ"
+],
+[
+"mod/session2/shop_trade_probe.cpp",
+"kSigP2a",
+"UPDATED 7 of 40 bytes differ"
+],
+[
+"mod/session2/shop_trade_probe.cpp",
+"kSigP5",
+"site 0x2b36fb3 unmapped"
+],
+[
+"mod/session2/shop_trade_probe.cpp",
+"kSigP6",
+"site 0x2b3708c unmapped"
+],
+[
+"mod/session2/shop_trade_probe.cpp",
+"kHead21F2780",
+"UPDATED 20 of 35 bytes differ"
+],
+[
+"mod/session2/shop_trade_probe.cpp",
+"kMgrSlot",
+"UPDATED 3 of 5 bytes differ"
+],
+[
+"mod/session2/shop_trade_probe.cpp",
+"kCurSlot",
+"UPDATED 3 of 9 bytes differ"
+],
+[
+"mod/session2/shop_trade_probe.cpp",
+"kLinkRead",
+"same"
+],
+[
+"mod/session2/shop_trade_probe.cpp",
+"kFieldRead",
+"UPDATED 1 of 10 bytes differ"
+],
+[
+"mod/session2/shop_trade_probe.cpp",
+"kFieldFill",
+"UPDATED 1 of 8 bytes differ"
+],
+[
+"mod/session2/shop_trade_probe.cpp",
+"kHead2369360",
+"same"
+],
+[
+"mod/session2/shop_trade_probe.cpp",
+"kTarget",
+"same"
+],
+[
+"mod/session2/shop_trade_probe.cpp",
+"kAltaId",
+"same"
+],
+[
+"mod/session2/shop_trade_probe.cpp",
+"kExitLock",
+"UPDATED 8 of 29 bytes differ"
+],
+[
+"mod/session2/shop_trade_probe.cpp",
+"kExitErase",
+"UPDATED 3 of 21 bytes differ"
+],
+[
+"mod/session2/shop_trade_probe.cpp",
+"kHead2B36EF0",
+"site 0x2b36ef0 unmapped"
+],
+[
+"mod/session2/shop_trade_probe.cpp",
+"<anon>",
+"NO SITE (40 bytes)"
+],
+[
+"mod/session2/shop_trade_probe.cpp",
+"<anon>",
+"NO SITE (40 bytes)"
+],
+[
+"mod/session2/shop_trade_probe.cpp",
+"<anon>",
+"NO SITE (40 bytes)"
+],
+[
+"mod/session2/shop_trade_probe.cpp",
+"<anon>",
+"NO SITE (40 bytes)"
+],
+[
+"mod/session2/shop_trade_probe.cpp",
+"<anon>",
+"NO SITE (40 bytes)"
+],
+[
+"mod/session2/shop_trade_probe.cpp",
+"<anon>",
+"site 0x2b36fb3 unmapped"
+],
+[
+"mod/session2/shop_trade_probe.cpp",
+"<anon>",
+"site 0x2b3708c unmapped"
+],
+[
+"mod/session2/shop_trade_probe.cpp",
+"<anon>",
+"site 0x49b990 unmapped"
+],
+[
+"mod/session2/shop_trade_probe.cpp",
+"<anon>",
+"NO SITE (5 bytes)"
+],
+[
+"mod/session2/shop_trade_probe.cpp",
+"<anon>",
+"NO SITE (9 bytes)"
+],
+[
+"mod/session2/shop_trade_probe.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/session2/shop_trade_probe.cpp",
+"<anon>",
+"site 0x496e87 unmapped"
+],
+[
+"mod/session2/shop_trade_probe.cpp",
+"<anon>",
+"site 0x20734a1 unmapped"
+],
+[
+"mod/session2/shop_trade_probe.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/session2/shop_trade_probe.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/session2/shop_trade_probe.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/session2/shop_trade_probe.cpp",
+"<anon>",
+"NO SITE (29 bytes)"
+],
+[
+"mod/session2/shop_trade_probe.cpp",
+"<anon>",
+"NO SITE (21 bytes)"
+],
+[
+"mod/session2/shop_trade_probe.cpp",
+"<anon>",
+"site 0x2b36ef0 unmapped"
+],
+[
+"mod/session2/owner_fanout.cpp",
+"kVf1Bytes",
+"UPDATED 3 of 95 bytes differ"
+],
+[
+"mod/session2/owner_fanout.cpp",
+"<anon>",
+"NO SITE (95 bytes)"
+],
+[
+"mod/session2/scene_level_share_logic.h",
+"<anon>",
+"UPDATED 3 of 40 bytes differ"
+],
+[
+"mod/session2/scene_level_share_logic.h",
+"<anon>",
+"same"
+],
+[
+"mod/session2/scene_level_share_logic.h",
+"<anon>",
+"same"
+],
+[
+"mod/session2/scene_level_share_logic.h",
+"<anon>",
+"UPDATED 10 of 82 bytes differ"
+],
+[
+"mod/session2/identity_fix.cpp",
+"kLobbyLoadHead",
+"UPDATED 25 of 34 bytes differ"
+],
+[
+"mod/session2/identity_fix.cpp",
+"kLobbyConstantBytes",
+"UPDATED 3 of 15 bytes differ"
+],
+[
+"mod/session2/identity_fix.cpp",
+"kLobbyAddCallBytes",
+"UPDATED 3 of 5 bytes differ"
+],
+[
+"mod/session2/identity_fix.cpp",
+"kClearLobbySiteBytes",
+"same"
+],
+[
+"mod/session2/identity_fix.cpp",
+"kLoginMgrSiteBytes",
+"UPDATED 3 of 10 bytes differ"
+],
+[
+"mod/session2/identity_fix.cpp",
+"kFindByNoScanBytes",
+"same"
+],
+[
+"mod/session2/identity_fix.cpp",
+"kFindByNoReadBytes",
+"same"
+],
+[
+"mod/session2/identity_fix.cpp",
+"<anon>",
+"site 0x2dade20 unmapped"
+],
+[
+"mod/session2/identity_fix.cpp",
+"<anon>",
+"NO SITE (15 bytes)"
+],
+[
+"mod/session2/identity_fix.cpp",
+"<anon>",
+"NO SITE (5 bytes)"
+],
+[
+"mod/session2/identity_fix.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/session2/identity_fix.cpp",
+"<anon>",
+"NO SITE (10 bytes)"
+],
+[
+"mod/session2/identity_fix.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/session2/identity_fix.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/session2/guest_seq_present_logic.h",
+"<anon>",
+"UPDATED 1 of 16 bytes differ"
+],
+[
+"mod/session2/rope_probe_logic.h",
+"kTreePullHead",
+"same"
+],
+[
+"mod/session2/rope_probe_logic.h",
+"kPullApplyHead",
+"UPDATED 1 of 19 bytes differ"
+],
+[
+"mod/session2/rope_probe_logic.h",
+"kPullApplyCallBytes",
+"UPDATED 3 of 13 bytes differ"
+],
+[
+"mod/session2/rope_probe_logic.h",
+"<anon>",
+"same"
+],
+[
+"mod/session2/rope_probe_logic.h",
+"<anon>",
+"NO SITE (19 bytes)"
+],
+[
+"mod/session2/rope_probe_logic.h",
+"<anon>",
+"NO SITE (13 bytes)"
+],
+[
+"mod/session2/clock_gate.cpp",
+"kTravelHead",
+"site 0x2bc0a30 unmapped"
+],
+[
+"mod/session2/clock_gate.cpp",
+"kTravelOwnerCmpBytes",
+"site 0x2bc0a78 unmapped"
+],
+[
+"mod/session2/clock_gate.cpp",
+"kTravelGetterCallBytes",
+"site 0x2bc0cc7 unmapped"
+],
+[
+"mod/session2/clock_gate.cpp",
+"kLoadingHead",
+"same"
+],
+[
+"mod/session2/clock_gate.cpp",
+"kLoadingFlagCmpBytes",
+"same"
+],
+[
+"mod/session2/clock_gate.cpp",
+"kGetterHead",
+"same"
+],
+[
+"mod/session2/clock_gate.cpp",
+"<anon>",
+"site 0x2bc0a30 unmapped"
+],
+[
+"mod/session2/clock_gate.cpp",
+"<anon>",
+"site 0x2bc0a78 unmapped"
+],
+[
+"mod/session2/clock_gate.cpp",
+"<anon>",
+"site 0x2bc0cc7 unmapped"
+],
+[
+"mod/session2/clock_gate.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/session2/clock_gate.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/session2/clock_gate.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/session2/door_trace.cpp",
+"kHead",
+"UPDATED 2 of 47 bytes differ"
+],
+[
+"mod/session2/door_trace.cpp",
+"<anon>",
+"NO SITE (47 bytes)"
+],
+[
+"mod/session2/guest_seq_restore.cpp",
+"kPointBytes",
+"same"
+],
+[
+"mod/session2/guest_seq_restore.cpp",
+"kPrologueBytes",
+"same"
+],
+[
+"mod/session2/guest_seq_restore.cpp",
+"kHeadBytes",
+"same"
+],
+[
+"mod/session2/guest_seq_restore.cpp",
+"kRegsBytes",
+"same"
+],
+[
+"mod/session2/guest_seq_restore.cpp",
+"kCtorLoopBytes",
+"UPDATED 3 of 26 bytes differ"
+],
+[
+"mod/session2/guest_seq_restore.cpp",
+"kCtorBytes",
+"same"
+],
+[
+"mod/session2/guest_seq_restore.cpp",
+"kLockBytes",
+"UPDATED 3 of 16 bytes differ"
+],
+[
+"mod/session2/guest_seq_restore.cpp",
+"kReleaseBytes",
+"same"
+],
+[
+"mod/session2/guest_seq_restore.cpp",
+"kIndex0Bytes",
+"same"
+],
+[
+"mod/session2/guest_seq_restore.cpp",
+"kIndex1Bytes",
+"same"
+],
+[
+"mod/session2/guest_seq_restore.cpp",
+"kChart0Bytes",
+"UPDATED 1 of 19 bytes differ"
+],
+[
+"mod/session2/guest_seq_restore.cpp",
+"kHash0Bytes",
+"same"
+],
+[
+"mod/session2/guest_seq_restore.cpp",
+"kChart1Bytes",
+"UPDATED 1 of 19 bytes differ"
+],
+[
+"mod/session2/guest_seq_restore.cpp",
+"kHash1Bytes",
+"same"
+],
+[
+"mod/session2/guest_seq_restore.cpp",
+"kReloadBytes",
+"same"
+],
+[
+"mod/session2/guest_seq_restore.cpp",
+"kCallBytes",
+"UPDATED 1 of 20 bytes differ"
+],
+[
+"mod/session2/guest_seq_restore.cpp",
+"kExitTailBytes",
+"same"
+],
+[
+"mod/session2/guest_seq_restore.cpp",
+"kRestartLookBytes",
+"UPDATED 7 of 64 bytes differ"
+],
+[
+"mod/session2/guest_seq_restore.cpp",
+"kRestartCheckBytes",
+"UPDATED 15 of 56 bytes differ"
+],
+[
+"mod/session2/guest_seq_restore.cpp",
+"kFindBodyBytes",
+"UPDATED 122 of 139 bytes differ"
+],
+[
+"mod/session2/guest_seq_restore.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/session2/guest_seq_restore.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/session2/guest_seq_restore.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/session2/guest_seq_restore.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/session2/guest_seq_restore.cpp",
+"<anon>",
+"NO SITE (26 bytes)"
+],
+[
+"mod/session2/guest_seq_restore.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/session2/guest_seq_restore.cpp",
+"<anon>",
+"NO SITE (16 bytes)"
+],
+[
+"mod/session2/guest_seq_restore.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/session2/guest_seq_restore.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/session2/guest_seq_restore.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/session2/guest_seq_restore.cpp",
+"<anon>",
+"NO SITE (19 bytes)"
+],
+[
+"mod/session2/guest_seq_restore.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/session2/guest_seq_restore.cpp",
+"<anon>",
+"NO SITE (19 bytes)"
+],
+[
+"mod/session2/guest_seq_restore.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/session2/guest_seq_restore.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/session2/guest_seq_restore.cpp",
+"<anon>",
+"NO SITE (20 bytes)"
+],
+[
+"mod/session2/guest_seq_restore.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/session2/guest_seq_restore.cpp",
+"<anon>",
+"NO SITE (64 bytes)"
+],
+[
+"mod/session2/guest_seq_restore.cpp",
+"<anon>",
+"NO SITE (56 bytes)"
+],
+[
+"mod/session2/guest_seq_restore.cpp",
+"<anon>",
+"NO SITE (139 bytes)"
+],
+[
+"mod/session2/guest_sched_bind.cpp",
+"kPointBytes",
+"site 0xc0b626 unmapped"
+],
+[
+"mod/session2/guest_sched_bind.cpp",
+"kCallBytes",
+"site 0xc0b612 unmapped"
+],
+[
+"mod/session2/guest_sched_bind.cpp",
+"kFrameBytes",
+"site 0xc0afd0 unmapped"
+],
+[
+"mod/session2/guest_sched_bind.cpp",
+"kKeyBytes",
+"site 0xc0b242 unmapped"
+],
+[
+"mod/session2/guest_sched_bind.cpp",
+"kArgKeyBytes",
+"site 0xc0b5ec unmapped"
+],
+[
+"mod/session2/guest_sched_bind.cpp",
+"<anon>",
+"site 0xc0b626 unmapped"
+],
+[
+"mod/session2/guest_sched_bind.cpp",
+"<anon>",
+"site 0xc0b612 unmapped"
+],
+[
+"mod/session2/guest_sched_bind.cpp",
+"<anon>",
+"site 0xc0afd0 unmapped"
+],
+[
+"mod/session2/guest_sched_bind.cpp",
+"<anon>",
+"site 0xc0b242 unmapped"
+],
+[
+"mod/session2/guest_sched_bind.cpp",
+"<anon>",
+"site 0xc0b5ec unmapped"
+],
+[
+"mod/session2/remote_interp.cpp",
+"kThresholdOrig",
+"same"
+],
+[
+"mod/session2/remote_interp.cpp",
+"kThresholdNew",
+"NO SITE (7 bytes)"
+],
+[
+"mod/session2/remote_interp.cpp",
+"<anon>",
+"UPDATED 3 of 7 bytes differ"
+],
+[
+"mod/session2/remote_interp.cpp",
+"<anon>",
+"UPDATED 3 of 7 bytes differ"
+],
+[
+"mod/session2/remote_interp.cpp",
+"<anon>",
+"UPDATED 3 of 7 bytes differ"
+],
+[
+"mod/session2/remote_interp.cpp",
+"<anon>",
+"UPDATED 3 of 7 bytes differ"
+],
+[
+"mod/session2/remote_interp.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/session2/remote_interp.cpp",
+"<anon>",
+"NO SITE (7 bytes)"
+],
+[
+"mod/session2/shop_probe.cpp",
+"kEBytes",
+"same"
+],
+[
+"mod/session2/shop_probe.cpp",
+"kGBytes",
+"UPDATED 1 of 13 bytes differ"
+],
+[
+"mod/session2/shop_probe.cpp",
+"kGCtxBytes",
+"UPDATED 3 of 19 bytes differ"
+],
+[
+"mod/session2/shop_probe.cpp",
+"kPBytes",
+"UPDATED 3 of 5 bytes differ"
+],
+[
+"mod/session2/shop_probe.cpp",
+"kPCtxBytes",
+"UPDATED 5 of 25 bytes differ"
+],
+[
+"mod/session2/shop_probe.cpp",
+"kCBytes",
+"UPDATED 1 of 5 bytes differ"
+],
+[
+"mod/session2/shop_probe.cpp",
+"kCCtxBytes",
+"UPDATED 3 of 12 bytes differ"
+],
+[
+"mod/session2/shop_probe.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/session2/shop_probe.cpp",
+"<anon>",
+"NO SITE (13 bytes)"
+],
+[
+"mod/session2/shop_probe.cpp",
+"<anon>",
+"NO SITE (19 bytes)"
+],
+[
+"mod/session2/shop_probe.cpp",
+"<anon>",
+"NO SITE (5 bytes)"
+],
+[
+"mod/session2/shop_probe.cpp",
+"<anon>",
+"NO SITE (25 bytes)"
+],
+[
+"mod/session2/shop_probe.cpp",
+"<anon>",
+"NO SITE (5 bytes)"
+],
+[
+"mod/session2/shop_probe.cpp",
+"<anon>",
+"NO SITE (12 bytes)"
+],
+[
+"mod/session2/scene_points.h",
+"kAiReadBytes",
+"same"
+],
+[
+"mod/session2/scene_points.h",
+"kAiReadInitBytes",
+"same"
+],
+[
+"mod/session2/scene_points.h",
+"kAiReadCallBytes",
+"UPDATED 3 of 14 bytes differ"
+],
+[
+"mod/session2/scene_points.h",
+"kAiDoneBytes",
+"site 0x206de6b unmapped"
+],
+[
+"mod/session2/scene_points.h",
+"kAiDoneCallBytes",
+"site 0x206de5c unmapped"
+],
+[
+"mod/session2/scene_points.h",
+"<anon>",
+"same"
+],
+[
+"mod/session2/scene_points.h",
+"<anon>",
+"same"
+],
+[
+"mod/session2/scene_points.h",
+"<anon>",
+"NO SITE (14 bytes)"
+],
+[
+"mod/session2/scene_points.h",
+"<anon>",
+"site 0x206de6b unmapped"
+],
+[
+"mod/session2/scene_points.h",
+"<anon>",
+"site 0x206de5c unmapped"
+],
+[
+"mod/session2/guest_stage_diag.cpp",
+"kIn2661Bytes",
+"ambiguous new bytes"
+],
+[
+"mod/session2/guest_stage_diag.cpp",
+"kFrame2661Bytes",
+"UPDATED 1 of 8 bytes differ"
+],
+[
+"mod/session2/guest_stage_diag.cpp",
+"kKind2661Bytes",
+"UPDATED 6 of 7 bytes differ"
+],
+[
+"mod/session2/guest_stage_diag.cpp",
+"kVf48_2661Bytes",
+"UPDATED 1 of 10 bytes differ"
+],
+[
+"mod/session2/guest_stage_diag.cpp",
+"kCreate2661Bytes",
+"UPDATED 11 of 20 bytes differ"
+],
+[
+"mod/session2/guest_stage_diag.cpp",
+"kRoute2661Bytes",
+"UPDATED 16 of 16 bytes differ"
+],
+[
+"mod/session2/guest_stage_diag.cpp",
+"kResult2661Bytes",
+"UPDATED 14 of 16 bytes differ"
+],
+[
+"mod/session2/guest_stage_diag.cpp",
+"kMissingBytes",
+"UPDATED 2 of 16 bytes differ"
+],
+[
+"mod/session2/guest_stage_diag.cpp",
+"kCreateHomesBytes",
+"UPDATED 3 of 15 bytes differ"
+],
+[
+"mod/session2/guest_stage_diag.cpp",
+"kBindTypeBytes",
+"same"
+],
+[
+"mod/session2/guest_stage_diag.cpp",
+"kBindMissingBytes",
+"UPDATED 2 of 11 bytes differ"
+],
+[
+"mod/session2/guest_stage_diag.cpp",
+"kIn2981Bytes",
+"ambiguous new bytes"
+],
+[
+"mod/session2/guest_stage_diag.cpp",
+"kVf48_2981Bytes",
+"site 0xc0773f unmapped"
+],
+[
+"mod/session2/guest_stage_diag.cpp",
+"kRoute2981Bytes",
+"site 0xc07749 unmapped"
+],
+[
+"mod/session2/guest_stage_diag.cpp",
+"kIn2810Bytes",
+"ambiguous new bytes"
+],
+[
+"mod/session2/guest_stage_diag.cpp",
+"kVf48_2810Bytes",
+"UPDATED 1 of 10 bytes differ"
+],
+[
+"mod/session2/guest_stage_diag.cpp",
+"kRoute2810Bytes",
+"UPDATED 13 of 16 bytes differ"
+],
+[
+"mod/session2/guest_stage_diag.cpp",
+"kRoute2322Bytes",
+"UPDATED 5 of 16 bytes differ"
+],
+[
+"mod/session2/guest_stage_diag.cpp",
+"kField2322Bytes",
+"UPDATED 4 of 9 bytes differ"
+],
+[
+"mod/session2/guest_stage_diag.cpp",
+"kRaw2322Bytes",
+"same"
+],
+[
+"mod/session2/guest_stage_diag.cpp",
+"kNpcEntryBytes",
+"UPDATED 11 of 16 bytes differ"
+],
+[
+"mod/session2/guest_stage_diag.cpp",
+"kNpcRes8Bytes",
+"site 0x9ed401 unmapped"
+],
+[
+"mod/session2/guest_stage_diag.cpp",
+"kNpcOwnerBytes",
+"site 0x9ed453 unmapped"
+],
+[
+"mod/session2/guest_stage_diag.cpp",
+"kNpcInstanceBytes",
+"UPDATED 4 of 16 bytes differ"
+],
+[
+"mod/session2/guest_stage_diag.cpp",
+"kReady0Bytes",
+"UPDATED 3 of 16 bytes differ"
+],
+[
+"mod/session2/guest_stage_diag.cpp",
+"kReady0MBytes",
+"UPDATED 3 of 5 bytes differ"
+],
+[
+"mod/session2/guest_stage_diag.cpp",
+"kReady1Bytes",
+"UPDATED 13 of 16 bytes differ"
+],
+[
+"mod/session2/guest_stage_diag.cpp",
+"<anon>",
+"ambiguous new bytes"
+],
+[
+"mod/session2/guest_stage_diag.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/session2/guest_stage_diag.cpp",
+"<anon>",
+"site 0x3b67b96 unmapped"
+],
+[
+"mod/session2/guest_stage_diag.cpp",
+"<anon>",
+"UPDATED 1 of 10 bytes differ"
+],
+[
+"mod/session2/guest_stage_diag.cpp",
+"<anon>",
+"NO SITE (20 bytes)"
+],
+[
+"mod/session2/guest_stage_diag.cpp",
+"<anon>",
+"NO SITE (16 bytes)"
+],
+[
+"mod/session2/guest_stage_diag.cpp",
+"<anon>",
+"NO SITE (16 bytes)"
+],
+[
+"mod/session2/guest_stage_diag.cpp",
+"<anon>",
+"NO SITE (16 bytes)"
+],
+[
+"mod/session2/guest_stage_diag.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/session2/guest_stage_diag.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/session2/guest_stage_diag.cpp",
+"<anon>",
+"NO SITE (11 bytes)"
+],
+[
+"mod/session2/guest_stage_diag.cpp",
+"<anon>",
+"ambiguous new bytes"
+],
+[
+"mod/session2/guest_stage_diag.cpp",
+"<anon>",
+"site 0xc0773f unmapped"
+],
+[
+"mod/session2/guest_stage_diag.cpp",
+"<anon>",
+"site 0xc07749 unmapped"
+],
+[
+"mod/session2/guest_stage_diag.cpp",
+"<anon>",
+"ambiguous new bytes"
+],
+[
+"mod/session2/guest_stage_diag.cpp",
+"<anon>",
+"site 0xc0773f unmapped"
+],
+[
+"mod/session2/guest_stage_diag.cpp",
+"<anon>",
+"NO SITE (16 bytes)"
+],
+[
+"mod/session2/guest_stage_diag.cpp",
+"<anon>",
+"NO SITE (16 bytes)"
+],
+[
+"mod/session2/guest_stage_diag.cpp",
+"<anon>",
+"NO SITE (9 bytes)"
+],
+[
+"mod/session2/guest_stage_diag.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/session2/guest_stage_diag.cpp",
+"<anon>",
+"ambiguous new bytes"
+],
+[
+"mod/session2/guest_stage_diag.cpp",
+"<anon>",
+"site 0x9ed401 unmapped"
+],
+[
+"mod/session2/guest_stage_diag.cpp",
+"<anon>",
+"site 0x9ed453 unmapped"
+],
+[
+"mod/session2/guest_stage_diag.cpp",
+"<anon>",
+"NO SITE (16 bytes)"
+],
+[
+"mod/session2/guest_stage_diag.cpp",
+"<anon>",
+"NO SITE (16 bytes)"
+],
+[
+"mod/session2/guest_stage_diag.cpp",
+"<anon>",
+"NO SITE (5 bytes)"
+],
+[
+"mod/session2/guest_stage_diag.cpp",
+"<anon>",
+"NO SITE (16 bytes)"
+],
+[
+"mod/session2/mount_sync.cpp",
+"kEntry7",
+"same"
+],
+[
+"mod/session2/mount_sync.cpp",
+"kRideEnter",
+"same"
+],
+[
+"mod/session2/mount_sync.cpp",
+"kHandler",
+"same"
+],
+[
+"mod/session2/mount_sync.cpp",
+"kVf54",
+"same"
+],
+[
+"mod/session2/mount_sync.cpp",
+"kThunkVf53",
+"site 0xa45740 unmapped"
+],
+[
+"mod/session2/mount_sync.cpp",
+"kThunkRideOff",
+"UPDATED 4 of 5 bytes differ"
+],
+[
+"mod/session2/mount_sync.cpp",
+"kThunkGate",
+"UPDATED 5 of 5 bytes differ"
+],
+[
+"mod/session2/mount_sync.cpp",
+"kGateCallSiteBytes",
+"UPDATED 3 of 16 bytes differ"
+],
+[
+"mod/session2/mount_sync.cpp",
+"kGateNetOrBytes",
+"same"
+],
+[
+"mod/session2/mount_sync.cpp",
+"kActionReqBytes",
+"same"
+],
+[
+"mod/session2/mount_sync.cpp",
+"kHoldEntry",
+"same"
+],
+[
+"mod/session2/mount_sync.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/session2/mount_sync.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/session2/mount_sync.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/session2/mount_sync.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/session2/mount_sync.cpp",
+"<anon>",
+"site 0xa45740 unmapped"
+],
+[
+"mod/session2/mount_sync.cpp",
+"<anon>",
+"NO SITE (5 bytes)"
+],
+[
+"mod/session2/mount_sync.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/session2/mount_sync.cpp",
+"<anon>",
+"NO SITE (16 bytes)"
+],
+[
+"mod/session2/mount_sync.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/session2/mount_sync.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/session2/mount_sync.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/session2/guest_actor_diag.cpp",
+"kFinishHeadBytes",
+"site 0x4fd2e0 unmapped"
+],
+[
+"mod/session2/guest_actor_diag.cpp",
+"kFinishActorBytes",
+"site 0x4fd390 unmapped"
+],
+[
+"mod/session2/guest_actor_diag.cpp",
+"kFinishStateBytes",
+"site 0x4fd3aa unmapped"
+],
+[
+"mod/session2/guest_actor_diag.cpp",
+"kFinishLoginBytes",
+"site 0x4fd3e0 unmapped"
+],
+[
+"mod/session2/guest_actor_diag.cpp",
+"kFinishErrorBytes",
+"site 0x4fd488 unmapped"
+],
+[
+"mod/session2/guest_actor_diag.cpp",
+"kStateSiteBytes",
+"UPDATED 4 of 8 bytes differ"
+],
+[
+"mod/session2/guest_actor_diag.cpp",
+"kStateHookBytes",
+"UPDATED 5 of 15 bytes differ"
+],
+[
+"mod/session2/guest_actor_diag.cpp",
+"kWaitSiteBytes",
+"UPDATED 5 of 30 bytes differ"
+],
+[
+"mod/session2/guest_actor_diag.cpp",
+"kFindBytes",
+"same"
+],
+[
+"mod/session2/guest_actor_diag.cpp",
+"<anon>",
+"site 0x4fd2e0 unmapped"
+],
+[
+"mod/session2/guest_actor_diag.cpp",
+"<anon>",
+"site 0x4fd390 unmapped"
+],
+[
+"mod/session2/guest_actor_diag.cpp",
+"<anon>",
+"site 0x4fd3aa unmapped"
+],
+[
+"mod/session2/guest_actor_diag.cpp",
+"<anon>",
+"site 0x4fd3e0 unmapped"
+],
+[
+"mod/session2/guest_actor_diag.cpp",
+"<anon>",
+"site 0x4fd488 unmapped"
+],
+[
+"mod/session2/guest_actor_diag.cpp",
+"<anon>",
+"NO SITE (8 bytes)"
+],
+[
+"mod/session2/guest_actor_diag.cpp",
+"<anon>",
+"NO SITE (15 bytes)"
+],
+[
+"mod/session2/guest_actor_diag.cpp",
+"<anon>",
+"NO SITE (30 bytes)"
+],
+[
+"mod/session2/guest_actor_diag.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/session2/child_hold.cpp",
+"kNotifyAppearHead",
+"UPDATED 3 of 40 bytes differ"
+],
+[
+"mod/session2/child_hold.cpp",
+"kNotifyReadSessionsBytes",
+"UPDATED 4 of 6 bytes differ"
+],
+[
+"mod/session2/child_hold.cpp",
+"kNotifyReadKeysBytes",
+"UPDATED 9 of 11 bytes differ"
+],
+[
+"mod/session2/child_hold.cpp",
+"kNotifyFindCallBytes",
+"UPDATED 2 of 5 bytes differ"
+],
+[
+"mod/session2/child_hold.cpp",
+"kCallerNewObserversBytes",
+"UPDATED 2 of 5 bytes differ"
+],
+[
+"mod/session2/child_hold.cpp",
+"kCallerMovingUserBytes",
+"UPDATED 2 of 5 bytes differ"
+],
+[
+"mod/session2/child_hold.cpp",
+"kStartActionHead",
+"UPDATED 1 of 40 bytes differ"
+],
+[
+"mod/session2/child_hold.cpp",
+"kRestoreWriteBytes",
+"UPDATED 1 of 8 bytes differ"
+],
+[
+"mod/session2/child_hold.cpp",
+"kServerRealmSetBytes",
+"UPDATED 1 of 9 bytes differ"
+],
+[
+"mod/session2/child_hold.cpp",
+"<anon>",
+"NO SITE (40 bytes)"
+],
+[
+"mod/session2/child_hold.cpp",
+"<anon>",
+"site 0x3e2227 unmapped"
+],
+[
+"mod/session2/child_hold.cpp",
+"<anon>",
+"NO SITE (11 bytes)"
+],
+[
+"mod/session2/child_hold.cpp",
+"<anon>",
+"NO SITE (5 bytes)"
+],
+[
+"mod/session2/child_hold.cpp",
+"<anon>",
+"NO SITE (5 bytes)"
+],
+[
+"mod/session2/child_hold.cpp",
+"<anon>",
+"NO SITE (5 bytes)"
+],
+[
+"mod/session2/child_hold.cpp",
+"<anon>",
+"NO SITE (40 bytes)"
+],
+[
+"mod/session2/child_hold.cpp",
+"<anon>",
+"NO SITE (8 bytes)"
+],
+[
+"mod/session2/child_hold.cpp",
+"<anon>",
+"site 0x2d6d2fc unmapped"
+],
+[
+"mod/session2/ui_pause.cpp",
+"kScaleHead",
+"same"
+],
+[
+"mod/session2/ui_pause.cpp",
+"kCall1Bytes",
+"UPDATED 3 of 5 bytes differ"
+],
+[
+"mod/session2/ui_pause.cpp",
+"kCall2Bytes",
+"UPDATED 3 of 5 bytes differ"
+],
+[
+"mod/session2/ui_pause.cpp",
+"kTrivialVfBytes",
+"site 0x63da70 unmapped"
+],
+[
+"mod/session2/ui_pause.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/session2/ui_pause.cpp",
+"<anon>",
+"NO SITE (5 bytes)"
+],
+[
+"mod/session2/ui_pause.cpp",
+"<anon>",
+"NO SITE (5 bytes)"
+],
+[
+"mod/session2/ui_pause.cpp",
+"<anon>",
+"site 0x63da70 unmapped"
+],
+[
+"mod/session2/guest_seq_route.cpp",
+"kP2661Bytes",
+"UPDATED 16 of 16 bytes differ"
+],
+[
+"mod/session2/guest_seq_route.cpp",
+"kFrame2661Bytes",
+"UPDATED 1 of 8 bytes differ"
+],
+[
+"mod/session2/guest_seq_route.cpp",
+"kKind2661Bytes",
+"UPDATED 6 of 7 bytes differ"
+],
+[
+"mod/session2/guest_seq_route.cpp",
+"kVf48_2661Bytes",
+"UPDATED 1 of 10 bytes differ"
+],
+[
+"mod/session2/guest_seq_route.cpp",
+"kP2981Bytes",
+"site 0xc07749 unmapped"
+],
+[
+"mod/session2/guest_seq_route.cpp",
+"kVf48_2981Bytes",
+"site 0xc0773f unmapped"
+],
+[
+"mod/session2/guest_seq_route.cpp",
+"kP2810Bytes",
+"UPDATED 13 of 16 bytes differ"
+],
+[
+"mod/session2/guest_seq_route.cpp",
+"kVf48_2810Bytes",
+"UPDATED 1 of 10 bytes differ"
+],
+[
+"mod/session2/guest_seq_route.cpp",
+"kFrame2810Bytes",
+"UPDATED 1 of 5 bytes differ"
+],
+[
+"mod/session2/guest_seq_route.cpp",
+"kFind2810Bytes",
+"UPDATED 25 of 27 bytes differ"
+],
+[
+"mod/session2/guest_seq_route.cpp",
+"kP2322Bytes",
+"UPDATED 5 of 14 bytes differ"
+],
+[
+"mod/session2/guest_seq_route.cpp",
+"kVf48_2322Bytes",
+"UPDATED 1 of 10 bytes differ"
+],
+[
+"mod/session2/guest_seq_route.cpp",
+"kRaw2322Bytes",
+"UPDATED 1 of 21 bytes differ"
+],
+[
+"mod/session2/guest_seq_route.cpp",
+"kFind2322Bytes",
+"UPDATED 6 of 23 bytes differ"
+],
+[
+"mod/session2/guest_seq_route.cpp",
+"kP2524Bytes",
+"site 0xc08178 unmapped"
+],
+[
+"mod/session2/guest_seq_route.cpp",
+"kWrap2524Bytes",
+"site 0xc0afe5 unmapped"
+],
+[
+"mod/session2/guest_seq_route.cpp",
+"kFind2524Bytes",
+"site 0xc080d1 unmapped"
+],
+[
+"mod/session2/guest_seq_route.cpp",
+"kVf48_2524Bytes",
+"UPDATED 1 of 10 bytes differ"
+],
+[
+"mod/session2/guest_seq_route.cpp",
+"kUse2524Bytes",
+"site 0xc08188 unmapped"
+],
+[
+"mod/session2/guest_seq_route.cpp",
+"kS2335Bytes",
+"site 0xc0b5c1 unmapped"
+],
+[
+"mod/session2/guest_seq_route.cpp",
+"kS2335Frame",
+"site 0xc0afd0 unmapped"
+],
+[
+"mod/session2/guest_seq_route.cpp",
+"kS2335Key",
+"site 0xc0b242 unmapped"
+],
+[
+"mod/session2/guest_seq_route.cpp",
+"kS2335Find",
+"site 0xc0b50a unmapped"
+],
+[
+"mod/session2/guest_seq_route.cpp",
+"kS2335Kind",
+"site 0xc0b55e unmapped"
+],
+[
+"mod/session2/guest_seq_route.cpp",
+"kS2335Vf48",
+"site 0xc0b5b7 unmapped"
+],
+[
+"mod/session2/guest_seq_route.cpp",
+"kS2335Use",
+"site 0xc0b612 unmapped"
+],
+[
+"mod/session2/guest_seq_route.cpp",
+"kS2126Bytes",
+"UPDATED 13 of 16 bytes differ"
+],
+[
+"mod/session2/guest_seq_route.cpp",
+"kS2126Frame",
+"UPDATED 1 of 5 bytes differ"
+],
+[
+"mod/session2/guest_seq_route.cpp",
+"kS2126Key",
+"UPDATED 6 of 8 bytes differ"
+],
+[
+"mod/session2/guest_seq_route.cpp",
+"kS2126Find",
+"UPDATED 25 of 27 bytes differ"
+],
+[
+"mod/session2/guest_seq_route.cpp",
+"kS2126Vf48",
+"UPDATED 1 of 10 bytes differ"
+],
+[
+"mod/session2/guest_seq_route.cpp",
+"kSChangeBytes",
+"site 0xc0c761 unmapped"
+],
+[
+"mod/session2/guest_seq_route.cpp",
+"kSChangeFrame",
+"site 0xc0c400 unmapped"
+],
+[
+"mod/session2/guest_seq_route.cpp",
+"kSChangeKey",
+"site 0xc0c5ba unmapped"
+],
+[
+"mod/session2/guest_seq_route.cpp",
+"kS2958Find",
+"site 0xc0c6b7 unmapped"
+],
+[
+"mod/session2/guest_seq_route.cpp",
+"kS2909Find",
+"site 0xc0cbe7 unmapped"
+],
+[
+"mod/session2/guest_seq_route.cpp",
+"kSChangeVf48",
+"UPDATED 1 of 10 bytes differ"
+],
+[
+"mod/session2/guest_seq_route.cpp",
+"kS2958Use",
+"site 0xc0c769 unmapped"
+],
+[
+"mod/session2/guest_seq_route.cpp",
+"kS2909Use",
+"site 0xc0cc99 unmapped"
+],
+[
+"mod/session2/guest_seq_route.cpp",
+"kLookupBytes",
+"UPDATED 1 of 11 bytes differ"
+],
+[
+"mod/session2/guest_seq_route.cpp",
+"kLookupHomeBytes",
+"same"
+],
+[
+"mod/session2/guest_seq_route.cpp",
+"kLookupFrameBytes",
+"same"
+],
+[
+"mod/session2/guest_seq_route.cpp",
+"kLookupBranchBytes",
+"same"
+],
+[
+"mod/session2/guest_seq_route.cpp",
+"kLookupCallBytes",
+"UPDATED 3 of 8 bytes differ"
+],
+[
+"mod/session2/guest_seq_route.cpp",
+"kLookupInstBytes",
+"same"
+],
+[
+"mod/session2/guest_seq_route.cpp",
+"kLookupUseBytes",
+"UPDATED 17 of 21 bytes differ"
+],
+[
+"mod/session2/guest_seq_route.cpp",
+"kLookupMissBytes",
+"same"
+],
+[
+"mod/session2/guest_seq_route.cpp",
+"kTearBytes",
+"UPDATED 2 of 16 bytes differ"
+],
+[
+"mod/session2/guest_seq_route.cpp",
+"kTearWake",
+"site 0x43b0a3 unmapped"
+],
+[
+"mod/session2/guest_seq_route.cpp",
+"kTearEntry",
+"same"
+],
+[
+"mod/session2/guest_seq_route.cpp",
+"kTearReload",
+"same"
+],
+[
+"mod/session2/guest_seq_route.cpp",
+"<anon>",
+"NO SITE (16 bytes)"
+],
+[
+"mod/session2/guest_seq_route.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/session2/guest_seq_route.cpp",
+"<anon>",
+"site 0x3b67b96 unmapped"
+],
+[
+"mod/session2/guest_seq_route.cpp",
+"<anon>",
+"site 0xc0b5b7 unmapped"
+],
+[
+"mod/session2/guest_seq_route.cpp",
+"<anon>",
+"site 0xc07749 unmapped"
+],
+[
+"mod/session2/guest_seq_route.cpp",
+"<anon>",
+"site 0xc0773f unmapped"
+],
+[
+"mod/session2/guest_seq_route.cpp",
+"<anon>",
+"NO SITE (16 bytes)"
+],
+[
+"mod/session2/guest_seq_route.cpp",
+"<anon>",
+"site 0xc0773f unmapped"
+],
+[
+"mod/session2/guest_seq_route.cpp",
+"<anon>",
+"NO SITE (5 bytes)"
+],
+[
+"mod/session2/guest_seq_route.cpp",
+"<anon>",
+"NO SITE (27 bytes)"
+],
+[
+"mod/session2/guest_seq_route.cpp",
+"<anon>",
+"NO SITE (14 bytes)"
+],
+[
+"mod/session2/guest_seq_route.cpp",
+"<anon>",
+"UPDATED 1 of 10 bytes differ"
+],
+[
+"mod/session2/guest_seq_route.cpp",
+"<anon>",
+"site 0xb5c3bc unmapped"
+],
+[
+"mod/session2/guest_seq_route.cpp",
+"<anon>",
+"NO SITE (23 bytes)"
+],
+[
+"mod/session2/guest_seq_route.cpp",
+"<anon>",
+"site 0xc08178 unmapped"
+],
+[
+"mod/session2/guest_seq_route.cpp",
+"<anon>",
+"site 0xc0afe5 unmapped"
+],
+[
+"mod/session2/guest_seq_route.cpp",
+"<anon>",
+"site 0xc080d1 unmapped"
+],
+[
+"mod/session2/guest_seq_route.cpp",
+"<anon>",
+"site 0xc0773f unmapped"
+],
+[
+"mod/session2/guest_seq_route.cpp",
+"<anon>",
+"site 0xc08188 unmapped"
+],
+[
+"mod/session2/guest_seq_route.cpp",
+"<anon>",
+"site 0xc0b5c1 unmapped"
+],
+[
+"mod/session2/guest_seq_route.cpp",
+"<anon>",
+"site 0xc0afd0 unmapped"
+],
+[
+"mod/session2/guest_seq_route.cpp",
+"<anon>",
+"site 0xc0b242 unmapped"
+],
+[
+"mod/session2/guest_seq_route.cpp",
+"<anon>",
+"site 0xc0b50a unmapped"
+],
+[
+"mod/session2/guest_seq_route.cpp",
+"<anon>",
+"site 0xc0b55e unmapped"
+],
+[
+"mod/session2/guest_seq_route.cpp",
+"<anon>",
+"site 0xc0b5b7 unmapped"
+],
+[
+"mod/session2/guest_seq_route.cpp",
+"<anon>",
+"site 0xc0b612 unmapped"
+],
+[
+"mod/session2/guest_seq_route.cpp",
+"<anon>",
+"NO SITE (16 bytes)"
+],
+[
+"mod/session2/guest_seq_route.cpp",
+"<anon>",
+"NO SITE (5 bytes)"
+],
+[
+"mod/session2/guest_seq_route.cpp",
+"<anon>",
+"site 0x3b44e3 unmapped"
+],
+[
+"mod/session2/guest_seq_route.cpp",
+"<anon>",
+"NO SITE (27 bytes)"
+],
+[
+"mod/session2/guest_seq_route.cpp",
+"<anon>",
+"UPDATED 1 of 10 bytes differ"
+],
+[
+"mod/session2/guest_seq_route.cpp",
+"<anon>",
+"site 0xc0c761 unmapped"
+],
+[
+"mod/session2/guest_seq_route.cpp",
+"<anon>",
+"site 0xc0c400 unmapped"
+],
+[
+"mod/session2/guest_seq_route.cpp",
+"<anon>",
+"site 0xc0c5ba unmapped"
+],
+[
+"mod/session2/guest_seq_route.cpp",
+"<anon>",
+"site 0xc0c6b7 unmapped"
+],
+[
+"mod/session2/guest_seq_route.cpp",
+"<anon>",
+"site 0xc0cbe7 unmapped"
+],
+[
+"mod/session2/guest_seq_route.cpp",
+"<anon>",
+"site 0xc0773f unmapped"
+],
+[
+"mod/session2/guest_seq_route.cpp",
+"<anon>",
+"site 0xc0c769 unmapped"
+],
+[
+"mod/session2/guest_seq_route.cpp",
+"<anon>",
+"site 0xc0cc99 unmapped"
+],
+[
+"mod/session2/guest_seq_route.cpp",
+"<anon>",
+"NO SITE (5 bytes)"
+],
+[
+"mod/session2/guest_seq_route.cpp",
+"<anon>",
+"NO SITE (11 bytes)"
+],
+[
+"mod/session2/guest_seq_route.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/session2/guest_seq_route.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/session2/guest_seq_route.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/session2/guest_seq_route.cpp",
+"<anon>",
+"NO SITE (8 bytes)"
+],
+[
+"mod/session2/guest_seq_route.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/session2/guest_seq_route.cpp",
+"<anon>",
+"NO SITE (21 bytes)"
+],
+[
+"mod/session2/guest_seq_route.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/session2/guest_seq_route.cpp",
+"<anon>",
+"NO SITE (16 bytes)"
+],
+[
+"mod/session2/guest_seq_route.cpp",
+"<anon>",
+"site 0x43b0a3 unmapped"
+],
+[
+"mod/session2/guest_seq_route.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/session2/guest_seq_route.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/session2/offsets_s2.h",
+"kServerOnRecvPacketHead",
+"same"
+],
+[
+"mod/session2/offsets_s2.h",
+"kSessionSendHead",
+"same"
+],
+[
+"mod/session2/offsets_s2.h",
+"kNwSessionCtorHead",
+"UPDATED 11 of 21 bytes differ"
+],
+[
+"mod/session2/offsets_s2.h",
+"kQueuePushHead",
+"same"
+],
+[
+"mod/session2/offsets_s2.h",
+"kAllocGlobalHead",
+"same"
+],
+[
+"mod/session2/offsets_s2.h",
+"kAllocThreadBytes",
+"UPDATED 3 of 92 bytes differ"
+],
+[
+"mod/session2/offsets_s2.h",
+"kExceptOneVf1Head",
+"same"
+],
+[
+"mod/session2/offsets_s2.h",
+"kToNearVf1Head",
+"same"
+],
+[
+"mod/session2/offsets_s2.h",
+"kSyncSessionSendHead",
+"same"
+],
+[
+"mod/session2/offsets_s2.h",
+"kNetLoopPumpHead",
+"same"
+],
+[
+"mod/session2/offsets_s2.h",
+"kNetLoopPumpAob",
+"same"
+],
+[
+"mod/session2/offsets_s2.h",
+"kClientOnRecvPacketHead",
+"same"
+],
+[
+"mod/session2/offsets_s2.h",
+"kWindowsLockVf1Head",
+"same"
+],
+[
+"mod/session2/offsets_s2.h",
+"kWindowsLockVf2Head",
+"same"
+],
+[
+"mod/session2/offsets_s2.h",
+"kSaveMgrRefreshSlotsHead",
+"UPDATED 4 of 5 bytes differ"
+],
+[
+"mod/session2/offsets_s2.h",
+"kSlotRefreshReqSequenceBytes",
+"UPDATED 9 of 125 bytes differ"
+],
+[
+"mod/session2/offsets_s2.h",
+"kTitlePlayReadsSaveMgrBytes",
+"site 0x65dc3e unmapped"
+],
+[
+"mod/session2/offsets_s2.h",
+"<anon>",
+"same"
+],
+[
+"mod/session2/offsets_s2.h",
+"<anon>",
+"same"
+],
+[
+"mod/session2/offsets_s2.h",
+"<anon>",
+"same"
+],
+[
+"mod/session2/offsets_s2.h",
+"<anon>",
+"same"
+],
+[
+"mod/session2/offsets_s2.h",
+"<anon>",
+"same"
+],
+[
+"mod/session2/offsets_s2.h",
+"<anon>",
+"NO SITE (92 bytes)"
+],
+[
+"mod/session2/offsets_s2.h",
+"<anon>",
+"same"
+],
+[
+"mod/session2/offsets_s2.h",
+"<anon>",
+"same"
+],
+[
+"mod/session2/offsets_s2.h",
+"<anon>",
+"same"
+],
+[
+"mod/session2/offsets_s2.h",
+"<anon>",
+"same"
+],
+[
+"mod/session2/offsets_s2.h",
+"<anon>",
+"same"
+],
+[
+"mod/session2/offsets_s2.h",
+"<anon>",
+"same"
+],
+[
+"mod/session2/offsets_s2.h",
+"<anon>",
+"same"
+],
+[
+"mod/session2/offsets_s2.h",
+"<anon>",
+"same"
+],
+[
+"mod/session2/offsets_s2.h",
+"<anon>",
+"NO SITE (5 bytes)"
+],
+[
+"mod/session2/offsets_s2.h",
+"<anon>",
+"NO SITE (125 bytes)"
+],
+[
+"mod/session2/offsets_s2.h",
+"<anon>",
+"site 0x65dc3e unmapped"
+],
+[
+"mod/session2/observer_milestone.cpp",
+"kCtorBytes",
+"UPDATED 6 of 75 bytes differ"
+],
+[
+"mod/session2/observer_milestone.cpp",
+"kVf0Bytes",
+"UPDATED 58 of 82 bytes differ"
+],
+[
+"mod/session2/observer_milestone.cpp",
+"kVf1Bytes",
+"UPDATED 3 of 95 bytes differ"
+],
+[
+"mod/session2/observer_milestone.cpp",
+"kVf2Bytes",
+"same"
+],
+[
+"mod/session2/observer_milestone.cpp",
+"kEmitHead",
+"same"
+],
+[
+"mod/session2/observer_milestone.cpp",
+"kEmitBody",
+"site 0x2999d85 unmapped"
+],
+[
+"mod/session2/observer_milestone.cpp",
+"kEmitOpBytes",
+"UPDATED 2 of 6 bytes differ"
+],
+[
+"mod/session2/observer_milestone.cpp",
+"kRecipeBytes",
+"UPDATED 6 of 56 bytes differ"
+],
+[
+"mod/session2/observer_milestone.cpp",
+"kSite2144Bytes",
+"UPDATED 83 of 91 bytes differ"
+],
+[
+"mod/session2/observer_milestone.cpp",
+"kCallCoreBytes",
+"UPDATED 4 of 8 bytes differ"
+],
+[
+"mod/session2/observer_milestone.cpp",
+"kSite3066Bytes",
+"UPDATED 65 of 72 bytes differ"
+],
+[
+"mod/session2/observer_milestone.cpp",
+"kScopeFindBytes",
+"same"
+],
+[
+"mod/session2/observer_milestone.cpp",
+"kScopeCurBytes",
+"same"
+],
+[
+"mod/session2/observer_milestone.cpp",
+"kRealmBytes",
+"UPDATED 1 of 9 bytes differ"
+],
+[
+"mod/session2/observer_milestone.cpp",
+"<anon>",
+"NO SITE (75 bytes)"
+],
+[
+"mod/session2/observer_milestone.cpp",
+"<anon>",
+"NO SITE (82 bytes)"
+],
+[
+"mod/session2/observer_milestone.cpp",
+"<anon>",
+"NO SITE (95 bytes)"
+],
+[
+"mod/session2/observer_milestone.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/session2/observer_milestone.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/session2/observer_milestone.cpp",
+"<anon>",
+"site 0x2999d85 unmapped"
+],
+[
+"mod/session2/observer_milestone.cpp",
+"<anon>",
+"NO SITE (6 bytes)"
+],
+[
+"mod/session2/observer_milestone.cpp",
+"<anon>",
+"NO SITE (56 bytes)"
+],
+[
+"mod/session2/observer_milestone.cpp",
+"<anon>",
+"NO SITE (91 bytes)"
+],
+[
+"mod/session2/observer_milestone.cpp",
+"<anon>",
+"NO SITE (8 bytes)"
+],
+[
+"mod/session2/observer_milestone.cpp",
+"<anon>",
+"NO SITE (72 bytes)"
+],
+[
+"mod/session2/observer_milestone.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/session2/observer_milestone.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/session2/observer_milestone.cpp",
+"<anon>",
+"site 0x2d6d2fc unmapped"
+],
+[
+"mod/session2/p8_probes.cpp",
+"kPred1Bytes",
+"UPDATED 2 of 13 bytes differ"
+],
+[
+"mod/session2/p8_probes.cpp",
+"kPred1CtxBytes",
+"UPDATED 7 of 15 bytes differ"
+],
+[
+"mod/session2/p8_probes.cpp",
+"kPred2Bytes",
+"UPDATED 7 of 15 bytes differ"
+],
+[
+"mod/session2/p8_probes.cpp",
+"kPred2CtxBytes",
+"UPDATED 32 of 34 bytes differ"
+],
+[
+"mod/session2/p8_probes.cpp",
+"kH2322Bytes",
+"same"
+],
+[
+"mod/session2/p8_probes.cpp",
+"kH2322CtxBytes",
+"UPDATED 1 of 21 bytes differ"
+],
+[
+"mod/session2/p8_probes.cpp",
+"kW2322Bytes",
+"UPDATED 5 of 14 bytes differ"
+],
+[
+"mod/session2/p8_probes.cpp",
+"kW2322CtxBytes",
+"UPDATED 1 of 10 bytes differ"
+],
+[
+"mod/session2/p8_probes.cpp",
+"kOwnerBytes",
+"UPDATED 3 of 9 bytes differ"
+],
+[
+"mod/session2/p8_probes.cpp",
+"kOwnerCtxBytes",
+"UPDATED 3 of 30 bytes differ"
+],
+[
+"mod/session2/p8_probes.cpp",
+"kOwnerPrepBytes",
+"UPDATED 3 of 5 bytes differ"
+],
+[
+"mod/session2/p8_probes.cpp",
+"kEmitBytes",
+"UPDATED 3 of 19 bytes differ"
+],
+[
+"mod/session2/p8_probes.cpp",
+"kUiBytes",
+"same"
+],
+[
+"mod/session2/p8_probes.cpp",
+"kFindBytes",
+"UPDATED 186 of 218 bytes differ"
+],
+[
+"mod/session2/p8_probes.cpp",
+"kRestartBytes",
+"same"
+],
+[
+"mod/session2/p8_probes.cpp",
+"kRestartLoopBytes",
+"UPDATED 7 of 64 bytes differ"
+],
+[
+"mod/session2/p8_probes.cpp",
+"kBodyAnimBytes",
+"same"
+],
+[
+"mod/session2/p8_probes.cpp",
+"kBodyAnimArgsBytes",
+"same"
+],
+[
+"mod/session2/p8_probes.cpp",
+"kInstall70Bytes",
+"same"
+],
+[
+"mod/session2/p8_probes.cpp",
+"kInstall70CtxBytes",
+"same"
+],
+[
+"mod/session2/p8_probes.cpp",
+"kInstall78Bytes",
+"same"
+],
+[
+"mod/session2/p8_probes.cpp",
+"kInstall78CtxBytes",
+"same"
+],
+[
+"mod/session2/p8_probes.cpp",
+"kBindBytes",
+"UPDATED 6 of 9 bytes differ"
+],
+[
+"mod/session2/p8_probes.cpp",
+"kBindCtxBytes",
+"site 0x9ed415 unmapped"
+],
+[
+"mod/session2/p8_probes.cpp",
+"kSeqBytes",
+"UPDATED 1 of 13 bytes differ"
+],
+[
+"mod/session2/p8_probes.cpp",
+"kSeqCtxBytes",
+"UPDATED 1 of 15 bytes differ"
+],
+[
+"mod/session2/p8_probes.cpp",
+"<anon>",
+"NO SITE (13 bytes)"
+],
+[
+"mod/session2/p8_probes.cpp",
+"<anon>",
+"NO SITE (15 bytes)"
+],
+[
+"mod/session2/p8_probes.cpp",
+"<anon>",
+"NO SITE (15 bytes)"
+],
+[
+"mod/session2/p8_probes.cpp",
+"<anon>",
+"NO SITE (34 bytes)"
+],
+[
+"mod/session2/p8_probes.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/session2/p8_probes.cpp",
+"<anon>",
+"site 0xb5c3bc unmapped"
+],
+[
+"mod/session2/p8_probes.cpp",
+"<anon>",
+"NO SITE (14 bytes)"
+],
+[
+"mod/session2/p8_probes.cpp",
+"<anon>",
+"UPDATED 1 of 10 bytes differ"
+],
+[
+"mod/session2/p8_probes.cpp",
+"<anon>",
+"NO SITE (9 bytes)"
+],
+[
+"mod/session2/p8_probes.cpp",
+"<anon>",
+"NO SITE (30 bytes)"
+],
+[
+"mod/session2/p8_probes.cpp",
+"<anon>",
+"NO SITE (5 bytes)"
+],
+[
+"mod/session2/p8_probes.cpp",
+"<anon>",
+"NO SITE (19 bytes)"
+],
+[
+"mod/session2/p8_probes.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/session2/p8_probes.cpp",
+"<anon>",
+"NO SITE (218 bytes)"
+],
+[
+"mod/session2/p8_probes.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/session2/p8_probes.cpp",
+"<anon>",
+"NO SITE (64 bytes)"
+],
+[
+"mod/session2/p8_probes.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/session2/p8_probes.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/session2/p8_probes.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/session2/p8_probes.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/session2/p8_probes.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/session2/p8_probes.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/session2/p8_probes.cpp",
+"<anon>",
+"NO SITE (9 bytes)"
+],
+[
+"mod/session2/p8_probes.cpp",
+"<anon>",
+"site 0x9ed415 unmapped"
+],
+[
+"mod/session2/p8_probes.cpp",
+"<anon>",
+"NO SITE (13 bytes)"
+],
+[
+"mod/session2/p8_probes.cpp",
+"<anon>",
+"NO SITE (15 bytes)"
+],
+[
+"mod/session2/guest_seq_foreign.cpp",
+"kVecZero",
+"UPDATED 3 of 8 bytes differ"
+],
+[
+"mod/session2/guest_seq_foreign.cpp",
+"kVecStore",
+"UPDATED 9 of 11 bytes differ"
+],
+[
+"mod/session2/guest_seq_foreign.cpp",
+"kVecInit",
+"same"
+],
+[
+"mod/session2/guest_seq_foreign.cpp",
+"kVecStride",
+"UPDATED 3 of 11 bytes differ"
+],
+[
+"mod/session2/guest_seq_foreign.cpp",
+"kCreateCall",
+"UPDATED 15 of 24 bytes differ"
+],
+[
+"mod/session2/guest_seq_foreign.cpp",
+"kVecFree",
+"site 0xc061ef unmapped"
+],
+[
+"mod/session2/guest_seq_foreign.cpp",
+"kCreateWalk",
+"same"
+],
+[
+"mod/session2/guest_seq_foreign.cpp",
+"kCreateType",
+"UPDATED 1 of 17 bytes differ"
+],
+[
+"mod/session2/guest_seq_foreign.cpp",
+"kCreateCopy",
+"UPDATED 1 of 14 bytes differ"
+],
+[
+"mod/session2/guest_seq_foreign.cpp",
+"kRoutePoint",
+"UPDATED 5 of 5 bytes differ"
+],
+[
+"mod/session2/guest_seq_foreign.cpp",
+"kP1Sig",
+"UPDATED 5 of 40 bytes differ"
+],
+[
+"mod/session2/guest_seq_foreign.cpp",
+"kP21Sig",
+"same"
+],
+[
+"mod/session2/guest_seq_foreign.cpp",
+"kP22Sig",
+"same"
+],
+[
+"mod/session2/guest_seq_foreign.cpp",
+"kP3Sig",
+"same"
+],
+[
+"mod/session2/guest_seq_foreign.cpp",
+"kP3Vf178",
+"same"
+],
+[
+"mod/session2/guest_seq_foreign.cpp",
+"kVf178",
+"UPDATED 3 of 22 bytes differ"
+],
+[
+"mod/session2/guest_seq_foreign.cpp",
+"kP4Sig",
+"UPDATED 30 of 40 bytes differ"
+],
+[
+"mod/session2/guest_seq_foreign.cpp",
+"kP4Stage",
+"UPDATED 2 of 21 bytes differ"
+],
+[
+"mod/session2/guest_seq_foreign.cpp",
+"kP4Match",
+"UPDATED 6 of 13 bytes differ"
+],
+[
+"mod/session2/guest_seq_foreign.cpp",
+"kP4Type",
+"UPDATED 1 of 13 bytes differ"
+],
+[
+"mod/session2/guest_seq_foreign.cpp",
+"<anon>",
+"site 0xc14940 unmapped"
+],
+[
+"mod/session2/guest_seq_foreign.cpp",
+"<anon>",
+"NO SITE (11 bytes)"
+],
+[
+"mod/session2/guest_seq_foreign.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/session2/guest_seq_foreign.cpp",
+"<anon>",
+"NO SITE (11 bytes)"
+],
+[
+"mod/session2/guest_seq_foreign.cpp",
+"<anon>",
+"NO SITE (24 bytes)"
+],
+[
+"mod/session2/guest_seq_foreign.cpp",
+"<anon>",
+"site 0xc061ef unmapped"
+],
+[
+"mod/session2/guest_seq_foreign.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/session2/guest_seq_foreign.cpp",
+"<anon>",
+"NO SITE (17 bytes)"
+],
+[
+"mod/session2/guest_seq_foreign.cpp",
+"<anon>",
+"NO SITE (14 bytes)"
+],
+[
+"mod/session2/guest_seq_foreign.cpp",
+"<anon>",
+"NO SITE (5 bytes)"
+],
+[
+"mod/session2/guest_seq_foreign.cpp",
+"<anon>",
+"NO SITE (40 bytes)"
+],
+[
+"mod/session2/guest_seq_foreign.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/session2/guest_seq_foreign.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/session2/guest_seq_foreign.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/session2/guest_seq_foreign.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/session2/guest_seq_foreign.cpp",
+"<anon>",
+"NO SITE (22 bytes)"
+],
+[
+"mod/session2/guest_seq_foreign.cpp",
+"<anon>",
+"NO SITE (40 bytes)"
+],
+[
+"mod/session2/guest_seq_foreign.cpp",
+"<anon>",
+"NO SITE (21 bytes)"
+],
+[
+"mod/session2/guest_seq_foreign.cpp",
+"<anon>",
+"NO SITE (13 bytes)"
+],
+[
+"mod/session2/guest_seq_foreign.cpp",
+"<anon>",
+"site 0x2888bb3 unmapped"
+],
+[
+"mod/session2/door_trace_logic.h",
+"<anon>",
+"ambiguous new bytes"
+],
+[
+"mod/session2/companion_probe.cpp",
+"kCreateHead",
+"same"
+],
+[
+"mod/session2/companion_probe.cpp",
+"kFindSiteBytes",
+"UPDATED 2 of 19 bytes differ"
+],
+[
+"mod/session2/companion_probe.cpp",
+"kFactorySiteBytes",
+"UPDATED 3 of 24 bytes differ"
+],
+[
+"mod/session2/companion_probe.cpp",
+"kMapSiteBytes",
+"UPDATED 3 of 22 bytes differ"
+],
+[
+"mod/session2/companion_probe.cpp",
+"kConfirmHead",
+"same"
+],
+[
+"mod/session2/companion_probe.cpp",
+"kSlotErrSiteBytes",
+"UPDATED 3 of 18 bytes differ"
+],
+[
+"mod/session2/companion_probe.cpp",
+"kMainAcqSiteBytes",
+"same"
+],
+[
+"mod/session2/companion_probe.cpp",
+"kMainCompSiteBytes",
+"same"
+],
+[
+"mod/session2/companion_probe.cpp",
+"kMainStateSiteBytes",
+"UPDATED 2 of 14 bytes differ"
+],
+[
+"mod/session2/companion_probe.cpp",
+"kAttachSiteBytes",
+"same"
+],
+[
+"mod/session2/companion_probe.cpp",
+"kCrashHead",
+"same"
+],
+[
+"mod/session2/companion_probe.cpp",
+"kCrashSiteBytes",
+"UPDATED 1 of 24 bytes differ"
+],
+[
+"mod/session2/companion_probe.cpp",
+"kCallerLayerBytes",
+"same"
+],
+[
+"mod/session2/companion_probe.cpp",
+"kCallerCopyBytes",
+"site 0x232d543 unmapped"
+],
+[
+"mod/session2/companion_probe.cpp",
+"kCallerCallBytes",
+"UPDATED 3 of 21 bytes differ"
+],
+[
+"mod/session2/companion_probe.cpp",
+"kScopeAckHead",
+"same"
+],
+[
+"mod/session2/companion_probe.cpp",
+"kBadThisFnHead",
+"UPDATED 3 of 29 bytes differ"
+],
+[
+"mod/session2/companion_probe.cpp",
+"kBadThisBytes",
+"same"
+],
+[
+"mod/session2/companion_probe.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/session2/companion_probe.cpp",
+"<anon>",
+"NO SITE (19 bytes)"
+],
+[
+"mod/session2/companion_probe.cpp",
+"<anon>",
+"NO SITE (24 bytes)"
+],
+[
+"mod/session2/companion_probe.cpp",
+"<anon>",
+"NO SITE (22 bytes)"
+],
+[
+"mod/session2/companion_probe.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/session2/companion_probe.cpp",
+"<anon>",
+"NO SITE (18 bytes)"
+],
+[
+"mod/session2/companion_probe.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/session2/companion_probe.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/session2/companion_probe.cpp",
+"<anon>",
+"NO SITE (14 bytes)"
+],
+[
+"mod/session2/companion_probe.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/session2/companion_probe.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/session2/companion_probe.cpp",
+"<anon>",
+"NO SITE (24 bytes)"
+],
+[
+"mod/session2/companion_probe.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/session2/companion_probe.cpp",
+"<anon>",
+"site 0x232d543 unmapped"
+],
+[
+"mod/session2/companion_probe.cpp",
+"<anon>",
+"NO SITE (21 bytes)"
+],
+[
+"mod/session2/companion_probe.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/session2/companion_probe.cpp",
+"<anon>",
+"NO SITE (29 bytes)"
+],
+[
+"mod/session2/companion_probe.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/session2/guest_reload_wait.cpp",
+"kWaitHeadBytes",
+"UPDATED 10 of 39 bytes differ"
+],
+[
+"mod/session2/guest_reload_wait.cpp",
+"kWaitLoopBytes",
+"UPDATED 5 of 39 bytes differ"
+],
+[
+"mod/session2/guest_reload_wait.cpp",
+"kWaitRemoveBytes",
+"UPDATED 3 of 38 bytes differ"
+],
+[
+"mod/session2/guest_reload_wait.cpp",
+"kReadyBytes",
+"same"
+],
+[
+"mod/session2/guest_reload_wait.cpp",
+"kFindBytes",
+"same"
+],
+[
+"mod/session2/guest_reload_wait.cpp",
+"<anon>",
+"NO SITE (39 bytes)"
+],
+[
+"mod/session2/guest_reload_wait.cpp",
+"<anon>",
+"NO SITE (39 bytes)"
+],
+[
+"mod/session2/guest_reload_wait.cpp",
+"<anon>",
+"NO SITE (38 bytes)"
+],
+[
+"mod/session2/guest_reload_wait.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/session2/guest_reload_wait.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/session2/ride_filter_logic.h",
+"<anon>",
+"NO SITE (69 bytes)"
+],
+[
+"mod/session2/ride_filter_logic.h",
+"<anon>",
+"NO SITE (69 bytes)"
+],
+[
+"mod/session2/ride_filter_logic.h",
+"<anon>",
+"NO SITE (69 bytes)"
+],
+[
+"mod/session2/field_share.cpp",
+"kAcquireFieldHead",
+"same"
+],
+[
+"mod/session2/field_share.cpp",
+"kEnterFieldHead",
+"site 0x2bc04f0 unmapped"
+],
+[
+"mod/session2/field_share.cpp",
+"kTryAddRefHead",
+"same"
+],
+[
+"mod/session2/field_share.cpp",
+"kVecPushHead",
+"site 0x40b5b0 unmapped"
+],
+[
+"mod/session2/field_share.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/session2/field_share.cpp",
+"<anon>",
+"site 0x2bc04f0 unmapped"
+],
+[
+"mod/session2/field_share.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/session2/field_share.cpp",
+"<anon>",
+"site 0x40b5b0 unmapped"
+],
+[
+"mod/session2/catch_seq_logic.h",
+"kApplyHead",
+"same"
+],
+[
+"mod/session2/catch_seq_logic.h",
+"kApplyCallBytes",
+"UPDATED 3 of 5 bytes differ"
+],
+[
+"mod/session2/catch_seq_logic.h",
+"kCheckSiteBytes",
+"UPDATED 3 of 87 bytes differ"
+],
+[
+"mod/session2/catch_seq_logic.h",
+"<anon>",
+"same"
+],
+[
+"mod/session2/catch_seq_logic.h",
+"<anon>",
+"NO SITE (5 bytes)"
+],
+[
+"mod/session2/catch_seq_logic.h",
+"<anon>",
+"NO SITE (87 bytes)"
+],
+[
+"mod/session2/docked_gimmicks_logic.h",
+"kClientRequestHead",
+"same"
+],
+[
+"mod/session2/docked_gimmicks_logic.h",
+"kClientRequest2Head",
+"UPDATED 5 of 20 bytes differ"
+],
+[
+"mod/session2/docked_gimmicks_logic.h",
+"kDockHead",
+"site 0x28ad170 unmapped"
+],
+[
+"mod/session2/docked_gimmicks_logic.h",
+"kDockEquipCall",
+"site 0x2970adf unmapped"
+],
+[
+"mod/session2/docked_gimmicks_logic.h",
+"kControllerWriteBytes",
+"UPDATED 3 of 20 bytes differ"
+],
+[
+"mod/session2/docked_gimmicks_logic.h",
+"kControllerBlockBytes",
+"UPDATED 1 of 16 bytes differ"
+],
+[
+"mod/session2/docked_gimmicks_logic.h",
+"kFieldOwnerReadBytes",
+"UPDATED 10 of 11 bytes differ"
+],
+[
+"mod/session2/docked_gimmicks_logic.h",
+"kServerExecuteHead",
+"same"
+],
+[
+"mod/session2/docked_gimmicks_logic.h",
+"kServerUpdateHead",
+"UPDATED 14 of 21 bytes differ"
+],
+[
+"mod/session2/docked_gimmicks_logic.h",
+"<anon>",
+"same"
+],
+[
+"mod/session2/docked_gimmicks_logic.h",
+"<anon>",
+"site 0x9c7040 unmapped"
+],
+[
+"mod/session2/docked_gimmicks_logic.h",
+"<anon>",
+"site 0x28ad170 unmapped"
+],
+[
+"mod/session2/docked_gimmicks_logic.h",
+"<anon>",
+"site 0x2970adf unmapped"
+],
+[
+"mod/session2/docked_gimmicks_logic.h",
+"<anon>",
+"NO SITE (20 bytes)"
+],
+[
+"mod/session2/docked_gimmicks_logic.h",
+"<anon>",
+"NO SITE (16 bytes)"
+],
+[
+"mod/session2/docked_gimmicks_logic.h",
+"<anon>",
+"NO SITE (11 bytes)"
+],
+[
+"mod/session2/docked_gimmicks_logic.h",
+"<anon>",
+"same"
+],
+[
+"mod/session2/docked_gimmicks_logic.h",
+"<anon>",
+"UPDATED 15 of 21 bytes differ"
+],
+[
+"mod/session2/stage_lookup_logic.h",
+"kBytesA",
+"UPDATED 1 of 10 bytes differ"
+],
+[
+"mod/session2/stage_lookup_logic.h",
+"kBytesR",
+"UPDATED 1 of 7 bytes differ"
+],
+[
+"mod/session2/stage_lookup_logic.h",
+"kBytesF",
+"UPDATED 6 of 8 bytes differ"
+],
+[
+"mod/session2/stage_lookup_logic.h",
+"kCtxABytes",
+"same"
+],
+[
+"mod/session2/stage_lookup_logic.h",
+"kCtxLookupBytes",
+"UPDATED 4 of 19 bytes differ"
+],
+[
+"mod/session2/stage_lookup_logic.h",
+"<anon>",
+"NO SITE (10 bytes)"
+],
+[
+"mod/session2/stage_lookup_logic.h",
+"<anon>",
+"site 0x6d56d2 unmapped"
+],
+[
+"mod/session2/stage_lookup_logic.h",
+"<anon>",
+"site 0x4540b8 unmapped"
+],
+[
+"mod/session2/stage_lookup_logic.h",
+"<anon>",
+"same"
+],
+[
+"mod/session2/stage_lookup_logic.h",
+"<anon>",
+"NO SITE (19 bytes)"
+],
+[
+"mod/session2/guest_sched_load.cpp",
+"kNodeLookupBytes",
+"same"
+],
+[
+"mod/session2/guest_sched_load.cpp",
+"kKeyLookupBytes",
+"same"
+],
+[
+"mod/session2/guest_sched_load.cpp",
+"kStageCallBytes",
+"UPDATED 3 of 5 bytes differ"
+],
+[
+"mod/session2/guest_sched_load.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/session2/guest_sched_load.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/session2/guest_sched_load.cpp",
+"<anon>",
+"NO SITE (5 bytes)"
+],
+[
+"mod/session2/host_scene_diag.cpp",
+"kH1Bytes",
+"site 0x2a78d0d unmapped"
+],
+[
+"mod/session2/host_scene_diag.cpp",
+"kH1FrameBytes",
+"same"
+],
+[
+"mod/session2/host_scene_diag.cpp",
+"kH1ArgsBytes",
+"same"
+],
+[
+"mod/session2/host_scene_diag.cpp",
+"kH1BBytes",
+"site 0x2a78d06 unmapped"
+],
+[
+"mod/session2/host_scene_diag.cpp",
+"kH1LocalBytes",
+"UPDATED 3 of 19 bytes differ"
+],
+[
+"mod/session2/host_scene_diag.cpp",
+"kH1bBytes",
+"same"
+],
+[
+"mod/session2/host_scene_diag.cpp",
+"kH1bOutBytes",
+"same"
+],
+[
+"mod/session2/host_scene_diag.cpp",
+"kH1bCallBytes",
+"same"
+],
+[
+"mod/session2/host_scene_diag.cpp",
+"kBindAiBytes",
+"same"
+],
+[
+"mod/session2/host_scene_diag.cpp",
+"kBindAiVf107Bytes",
+"UPDATED 2 of 5 bytes differ"
+],
+[
+"mod/session2/host_scene_diag.cpp",
+"kBindAi2874Bytes",
+"UPDATED 3 of 5 bytes differ"
+],
+[
+"mod/session2/host_scene_diag.cpp",
+"kRebindBytes",
+"same"
+],
+[
+"mod/session2/host_scene_diag.cpp",
+"kRebindVf107Bytes",
+"UPDATED 3 of 5 bytes differ"
+],
+[
+"mod/session2/host_scene_diag.cpp",
+"kRebind2874Bytes",
+"UPDATED 3 of 5 bytes differ"
+],
+[
+"mod/session2/host_scene_diag.cpp",
+"kRebindRes8Bytes",
+"UPDATED 1 of 16 bytes differ"
+],
+[
+"mod/session2/host_scene_diag.cpp",
+"kRebindFrameBytes",
+"same"
+],
+[
+"mod/session2/host_scene_diag.cpp",
+"kRebindRes8SrcBytes",
+"same"
+],
+[
+"mod/session2/host_scene_diag.cpp",
+"kRebindInstBytes",
+"same"
+],
+[
+"mod/session2/host_scene_diag.cpp",
+"kRebindLookupBytes",
+"UPDATED 1 of 21 bytes differ"
+],
+[
+"mod/session2/host_scene_diag.cpp",
+"kRebindBindBytes",
+"UPDATED 3 of 13 bytes differ"
+],
+[
+"mod/session2/host_scene_diag.cpp",
+"kVf13Res8Bytes",
+"site 0x9ed401 unmapped"
+],
+[
+"mod/session2/host_scene_diag.cpp",
+"<anon>",
+"site 0x2a78d0d unmapped"
+],
+[
+"mod/session2/host_scene_diag.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/session2/host_scene_diag.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/session2/host_scene_diag.cpp",
+"<anon>",
+"site 0x2a78d06 unmapped"
+],
+[
+"mod/session2/host_scene_diag.cpp",
+"<anon>",
+"NO SITE (19 bytes)"
+],
+[
+"mod/session2/host_scene_diag.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/session2/host_scene_diag.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/session2/host_scene_diag.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/session2/host_scene_diag.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/session2/host_scene_diag.cpp",
+"<anon>",
+"NO SITE (5 bytes)"
+],
+[
+"mod/session2/host_scene_diag.cpp",
+"<anon>",
+"NO SITE (5 bytes)"
+],
+[
+"mod/session2/host_scene_diag.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/session2/host_scene_diag.cpp",
+"<anon>",
+"NO SITE (5 bytes)"
+],
+[
+"mod/session2/host_scene_diag.cpp",
+"<anon>",
+"NO SITE (5 bytes)"
+],
+[
+"mod/session2/host_scene_diag.cpp",
+"<anon>",
+"NO SITE (16 bytes)"
+],
+[
+"mod/session2/host_scene_diag.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/session2/host_scene_diag.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/session2/host_scene_diag.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/session2/host_scene_diag.cpp",
+"<anon>",
+"NO SITE (21 bytes)"
+],
+[
+"mod/session2/host_scene_diag.cpp",
+"<anon>",
+"NO SITE (13 bytes)"
+],
+[
+"mod/session2/host_scene_diag.cpp",
+"<anon>",
+"site 0x9ed401 unmapped"
+],
+[
+"mod/session2/guest_seq_play.cpp",
+"kPointBytes",
+"site 0x8b6144 unmapped"
+],
+[
+"mod/session2/guest_seq_play.cpp",
+"kActorBytes",
+"site 0x8b60af unmapped"
+],
+[
+"mod/session2/guest_seq_play.cpp",
+"kAttachBytes",
+"site 0x8b60c6 unmapped"
+],
+[
+"mod/session2/guest_seq_play.cpp",
+"kVf48Bytes",
+"site 0x8b6102 unmapped"
+],
+[
+"mod/session2/guest_seq_play.cpp",
+"kModePtrBytes",
+"site 0x8b613d unmapped"
+],
+[
+"mod/session2/guest_seq_play.cpp",
+"kLiveGate1Bytes",
+"site 0x8b63ce unmapped"
+],
+[
+"mod/session2/guest_seq_play.cpp",
+"kLiveGate2Bytes",
+"site 0x8b67e3 unmapped"
+],
+[
+"mod/session2/guest_seq_play.cpp",
+"kTickBytes",
+"same"
+],
+[
+"mod/session2/guest_seq_play.cpp",
+"kLiveBytes",
+"same"
+],
+[
+"mod/session2/guest_seq_play.cpp",
+"kOwnerBytes",
+"same"
+],
+[
+"mod/session2/guest_seq_play.cpp",
+"kSkipBytes",
+"UPDATED 7 of 20 bytes differ"
+],
+[
+"mod/session2/guest_seq_play.cpp",
+"kSkipTailBytes",
+"UPDATED 8 of 24 bytes differ"
+],
+[
+"mod/session2/guest_seq_play.cpp",
+"kSkipCopyBytes",
+"UPDATED 3 of 14 bytes differ"
+],
+[
+"mod/session2/guest_seq_play.cpp",
+"kSkipLoopBytes",
+"UPDATED 1 of 6 bytes differ"
+],
+[
+"mod/session2/guest_seq_play.cpp",
+"kSkipRsi1Bytes",
+"UPDATED 3 of 7 bytes differ"
+],
+[
+"mod/session2/guest_seq_play.cpp",
+"kSkipRsi2Bytes",
+"UPDATED 3 of 7 bytes differ"
+],
+[
+"mod/session2/guest_seq_play.cpp",
+"kSkipRsi3Bytes",
+"UPDATED 3 of 7 bytes differ"
+],
+[
+"mod/session2/guest_seq_play.cpp",
+"<anon>",
+"site 0x8b6144 unmapped"
+],
+[
+"mod/session2/guest_seq_play.cpp",
+"<anon>",
+"site 0x8b60af unmapped"
+],
+[
+"mod/session2/guest_seq_play.cpp",
+"<anon>",
+"site 0x8b60c6 unmapped"
+],
+[
+"mod/session2/guest_seq_play.cpp",
+"<anon>",
+"site 0x8b6102 unmapped"
+],
+[
+"mod/session2/guest_seq_play.cpp",
+"<anon>",
+"site 0x8b613d unmapped"
+],
+[
+"mod/session2/guest_seq_play.cpp",
+"<anon>",
+"site 0x8b63ce unmapped"
+],
+[
+"mod/session2/guest_seq_play.cpp",
+"<anon>",
+"site 0x8b67e3 unmapped"
+],
+[
+"mod/session2/guest_seq_play.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/session2/guest_seq_play.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/session2/guest_seq_play.cpp",
+"<anon>",
+"same"
+],
+[
+"mod/session2/guest_seq_play.cpp",
+"<anon>",
+"NO SITE (20 bytes)"
+],
+[
+"mod/session2/guest_seq_play.cpp",
+"<anon>",
+"NO SITE (24 bytes)"
+],
+[
+"mod/session2/guest_seq_play.cpp",
+"<anon>",
+"NO SITE (14 bytes)"
+],
+[
+"mod/session2/guest_seq_play.cpp",
+"<anon>",
+"site 0x59eb50 unmapped"
+],
+[
+"mod/session2/guest_seq_play.cpp",
+"<anon>",
+"NO SITE (7 bytes)"
+],
+[
+"mod/session2/guest_seq_play.cpp",
+"<anon>",
+"NO SITE (7 bytes)"
+],
+[
+"mod/session2/guest_seq_play.cpp",
+"<anon>",
+"NO SITE (7 bytes)"
+]
+],
+"named": {
+"kPeTimestamp": "0x6af5d198",
+"kWorldSystemSlot": "0x72451c0",
+"kChunkOrigin": "0x7231330",
+"kStaticPlayerPos": "0x7253e60",
+"kVtClientActorManager": "0x59c2760",
+"kVtControlledActor": "0x5990bf0",
+"kVtCharacterControl": "0x59c1660",
+"kVtStatusComponent": "0x5998b60",
+"kVtPhysicsObject": "0x614a050",
+"kControlInner_Physics": "0x2d0",
+"kCameraSlot": "0x71602a8",
+"kVtCamera": "0x6169b58",
+"kClientPostPacket": "0x3a9960",
+"kClientOnRecvPacket": "0x3a9cf0",
+"kTrocInstancesBegin": "0x6f14e10",
+"kTrocInstancesEnd": "0x6f487b8",
+"kMinimapIconDecide": "0xb24a10",
+"kMinimapIconRoot": "0x7245558",
+"kMinimapIconRootAlt": "0x7245560",
+"kServerOtherEquipWriter": "0x2cdb7b0",
+"kServerDockingWriter": "0x2c43bf0",
+"kVtWallUpMovementMethod": "0x59a2418",
+"kPointClimbEnter": "0x78d520",
+"kActionLayerAdvance": "0x21bd690",
+"kActionLayersAdvance": "0x258c5a0",
+"kRideOnEnter": "0x77c3a0",
+"kRideOffEnter": "0x77d370"
+}
+}
