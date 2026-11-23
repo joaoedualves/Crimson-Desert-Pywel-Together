@@ -476,6 +476,14 @@ namespace CdmpLauncher
             if (o.Steam) ch |= Ini.Set(lines, "steam", "session_code", (o.SessionCode ?? "").Trim().ToUpperInvariant());
             ch |= Ini.Set(lines, "net", "peer_port", o.PeerPort.ToString());
             if (role == Role.Host) ch |= Ini.Set(lines, "net", "host_loopback_only", "0");
+            // Each player in their OWN world, with their own character and their own save (nothing about saves is
+            // hooked): the other player is shown as a copy. The "enter the host's world" mode (session2) is off.
+            ch |= Ini.Set(lines, "session2", "enabled", "0");
+            ch |= Ini.Set(lines, "session2", "guest", "0");
+            foreach (var kv in new[] { "enabled=1", "delay_ms=200", "offset_m=0", "equip=1", "horse=1", "damage=0", "minimap_icon=0x124", "map_pin=1",
+                "enemies_target_copy=1", "guest_hits=1", "guest_hit_stagger=1", "player_hit_react=1", "player_hit_lethal=1", "copy_attack_slots=2" })
+            { var kvp = kv.Split('='); ch |= Ini.Set(lines, "coop", kvp[0], kvp[1]); }
+            ch |= Ini.Set(lines, "dev", "enemy_relay", "1");
 
             if (o.Record) AppLog.Write(Lang.T("ATENÇÃO: gravação de pacotes ligada (record=1): dezenas de MB por minuto. Limpe em Ferramentas."));
             else if (!o.Steam) ch |= Ini.Set(lines, "net", "peer_host", o.PeerHost);

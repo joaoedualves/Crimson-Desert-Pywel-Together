@@ -109,8 +109,8 @@ namespace CdmpLauncher
                 new[] { Lang.T("Jogo aberto"), Lang.T("Tela de título"), Lang.T("No mundo"), Lang.T("Guest chegou") }, Lang.T("Abrir como host"));
             hostCard.Waiting = new[] { Lang.T("Abrindo o jogo"), Lang.T("Carregando a tela de t\u00edtulo"), Lang.T("Entrando no mundo"), Lang.T("Aguardando o guest") };
             guestCard = new RoleCard("Guest", Lang.T("Entra no mundo de quem é o host"),
-                new[] { Lang.T("Host encontrado"), Lang.T("Host no mundo"), Lang.T("Jogo aberto"), Lang.T("No mundo do host") }, Lang.T("Entrar no mundo"));
-            guestCard.Waiting = new[] { Lang.T("Procurando o host"), Lang.T("Aguardando o host entrar no mundo"), Lang.T("Abrindo o jogo"), Lang.T("Entrando no mundo do host") };
+                new[] { Lang.T("Host encontrado"), Lang.T("Host no mundo"), Lang.T("Jogo aberto"), Lang.T("No mundo") }, Lang.T("Entrar no mundo"));
+            guestCard.Waiting = new[] { Lang.T("Procurando o host"), Lang.T("Aguardando o host entrar no mundo"), Lang.T("Abrindo o jogo"), Lang.T("Entrando no mundo") };
             txtHostName = hostCard.Name; txtHostName.Text = cfg.HostName;
             txtGuestName = guestCard.Name; txtGuestName.Text = cfg.GuestName;
             txtHostName.Leave += (s, e) => SaveFields(); txtGuestName.Leave += (s, e) => SaveFields();
@@ -600,7 +600,7 @@ namespace CdmpLauncher
                 if (cfg.AutoE)
                 {
                     await run.AutoE(Math.Min(cfg.FirstEDelaySec, 10), cfg.EIntervalSec, cfg.MaxEPresses,
-                        () => run.HostReadyRemote,
+                        () => true,
                         () => run.State == "mundo" || GuestStateAtHost() != "", ct);
                 }
             }
@@ -1078,8 +1078,7 @@ namespace CdmpLauncher
                     : !found ? cfg.UseSteam && cfg.ByFriend ? "procurando o amigo na Steam" : Lang.T("procurando o host com o código ") + cfg.SessionCode
                     : !world ? Lang.T("esperando o host entrar no mundo")
                     : !guestAlive ? Lang.T("abrindo o jogo")
-                    : guestRun.State == "titulo" ? (guestRun.HostReadyRemote ? Lang.T("servidor do host pronto")
-                        : guestRun.ConnectionLocal ? Lang.T("o mod ainda não achou o host (firewall?)") : Lang.T("esperando o servidor do host"))
+                    : guestRun.State == "titulo" ? "carregando o seu mundo"
                     : guestRun.Ping != "" ? "ping " + guestRun.Ping : "";
                 guestCard.Set(r, true, true, d);
             }
