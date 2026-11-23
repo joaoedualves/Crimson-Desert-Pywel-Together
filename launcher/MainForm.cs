@@ -136,7 +136,7 @@ namespace CdmpLauncher
                 using (var f = Theme.Body(7.5f)) Theme.DrawSpaced(g, Lang.T("CRÔNICA DA SESSÃO"), f, Theme.Gold, 2, 2, 2.4f);
             };
 
-            menu = new MenuBar { Items = new[] { "Mod", Lang.T("Saves"), Lang.T("Ferramentas"), Lang.T("Config") } };
+            menu = new MenuBar { Items = new[] { "Mod", Lang.T("Ferramentas"), Lang.T("Config") } };
             modPage = ModTab(); savePage = SaveTab(); toolsPage = ToolsTab(); cfgPage = ConfigTab();
             menu.Clicked += OpenPage;
 
@@ -228,7 +228,7 @@ namespace CdmpLauncher
 
         void OpenPage(int i)
         {
-            var (title, page) = i == 0 ? (Lang.T("Mod e arquivos"), modPage) : i == 1 ? (Lang.T("Saves"), savePage) : i == 2 ? (Lang.T("Ferramentas"), toolsPage) : (Lang.T("Config"), cfgPage);
+            var (title, page) = i == 0 ? (Lang.T("Mod e arquivos"), modPage) : i == 1 ? (Lang.T("Ferramentas"), toolsPage) : (Lang.T("Config"), cfgPage);
             if (i == 0) RefreshFiles(); if (i == 1) RefreshSaves(); if (i == 2) RefreshCleanup();
             using (var d = new ThemedDialog(title, page, new Size(920, Math.Min(820, Screen.FromControl(this).WorkingArea.Height - 40))))
                 d.ShowDialog(this);
@@ -1127,7 +1127,7 @@ namespace CdmpLauncher
                 await Task.Delay(300);
                 Shot(f, "aba0-sessao");
                 f.tick.Start();
-                var pages = new[] { (Lang.T("Mod e arquivos"), f.modPage), (Lang.T("Saves"), f.savePage), (Lang.T("Ferramentas"), f.toolsPage), (Lang.T("Config"), f.cfgPage) };
+                var pages = new[] { (Lang.T("Mod e arquivos"), f.modPage), (Lang.T("Ferramentas"), f.toolsPage), (Lang.T("Config"), f.cfgPage) };
                 for (int i = 0; i < pages.Length; i++)
                 {
                     if (i == 0) f.RefreshFiles(); if (i == 1) f.RefreshSaves(); if (i == 2) f.RefreshCleanup();
