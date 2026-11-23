@@ -203,6 +203,21 @@ size_t Redirector::match(std::wstring_view p) const {
     }
     // On a component boundary: "save" itself or "save\...", never "savegame".
     if (i < p.size() && p[i] != L'\\' && p[i] != L'/') return kNoMatch;
+    if (!only_.empty() && only_on_.load(std::memory_order_acquire)) {
+        std::wstring rest;
+        rest.reserve(p.size() - i);
+        for (size_t k = i; k < p.size(); ++k) rest.push_back(p[k] == L'/' ? L'\\' : fold(p[k]));
+        const std::wstring needle = L"\\" + only_;
+        bool hit = false;
+        for (size_t pos = rest.find(needle); pos != std::wstring::npos; pos = rest.find(needle, pos + 1)) {
+            const size_t e = pos + needle.size();
+            if (e >= rest.size() || rest[e] == L'\\' || rest[e] == L'.') {
+                hit = true;
+                break;
+            }
+        }
+        if (!hit) return kNoMatch;
+    }
     return i;
 }
 

@@ -79,6 +79,12 @@ public:
 
     const std::wstring& save_dir() const { return dir_; }  // normalized
     const std::wstring& sandbox() const { return sandbox_; }
+    // Only paths with this folder name as a component (lower case, e.g. L"slot204": the guest's slot, also
+    // "slot204.xyz") are mapped; every other path stays in the REAL save folder. Empty = everything is mapped.
+    // set_only() before the hooks exist; enable_only() switches it on later (any thread).
+    void set_only(std::wstring component) { only_ = std::move(component); }
+    void enable_only() { only_on_.store(true, std::memory_order_release); }
+    bool only_enabled() const { return only_on_.load(std::memory_order_acquire); }
 
 private:
     static constexpr size_t kNoMatch = static_cast<size_t>(-1);
@@ -86,6 +92,8 @@ private:
     size_t match(std::wstring_view full_path) const;
 
     std::wstring dir_;      // normalize(save_dir)
+    std::wstring only_;     // see set_only()
+    std::atomic<bool> only_on_{false};
     std::wstring sandbox_;  // as given: '/' as '\', no prefix, no trailing separator
     bool valid_ = false;
 };

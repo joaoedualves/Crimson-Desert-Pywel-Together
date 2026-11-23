@@ -1242,6 +1242,7 @@ bool guest_save_install(const GuestSaveOptions& opt) {
         log::info("Session2 guest save: no guest_own_save_debug_dir: nothing staged (phase B fills '{}')",
                   narrow(g_incoming));
     }
+    if (opt.mode == Mode::On) save_hooks_host_real_saves();
     return true;
 }
 

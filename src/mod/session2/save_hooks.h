@@ -43,6 +43,7 @@ bool save_hooks_install(saveguard::Mode mode = saveguard::Mode::Block);
 // stages that write).
 bool save_hooks_install_guest_role();
 bool save_hooks_guest_role();
+void save_hooks_host_real_saves();
 bool save_hooks_active();       // Block mode on: writes are refused
 bool save_hooks_tracing();      // Trace mode on: nothing refused, operations logged
 bool save_hooks_redirecting();  // Redirect mode on: everything goes to the sandbox

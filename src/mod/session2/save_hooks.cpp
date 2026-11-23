@@ -1114,6 +1114,15 @@ bool save_hooks_install_guest_role() {
 
 bool save_hooks_guest_role() { return g_guest_role.load(); }
 
+// Called once the guest's own slot is working (guest_own_save=1 installed): from now on the host's own saves are
+// read and written in the REAL save folder; only the guest's slot204 stays in the sandbox.
+void save_hooks_host_real_saves() {
+    if (!g_redir || g_redir->only_enabled()) return;
+    g_redir->enable_only();
+    log::warn("Session2 save guard: the host plays on its ORIGINAL save folder (read and written there); only the "
+              "guest's slot204 is kept in the sandbox");
+}
+
 bool save_hooks_install(saveguard::Mode mode) {
     if (g_guest_role.load()) {
         // A guest-role process with the host's stages in its ini: they would save into the guest's folder.
@@ -1149,6 +1158,9 @@ bool save_hooks_install(saveguard::Mode mode) {
     CopyStats copied;
     if (mode == saveguard::Mode::Redirect) {
         auto redir = std::make_unique<saveguard::Redirector>(dir, sandbox);
+        // The host always plays and saves on its ORIGINAL save folder: only the guest's slot lives in the sandbox.
+        redir->set_only(L"slot204");
+
         if (!redir->valid() || !prepare_sandbox(dir, sandbox, copied)) {
             log::error("Session2 save guard: the save folder could not be copied to '{}'; falling back to block "
                        "(writes refused, 'Failed to save data' will come back)", narrow(sandbox));
