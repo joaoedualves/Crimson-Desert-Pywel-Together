@@ -1046,6 +1046,29 @@ bool find_account(const std::wstring& sandbox, std::wstring& account, std::strin
         if (!n.empty() && n.find_first_not_of(L"0123456789") == std::wstring::npos) found.push_back(n);
     } while (FindNextFileW(f, &fd));
     FindClose(f);
+    if (found.size() > 1) {
+        // Several account folders (saves of other accounts left on this PC): the one of the Steam account that is
+        // logged in is the game's. Asked from the game's own steam_api64.dll.
+        uint64_t steam_id = 0;
+        if (HMODULE dll = GetModuleHandleW(L"steam_api64.dll")) {
+            using UserFn = void* (*)();
+            using IdFn = uint64_t (*)(void*);
+            const auto user = reinterpret_cast<UserFn>(GetProcAddress(dll, "SteamAPI_SteamUser_v023"));
+            const auto get_id = reinterpret_cast<IdFn>(GetProcAddress(dll, "SteamAPI_ISteamUser_GetSteamID"));
+            if (user && get_id) {
+                if (void* u = user()) steam_id = get_id(u);
+            }
+        }
+        const std::wstring mine = std::to_wstring(static_cast<uint32_t>(steam_id & 0xFFFFFFFFull));
+        if (steam_id != 0) {
+            for (const auto& n : found) {
+                if (n == mine) {
+                    account = n;
+                    return true;
+                }
+            }
+        }
+    }
     if (found.size() != 1) {
         why = std::format("the sandbox '{}' has {} account folders (all digits); exactly one is needed", narrow(sandbox),
                           found.size());

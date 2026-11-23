@@ -476,8 +476,7 @@ namespace CdmpLauncher
             if (o.Steam) ch |= Ini.Set(lines, "steam", "session_code", (o.SessionCode ?? "").Trim().ToUpperInvariant());
             ch |= Ini.Set(lines, "net", "peer_port", o.PeerPort.ToString());
             if (role == Role.Host) ch |= Ini.Set(lines, "net", "host_loopback_only", "0");
-            // the game always saves in its ORIGINAL save folder; the app only makes copies (SaveBackup)
-            if (role == Role.Host) ch |= Ini.Set(lines, "session2", "save_guard", "0");
+
             if (o.Record) AppLog.Write(Lang.T("ATENÇÃO: gravação de pacotes ligada (record=1): dezenas de MB por minuto. Limpe em Ferramentas."));
             else if (!o.Steam) ch |= Ini.Set(lines, "net", "peer_host", o.PeerHost);
             ch |= Ini.Set(lines, "sniffer", "record", o.Record ? "1" : "0");
