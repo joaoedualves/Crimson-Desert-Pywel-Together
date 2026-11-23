@@ -509,7 +509,7 @@ namespace CdmpLauncher
             }
         }
 
-        static void Chevron(Graphics g, Rectangle r, bool left, bool hot)
+        internal static void Chevron(Graphics g, Rectangle r, bool left, bool hot)
         {
             float cx = r.X + r.Width / 2f, cy = r.Height / 2f, s = 6f;
             using (var p = new Pen(hot ? Theme.GoldLight : Theme.Parchment, 2.2f) { StartCap = LineCap.Round, EndCap = LineCap.Round, LineJoin = LineJoin.Round })
@@ -534,21 +534,37 @@ namespace CdmpLauncher
         }
     }
 
-    // The session code as a seal in the middle: the code, generate and copy beside it.
+    // The session seal in the middle with two sections, switched by the arrows at the top:
+    // the session code (anyone with the same code) or the Steam friends (pick a friend, no code).
     public class Seal : Glass
     {
         public readonly TextBox Code;
         public readonly OrnateButton Gen, Copy;
+        public readonly ComboBox Friends;
         public string Hint = "";
+        int mode, hoverArrow;
+        public event Action<int> ModeChanged;
+        public int Mode { get => mode; set { mode = value == 1 ? 1 : 0; ApplyMode(); } }
         const int W = 240;
         public Seal()
         {
             Height = 88;
             Code = new TextBox { BorderStyle = BorderStyle.None, BackColor = Theme.Ink, ForeColor = Theme.GoldLight, Font = Theme.Body(16f), TextAlign = HorizontalAlignment.Center, CharacterCasing = CharacterCasing.Upper };
+            Friends = new ComboBox { DropDownStyle = ComboBoxStyle.DropDownList, FlatStyle = FlatStyle.Flat, BackColor = Theme.Ink, ForeColor = Theme.GoldLight, Font = Theme.Body(11f), Visible = false, DropDownHeight = 220 };
             Gen = new OrnateButton { Text = Lang.T("Gerar") };
             Copy = new OrnateButton { Text = Lang.T("Copiar") };
-            Controls.Add(Code); Controls.Add(Gen); Controls.Add(Copy);
+            Controls.Add(Code); Controls.Add(Friends); Controls.Add(Gen); Controls.Add(Copy);
         }
+
+        void ApplyMode()
+        {
+            Code.Visible = Gen.Visible = Copy.Visible = mode == 0;
+            Friends.Visible = mode == 1;
+            PerformLayout(); Invalidate();
+        }
+
+        Rectangle LeftBox => new Rectangle(Width / 2 - 150, 0, 34, 24);
+        Rectangle RightBox => new Rectangle(Width / 2 + 116, 0, 34, 24);
 
         protected override void OnLayout(LayoutEventArgs e)
         {
@@ -556,6 +572,7 @@ namespace CdmpLauncher
             if (Code == null) return;
             int x = (Width - W) / 2;
             Code.SetBounds(x + 10, 31, W - 20, 28);
+            Friends.SetBounds(x + 8, 31, W - 16, 28);
             Gen.SetBounds(x - 90, 27, 74, 34);
             Copy.SetBounds(x + W + 16, 27, 74, 34);
         }
@@ -564,12 +581,28 @@ namespace CdmpLauncher
         {
             var g = e.Graphics; Theme.Smooth(g);
             int x = (Width - W) / 2;
-            using (var f = Theme.Body(7.5f)) Theme.DrawSpacedCentered(g, Lang.T("CÓDIGO DA SESSÃO"), f, Theme.Gold, Width / 2f, 6, 2.6f);
+            var title = mode == 0 ? Lang.T("C\u00d3DIGO DA SESS\u00c3O") : Lang.T("AMIGOS DA STEAM");
+            using (var f = Theme.Body(7.5f)) Theme.DrawSpacedCentered(g, title, f, Theme.Gold, Width / 2f, 6, 2.6f);
+            OptionRow.Chevron(g, LeftBox, true, hoverArrow == -1);
+            OptionRow.Chevron(g, RightBox, false, hoverArrow == 1);
             using (var b = new SolidBrush(Theme.Ink)) g.FillRectangle(b, x, 24, W, 40);
             using (var p = new Pen(Theme.Gold)) g.DrawRectangle(p, x, 24, W, 40);
             Theme.Diamond(g, Theme.Gold, x, 44, 4f); Theme.Diamond(g, Theme.Gold, x + W, 44, 4f);
             using (var f = Theme.Body(9f))
                 TextRenderer.DrawText(g, Hint, f, new Rectangle(0, 65, Width, 24), Theme.Ash, TextFormatFlags.HorizontalCenter | TextFormatFlags.VerticalCenter | TextFormatFlags.EndEllipsis);
+        }
+
+        protected override void OnMouseMove(MouseEventArgs e)
+        {
+            var a = LeftBox.Contains(e.Location) ? -1 : RightBox.Contains(e.Location) ? 1 : 0;
+            if (a != hoverArrow) { hoverArrow = a; Cursor = a != 0 ? Cursors.Hand : Cursors.Default; Invalidate(); }
+        }
+        protected override void OnMouseLeave(EventArgs e) { hoverArrow = 0; Cursor = Cursors.Default; Invalidate(); }
+        protected override void OnMouseClick(MouseEventArgs e)
+        {
+            if (!LeftBox.Contains(e.Location) && !RightBox.Contains(e.Location)) return;
+            Mode = 1 - mode;
+            ModeChanged?.Invoke(mode);
         }
     }
 

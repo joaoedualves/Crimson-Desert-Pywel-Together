@@ -29,6 +29,8 @@ struct Config {
     // [steam] peer_steamid: guest = the host's SteamID64 (0 = the only friend
     // playing); host = accept only this friend (0 = any friend playing).
     uint64_t steam_peer_id = 0;
+    // [steam] session_code: the launcher's session code; friends with the same code pair up on their own.
+    std::string steam_session_code;
     int steam_channel = 67;
     // [steam] send_rate_min_kb / send_rate_max_kb / send_buffer_kb: Steam
     // networking's send limits (KB/s, KB). send_rate_min_kb=0 leaves Steam's

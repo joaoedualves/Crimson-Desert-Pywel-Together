@@ -164,6 +164,28 @@ struct SteamTransport::Api {
     uint64_t (*friend_by_index)(void*, int, int) = nullptr;
     const char* (*friend_name)(void*, uint64_t) = nullptr;
     bool (*friend_game)(void*, uint64_t, FriendGameInfo*) = nullptr;
+    // Optional (session code lobbies: ISteamMatchmaking + ISteamUtils)
+    void* (*matchmaking)() = nullptr;
+    void* (*steam_utils)() = nullptr;
+    uint64_t (*mm_create)(void*, int, int) = nullptr;
+    uint64_t (*mm_request)(void*) = nullptr;
+    void (*mm_filter_str)(void*, const char*, const char*, int) = nullptr;
+    void (*mm_filter_dist)(void*, int) = nullptr;
+    void (*mm_filter_count)(void*, int) = nullptr;
+    uint64_t (*mm_by_index)(void*, int) = nullptr;
+    uint64_t (*mm_owner)(void*, uint64_t) = nullptr;
+    bool (*mm_set_data)(void*, uint64_t, const char*, const char*) = nullptr;
+    uint64_t (*mm_join)(void*, uint64_t) = nullptr;
+    void (*mm_leave)(void*, uint64_t) = nullptr;
+    int (*mm_num_members)(void*, uint64_t) = nullptr;
+    uint64_t (*mm_member)(void*, uint64_t, int) = nullptr;
+    bool (*call_done)(void*, uint64_t, bool*) = nullptr;
+    bool (*call_result)(void*, uint64_t, void*, int, int, bool*) = nullptr;
+    void* mm = nullptr;
+    void* sutil = nullptr;
+    // Optional (session code pairing through rich presence)
+    bool (*set_rich)(void*, const char*, const char*) = nullptr;
+    const char* (*friend_rich)(void*, uint64_t, const char*) = nullptr;
 
     void* msgs = nullptr;
     void* utl = nullptr;
@@ -184,6 +206,10 @@ SteamTransport::SteamTransport(int channel, bool host, uint64_t accept_from, Ste
 }
 
 SteamTransport::~SteamTransport() {
+    if (ready_ && !disabled_ && api_->mm && api_->mm_leave) {
+        if (lobby_id_) call_void(api_->mm_leave, api_->mm, lobby_id_);
+        if (joined_lobby_) call_void(api_->mm_leave, api_->mm, joined_lobby_);
+    }
     if (ready_ && !disabled_ && peer_) {
         const auto id = identity(peer_);
         bool ignored = false;
@@ -245,6 +271,29 @@ bool SteamTransport::resolve() {
         GetProcAddress(dll, "SteamAPI_ISteamNetworkingUtils_GetConfigValue"));
     a.config_info = reinterpret_cast<decltype(a.config_info)>(
         GetProcAddress(dll, "SteamAPI_ISteamNetworkingUtils_GetConfigValueInfo"));
+    auto opt = [&](auto& fn, const char* name) {
+        fn = reinterpret_cast<std::remove_reference_t<decltype(fn)>>(GetProcAddress(dll, name));
+    };
+    opt(a.matchmaking, "SteamAPI_SteamMatchmaking_v009");
+    opt(a.steam_utils, "SteamAPI_SteamUtils_v010");
+    opt(a.mm_create, "SteamAPI_ISteamMatchmaking_CreateLobby");
+    opt(a.mm_request, "SteamAPI_ISteamMatchmaking_RequestLobbyList");
+    opt(a.mm_filter_str, "SteamAPI_ISteamMatchmaking_AddRequestLobbyListStringFilter");
+    opt(a.mm_filter_dist, "SteamAPI_ISteamMatchmaking_AddRequestLobbyListDistanceFilter");
+    opt(a.mm_filter_count, "SteamAPI_ISteamMatchmaking_AddRequestLobbyListResultCountFilter");
+    opt(a.mm_by_index, "SteamAPI_ISteamMatchmaking_GetLobbyByIndex");
+    opt(a.mm_owner, "SteamAPI_ISteamMatchmaking_GetLobbyOwner");
+    opt(a.mm_set_data, "SteamAPI_ISteamMatchmaking_SetLobbyData");
+    opt(a.mm_join, "SteamAPI_ISteamMatchmaking_JoinLobby");
+    opt(a.mm_leave, "SteamAPI_ISteamMatchmaking_LeaveLobby");
+    opt(a.mm_num_members, "SteamAPI_ISteamMatchmaking_GetNumLobbyMembers");
+    opt(a.mm_member, "SteamAPI_ISteamMatchmaking_GetLobbyMemberByIndex");
+    opt(a.call_done, "SteamAPI_ISteamUtils_IsAPICallCompleted");
+    opt(a.call_result, "SteamAPI_ISteamUtils_GetAPICallResult");
+    a.set_rich = reinterpret_cast<decltype(a.set_rich)>(
+        GetProcAddress(dll, "SteamAPI_ISteamFriends_SetRichPresence"));
+    a.friend_rich = reinterpret_cast<decltype(a.friend_rich)>(
+        GetProcAddress(dll, "SteamAPI_ISteamFriends_GetFriendRichPresence"));
     a.iterate_marker = reinterpret_cast<void*>(
         GetProcAddress(dll, "SteamAPI_ISteamNetworkingUtils_IterateGenericEditableConfigValues"));
     return true;
@@ -272,9 +321,20 @@ void SteamTransport::become_ready() {
     ready_ = true;
     log::info("Steam: ready as '{}' (SteamID64 {}), channel {}, {}", name ? name : "?", own_id_,
               channel_, host_ ? "host" : "guest");
+    if (a.matchmaking) call(a.mm, a.matchmaking);
+    if (a.steam_utils) call(a.sutil, a.steam_utils);
+    if (!session_key_.empty()) {
+        bool ok = false;
+        if (a.set_rich && call(ok, a.set_rich, a.frn, "cdmp_session", session_key_.c_str()) && ok) {
+            log::info("Steam: session code published to friends (rich presence)");
+        } else {
+            log::warn("Steam: could not publish the session code; any friend playing will be accepted");
+            session_key_.clear();
+        }
+    }
     const auto playing = friends_playing();
     if (playing.empty()) {
-        log::info("Steam: no friends are playing Crimson Desert right now");
+        log::info("Steam: no friends are playing Crimson Desert with this session code yet");
     }
     for (const auto& f : playing) {
         log::info("Steam: friend playing Crimson Desert: '{}' (SteamID64 {})", f.name, f.id);
@@ -473,6 +533,9 @@ void SteamTransport::poll(uint32_t now_ms) {
         }
     }
 
+    poll_lobby(now_ms);
+    if (disabled_) return;
+
     int relay = 0;
     if (!call(relay, a.relay_status, a.utl, static_cast<void*>(nullptr))) return fail("GetRelayNetworkStatus");
     if (relay != last_relay_status_) {
@@ -503,6 +566,143 @@ void SteamTransport::poll(uint32_t now_ms) {
     }
 }
 
+// Session code pairing without friendship: the host opens a public lobby
+// that carries the hashed code, the guest searches lobbies with that exact
+// value and takes the lobby owner as its peer. The guest also joins the lobby
+// so the host sees who it is and accepts the Steam networking session.
+void SteamTransport::poll_lobby(uint32_t now_ms) {
+    Api& a = *api_;
+    if (session_key_.empty() || !a.mm || !a.sutil || !a.mm_create || !a.mm_request || !a.call_done ||
+        !a.call_result || !a.mm_filter_str || !a.mm_by_index || !a.mm_owner || !a.mm_set_data || !a.mm_join ||
+        !a.mm_num_members || !a.mm_member) {
+        return;
+    }
+    constexpr int kLobbyMatchListCb = 510;  // k_iSteamMatchmakingCallbacks + 10
+    constexpr int kLobbyCreatedCb = 513;    // k_iSteamMatchmakingCallbacks + 13
+    constexpr int kLobbyTypePublic = 2;
+    constexpr int kDistanceWorldwide = 3;
+    constexpr int kComparisonEqual = 0;
+    // 1 = finished (ok says whether the result was read), 0 = still running.
+    auto finished = [&](uint64_t h, int cb_id, void* buf, int size, bool& ok) -> int {
+        bool failed = false, done = false;
+        if (!call(done, a.call_done, a.sutil, h, &failed)) {
+            fail("IsAPICallCompleted");
+            return 0;
+        }
+        if (!done) return 0;
+        ok = false;
+        if (!failed) {
+            bool failed2 = false, got = false;
+            if (!call(got, a.call_result, a.sutil, h, buf, size, cb_id, &failed2)) {
+                fail("GetAPICallResult");
+                return 0;
+            }
+            ok = got && !failed2;
+        }
+        return 1;
+    };
+
+    if (host_) {
+        if (lobby_id_ == 0) {
+            if (lobby_state_ == LobbyState::Idle && now_ms >= lobby_next_ms_) {
+                uint64_t h = 0;
+                if (!call(h, a.mm_create, a.mm, kLobbyTypePublic, 4)) return fail("CreateLobby");
+                lobby_call_ = h;
+                lobby_state_ = LobbyState::Busy;
+            } else if (lobby_state_ == LobbyState::Busy) {
+                struct Created {
+                    int32_t result;
+                    int32_t pad;
+                    uint64_t lobby;
+                } r{};
+                bool ok = false;
+                if (finished(lobby_call_, kLobbyCreatedCb, &r, static_cast<int>(sizeof r), ok)) {
+                    lobby_state_ = LobbyState::Idle;
+                    lobby_next_ms_ = now_ms + 5000;
+                    if (ok && r.result == 1 && r.lobby) {
+                        lobby_id_ = r.lobby;
+                        bool set = false;
+                        call(set, a.mm_set_data, a.mm, lobby_id_, "cdmp_session", session_key_.c_str());
+                        log::info("Steam: session lobby open for this code (waiting for the guest)");
+                    } else {
+                        log::warn("Steam: could not open the session lobby (result {}); trying again", r.result);
+                    }
+                }
+            }
+        } else {
+            int n = 0;
+            if (!call(n, a.mm_num_members, a.mm, lobby_id_)) return fail("GetNumLobbyMembers");
+            for (int i = 0; i < n && i < 8; ++i) {
+                uint64_t m = 0;
+                if (!call(m, a.mm_member, a.mm, lobby_id_, i)) return fail("GetLobbyMemberByIndex");
+                if (!m || m == own_id_) continue;
+                const auto id = identity(m);
+                bool ok = false;
+                if (!call(ok, a.accept, a.msgs, &id)) return fail("AcceptSessionWithUser");
+                if (m != lobby_peer_) {
+                    lobby_peer_ = m;
+                    log::info("Steam: SteamID64 {} joined the session lobby", m);
+                }
+            }
+        }
+        return;
+    }
+
+    // Guest
+    if (peer_ != 0 || lobby_peer_ != 0) return;
+    if (lobby_state_ == LobbyState::Idle && now_ms >= lobby_next_ms_) {
+        if (!call_void(a.mm_filter_str, a.mm, "cdmp_session", session_key_.c_str(), kComparisonEqual)) {
+            return fail("AddRequestLobbyListStringFilter");
+        }
+        if (a.mm_filter_dist) call_void(a.mm_filter_dist, a.mm, kDistanceWorldwide);
+        if (a.mm_filter_count) call_void(a.mm_filter_count, a.mm, 10);
+        uint64_t h = 0;
+        if (!call(h, a.mm_request, a.mm)) return fail("RequestLobbyList");
+        lobby_call_ = h;
+        lobby_state_ = LobbyState::Busy;
+    } else if (lobby_state_ == LobbyState::Busy) {
+        uint32_t n = 0;
+        bool ok = false;
+        if (finished(lobby_call_, kLobbyMatchListCb, &n, static_cast<int>(sizeof n), ok)) {
+            lobby_state_ = LobbyState::Idle;
+            lobby_next_ms_ = now_ms + 3000;
+            if (ok && n > 0) {
+                for (uint32_t i = 0; i < n && i < 10; ++i) {
+                    uint64_t lobby = 0, owner = 0;
+                    if (!call(lobby, a.mm_by_index, a.mm, static_cast<int>(i))) return fail("GetLobbyByIndex");
+                    if (!lobby) continue;
+                    if (!call(owner, a.mm_owner, a.mm, lobby)) return fail("GetLobbyOwner");
+                    if (!owner || owner == own_id_) continue;
+                    lobby_peer_ = owner;
+                    uint64_t j = 0;
+                    call(j, a.mm_join, a.mm, lobby);
+                    joined_lobby_ = lobby;
+                    log::info("Steam: found the host with this session code (SteamID64 {})", owner);
+                    break;
+                }
+            }
+        }
+    }
+}
+
+void SteamTransport::set_session_code(const std::string& code) {
+    std::string up;
+    for (char c : code) {
+        if (c == ' ' || c == '\t') continue;
+        up += (c >= 'a' && c <= 'z') ? static_cast<char>(c - 32) : c;
+    }
+    if (up.empty()) {
+        session_key_.clear();
+        return;
+    }
+    uint64_t h = 1469598103934665603ull;  // FNV-1a
+    for (char c : std::string("cdmp-pywel:") + up) {
+        h ^= static_cast<uint8_t>(c);
+        h *= 1099511628211ull;
+    }
+    session_key_ = std::format("{:016x}", h);
+}
+
 std::vector<SteamFriend> SteamTransport::friends_playing() {
     std::vector<SteamFriend> out;
     if (!ready_ || disabled_) return out;
@@ -524,7 +724,14 @@ std::vector<SteamFriend> SteamTransport::friends_playing() {
             fail("GetFriendGamePlayed");
             return {};
         }
-        if (!playing || (info.game_id & 0x100077F) != kAppId) continue;
+        if (!playing || (info.game_id & 0xFFFFFFull) != kAppId) continue;
+        // Session code: only friends that publish the same code in their rich
+        // presence are our peer (set in become_ready from [steam] session_code).
+        if (!session_key_.empty() && a.friend_rich) {
+            const char* v = nullptr;
+            call(v, a.friend_rich, a.frn, id, "cdmp_session");
+            if (!v || session_key_ != v) continue;
+        }
         const char* name = nullptr;
         call(name, a.friend_name, a.frn, id);
         out.push_back({id, name ? name : "?"});

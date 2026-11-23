@@ -61,6 +61,11 @@ public:
     uint64_t own_id() const { return own_id_; }
     // Whom we talk to (for connection status in the log).
     void set_peer(uint64_t id) { peer_ = id; }
+    // Session code (the launcher's password): published in rich presence and
+    // required from every friend we pair with. Empty = any friend playing.
+    void set_session_code(const std::string& code);
+    // Guest: the host found through the session code lobby (0 = not yet).
+    uint64_t lobby_peer() const { return lobby_peer_; }
 
 private:
     struct Api;
@@ -68,6 +73,7 @@ private:
     void become_ready();
     void fail(const char* what);
     bool apply_limits();
+    void poll_lobby(uint32_t now_ms);
     void drain_incoming();
     void sample_queue(uint32_t now_ms);
     // SendMessageToUser's EResult, or nullopt after an exception (disabled).
@@ -80,6 +86,14 @@ private:
     static constexpr size_t kMaxHeldBytes = 1024 * 1024;
 
     std::unique_ptr<Api> api_;
+    std::string session_key_;
+    enum class LobbyState { Idle, Busy };
+    LobbyState lobby_state_ = LobbyState::Idle;
+    uint64_t lobby_call_ = 0;
+    uint64_t lobby_id_ = 0;       // host: the lobby we opened
+    uint64_t joined_lobby_ = 0;   // guest: the lobby we joined
+    uint64_t lobby_peer_ = 0;     // guest: the owner; host: the last member that joined
+    uint32_t lobby_next_ms_ = 0;
     int channel_;
     bool host_;
     uint64_t accept_from_;

@@ -33,7 +33,10 @@ namespace CdmpLauncher
         [DataMember] public string SessionCode = "";
         [DataMember] public string ManualHostIp = "";
         [DataMember] public string Transport = "steam";   // "steam" (padrÃ£o, como o mod original) | "udp" (rede local/VPN, opcional)
-        [DataMember] public string FriendSteamId = "";    // SteamID64 do amigo (opcional; vazio = o mod acha o amigo que estÃ¡ jogando)
+        [DataMember] public string FriendSteamId = "";
+        [DataMember] public string FriendName = "";
+        [DataMember] public string ConnMode = "code";   // "code" (session code, with anyone) or "friend" (a Steam friend, no code)
+        public bool ByFriend => ConnMode == "friend";    // SteamID64 do amigo (opcional; vazio = o mod acha o amigo que estÃ¡ jogando)
         [DataMember] public bool AutoE = true;
         [DataMember] public bool RecordPackets = false;
         [DataMember] public bool AutoSyncFromHost = true;

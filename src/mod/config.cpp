@@ -31,6 +31,8 @@ constexpr wchar_t kDefaultIni[] =
     L"; Guest: the host's SteamID64 (empty = the only friend playing Crimson Desert)\r\n"
     L"; Host: accept only this friend (empty = any friend playing)\r\n"
     L"peer_steamid=\r\n"
+    L"; Same code on both PCs (the launcher fills it): friends with the same code pair up automatically\r\n"
+    L"session_code=\r\n"
     L"\r\n"
     L"[overlay]\r\n"
     L"; 0 turns off the in-game overlay completely (no graphics hooks)\r\n"
@@ -118,6 +120,7 @@ Config load_config(const std::wstring& ini_path) {
     c.net_role_host = read_string(ini_path, L"net", L"role", "guest") == L"host";
     c.host_loopback_only = read_uint(ini_path, L"net", L"host_loopback_only", 0) != 0;
     c.steam_peer_id = _wcstoui64(read_string(ini_path, L"steam", L"peer_steamid", "").c_str(), nullptr, 10);
+    c.steam_session_code = narrow(read_string(ini_path, L"steam", L"session_code", ""));
     c.steam_channel = static_cast<int>(read_uint(ini_path, L"steam", L"channel", 67));
     // 0 = Steam's defaults; otherwise 64 KB/s .. 64 MB/s, the maximum never below the minimum.
     c.steam_send_rate_min_kb = read_uint(ini_path, L"steam", L"send_rate_min_kb", c.steam_send_rate_min_kb);

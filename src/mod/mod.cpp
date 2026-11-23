@@ -288,6 +288,12 @@ void run_network(const Config& cfg, LocalSource& local) {
             net::cleanup();
             return;
         }
+        if (cfg.steam_session_code.empty() && cfg.steam_peer_id == 0) {
+            log::error("The Steam transport needs a session code ([steam] session_code) or a friend ([steam] "
+                       "peer_steamid); the launcher fills one of them");
+            net::cleanup();
+            return;
+        }
         net::SteamSendLimits limits;
         limits.rate_min = static_cast<int32_t>(cfg.steam_send_rate_min_kb * 1024);
         limits.rate_max = static_cast<int32_t>(cfg.steam_send_rate_max_kb * 1024);
@@ -295,6 +301,7 @@ void run_network(const Config& cfg, LocalSource& local) {
         limits.recv_buffer = static_cast<int32_t>(cfg.steam_recv_buffer_kb * 1024);
         limits.recv_messages = static_cast<int32_t>(cfg.steam_recv_buffer_messages);
         auto st = std::make_unique<net::SteamTransport>(cfg.steam_channel, host, cfg.steam_peer_id, limits);
+        st->set_session_code(cfg.steam_session_code);
         steam = st.get();
         transport = std::move(st);
         if (!host && cfg.steam_peer_id) {
@@ -379,15 +386,20 @@ void run_network(const Config& cfg, LocalSource& local) {
         // Steam guest without a configured host: the only friend playing.
         if (steam && !host && !peer && steam->ready() && now_ms() - last_friend_scan >= 2000) {
             last_friend_scan = now_ms();
-            const auto playing = steam->friends_playing();
-            if (playing.size() == 1) {
+            const uint64_t via_code = steam->lobby_peer();
+            const auto playing = via_code ? std::vector<net::SteamFriend>{} : steam->friends_playing();
+            if (via_code) {
+                peer = net::PeerAddr::steam(via_code);
+                steam->set_peer(via_code);
+                log::info("Network: connecting through the session code (SteamID64 {})", via_code);
+            } else if (playing.size() == 1) {
                 peer = net::PeerAddr::steam(playing[0].id);
                 steam->set_peer(playing[0].id);
                 log::info("Network: connecting to '{}' (the only friend playing)", playing[0].name);
             } else if (playing.size() != last_friend_count) {
                 last_friend_count = playing.size();
-                log::info("Network: {} friends playing; put the host's SteamID64 in [steam] "
-                          "peer_steamid (listed above when Steam got ready)",
+                log::info("Network: {} friends playing with this session code; waiting for exactly one "
+                          "(use a different session code for each group)",
                           playing.size());
             }
         }

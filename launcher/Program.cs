@@ -8,6 +8,7 @@ namespace CdmpLauncher
         [STAThread]
         static int Main(string[] args)
         {
+            if (args.Length >= 2 && args[0] == "--friends") return SteamFriends.RunChild(args[1]);
             if (args.Length >= 4 && args[0] == "--selftest") return SelfTest.Run(args[1], args[2], args[3]);
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
