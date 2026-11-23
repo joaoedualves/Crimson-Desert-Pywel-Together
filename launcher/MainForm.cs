@@ -16,6 +16,8 @@ namespace CdmpLauncher
         readonly Deployer dep;
         GameRun hostRun, guestRun;
         HostBeacon beacon;
+        RvHost rvHost;                  // Steam meeting point: tells the guest's app when this host is in the world
+        bool rvFound, rvWorld;          // guest: what the host's meeting point says
         string beaconCode;
         bool hostLostForGuest;          // the host the guest is in closed or restarted: the guest must join again
         int remoteMisses;
@@ -322,7 +324,7 @@ namespace CdmpLauncher
             var guest = Group(Lang.T("Save do GUEST (o personagem do convidado)"),
                 lblSteam, lblGuestDir,
                 Row(B(Lang.T("Importar save (.zip)..."), (s, e) => ImportSaveUi(true)), B(Lang.T("Importar pasta..."), (s, e) => ImportSaveUi(false)),
-                    B(Lang.T("Baixar save do host"), async (s, e) => await DownloadSaveUi()), B(Lang.T("Abrir pasta"), (s, e) => { var d = Deployer.GuestSaveDir(Util.SteamId32()); Directory.CreateDirectory(d); Util.OpenFolder(d); })),
+                    B(Lang.T("Abrir pasta"), (s, e) => { var d = Deployer.GuestSaveDir(Util.SteamId32()); Directory.CreateDirectory(d); Util.OpenFolder(d); })),
                 L(Lang.T("A pasta slotN é localizada dentro do zip ou da pasta e copiada para save_cdmp_guest\\<steamid>\\, sem aninhar a pasta do id. Backup automático antes."), Dim, 9f));
             chkShare = C(Lang.T("Permitir que o guest baixe este save (no papel de host)"), cfg.ShareSave);
             chkShare.CheckedChanged += (s, e) => { cfg.ShareSave = chkShare.Checked; SaveCfg(); };
@@ -335,7 +337,7 @@ namespace CdmpLauncher
                 Row(B(Lang.T("Backup de todos os saves agora"), (s, e) => Busy(() => { var z = Deployer.BackupAllSaves(); AppLog.Write(Lang.T("backup: ") + z); })),
                     B(Lang.T("Abrir pasta de backups"), (s, e) => { Directory.CreateDirectory(Deployer.BackupDir); Util.OpenFolder(Deployer.BackupDir); }),
                     B(Lang.T("Abrir pasta CD"), (s, e) => Util.OpenFolder(Deployer.CdDir))));
-            Stack(p, guest, host, bk);
+            Stack(p, guest, bk);
             return p;
         }
 
@@ -449,6 +451,13 @@ namespace CdmpLauncher
                 if (!cfg.UseSteam) StartBeacon();
                 hostCts?.Cancel();
                 hostCts = new CancellationTokenSource();
+
+                if (cfg.UseSteam)
+                {
+                    rvHost?.Dispose();
+                    try { rvHost = RvHost.Start(cfg.GameDir, cfg.ByFriend ? "friend" : "code", cfg.ByFriend ? (cfg.FriendSteamId ?? "") : cfg.SessionCode); rvHost.SetState("abrindo"); }
+                    catch (Exception ex) { AppLog.Write("steam: " + ex.Message); rvHost = null; }
+                }
                 hostRun = new GameRun(Role.Host, cfg.GameDir, dep.LogAlias(cfg.Current, Role.Host), dep.EnvRole(Role.Host));
                 hostRun.Exited += r => BeginInvoke((Action)(() => OnExited(r)));
                 hostRun.Start();
@@ -487,7 +496,7 @@ namespace CdmpLauncher
                 WinmmSha = cfg.WinmmSha,
                 Ping = hostRun?.Ping ?? "",
                 Port = cfg.PeerPort,
-                ShareSave = cfg.ShareSave,
+                ShareSave = false,
             };
         }
 
@@ -502,7 +511,7 @@ namespace CdmpLauncher
                     var t = dep.TemplatePath(dep.ProfileBySha(cfg.DeployedAsiSha) ?? cfg.Current, Role.Guest);
                     return File.Exists(t) ? t : null;
                 case "save":
-                    if (!cfg.ShareSave) return null;
+                    return null;   // the host's save is never sent to anyone
                     var dir = string.IsNullOrEmpty(cfg.ShareSaveDir) ? Deployer.HostSaveDir(Util.SteamId32()) : cfg.ShareSaveDir;
                     try { zippedSave = Deployer.ZipSaveForShare(dir); return zippedSave; } catch (Exception e) { AppLog.Write(Lang.T("save para o guest: ") + e.Message); return null; }
             }
@@ -535,7 +544,28 @@ namespace CdmpLauncher
                 if (cfg.UseSteam)
                 {
                     peer = "";
-                    AppLog.Write(Lang.T("guest: conexão pela Steam; o mod acha o amigo que está jogando (vocês precisam ser amigos na Steam)"));
+                    if (!CheckConn(false)) return;
+                    rvFound = rvWorld = false;
+                    AppLog.Write("guest: procurando o host pela Steam. O jogo s\u00f3 abre quando o host estiver dentro do mundo");
+                    var rvg = RvGuest.Start(cfg.GameDir, cfg.ByFriend ? "friend" : "code", cfg.ByFriend ? (cfg.FriendSteamId ?? "") : cfg.SessionCode);
+                    try
+                    {
+                        bool saidFound = false; string lastErr = null;
+                        while (true)
+                        {
+                            ct.ThrowIfCancellationRequested();
+                            if (rvg.Error != null && rvg.Error != lastErr) { lastErr = rvg.Error; AppLog.Write("steam: " + lastErr); }
+                            if (!rvg.Alive) { Msg("A Steam n\u00e3o respondeu" + (lastErr != null ? " (" + lastErr + ")" : "") + ". Abra a Steam e tente de novo."); return; }
+                            rvFound = rvg.Found; rvWorld = rvFound && rvg.State == "mundo";
+                            if (rvFound && !saidFound) { saidFound = true; AppLog.Write("guest: host encontrado na Steam; aguardando ele entrar no mundo"); }
+                            if (!rvFound) saidFound = false;
+                            if (rvWorld) break;
+                            await Task.Delay(1000, ct);
+                        }
+                    }
+                    finally { rvg.Dispose(); }
+                    AppLog.Write("guest: host no mundo, abrindo o jogo");
+                    if (false) AppLog.Write(Lang.T("guest: conexão pela Steam; o mod acha o amigo que está jogando (vocês precisam ser amigos na Steam)"));
                 }
                 else if (string.IsNullOrWhiteSpace(cfg.SessionCode))
                 {
@@ -559,6 +589,7 @@ namespace CdmpLauncher
             if (!PreLaunch(Role.Guest)) return;
                 await Task.Run(() => dep.SyncPackage()); await Task.Run(() => dep.Deploy(Role.Guest, cfg.Current, new Deployer.Overrides { PlayerName = cfg.GuestName, PeerHost = peer, PeerPort = remoteHost?.Port ?? cfg.PeerPort, Record = cfg.RecordPackets, Steam = cfg.UseSteam, PeerSteamId = cfg.ByFriend ? (cfg.FriendSteamId ?? "") : "", SessionCode = cfg.ByFriend ? "" : cfg.SessionCode }, cfg.AutoSyncFromHost && remoteHost != null ? (Func<string, bool>)(d => true) : d => false), ct);
                 SaveCfg();
+
                 guestRun = new GameRun(Role.Guest, cfg.GameDir, dep.LogAlias(cfg.Current, Role.Guest), dep.EnvRole(Role.Guest));
                 guestRun.Exited += r => BeginInvoke((Action)(() => OnExited(r)));
                 guestRun.Start();
@@ -765,6 +796,9 @@ namespace CdmpLauncher
         void OnExited(GameRun r)
         {
             var who = Deployer.RoleName(r.Role);
+            if (r.Role == Role.Host) { rvHost?.Dispose(); rvHost = null; }
+            else { rvFound = rvWorld = false; }
+
             var crashed = r.HasCrashDumpSinceStart();
             AppLog.Write(who + Lang.T(": o jogo fechou") + (crashed ? Lang.T(" e deixou um dump de crash") : ""));
             if (crashed && MessageBox.Show(this, "O " + who + Lang.T(" fechou com crash. Coletar logs e dumps num zip na Área de Trabalho?"), Lang.T("Crash"), MessageBoxButtons.YesNo) == DialogResult.Yes)
@@ -1016,6 +1050,7 @@ namespace CdmpLauncher
             bool hostAlive = hostRun != null && hostRun.Alive, guestAlive = guestRun != null && guestRun.Alive, searching = guestCts != null;
             int Lvl(string st) => st == "abrindo" ? 1 : st == "titulo" ? 2 : st == "mundo" ? 3 : 0;
 
+            if (rvHost != null && hostAlive) rvHost.SetState(hostRun.State == "mundo" ? "mundo" : "titulo");
             // HOST card: this PC's host, or the host a guest here found
             if (hostAlive)
             {
@@ -1032,13 +1067,13 @@ namespace CdmpLauncher
             bool otherPcGuest = hostAlive && !guestAlive && !searching && hostRun.GuestState != "";
             if (searching || guestAlive)
             {
-                bool found = hostAlive || remoteHost != null;
-                bool world = (hostAlive && hostRun.State == "mundo") || (remoteHost != null && remoteHost.InWorld);
+                bool found = hostAlive || remoteHost != null || rvFound;
+                bool world = (hostAlive && hostRun.State == "mundo") || (remoteHost != null && remoteHost.InWorld) || rvWorld;
                 int r = !found ? 0 : !world ? 1 : !guestAlive ? 2 : guestRun.State == "mundo" ? 4 : 3;
                 bool rejoin = GuestMustRejoin();
                 if (rejoin) r = Math.Min(r, 3);
                 string d = rejoin ? Lang.T("o host caiu ou reiniciou: entre de novo")
-                    : !found ? Lang.T("procurando o host com o código ") + cfg.SessionCode
+                    : !found ? cfg.UseSteam && cfg.ByFriend ? "procurando o amigo na Steam" : Lang.T("procurando o host com o código ") + cfg.SessionCode
                     : !world ? Lang.T("esperando o host entrar no mundo")
                     : !guestAlive ? Lang.T("abrindo o jogo")
                     : guestRun.State == "titulo" ? (guestRun.HostReadyRemote ? Lang.T("servidor do host pronto")

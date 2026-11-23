@@ -551,11 +551,36 @@ namespace CdmpLauncher
             Height = 88;
             Code = new TextBox { BorderStyle = BorderStyle.None, BackColor = Theme.Ink, ForeColor = Theme.GoldLight, Font = Theme.Body(16f), TextAlign = HorizontalAlignment.Center, CharacterCasing = CharacterCasing.Upper };
             Friends = new ComboBox { DropDownStyle = ComboBoxStyle.DropDownList, FlatStyle = FlatStyle.Flat, BackColor = Theme.Ink, ForeColor = Theme.GoldLight, Font = Theme.Body(11f), Visible = false, DropDownHeight = 220 };
+            Friends.DrawMode = DrawMode.OwnerDrawFixed;
+            Friends.ItemHeight = 22;
+            Friends.DropDownWidth = 340;
+            Friends.DrawItem += DrawFriend;
             Gen = new OrnateButton { Text = Lang.T("Gerar") };
             Copy = new OrnateButton { Text = Lang.T("Copiar") };
             Controls.Add(Code); Controls.Add(Friends); Controls.Add(Gen); Controls.Add(Copy);
         }
 
+        // Nomes da Steam podem ter emojis e simbolos: GDI+ DrawString faz troca de fonte automatica
+        // (Segoe UI Symbol / Emoji), coisa que o desenho padrao do ComboBox nao faz.
+        void DrawFriend(object s, DrawItemEventArgs e)
+        {
+            e.DrawBackground();
+            if (e.Index < 0) return;
+            var sel = (e.State & DrawItemState.Selected) != 0;
+            var text = Friends.Items[e.Index].ToString();
+            var g = e.Graphics;
+            g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.ClearTypeGridFit;
+            using (var br = new SolidBrush(sel ? Theme.Ink : Theme.GoldLight))
+            using (var sf = new StringFormat(StringFormat.GenericDefault))
+            {
+                sf.FormatFlags |= StringFormatFlags.NoWrap;
+                sf.Trimming = StringTrimming.EllipsisCharacter;
+                sf.LineAlignment = StringAlignment.Center;
+                if (sel) using (var bg = new SolidBrush(Theme.Gold)) g.FillRectangle(bg, e.Bounds);
+                var r = new RectangleF(e.Bounds.X + 4, e.Bounds.Y, e.Bounds.Width - 6, e.Bounds.Height);
+                g.DrawString(text, Friends.Font, br, r, sf);
+            }
+        }
         void ApplyMode()
         {
             Code.Visible = Gen.Visible = Copy.Visible = mode == 0;

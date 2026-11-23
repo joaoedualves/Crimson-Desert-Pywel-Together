@@ -8,6 +8,8 @@ namespace CdmpLauncher
         [STAThread]
         static int Main(string[] args)
         {
+            if (args.Length >= 4 && args[0] == "--rv-host") return SteamRv.RunHost(args[1], args[2], args[3]);
+            if (args.Length >= 4 && args[0] == "--rv-find") return SteamRv.RunFind(args[1], args[2], args[3]);
             if (args.Length >= 2 && args[0] == "--friends") return SteamFriends.RunChild(args[1]);
             if (args.Length >= 4 && args[0] == "--selftest") return SelfTest.Run(args[1], args[2], args[3]);
             Application.EnableVisualStyles();
@@ -27,6 +29,13 @@ namespace CdmpLauncher
                 Instance.Send(command ?? "--show");   // the open window may still be at the language choice: no second window either way
                 return 0;
             }
+            // sobras de atualizacao (exe trocado enquanto estava aberto): apaga sempre, em silencio
+            try
+            {
+                foreach (var f in System.IO.Directory.GetFiles(AppDomain.CurrentDomain.BaseDirectory, "*.antigo"))
+                    try { System.IO.File.Delete(f); } catch { }
+            }
+            catch { }
             var cfg = Config.Load();
             if (cfg.Language != "pt" && cfg.Language != "en")
             {
