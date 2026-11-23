@@ -107,8 +107,10 @@ namespace CdmpLauncher
 
             hostCard = new RoleCard("Host", Lang.T("Abre o seu mundo e recebe os amigos"),
                 new[] { Lang.T("Jogo aberto"), Lang.T("Tela de título"), Lang.T("No mundo"), Lang.T("Guest chegou") }, Lang.T("Abrir como host"));
+            hostCard.Waiting = new[] { Lang.T("Abrindo o jogo"), Lang.T("Carregando a tela de t\u00edtulo"), Lang.T("Entrando no mundo"), Lang.T("Aguardando o guest") };
             guestCard = new RoleCard("Guest", Lang.T("Entra no mundo de quem é o host"),
                 new[] { Lang.T("Host encontrado"), Lang.T("Host no mundo"), Lang.T("Jogo aberto"), Lang.T("No mundo do host") }, Lang.T("Entrar no mundo"));
+            guestCard.Waiting = new[] { Lang.T("Procurando o host"), Lang.T("Aguardando o host entrar no mundo"), Lang.T("Abrindo o jogo"), Lang.T("Entrando no mundo do host") };
             txtHostName = hostCard.Name; txtHostName.Text = cfg.HostName;
             txtGuestName = guestCard.Name; txtGuestName.Text = cfg.GuestName;
             txtHostName.Leave += (s, e) => SaveFields(); txtGuestName.Leave += (s, e) => SaveFields();
@@ -557,7 +559,7 @@ namespace CdmpLauncher
                             if (rvg.Error != null && rvg.Error != lastErr) { lastErr = rvg.Error; AppLog.Write("steam: " + lastErr); }
                             if (!rvg.Alive) { Msg("A Steam n\u00e3o respondeu" + (lastErr != null ? " (" + lastErr + ")" : "") + ". Abra a Steam e tente de novo."); return; }
                             rvFound = rvg.Found; rvWorld = rvFound && rvg.State == "mundo";
-                            if (rvFound && !saidFound) { saidFound = true; AppLog.Write("guest: host encontrado na Steam; aguardando ele entrar no mundo"); }
+                            btnGuest.Text = rvFound ? Lang.T("Aguardando o host") : Lang.T("Procurando host"); if (rvFound && !saidFound) { saidFound = true; AppLog.Write("guest: host encontrado na Steam; aguardando ele entrar no mundo"); }
                             if (!rvFound) saidFound = false;
                             if (rvWorld) break;
                             await Task.Delay(1000, ct);

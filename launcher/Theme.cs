@@ -392,6 +392,7 @@ namespace CdmpLauncher
     {
         public string Role = "", Tagline = "", Detail = "";
         public string[] Steps = new string[0];
+        public string[] Waiting;     // text of a step while it is the one in progress (not reached yet)
         public int Reached;          // steps done (0..Steps.Length)
         public bool Live;            // something is happening: the next step pulses
         public bool Selected;        // this PC plays this role now
@@ -462,7 +463,7 @@ namespace CdmpLauncher
                 }
                 Theme.Diamond(g, done ? Theme.Gold : now ? Theme.GoldLight : Color.FromArgb(110, Theme.Parchment), x0, y, done ? 5f : 4.5f, done || now);
                 using (var f = Theme.Body(10f))
-                    TextRenderer.DrawText(g, Steps[i], f, new Rectangle((int)x0 + 16, (int)y - 12, Width - 80, 24), done ? Theme.Parchment : now ? Theme.GoldLight : Theme.Ash, TextFormatFlags.VerticalCenter | TextFormatFlags.NoPadding);
+                    TextRenderer.DrawText(g, now && Waiting != null && i < Waiting.Length ? Waiting[i] : Steps[i], f, new Rectangle((int)x0 + 16, (int)y - 12, Width - 80, 24), done ? Theme.Parchment : now ? Theme.GoldLight : Theme.Ash, TextFormatFlags.VerticalCenter | TextFormatFlags.NoPadding);
             }
             if (!string.IsNullOrEmpty(Detail))
                 using (var f = Theme.Body(9f))
