@@ -40,7 +40,7 @@ constexpr uint32_t kActorComponents = 0x68;
 constexpr uint32_t kComponentsTransformSync = 0x1A0;
 constexpr uint32_t kTsFieldMoverField = 0x508 + 0x10;  // field_share.h kTsFieldMover + kFmField
 constexpr uint32_t kFieldOwner = 0x180;
-constexpr uintptr_t kVtServerSequencerStageManager = 0x5F5A758;
+constexpr uintptr_t kVtServerSequencerStageManager = 0x5F5FAF0;
 constexpr uint64_t kDropLines = 16;
 
 std::atomic<uint8_t> g_host_mode{0};
@@ -93,15 +93,15 @@ std::string fmt_key(uint32_t k) { return k ? std::format("0x{:08X}", k) : std::s
 // 0x655110's entry (verified with capstone on the 2976 exe, p8-impl-viaje-rapido.md §3): mov [rsp+0x18],rbx ;
 // mov [rsp+0x10],edx ; mov [rsp+8],rcx ; push rbp ; push rsi ; push rdi ; push r14 ; push r15 ;
 // lea rbp,[rsp-0x1B0] ; sub rsp,0x2B0. No rip-relative instruction among them.
-constexpr uintptr_t kFastTravel = 0x74E470;
+constexpr uintptr_t kFastTravel = 0x74E830;
 constexpr uint8_t kFastTravelBytes[] = {0x48, 0x89, 0x5C, 0x24, 0x18, 0x89, 0x54, 0x24, 0x10, 0x48, 0x89, 0x4C, 0x24, 0x08, 0x55, 0x56, 0x57, 0x41, 0x56, 0x41, 0x57, 0x48, 0x8D, 0xAC, 0x24, 0x70, 0xFE, 0xFF, 0xFF, 0x48, 0x81, 0xEC, 0x90, 0x02, 0x00, 0x00};
 constexpr uint32_t kFastTravelBoundaries[] = {5, 9, 14, 15, 16, 17, 19, 21, 29, 36};
 // Its callee that sends the point's 2283 (called from 0x6555C6 only), checked too so the lines can name it.
-constexpr uintptr_t kFastTravelPoint = 0xBDDAE0;
+constexpr uintptr_t kFastTravelPoint = 0xBDE530;
 constexpr uint8_t kFastTravelPointBytes[] = {0x44, 0x89, 0x4C, 0x24, 0x20, 0x44, 0x89, 0x44, 0x24, 0x18,
                                              0x89, 0x54, 0x24, 0x10, 0x55, 0x53, 0x56, 0x57, 0x41, 0x56};
 // The call 0x6555C6 (E8 rel32 -> 0xA9A860) inside 0x655110.
-constexpr uintptr_t kPointCall = 0x6555C6;
+constexpr uintptr_t kPointCall = 0x655936;
 constexpr uint8_t kPointCallBytes[] = {0xE8, 0x95, 0x52, 0x44, 0x00};
 
 std::atomic<uint8_t> g_guest_mode{0};
@@ -169,7 +169,7 @@ void drain_guest() {
             e.v[3] ? std::format("to actor 0x{:08X}", e.v[3])
                    : std::format("to point {} (index {})", static_cast<int32_t>(e.v[1]), e.v[2]);
         const std::string line = std::format(
-            "GuestFastTravel (guest_fast_travel_veto={}) {} T{}: 0x74E470 {} from exe+0x{:X} | connection {} | {}{}",
+            "GuestFastTravel (guest_fast_travel_veto={}) {} T{}: 0x74E830 {} from exe+0x{:X} | connection {} | {}{}",
             ftl::mode_name(static_cast<ftl::Mode>(g_guest_mode.load())), p8_when(e.qpc_us), e.tid, what,
             e.v[5] - reinterpret_cast<uintptr_t>(GetModuleHandleW(nullptr)), e.v[4] ? "REMOTE (on the host)" : "local",
             ftl::guest_act_name(act),
@@ -196,7 +196,7 @@ DWORD WINAPI guest_thread(LPVOID) {
         log::error("GuestFastTravel: unsupported game build or unreadable sections; guest_fast_travel_veto stays off");
         return 0;
     }
-    log::info("GuestFastTravel: waiting for the local player in the world before hooking 0x74E470");
+    log::info("GuestFastTravel: waiting for the local player in the world before hooking 0x74E830");
     for (int stable = 0; stable < 6;) {
         Sleep(500);
         stable = player_in_world(base) ? stable + 1 : 0;
@@ -206,9 +206,9 @@ DWORD WINAPI guest_thread(LPVOID) {
         std::span<const uint8_t> bytes;
         const char* what;
     };
-    const Site sites[] = {{kFastTravel, kFastTravelBytes, "the fast-travel entry 0x74E470"},
-                          {kFastTravelPoint, kFastTravelPointBytes, "its point sender 0xBDDAE0"},
-                          {kPointCall, kPointCallBytes, "the call 0x6555C6 -> 0xBDDAE0"}};
+    const Site sites[] = {{kFastTravel, kFastTravelBytes, "the fast-travel entry 0x74E830"},
+                          {kFastTravelPoint, kFastTravelPointBytes, "its point sender 0xBDE530"},
+                          {kPointCall, kPointCallBytes, "the call 0x655936 -> 0xBDE530"}};
     for (const Site& s : sites) {
         if (!gad::in_real_code(secs, static_cast<uint32_t>(s.rva), static_cast<uint32_t>(s.bytes.size())) ||
             !bytes_at(base, s.rva, s.bytes)) {
@@ -225,28 +225,28 @@ DWORD WINAPI guest_thread(LPVOID) {
     };
     // P8 S26 (montura-regresion.md section 7.1): refused attempts logged and tried again (bounded), nothing written.
     auto h = game::prepare_inline(base + kFastTravel, reinterpret_cast<void*>(&fast_travel_detour), whole,
-                                  "GuestFastTravel", "0x74E470");
+                                  "GuestFastTravel", "0x74E830");
     if (!h) {
-        log::error("GuestFastTravel: the hook on 0x74E470 could not be prepared ({}); REFUSED",
+        log::error("GuestFastTravel: the hook on 0x74E830 could not be prepared ({}); REFUSED",
                    game::inline_error_text(h.error()));
         return 0;
     }
     const auto& orig = h->original_bytes();
     if (!whole(orig)) {
-        log::error("GuestFastTravel: the hook on 0x74E470 would patch {} bytes, not whole verified instructions; "
+        log::error("GuestFastTravel: the hook on 0x74E830 would patch {} bytes, not whole verified instructions; "
                    "REFUSED, nothing written",
                    orig.size());
         return 0;
     }
     g_hook = std::move(*h);
     if (!g_hook.enable()) {
-        log::error("GuestFastTravel: the hook on 0x74E470 could not be enabled; REFUSED");
+        log::error("GuestFastTravel: the hook on 0x74E830 could not be enabled; REFUSED");
         g_hook = {};
         return 0;
     }
     g_guest_on.store(true);
     const auto mode = static_cast<ftl::Mode>(g_guest_mode.load());
-    log::info("GuestFastTravel: guest_fast_travel_veto={} ON: exe+0x74E470 hooked ({} bytes); while this game plays on "
+    log::info("GuestFastTravel: guest_fast_travel_veto={} ON: exe+0x74E830 hooked ({} bytes); while this game plays on "
               "the host: {}",
               ftl::mode_name(mode), orig.size(),
               mode == ftl::Mode::On ? "the map's fast travel returns 0 without effect and a HUD notice is shown"

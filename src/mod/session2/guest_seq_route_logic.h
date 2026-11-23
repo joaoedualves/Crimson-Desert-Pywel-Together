@@ -40,11 +40,11 @@ inline constexpr size_t kPoints = static_cast<size_t>(Point::Count);
 inline constexpr std::array<uint16_t, kPoints> kPointOp = {2661, 2981, 2810, 2322, 2524};
 inline const char* point_name(Point p) {
     switch (p) {
-        case Point::P2661: return "2661 PrepareSequencerAck 0xD6CBFE";
-        case Point::P2981: return "2981 StageBranchStateAck 0xD6E724";
-        case Point::P2810: return "2810 DeleteSequencerAck 0xD6D0F5";
-        case Point::P2322: return "2322 PlayAllPreLoadSequencerAck 0xCD563B";
-        case Point::P2524: return "2524 StageOnBranchEventAck 0xD6F2A0";
+        case Point::P2661: return "2661 PrepareSequencerAck 0xD6D64E";
+        case Point::P2981: return "2981 StageBranchStateAck 0xD6F174";
+        case Point::P2810: return "2810 DeleteSequencerAck 0xD6DB45";
+        case Point::P2322: return "2322 PlayAllPreLoadSequencerAck 0xCD608B";
+        case Point::P2524: return "2524 StageOnBranchEventAck 0xD6FCF0";
         default: return "?";
     }
 }
@@ -340,7 +340,7 @@ inline const char* verdict_name(Verdict v) {
         case Verdict::WouldRoute: return "WOULD route to X (probe)";
         case Verdict::Off: return "off";
         case Verdict::NotHooked: return "point not hooked";
-        case Verdict::NotKind4: return "kind != 4 (0xBDFC90 does not run)";
+        case Verdict::NotKind4: return "kind != 4 (0xBE06E0 does not run)";
         case Verdict::NoManager: return "no manager from vf48";
         case Verdict::NoActor: return "no resolved actor";
         case Verdict::KeyMismatch: return "the resolved actor is not the packet's key";
@@ -354,7 +354,7 @@ inline const char* verdict_name(Verdict v) {
         case Verdict::Denied: return "DENIED: the sequencer's resource is on guest_seq_route_deny (cutscene / field reload)";
         case Verdict::NotPlaying2524: return "2524 left native: X / this client not at 3 or X loading";
         case Verdict::NoInstance2524: return "2524 left native: its sequencer is not in X";
-        case Verdict::NotLoaded2524: return "2524 left native: its scene data is not loaded in X (0xBE1D3A would fault)";
+        case Verdict::NotLoaded2524: return "2524 left native: its scene data is not loaded in X (0xBE278A would fault)";
         case Verdict::BadBranch2524: return "2524 left native: branch index / entry not usable";
         case Verdict::NotWorld2524: return "2524 left native: not a world scene (guest_seq_route_2524)";
         case Verdict::NoSchedContainer: return "X has no schedule container +0x148: native (M)";
@@ -476,10 +476,10 @@ inline constexpr size_t kSchedPoints = static_cast<size_t>(SchedPoint::Count);
 inline constexpr std::array<uint16_t, kSchedPoints> kSchedOp = {2335, 2126, 2958, 2909};
 inline const char* sched_point_name(SchedPoint p) {
     switch (p) {
-        case SchedPoint::P2335: return "2335 CreateNPCScheduleStageAck 0xC0B5C1";
-        case SchedPoint::P2126: return "2126 DeleteNPCScheduleStageAck 0xD73BBB";
-        case SchedPoint::P2958: return "2958 ChangeNPCScheduleMiseensceneAck 0xD74AF7";
-        case SchedPoint::P2909: return "2909 DeactivateMiseensceneScheduleEvadeObstacleAck 0xD75247";
+        case SchedPoint::P2335: return "2335 CreateNPCScheduleStageAck 0xC0C011";
+        case SchedPoint::P2126: return "2126 DeleteNPCScheduleStageAck 0xD7460B";
+        case SchedPoint::P2958: return "2958 ChangeNPCScheduleMiseensceneAck 0xD75547";
+        case SchedPoint::P2909: return "2909 DeactivateMiseensceneScheduleEvadeObstacleAck 0xD75C97";
         default: return "?";
     }
 }
@@ -738,7 +738,7 @@ inline const char* bind_why_name(BindWhy w) {
         case BindWhy::OtherOwner: return "another owner";
         case BindWhy::OtherScene: return "another scene";
         case BindWhy::AlreadyBound: return "already bound (comp+0x318 != 0)";
-        case BindWhy::NoAiPath: return "no AI node path (0xB2F430 would read a null pointer)";
+        case BindWhy::NoAiPath: return "no AI node path (0xB2FD70 would read a null pointer)";
         default: return "?";
     }
 }
@@ -759,12 +759,12 @@ enum class BindResult : uint8_t { Bound, StillZero, OtherStage, NotFound, Change
 inline const char* bind_result_name(BindResult r) {
     switch (r) {
         case BindResult::Bound: return "BOUND to the stage in X";
-        case BindResult::StillZero: return "still 0 (0xB2F430 returned early: node handle or owner not resolved)";
+        case BindResult::StillZero: return "still 0 (0xB2FD70 returned early: node handle or owner not resolved)";
         case BindResult::OtherStage: return "bound to ANOTHER stage";
-        case BindResult::NotFound: return "not called: the game's lookup 0x9C6280 did not give this actor";
+        case BindResult::NotFound: return "not called: the game's lookup 0x9C6B00 did not give this actor";
         case BindResult::Changed: return "not called: the actor changed under its reference";
         case BindResult::Deferred:
-            return "DEFERRED: it or its owner not logged in yet (+0x5E & 0x10 0: 0x9C6280 refuses it): queued for a retry";
+            return "DEFERRED: it or its owner not logged in yet (+0x5E & 0x10 0: 0x9C6B00 refuses it): queued for a retry";
         default: return "?";
     }
 }
@@ -881,8 +881,8 @@ inline const char* retry_step_name(RetryStep s) {
         case RetryStep::NoStage: return "its stage is no longer in X";
         case RetryStep::OwnerMoved: return "the character's X is no longer that X";
         case RetryStep::TimedOut: return "timed out";
-        case RetryStep::Refused: return "0x9C6280 kept refusing it although logged in";
-        case RetryStep::StillZero: return "0xB2F430 kept leaving comp+0x318 at 0";
+        case RetryStep::Refused: return "0x9C6B00 kept refusing it although logged in";
+        case RetryStep::StillZero: return "0xB2FD70 kept leaving comp+0x318 at 0";
         default: return "?";
     }
 }

@@ -32,9 +32,9 @@ namespace cdmp::session2::gpr {
 
 // The three StageChartProcessor vtables (RTTI: ClientSequencerStage_ / CommonSequencerStage_ /
 // ServerSequencerStage_StageChartProcessor), their complete object locators ([vt-8]) and the common `ret` 0x359B50.
-inline constexpr uint32_t kVtProcClient = 0x5997A38, kVtProcCommon = 0x5D40A38, kVtProcServer = 0x5F62E40;
-inline constexpr uint32_t kColProcClient = 0x5DB7A20, kColProcCommon = 0x5EE6C48, kColProcServer = 0x5F83DF8;
-inline constexpr uint32_t kRetRva = 0x3A6D80;
+inline constexpr uint32_t kVtProcClient = 0x599CB30, kVtProcCommon = 0x5D45E48, kVtProcServer = 0x5F681C0;
+inline constexpr uint32_t kColProcClient = 0x5DBC7D8, kColProcCommon = 0x5EE9FE8, kColProcServer = 0x5F88A78;
+inline constexpr uint32_t kRetRva = 0x3A7190;
 inline constexpr size_t kProcSlots = 105;  // slot 105 of each is data (its COL area)
 // The StageChart_Function_* trampolines reach the slots +0x108 .. +0x2A0 (scf.txt); the rest are the processor's own
 // (tick, conditions, binding) and are NOT a presentation classification (they differ between client and common too).
@@ -65,11 +65,11 @@ inline constexpr uint32_t kMaxDepth = 32;
 // The client world [0x6D691E0]: +0x10 the loading state P (P+0x1E0 = StartLoadingSequencer's byte), +0x118 the camera
 // manager (its +0x40 the current entry, the object at entry - 0x28: 0xB27DFE / 0xB27E05), +0x120 the timeline player.
 // [[cw]]+0xDE8: what SequencerCamera's .xtls code writes 0 (p8-s9-cinematica.md §7.3 [V est]).
-inline constexpr uint32_t kWorldSlot = 0x7245210, kCw_Loading = 0x10, kCw_Camera = 0x118, kCw_Player = 0x120,
+inline constexpr uint32_t kWorldSlot = 0x724B3A0, kCw_Loading = 0x10, kCw_Camera = 0x118, kCw_Player = 0x120,
                           kCam_Current = 0x40, kCamEntryAdjust = 0x28, kP_StartLoading = 0x1E0, kW0_De8 = 0xDE8;
 // A manager's input-block level: 0xA98AD0 (InputBlock 0x5E4E60 -> G) keeps the max level of its stages' blocks at
 // G+0x230 (0xA98D3E mov [r13+0x230],dil) and hands it to .xtls. The stage manager's vtable 0x55C9720.
-inline constexpr uint32_t kMgr_InputBlock = 0x260, kMgr_Actor = 0x18, kActor_Key = 0x60, kVtStageManager = 0x59D57E8;
+inline constexpr uint32_t kMgr_InputBlock = 0x260, kMgr_Actor = 0x18, kActor_Key = 0x60, kVtStageManager = 0x59DA8A8;
 
 // ---------------------------------------------------------------- whose stage
 
@@ -114,9 +114,9 @@ inline const char* proc_vt_name(ProcVt v) {
     switch (v) {
         case ProcVt::NoProc: return "no processor yet ([stage+0x58] = 0)";
         case ProcVt::Unreadable: return "processor unreadable";
-        case ProcVt::Client: return "ClientSequencerStage_StageChartProcessor 0x5997A38";
-        case ProcVt::Common: return "CommonSequencerStage_StageChartProcessor 0x5D40A38";
-        case ProcVt::Server: return "ServerSequencerStage_StageChartProcessor 0x5F62E40";
+        case ProcVt::Client: return "ClientSequencerStage_StageChartProcessor 0x599CB30";
+        case ProcVt::Common: return "CommonSequencerStage_StageChartProcessor 0x5D45E48";
+        case ProcVt::Server: return "ServerSequencerStage_StageChartProcessor 0x5F681C0";
         case ProcVt::Other: return "ANOTHER vtable (none of the three)";
         default: return "?";
     }
@@ -214,42 +214,42 @@ struct RaExpect {
     RaUse use;
 };
 inline constexpr RaExpect kRaExpect[] = {
-    {0x128, 0x6CBED0, 0x25CE530, SlotKind::ClientOnly, RaUse::Ret},    // ActivateMiniGame
-    {0x130, 0x6CCC40, 0x25CE550, SlotKind::ClientOnly, RaUse::Off},    // DeactivateMiniGame: off
-    {0x138, 0x6CD200, 0x25CE590, SlotKind::ClientOnly, RaUse::Ret},    // ExecuteMiniGameEvent
-    {0x140, 0x6CD260, 0x25CE670, SlotKind::ClientOnly, RaUse::Ret},    // Craft (GetLocalPlayer)
-    {0x150, 0x6CD560, 0x25CE760, SlotKind::ClientOnly, RaUse::Ret},    // InputBlock
-    {0x158, 0x6CD5B0, 0x25CEE70, SlotKind::ClientOnly, RaUse::Ret},    // UIControl (the shop)
-    {0x160, 0x6D25B0, 0x25CEE90, SlotKind::ClientOnly, RaUse::Ret},    // ChangePhasePanelTag ([cw]+0x20)
-    {0x168, 0x6D61A0, 0x25D00F0, SlotKind::ClientOnly, RaUse::Ret},    // UIShowMinimap
-    {0x170, 0x6D6F70, 0x25D0110, SlotKind::ClientOnly, RaUse::Ret},    // UIFindPath
-    {0x198, 0x6D2610, 0x25D02A0, SlotKind::ClientOnly, RaUse::Ret},    // SetCustomMesh ([cw]+0x120, +0x90)
-    {0x1A0, 0x6D2870, 0x25D02C0, SlotKind::ClientOnly, RaUse::World},  // DisableCharacterCollision: world
-    {0x1A8, 0x6D29B0, 0x25D02E0, SlotKind::ClientOnly, RaUse::World},  // its end: world
-    {0x1B0, 0x6D2AF0, 0x25D0300, SlotKind::ClientOnly, RaUse::Ret},    // SetPreviewTarget
-    {0x1B8, 0x5EE210, 0x25D0320, SlotKind::ClientOnly, RaUse::Off},    // DeactiveSequencerCamera (dl 0): off
-    {0x1C0, 0x6D77F0, 0x25D0340, SlotKind::ClientOnly, RaUse::Ret},    // its end (dl 1): back on
-    {0x1C8, 0x5EE250, 0x25D0360, SlotKind::ClientOnly, RaUse::Off},    // SequencerCamera: on/off in data
-    {0x1D0, 0x6D76A0, 0x25D0380, SlotKind::ClientOnly, RaUse::Off},    // DeactivateSequencerCameraFadeIn: off
-    {0x1D8, 0x5EE160, 0x25D03A0, SlotKind::ClientOnly, RaUse::Off},    // its end (opaque): kept
-    {0x1E0, 0x6D7300, 0x25D03C0, SlotKind::ClientOnly, RaUse::Ret},    // CameraPreset: on
-    {0x1E8, 0x5EE1F0, 0x25D03E0, SlotKind::ClientOnly, RaUse::Off},    // its end (0x5EB200): off
-    {0x1F0, 0x6D3CD0, 0x25D0400, SlotKind::ClientOnly, RaUse::Ret},    // ForceLockOn
-    {0x1F8, 0x5F2980, 0x25D0570, SlotKind::ClientOnly, RaUse::Ret},    // UIStageIcon
-    {0x200, 0x6DE660, 0x25D0660, SlotKind::ClientServer, RaUse::Ret},  // HireMercenary (client: [cw]+0x30)
-    {0x208, 0x5F2970, 0x25D0680, SlotKind::ClientOnly, RaUse::Ret},    // LetterBox (dl 1): on
-    {0x210, 0x5F52E0, 0x25D06A0, SlotKind::ClientOnly, RaUse::Off},    // FadeInOut: direction in data
-    {0x218, 0x6DC360, 0x25D0790, SlotKind::ClientServer, RaUse::Ret},  // Loading (what V1 forces since S9)
-    {0x220, 0x6DD050, 0x25D07B0, SlotKind::ClientOnly, RaUse::Ret},    // LookAt: on
-    {0x228, 0x6DD270, 0x25D07D0, SlotKind::ClientOnly, RaUse::Off},    // its end: off
-    {0x238, 0x6DD4F0, 0x25D0810, SlotKind::ClientOnly, RaUse::Ret},    // UIStageGuide
-    {0x240, 0x6DDAC0, 0x25D0830, SlotKind::ClientOnly, RaUse::Ret},    // UIStageBackgroundGuide
-    {0x248, 0x5F4110, 0x25D0850, SlotKind::ClientOnly, RaUse::Ret},    // UIHint: on
-    {0x250, 0x5F4200, 0x25D0870, SlotKind::ClientOnly, RaUse::Off},    // its end: off
-    {0x258, 0x5F4280, 0x25D0940, SlotKind::ClientServer, RaUse::Ret},  // Reward (client: a thunk to .xtls)
-    {0x260, 0x6DDEB0, 0x25D09E0, SlotKind::ClientOnly, RaUse::Ret},    // PostProcess
-    {0x268, 0x6DE000, 0x25D0A90, SlotKind::ClientOnly, RaUse::Ret},    // MaterialParameter ([cw]+0x120)
-    {0x288, 0x6DE960, 0x25D0BB0, SlotKind::CommonDiffers, RaUse::Common},  // VarySharpness -> the common's 0x204DDD0
+    {0x128, 0x6CC240, 0x25D09C0, SlotKind::ClientOnly, RaUse::Ret},    // ActivateMiniGame
+    {0x130, 0x6CCFB0, 0x25D09E0, SlotKind::ClientOnly, RaUse::Off},    // DeactivateMiniGame: off
+    {0x138, 0x6CD570, 0x25D0A20, SlotKind::ClientOnly, RaUse::Ret},    // ExecuteMiniGameEvent
+    {0x140, 0x6CD5D0, 0x25D0B00, SlotKind::ClientOnly, RaUse::Ret},    // Craft (GetLocalPlayer)
+    {0x150, 0x6CD8D0, 0x25D0BF0, SlotKind::ClientOnly, RaUse::Ret},    // InputBlock
+    {0x158, 0x6CD920, 0x25D1300, SlotKind::ClientOnly, RaUse::Ret},    // UIControl (the shop)
+    {0x160, 0x6D2920, 0x25D1320, SlotKind::ClientOnly, RaUse::Ret},    // ChangePhasePanelTag ([cw]+0x20)
+    {0x168, 0x6D6510, 0x25D2580, SlotKind::ClientOnly, RaUse::Ret},    // UIShowMinimap
+    {0x170, 0x6D72E0, 0x25D25A0, SlotKind::ClientOnly, RaUse::Ret},    // UIFindPath
+    {0x198, 0x6D2980, 0x25D2730, SlotKind::ClientOnly, RaUse::Ret},    // SetCustomMesh ([cw]+0x120, +0x90)
+    {0x1A0, 0x6D2BE0, 0x25D2750, SlotKind::ClientOnly, RaUse::World},  // DisableCharacterCollision: world
+    {0x1A8, 0x6D2D20, 0x25D2770, SlotKind::ClientOnly, RaUse::World},  // its end: world
+    {0x1B0, 0x6D2E60, 0x25D2790, SlotKind::ClientOnly, RaUse::Ret},    // SetPreviewTarget
+    {0x1B8, 0x5EE550, 0x25D27B0, SlotKind::ClientOnly, RaUse::Off},    // DeactiveSequencerCamera (dl 0): off
+    {0x1C0, 0x6D7B60, 0x25D27D0, SlotKind::ClientOnly, RaUse::Ret},    // its end (dl 1): back on
+    {0x1C8, 0x5EE590, 0x25D27F0, SlotKind::ClientOnly, RaUse::Off},    // SequencerCamera: on/off in data
+    {0x1D0, 0x6D7A10, 0x25D2810, SlotKind::ClientOnly, RaUse::Off},    // DeactivateSequencerCameraFadeIn: off
+    {0x1D8, 0x5EE4A0, 0x25D2830, SlotKind::ClientOnly, RaUse::Off},    // its end (opaque): kept
+    {0x1E0, 0x6D7670, 0x25D2850, SlotKind::ClientOnly, RaUse::Ret},    // CameraPreset: on
+    {0x1E8, 0x5EE530, 0x25D2870, SlotKind::ClientOnly, RaUse::Off},    // its end (0x5EB200): off
+    {0x1F0, 0x6D4040, 0x25D2890, SlotKind::ClientOnly, RaUse::Ret},    // ForceLockOn
+    {0x1F8, 0x5F2CC0, 0x25D2A00, SlotKind::ClientOnly, RaUse::Ret},    // UIStageIcon
+    {0x200, 0x6DE9D0, 0x25D2AF0, SlotKind::ClientServer, RaUse::Ret},  // HireMercenary (client: [cw]+0x30)
+    {0x208, 0x5F2CB0, 0x25D2B10, SlotKind::ClientOnly, RaUse::Ret},    // LetterBox (dl 1): on
+    {0x210, 0x5F5620, 0x25D2B30, SlotKind::ClientOnly, RaUse::Off},    // FadeInOut: direction in data
+    {0x218, 0x6DC6D0, 0x25D2C20, SlotKind::ClientServer, RaUse::Ret},  // Loading (what V1 forces since S9)
+    {0x220, 0x6DD3C0, 0x25D2C40, SlotKind::ClientOnly, RaUse::Ret},    // LookAt: on
+    {0x228, 0x6DD5E0, 0x25D2C60, SlotKind::ClientOnly, RaUse::Off},    // its end: off
+    {0x238, 0x6DD860, 0x25D2CA0, SlotKind::ClientOnly, RaUse::Ret},    // UIStageGuide
+    {0x240, 0x6DDE30, 0x25D2CC0, SlotKind::ClientOnly, RaUse::Ret},    // UIStageBackgroundGuide
+    {0x248, 0x5F4110, 0x25D2CE0, SlotKind::ClientOnly, RaUse::Ret},    // UIHint: on
+    {0x250, 0x5F4540, 0x25D2D00, SlotKind::ClientOnly, RaUse::Off},    // its end: off
+    {0x258, 0x5F45C0, 0x25D2DD0, SlotKind::ClientServer, RaUse::Ret},  // Reward (client: a thunk to .xtls)
+    {0x260, 0x6DE220, 0x25D2E70, SlotKind::ClientOnly, RaUse::Ret},    // PostProcess
+    {0x268, 0x6DE370, 0x25D2F20, SlotKind::ClientOnly, RaUse::Ret},    // MaterialParameter ([cw]+0x120)
+    {0x288, 0x6DECD0, 0x25D3040, SlotKind::CommonDiffers, RaUse::Common},  // VarySharpness -> the common's 0x204DDD0
 };
 inline constexpr size_t kRaExpected = std::size(kRaExpect);
 inline const RaExpect* ra_expect(uint32_t off) {
@@ -406,7 +406,7 @@ inline const char* ra_verdict_name(RaVerdict v) {
         case RaVerdict::MUnknown: return "M not seen yet";
         case RaVerdict::InM: return "the stage is M's (G = M)";
         case RaVerdict::AlreadyMod: return "already the mod's table";
-        case RaVerdict::OtherVtable: return "not the client processor vtable 0x5997A38";
+        case RaVerdict::OtherVtable: return "not the client processor vtable 0x599CB30";
         case RaVerdict::NotThisStage: return "[proc+0x10] is not the stage";
         case RaVerdict::OtherManager: return "[proc+8] is not [stage+0x28]";
         case RaVerdict::NotKnownX: return "G is not guest_seq_play's X of the owner";
@@ -431,8 +431,8 @@ inline const char* ra_verdict_name(RaVerdict v) {
 //   dispatcher ends with `mov al,1 ; ret` (0x3657600).
 // - Slots 97 / 98 of both classes are 0x359B50 (`ret 0`): returning at the entry with RAX untouched is what the base
 //   class's empty void body does. Slots 100, 101 (the end) and 103 stay native.
-inline constexpr uint32_t kVtTimeline = 0x5C75F30;  // the timeline object's vptr ([ctx+8]); no RTTI ([-1] is code)
-inline constexpr uint32_t kRbCallers[] = {0x39A98BD, 0x39A99C6};
+inline constexpr uint32_t kVtTimeline = 0x5C7B5D0;  // the timeline object's vptr ([ctx+8]); no RTTI ([-1] is code)
+inline constexpr uint32_t kRbCallers[] = {0x39ADE0D, 0x39ADF16};
 inline bool rb_caller_ok(uint32_t caller_rva) {
     for (uint32_t c : kRbCallers) {
         if (c == caller_rva) return true;
@@ -641,12 +641,12 @@ struct EvInfo {
 inline constexpr uint32_t kStartSlot = 99;
 inline EvInfo ev_info(Ev e) {
     switch (e) {
-        case Ev::CameraSelector: return {"CameraSelectorEventData", 0x5996EB0, 0x5DB7610, 0x34CFC20};
-        case Ev::PlayerCameraPreset: return {"SequencerPlayerCameraPreset", 0x5A04B08, 0x5DE2538, 0xC6CC40};
-        case Ev::LetterBox: return {"SequencerCustomEventLetterBoxControl", 0x5A3C830, 0x5E08690, 0xDA4540};
-        case Ev::PostProcess: return {"SequencerCustomEventPostProcess", 0x5A3D280, 0x5E085F0, 0xDA5B60};
-        case Ev::AIDialog: return {"SequencerAIDialog", 0x5A38370, 0x5E08488, 0xDB9190};
-        case Ev::StartLoading: return {"SequencerGamePlayEventStartLoadingSequencer", 0x5A3ED30, 0x5E07EE8, 0xDB1130};
+        case Ev::CameraSelector: return {"CameraSelectorEventData", 0x599BFA8, 0x5DBC3C8, 0x34D4150};
+        case Ev::PlayerCameraPreset: return {"SequencerPlayerCameraPreset", 0x5A09BC0, 0x5DDAA18, 0xC6D690};
+        case Ev::LetterBox: return {"SequencerCustomEventLetterBoxControl", 0x5A40080, 0x5E0DBA0, 0xDA4F90};
+        case Ev::PostProcess: return {"SequencerCustomEventPostProcess", 0x5A3FD10, 0x5E0DBC0, 0xDA65B0};
+        case Ev::AIDialog: return {"SequencerAIDialog", 0x5A3B4E0, 0x5E0CF40, 0xDB9BE0};
+        case Ev::StartLoading: return {"SequencerGamePlayEventStartLoadingSequencer", 0x5A42210, 0x5E07EE8, 0xDB1B80};
         default: return {"?", 0, 0, 0};
     }
 }

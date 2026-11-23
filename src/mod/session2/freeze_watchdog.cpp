@@ -287,8 +287,8 @@ DWORD WINAPI watch_thread(LPVOID) {
     // K32EnumProcessModules reads the loader's list through ReadProcessMemory without the loader lock [E].
     refresh_modules();
     refresh_stubs();
-    log::info("FreezeWatch ON ({}): read only; main-loop frames from ui_pause's 0x39191C0 hook and guest_seq_play's "
-              "0x8B6144 hook (the first thread that ticks them is the main thread), else Present; no frame for > {} "
+    log::info("FreezeWatch ON ({}): read only; main-loop frames from ui_pause's 0x391D710 hook and guest_seq_play's "
+              "0x8B6864 hook (the first thread that ticks them is the main thread), else Present; no frame for > {} "
               "ms: stack samples of that thread (SuspendThread + GetThreadContext + a copy of <= {} KB of its stack, "
               "nothing else while suspended), {} at {} ms then one per {} ms, <= {} suspensions per episode and {} per "
               "session | mid hooks marked: {}",
@@ -333,8 +333,8 @@ DWORD WINAPI watch_thread(LPVOID) {
             src = want;
             watch = fwd::FreezeWatch{};
             log::info("FreezeWatch: frame source {}", src == Source::Main
-                                                          ? "the main loop's hooks (ui_pause 0x39191C0 / guest_seq_play "
-                                                            "0x8B6144), their thread is sampled"
+                                                          ? "the main loop's hooks (ui_pause 0x391D710 / guest_seq_play "
+                                                            "0x8B6864), their thread is sampled"
                                                           : "Present (no main-loop hook ran in 60 s: ui_pause_block=0 "
                                                             "and no guest_seq_play?); the present thread is sampled");
         }

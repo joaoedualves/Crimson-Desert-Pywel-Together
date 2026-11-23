@@ -42,17 +42,17 @@ namespace g2976 = game::build_2976;
 // share: rdi = actor, ebp = the error. No rel32 branch of any executable
 // section lands in 0x4FD492..0x4FD497 (raw scan of the read-only copy) and the
 // function's own short branches do not either (capstone, linear).
-constexpr uintptr_t kFinishHead = 0x5DDFC0;
+constexpr uintptr_t kFinishHead = 0x5DE300;
 constexpr uint8_t kFinishHeadBytes[] = {0x48, 0x89, 0x5C, 0x24, 0x10, 0x55, 0x56, 0x57, 0x41, 0x54, 0x41, 0x55, 0x41, 0x56, 0x41, 0x57};
-constexpr uintptr_t kFinishActor = 0x4FD390;
+constexpr uintptr_t kFinishActor = 0x4FD7A0;
 constexpr uint8_t kFinishActorBytes[] = {0x48, 0x8B, 0x7E, 0x08, 0x48, 0x8D, 0x5F, 0x18};
-constexpr uintptr_t kFinishState = 0x4FD3AA;
+constexpr uintptr_t kFinishState = 0x4FD7BA;
 constexpr uint8_t kFinishStateBytes[] = {0x66, 0x83, 0x7F, 0x5E, 0x08, 0x74, 0x0E, 0x8B, 0x2D, 0x75, 0xE5,
                                          0x7D, 0x06, 0x85, 0xED, 0x0F, 0x85, 0xC9, 0x00, 0x00, 0x00};
-constexpr uintptr_t kFinishLogin = 0x4FD3E0;
+constexpr uintptr_t kFinishLogin = 0x4FD7F0;
 constexpr uint8_t kFinishLoginBytes[] = {0xFF, 0x90, 0x40, 0x01, 0x00, 0x00, 0x8B, 0x28,
                                          0x85, 0xED, 0x0F, 0x85, 0xA1, 0x00, 0x00, 0x00};
-constexpr uintptr_t kFinishError = 0x4FD488;
+constexpr uintptr_t kFinishError = 0x4FD898;
 constexpr uint8_t kFinishErrorBytes[] = {0x48, 0x8B, 0x03, 0x48, 0x8B, 0xCB, 0xFF, 0x50, 0x10, 0x48, 0x8D,
                                          0x05, 0xD8, 0x94, 0x08, 0x05, 0x48, 0x89, 0x44, 0x24, 0x58, 0xC7,
                                          0x44, 0x24, 0x50, 0x06, 0x00, 0x00, 0x00, 0x89, 0x6C, 0x24, 0x48};
@@ -60,7 +60,7 @@ constexpr uintptr_t kFinishErrorHook = kFinishError + 9;  // 0x4FD491
 constexpr uint32_t kFinishErrorPatch = 7;                 // the relocated lea
 // The "actor +0x5E != 8" error (0x4FD3B1) and eErrNoInvalidActionChart (0x863995),
 // both u32 globals the game fills at start (0 in the file).
-constexpr uintptr_t kErrStateGlobal = 0x71B2830;
+constexpr uintptr_t kErrStateGlobal = 0x71B8970;
 constexpr uintptr_t kErrActionChartGlobal = 0x6CF6C50;
 constexpr uint32_t kErrActionChart = 0x349EFD61;     // lookup3 of the name (p8-actores-anfitrion.md §1.3)
 constexpr uint32_t kErrCharacterData = 0xD9917FF3;   // eErrNoInvalidCharacterData (§1.4)
@@ -78,7 +78,7 @@ constexpr uint32_t kP_Manager = 0x1A8;                 // M; its +0x10 is the lo
 constexpr uint32_t kManager_Container = 0x08;         // C = ClientActorContainer
 constexpr uint32_t kContainer_WaitKeys = 0x78;        // u32*
 constexpr uint32_t kContainer_WaitCount = 0x80;       // u32
-constexpr uintptr_t kStateSite = 0x882699;
+constexpr uintptr_t kStateSite = 0x882DB9;
 constexpr uint8_t kStateSiteBytes[] = {0x45, 0x0F, 0xB6, 0xB5, 0x4C, 0x02, 0x00, 0x00};
 // The state's transitions as they happen (p8-raiz-invitado.md §4.3, §7.2): a
 // mid hook on that read, movzx r14d,byte [rdi+0x15C] (8 bytes, patch 8), then
@@ -88,9 +88,9 @@ constexpr uint8_t kStateSiteBytes[] = {0x45, 0x0F, 0xB6, 0xB5, 0x4C, 0x02, 0x00,
 // any rel32 of .rsrc/.xtls/.text lands in 0x7798D1..0x7798D7 (p8-impl-s1s2.md §2).
 constexpr uint32_t kStatePatch = 8;
 constexpr uint8_t kStateHookBytes[] = {0x45, 0x0F, 0xB6, 0xB5, 0x4C, 0x02, 0x00, 0x00, 0x44, 0x88, 0xB5, 0xF0, 0x00, 0x00, 0x00};
-constexpr uintptr_t kWaitSite = 0x882E10;
-constexpr uint8_t kWaitSiteBytes[] = {0x48, 0x8B, 0x57, 0x78, 0x8B, 0x12, 0x48, 0x8B, 0x4E, 0x08, 0xE8, 0xC1, 0x29, 0xCB, 0xFF, 0x48, 0x85, 0xC0, 0x74, 0x13, 0x48, 0x8B, 0x08, 0x48, 0x8B, 0x91, 0xD8, 0x01, 0x00, 0x00};
-constexpr uintptr_t kFind = 0x5357E0;
+constexpr uintptr_t kWaitSite = 0x883530;
+constexpr uint8_t kWaitSiteBytes[] = {0x48, 0x8B, 0x57, 0x78, 0x8B, 0x12, 0x48, 0x8B, 0x4E, 0x08, 0xE8, 0xB1, 0x26, 0xCB, 0xFF, 0x48, 0x85, 0xC0, 0x74, 0x13, 0x48, 0x8B, 0x08, 0x48, 0x8B, 0x91, 0xD8, 0x01, 0x00, 0x00};
+constexpr uintptr_t kFind = 0x535BF0;
 constexpr uint8_t kFindBytes[] = {0x48, 0x89, 0x5C, 0x24, 0x08, 0x83, 0xB9, 0x8C, 0x00, 0x00, 0x00, 0x00, 0x44,
                                   0x8B, 0xC2, 0x4C, 0x8B, 0xD1, 0x74, 0x4F, 0x8B, 0x89, 0x88, 0x00, 0x00, 0x00,
                                   0x85, 0xC9, 0x74, 0x45, 0x33, 0xD2, 0x41, 0x8B, 0xC0, 0xF7, 0xF1, 0x44, 0x8B,
@@ -184,7 +184,7 @@ std::string error_name(uint32_t code) {
     const uint32_t chart = err_global(kErrActionChartGlobal);
     if (code == kErrActionChart || (chart && code == chart)) return "eErrNoInvalidActionChart";
     if (code == kErrCharacterData) return "eErrNoInvalidCharacterData";
-    if (const uint32_t st = err_global(kErrStateGlobal); st && code == st) return "actor +0x5E != 8 (exe+0x71B2830)";
+    if (const uint32_t st = err_global(kErrStateGlobal); st && code == st) return "actor +0x5E != 8 (exe+0x71B8970)";
     return "other";
 }
 
@@ -220,7 +220,7 @@ bool read_sections() {
 
 std::string rsrc_text() {
     for (const gad::Section& s : g_secs) {
-        if (std::string_view(s.name) == ".reloc") {
+        if (std::string_view(s.name) == ".xpdata") {
             return std::format("hooked bytes checked inside .rsrc [exe+0x{:X}, exe+0x{:X})", s.va,
                                static_cast<uint64_t>(s.va) + s.size);
         }
@@ -300,7 +300,7 @@ void on_finish_error(safetyhook::Context& ctx) noexcept {
     try {
         if (is_chart_error(code)) g_fin_chart.fetch_add(1, std::memory_order_relaxed);
         if (!g_finish_lines.take()) return;
-        log::info("GuestDiag login FAILED (FinishGroup exe+0x4FD491): actor 0x{:X} key 0x{:08X} control(+0x90) "
+        log::info("GuestDiag login FAILED (FinishGroup exe+0x4FD8A1): actor 0x{:X} key 0x{:08X} control(+0x90) "
                   "0x{:08X} ({}) vt {} +5E 0x{:04X} | error 0x{:08X} ({}) | local user 0x{:08X}{}",
                   a.p, a.key, a.control,
                   !local ? "local user unknown" : remote ? "NOT controlled here" : "controlled here", rva(a.vt),
@@ -399,7 +399,7 @@ void on_restore_exit(safetyhook::Context& ctx) noexcept {
             verdict = "restored";
         } else if (code_ok && is_chart_error(code)) {
             g_rs_chart.fetch_add(1, std::memory_order_relaxed);
-            verdict = "RestartLayerAction 0x976A80 FAILED";
+            verdict = "RestartLayerAction 0x9771A0 FAILED";
             fail = true;
         } else {
             g_rs_other.fetch_add(1, std::memory_order_relaxed);
@@ -457,7 +457,7 @@ void restore_report() {
             if (!(b & 1)) return std::string("none");
             return std::format("chart {} cur {} play {}", (b & 2) ? "yes" : "NO", (b & 4) ? 1 : 0, (b & 8) ? 1 : 0);
         };
-        log::info("GuestDiag restore (0x9778B0 -> exit 0x977CFD) actor key 0x{:08X} control 0x{:08X} vt {} CC vt {} | "
+        log::info("GuestDiag restore (0x977FD0 -> exit 0x97841D) actor key 0x{:08X} control 0x{:08X} vt {} CC vt {} | "
                   "restore byte [[CC+0x40]+0x30] {} | before: L0 {} | L1 {} | result {} ({}) -> {} | after (exit): {} "
                   "| T{} {}",
                   v[0] & 0xFFFFFFFF, v[0] >> 32, rva(v[1]), rva(v[2]),
@@ -486,7 +486,7 @@ void on_guard_skip(uint32_t key, uint32_t control) noexcept {
     try {
         // S3 (p8-raiz-invitado.md §5.2): say which pointer is missing (same thread as the skip).
         log::info("GuestDiag guard: holding actor 0x{:08X} (control 0x{:08X}, not the local user 0x{:08X}): {}; its "
-                  "layer update (0x258C5A0) is skipped until its first action{}{}",
+                  "layer update (0x258EA30) is skipped until its first action{}{}",
                   key, control, g_local.load(std::memory_order_relaxed),
                   net::puppet_guard_reason_text(net::puppet_guard_last_reason()),
                   g_failed_login.contains(key) ? " | its login FAILED" : "",
@@ -688,19 +688,19 @@ void install_diag() {
     if (all_match(kFinishChecks)) {
         g_finish_on = hook_mid(kFinishErrorHook, kFinishErrorPatch, g_finish, on_finish_error, "FinishGroup's error");
     } else {
-        log::error("GuestDiag: FinishGroup 0x5DDFC0 is not the expected code (at {}); that point is REFUSED",
+        log::error("GuestDiag: FinishGroup 0x5DE300 is not the expected code (at {}); that point is REFUSED",
                    first_mismatch(kFinishChecks));
     }
     if (companion_probe_active()) {
-        log::warn("GuestDiag: the companion probe already hooks the restore (0x9778DC/0x977CFD); not hooked twice");
+        log::warn("GuestDiag: the companion probe already hooks the restore (0x977FFC/0x97841D); not hooked twice");
     } else if (all_match(kRestoreChecks)) {
         // "After" only with "before" (it pairs with it).
-        g_restore_on = hook_mid(cmp::kRestoreHook, kRestorePatch, g_restore, on_restore, "the restore 0x9778DC") &&
+        g_restore_on = hook_mid(cmp::kRestoreHook, kRestorePatch, g_restore, on_restore, "the restore 0x977FFC") &&
                        hook_mid(cmp::kRestoreExitHook, kRestoreExitPatch, g_restore_exit, on_restore_exit,
-                                "the restore's exit 0x977CFD");
+                                "the restore's exit 0x97841D");
         if (!g_restore_on) g_restore = {};
     } else {
-        log::error("GuestDiag: RestoreActionsFromLoadData 0x9778B0 is not the expected code (at {}); that point is "
+        log::error("GuestDiag: RestoreActionsFromLoadData 0x977FD0 is not the expected code (at {}); that point is "
                    "REFUSED",
                    first_mismatch(kRestoreChecks));
     }
@@ -708,14 +708,14 @@ void install_diag() {
     if (all_match(kWaitChecks)) {
         g_wait_on = true;
     } else {
-        log::error("GuestDiag: the loading state 0x8825B0 / Find 0x5357E0 are not the expected code (at {}); the wait "
+        log::error("GuestDiag: the loading state 0x882CD0 / Find 0x535BF0 are not the expected code (at {}); the wait "
                    "list is not read",
                    first_mismatch(kWaitChecks));
     }
     // The state's transitions when they happen (§4.3): a checked mid hook
     // (bytes, .rsrc, exactly the 8 verified bytes relocated) or nothing.
     g_state_on = p8_install_mid(g_base, g_secs, kStateSite, kStatePatch, kStateHookBytes, on_state, g_state, "GuestDiag",
-                                "the loading state's read 0x882699");
+                                "the loading state's read 0x882DB9");
     log::info("GuestDiag ON (read only): FinishGroup error exe+0x{:X} {} | restore exe+0x{:X}/exe+0x{:X} {} (layers "
               "before and after) | loading state and the whole wait list (up to {} keys) every 5 s {} | state "
               "transitions at exe+0x{:X} {} | {}",
@@ -726,16 +726,16 @@ void install_diag() {
 
 void install_guard() {
     const bool sections = code_section_ok(g2976::kActionLayerAdvance, sizeof g2976::kActionLayerAdvanceHead,
-                                          "ActionLayer AdvancePlayback 0x21BD690") &&
+                                          "ActionLayer AdvancePlayback 0x21BF2B0") &&
                           code_section_ok(g2976::kActionLayersAdvance, sizeof g2976::kActionLayersAdvanceHead,
-                                          "CharacterControl AdvanceActionLayers 0x258C5A0");
+                                          "CharacterControl AdvanceActionLayers 0x258EA30");
     if (!sections || !all_match(kGuardChecks) || !net::puppet_install_layer_guards()) {
         log::error("GuestDiag: the action-layer guard could NOT be installed ({}); remote actors stay unguarded",
                    !sections ? "outside .rsrc" : first_mismatch(kGuardChecks));
         return;
     }
     g_guard_on = true;
-    log::info("GuestDiag guard ON: 0x21BD690 returns at once on any layer with no playback; 0x258C5A0 skips the "
+    log::info("GuestDiag guard ON: 0x21BF2B0 returns at once on any layer with no playback; 0x258EA30 skips the "
               "layer update of every actor whose +0x90 is not the local user key while a layer has a chart and no "
               "action. Armed when the local user key is known | {}",
               rsrc_text());
@@ -748,17 +748,17 @@ void install_guard() {
 void install_remote_update_guard() {
     g_rug_tried = true;
     if (!net::horse_diag_install_remote()) {
-        log::error("RemoteUpdateGuard: CharacterControl::Update 0x9729C0 / PostUpdate 0x973BB0 could NOT be hooked; "
+        log::error("RemoteUpdateGuard: CharacterControl::Update 0x9730E0 / PostUpdate 0x9742D0 could NOT be hooked; "
                    "actors other users control stay uncontained there (guest_remote_update_guard=1)");
         return;
     }
     const uint32_t local = g_local.load();
     net::horse_diag_contain_remote(local);
     g_rug_on = true;
-    log::info("RemoteUpdateGuard ON (guest_remote_update_guard=1, S34): CharacterControl::Update 0x9729C0 and "
-              "PostUpdate 0x973BB0 return at once for every actor whose controller (+0x90) is a user other than the "
+    log::info("RemoteUpdateGuard ON (guest_remote_update_guard=1, S34): CharacterControl::Update 0x9730E0 and "
+              "PostUpdate 0x9742D0 return at once for every actor whose controller (+0x90) is a user other than the "
               "local one 0x{:08X} while a layer has a chart and no current action or playback (Shadow's crash at "
-              "exe+0x9A6391, MovementController_UpdateByMode, called only from 0x973BB0); the local user's actors and "
+              "exe+0x9A6C11, MovementController_UpdateByMode, called only from 0x9742D0); the local user's actors and "
               "those with +0x90 = 0 are never touched. horse_diag's containment, entry mid hooks",
               local);
 }

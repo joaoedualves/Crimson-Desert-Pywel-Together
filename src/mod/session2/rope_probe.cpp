@@ -31,7 +31,7 @@ namespace {
 
 namespace g2976 = game::build_2976;
 
-constexpr uintptr_t kCodeBegin = 0x1000, kCodeEnd = 0x5613000;
+constexpr uintptr_t kCodeBegin = 0x1000, kCodeEnd = 0x5618000;
 constexpr uint32_t kTickMs = 500;
 constexpr uint32_t kWorldTicks = 6;
 constexpr uint64_t kMinuteMs = 60000;
@@ -435,9 +435,9 @@ bool install_hooks() {
         const char* what;
     };
     const Check checks[] = {
-        {rpb::kTreePull, rpb::kTreePullHead, "pa::ClientFrameEventTreePulling::vf1 0x7D1D10's entry"},
-        {rpb::kPullApply, rpb::kPullApplyHead, "the tree pull's per-frame apply 0x9BAF10's entry"},
-        {rpb::kPullApplyCall, rpb::kPullApplyCallBytes, "its only caller 0x98EEC1..0x87B2CA (call 0x9BAF10)"},
+        {rpb::kTreePull, rpb::kTreePullHead, "pa::ClientFrameEventTreePulling::vf1 0x7D2430's entry"},
+        {rpb::kPullApply, rpb::kPullApplyHead, "the tree pull's per-frame apply 0x9BB790's entry"},
+        {rpb::kPullApplyCall, rpb::kPullApplyCallBytes, "its only caller 0x98F741..0x87B9EA (call 0x9BB790)"},
     };
     for (const Check& c : checks) {
         if (!in_rsrc(c.rva, c.bytes.size()) || !bytes_at(c.rva, c.bytes)) {
@@ -447,15 +447,15 @@ bool install_hooks() {
         }
     }
     if (!qword_at(rpb::kTreePullSlot, g_base + rpb::kTreePull)) {
-        log::error("RopeProbe: the vtable slot 0x598F5F8 does not hold 0x7D1D10; REFUSED, nothing written");
+        log::error("RopeProbe: the vtable slot 0x5994620 does not hold 0x7D2430; REFUSED, nothing written");
         return false;
     }
     std::vector<Prepared> ready;
     // Only the 5-byte jump: 5 bytes at 0x6D46D0, 11 (three whole instructions) at 0x8A30C0; never the 14-byte fallback.
     if (!prepare(rpb::kTreePull, reinterpret_cast<void*>(&tree_detour), rpb::kTreePullHead, rpb::kTreePullPatch,
-                 "pa::ClientFrameEventTreePulling::vf1 0x7D1D10", g_tree_hook, ready) ||
+                 "pa::ClientFrameEventTreePulling::vf1 0x7D2430", g_tree_hook, ready) ||
         !prepare(rpb::kPullApply, reinterpret_cast<void*>(&pull_detour), rpb::kPullApplyHead, rpb::kPullApplyPatch,
-                 "the tree pull's per-frame apply 0x9BAF10", g_pull_hook, ready)) {
+                 "the tree pull's per-frame apply 0x9BB790", g_pull_hook, ready)) {
         return false;
     }
     std::string patched;
@@ -473,9 +473,9 @@ bool install_hooks() {
         enabled.push_back(p.slot);
     }
     g_hooks_on.store(true);
-    log::info("RopeProbe: hooked at their entries ({} bytes patched): exe+0x7D1D10 (pa::ClientFrameEventTreePulling::vf1, "
-              "log only) and exe+0x9BAF10 (the tree pull's per-frame apply, counted per character; one caller "
-              "0x98EEC9); nothing of the game is written",
+    log::info("RopeProbe: hooked at their entries ({} bytes patched): exe+0x7D2430 (pa::ClientFrameEventTreePulling::vf1, "
+              "log only) and exe+0x9BB790 (the tree pull's per-frame apply, counted per character; one caller "
+              "0x98F749); nothing of the game is written",
               patched);
     return true;
 }
@@ -642,7 +642,7 @@ void log_summary(State& st, uint64_t not_logged) {
     for (size_t i = 0; i < st.players_n; ++i) {
         const uint32_t k = st.players[i];
         const rpb::KeyCount* c = g_keys.find(k);
-        players += std::format("{}0x{:08X} ({}): 0x9BAF10 {} | timer runs {}, running frames {}, applied {}",
+        players += std::format("{}0x{:08X} ({}): 0x9BB790 {} | timer runs {}, running frames {}, applied {}",
                                players.empty() ? "" : "; ", k, who_here(k),
                                c                ? std::format("ran {} times", c->calls.load())
                                : g_keys.full() ? std::string("UNKNOWN (table full)")
@@ -665,7 +665,7 @@ void log_summary(State& st, uint64_t not_logged) {
             d.sent_3082, d.sent_branch);
     }
     log::info("RopeProbe summary ({}): hooks {} | TreePulling vf1 ran {} times (characters controlled here {}, remote {}) "
-              "| 0x9BAF10: players {} calls ({} player characters, table full {}), every other character {} calls | "
+              "| 0x9BB790: players {} calls ({} player characters, table full {}), every other character {} calls | "
               "players: {} | devices ({} known, table full {}; 2005 device lines {}, device events sent {}): {} | lines "
               "not logged {}, ring dropped {}",
               g_guest.load() ? "guest" : "host", g_hooks_on.load() ? "on" : "OFF", g_tree_runs.load(), g_tree_here.load(),
@@ -728,7 +728,7 @@ void rope_probe_start(bool on, bool guest) {
     // The device part reads the sniffer's capture (session2.cpp's tap fan-out, both roles).
     sniffer_tap_rope_probe();
     log::info("RopeProbe ON ({}): log only. Tree bend: hooks at the entries of pa::ClientFrameEventTreePulling::vf1 "
-              "0x7D1D10 and of the per-frame apply 0x9BAF10 once the world is up. Grappling device: the gimmick events "
+              "0x7D2430 and of the per-frame apply 0x9BB790 once the world is up. Grappling device: the gimmick events "
               "this client sends and the device 2005 it receives, from the sniffer's capture (needs [sniffer] "
               "enabled=1). Nothing of the game is written (docs/research/s25/gancho-cuerda.md section 13)",
               guest ? "guest" : "host");

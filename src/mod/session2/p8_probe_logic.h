@@ -460,7 +460,7 @@ inline Attribution attribute_a97d60(const LoadSnapshot& s, bool al) {
 
 inline const char* blocker_name(Blocker b) {
     switch (b) {
-        case Blocker::None: return "none (0xBDAF10 true)";
+        case Blocker::None: return "none (0xBDB960 true)";
         case Blocker::Byte231: return "M+0x231 < 2";
         case Blocker::Busy174: return "M+0x174 != 0";
         case Blocker::Timer2D0: return "M+0x2D4 set and M+0x2D0 < threshold";
@@ -469,8 +469,8 @@ inline const char* blocker_name(Blocker b) {
         case Blocker::List1InBox: return "list M+0x1B0 entry mode +0x60 in {0,1} and position inside its box";
         case Blocker::Unreadable: return "unreadable";
         case Blocker::Undetermined:
-            return "undetermined by reads (field context 0x21C5B80, 0x1C9F790 of list M+0x1B0, or list M+0x1C0 "
-                   "via 0x1C9F790/0x6C3BC0)";
+            return "undetermined by reads (field context 0x21C77A0, 0x1CA13B0 of list M+0x1B0, or list M+0x1C0 "
+                   "via 0x1CA13B0/0x6C3F30)";
     }
     return "?";
 }

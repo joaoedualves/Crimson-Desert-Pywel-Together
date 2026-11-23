@@ -38,26 +38,26 @@ using shp::Who;
 //   E 0x288B7A0  mov rax,rsp ; mov [rax+0x10],rbx                    7 bytes, the entry of 0x288B7A0 (.pdata
 //                                                                    0x288B7A0-0x288BE21); rcx = mgr, rdx = field,
 //                                                                    r8 = the manager's character
-constexpr uintptr_t kE = 0x2B4D650;
+constexpr uintptr_t kE = 0x2B4FDA0;
 constexpr uint32_t kEPatch = 7;
 constexpr uint8_t kEBytes[] = {0x48, 0x8B, 0xC4, 0x48, 0x89, 0x58, 0x10};
 //   G 0x288B87A  cmp [r15+0x180],eax                                 7 bytes (the jne rel32 after it is not
 //                                                                    patched); a jmp target at its first byte
 //                (0x288B876). Context 0x288B867: mov rax,[r13+0xA0] ; test ; je ; mov eax,[rax+0x60] ; jmp ; mov eax,esi
-constexpr uintptr_t kG = 0x2B4D72A, kGCtx = 0x2B4D716;
+constexpr uintptr_t kG = 0x2B4FE7A, kGCtx = 0x2B4FE66;
 constexpr uint32_t kGPatch = 7;
 constexpr uint8_t kGBytes[] = {0x41, 0x39, 0x87, 0x80, 0x01, 0x00, 0x00, 0x0F, 0x85, 0x80, 0x05, 0x00, 0x00};
 constexpr uint8_t kGCtxBytes[] = {0x49, 0x8B, 0x85, 0xA0, 0x00, 0x00, 0x00, 0x48, 0x85, 0xC0, 0x74, 0x05, 0x8B, 0x40, 0x60, 0xEB, 0x03, 0x41, 0x8B};
 //   P 0x288AAEF  nop ; mov rcx,[rbp+0x77]                            5 bytes, right after call 0x287C200
 //                Context 0x288AAD6: mov r9,[rdi+0x200] ; lea r8,[rbp-0x51] ; mov rdx,r14 ; mov rcx,r15 ;
 //                vzeroupper ; call 0x287C200 (E8 11 17 FF FF)
-constexpr uintptr_t kP = 0x2B4C865, kPCtx = 0x2B4C84C;
+constexpr uintptr_t kP = 0x2B4EFB5, kPCtx = 0x2B4EF9C;
 constexpr uint32_t kPPatch = 5;
 constexpr uint8_t kPBytes[] = {0x90, 0x4C, 0x8B, 0x65, 0x87};
 constexpr uint8_t kPCtxBytes[] = {0x4C, 0x8B, 0x8B, 0x00, 0x02, 0x00, 0x00, 0x4C, 0x8D, 0x45, 0xAF, 0x49, 0x8B, 0xD7, 0x49, 0x8B, 0xCE, 0xC5, 0xF8, 0x77, 0xE8, 0xBB, 0x02, 0xFF, 0xFF};
 //   C 0x29E9282  mov ebx,[rbp-0x58] ; test ebx,ebx                   5 bytes (the je rel32 after it is not patched)
 //                Context 0x29E9276: mov rcx,[rcx+0x98] ; call 0x2B36860 (E8 DE D5 14 00)
-constexpr uintptr_t kC = 0x2CD76B9, kCCtx = 0x2CD76AD;
+constexpr uintptr_t kC = 0x2CDC149, kCCtx = 0x2CDC13D;
 constexpr uint32_t kCPatch = 5;
 constexpr uint8_t kCBytes[] = {0x8B, 0x5D, 0x80, 0x85, 0xDB};
 constexpr uint8_t kCCtxBytes[] = {0x48, 0x8B, 0x89, 0x98, 0x00, 0x00, 0x00, 0xE8, 0x37, 0x00, 0x16, 0x00};
@@ -391,14 +391,14 @@ std::string line_of(const p::Event& e) {
     const std::string when = p8_when(e.qpc_us);
     switch (e.kind) {
         case kEGate:
-            return std::format("ShopProbe [gate] {} T{} | the stage update 0x2B4D650 of character 0x{:08X} (manager 0x{:X}): "
+            return std::format("ShopProbe [gate] {} T{} | the stage update 0x2B4FDA0 of character 0x{:08X} (manager 0x{:X}): "
                                "its user 0x{:08X} vs the field 0x{:X}'s owner 0x{:08X} -> {}",
                                when, e.tid, static_cast<uint32_t>(v[0]), v[3], static_cast<uint32_t>(v[1]), v[4],
                                static_cast<uint32_t>(v[2]),
                                v[5] ? "OWNER: its stages are evaluated (shops, schedules, factions...)"
-                                    : "NOT the owner: leaves without evaluating any stage (0x2B4DCB7)");
+                                    : "NOT the owner: leaves without evaluating any stage (0x2B50407)");
         case kEPrep:
-            return std::format("ShopProbe [{}] {} T{} | stage element prepared by 0x2B3CB20: '{}' sequencer id 0x{:X}, owner "
+            return std::format("ShopProbe [{}] {} T{} | stage element prepared by 0x2B3F270: '{}' sequencer id 0x{:X}, owner "
                                "0x{:08X}, result 0x{:X}{} | instance 0x{:X}, binding data 0x{:X} | manager 0x{:X} of "
                                "character 0x{:08X} (user 0x{:08X})",
                                v[11] ? "funcnpc" : "stage", when, e.tid, name_of(v + 6, 5), v[1],
@@ -407,7 +407,7 @@ std::string line_of(const p::Event& e) {
                                static_cast<uint32_t>(v[5]), static_cast<uint32_t>(v[5] >> 32));
         case kE2671:
             return std::format("ShopProbe [2671] {} T{} | {} asked: requester 0x{:08X} (user 0x{:08X}) -> NPC 0x{:08X} "
-                               "interaction 0x{:08X} | 0x2E37D80 path result 0x{:X} -> {}",
+                               "interaction 0x{:08X} | 0x2E3C810 path result 0x{:X} -> {}",
                                when, e.tid, shp::who_name(static_cast<Who>(v[5])), static_cast<uint32_t>(v[1]),
                                static_cast<uint32_t>(v[4]), static_cast<uint32_t>(v[2]), static_cast<uint32_t>(v[3]),
                                static_cast<uint32_t>(v[0]),
@@ -415,7 +415,7 @@ std::string line_of(const p::Event& e) {
         case kESrv: {
             const auto w = static_cast<Who>(v[0] & 0xFF);
             const auto bl = static_cast<uint8_t>((v[0] >> 8) & 0xFF);
-            return std::format("ShopProbe [server check] {} T{} | 0x235EB60 on the SERVER for {} (user 0x{:08X}, "
+            return std::format("ShopProbe [server check] {} T{} | 0x23607D0 on the SERVER for {} (user 0x{:08X}, "
                                "character 0x{:08X}): entry 0x{:X} stage id 0x{:X} looked up in manager 0x{:X} ({}): {} "
                                "| result {}",
                                when, e.tid, shp::who_name(w), static_cast<uint32_t>(v[5]),
@@ -499,7 +499,7 @@ void summary() {
     };
     log::info("ShopProbe summary: hooks E {} G {} P {} C {} S {}/{}/{} | user 2 = user 0x{:08X} character 0x{:08X} | "
               "stage update per character:{} | stage elements prepared {} (failed {}), cd_seq_funcnpc_* {} (owner not "
-              "the manager's character {}; ids kept {}) | 2671 on the server: {} (refused: {}) | server 0x235EB60 calls: "
+              "the manager's character {}; ids kept {}) | 2671 on the server: {} (refused: {}) | server 0x23607D0 calls: "
               "{} (lookup found: {}); results user 2 [{}] host [{}] | user 2 Req 2671 {} 2720 {} 2436 {} (funcnpc {}, "
               "dropped by R1 {}) 2591 {} (funcnpc {}, dropped {}) | to user 2: 2663 {} 3000 {} 2916 {} 2525 {} 2981 {} "
               "(funcnpc {}) 2524 {} (funcnpc {}) | limited {} lost {}",
@@ -544,29 +544,29 @@ void install(std::span<const gad::Section> secs) {
                          SafetyHookMid& out, std::atomic<bool>& on, const char* what) {
         if (p8_install_mid(g_base, secs, rva, patch, bytes, fn, out, "ShopProbe", what)) on.store(true, std::memory_order_release);
     };
-    if (context_ok(secs, kPCtx, kPCtxBytes, "0x2B4C6E0's call 0x2B3CB20")) {
-        mid(kP, kPPatch, kPBytes, on_p, g_p_hook, g_p_on, "P, after the stage element's 0x2B3CB20");
+    if (context_ok(secs, kPCtx, kPCtxBytes, "0x2B4EE30's call 0x2B3F270")) {
+        mid(kP, kPPatch, kPBytes, on_p, g_p_hook, g_p_on, "P, after the stage element's 0x2B3F270");
     }
     if (!g_on.load()) {  // funcnpc_twin alone: only P
-        log::info("FuncnpcTwin (funcnpc_twin={}): P 0x2B4C865 {} (shop_probe=0: no other point)",
+        log::info("FuncnpcTwin (funcnpc_twin={}): P 0x2B4EFB5 {} (shop_probe=0: no other point)",
                   g_twin_asked_on.load() ? "1, held as probe" : "probe", g_p_on.load() ? "hooked" : "REFUSED");
         return;
     }
-    mid(kE, kEPatch, kEBytes, on_e, g_e_hook, g_e_on, "E, the stage update's entry 0x2B4D650");
-    if (context_ok(secs, kGCtx, kGCtxBytes, "the owner gate's user key 0x2B4D716")) {
-        mid(kG, kGPatch, kGBytes, on_g, g_g_hook, g_g_on, "G, the owner gate 0x2B4D72A");
+    mid(kE, kEPatch, kEBytes, on_e, g_e_hook, g_e_on, "E, the stage update's entry 0x2B4FDA0");
+    if (context_ok(secs, kGCtx, kGCtxBytes, "the owner gate's user key 0x2B4FE66")) {
+        mid(kG, kGPatch, kGBytes, on_g, g_g_hook, g_g_on, "G, the owner gate 0x2B4FE7A");
     }
-    if (context_ok(secs, kCCtx, kCCtxBytes, "the 2671 handler's call 0x2E376F0")) {
-        mid(kC, kCPatch, kCBytes, on_c, g_c_hook, g_c_on, "C, the 2671's result 0x2CD76B9");
+    if (context_ok(secs, kCCtx, kCCtxBytes, "the 2671 handler's call 0x2E3C180")) {
+        mid(kC, kCPatch, kCBytes, on_c, g_c_hook, g_c_on, "C, the 2671's result 0x2CDC149");
     }
-    if (context_ok(secs, isl::kCtxLookup, isl::kCtxLookupBytes, "the entry check's lookup call 0x235ECA6") &&
-        context_ok(secs, isl::kCtxA, isl::kCtxABytes, "the entry check's vf48 call 0x235EC5E")) {
-        mid(isl::kPointR, isl::kPatchR, isl::kBytesR, on_sr, g_sr_hook, g_sr_on, "S/R, after the lookup 0x235ECF5");
-        mid(isl::kPointF, isl::kPatchF, isl::kBytesF, on_sf, g_sf_hook, g_sf_on, "S/F, the result 0x235EF99");
-        mid(isl::kPointA, isl::kPatchA, isl::kBytesA, on_sa, g_sa_hook, g_sa_on, "S/A, the manager 0x235EC69");
+    if (context_ok(secs, isl::kCtxLookup, isl::kCtxLookupBytes, "the entry check's lookup call 0x2360916") &&
+        context_ok(secs, isl::kCtxA, isl::kCtxABytes, "the entry check's vf48 call 0x23608CE")) {
+        mid(isl::kPointR, isl::kPatchR, isl::kBytesR, on_sr, g_sr_hook, g_sr_on, "S/R, after the lookup 0x2360965");
+        mid(isl::kPointF, isl::kPatchF, isl::kBytesF, on_sf, g_sf_hook, g_sf_on, "S/F, the result 0x2360C09");
+        mid(isl::kPointA, isl::kPatchA, isl::kBytesA, on_sa, g_sa_hook, g_sa_on, "S/A, the manager 0x23608D9");
     }
-    log::info("ShopProbe (shop_probe=1, read only): E 0x2B4D650 {} | G 0x2B4D72A {} | P 0x2B4C865 {} | C 0x2CD76B9 {} | "
-              "S 0x235EC69/0x235ECF5/0x235EF99 {}/{}/{} | taps: user 2's 2671/2720/2436/2591 (with observer_seq_copy's "
+    log::info("ShopProbe (shop_probe=1, read only): E 0x2B4FDA0 {} | G 0x2B4FE7A {} | P 0x2B4EFB5 {} | C 0x2CDC149 {} | "
+              "S 0x23608D9/0x2360965/0x2360C09 {}/{}/{} | taps: user 2's 2671/2720/2436/2591 (with observer_seq_copy's "
               "R1 verdict{}) and the 2663/3000/2916/2525/2981/2524 queued for user 2",
               g_e_on.load() ? "hooked" : "REFUSED", g_g_on.load() ? "hooked" : "REFUSED",
               g_p_on.load() ? "hooked" : "REFUSED", g_c_on.load() ? "hooked" : "REFUSED",
@@ -634,7 +634,7 @@ void shop_probe_start(bool on, const std::string& twin_mode) {
     const shp::TwinKey tk = shp::parse_twin(twin_mode);
     if (tk.bad) log::warn("FuncnpcTwin: funcnpc_twin={} is not 0, probe or 1: off", twin_mode);
     if (tk.asked_on) {
-        log::warn("FuncnpcTwin: funcnpc_twin=1 is NOT applied in this build: held as probe (no call to 0x2B3CB20 for "
+        log::warn("FuncnpcTwin: funcnpc_twin=1 is NOT applied in this build: held as probe (no call to 0x2B3F270 for "
                   "user 2's manager until T2 and the routing of user 2's scene Reqs are settled; "
                   "p8-impl-tenderos-s2.md)");
     }

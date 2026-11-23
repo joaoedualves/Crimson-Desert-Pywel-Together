@@ -28,26 +28,26 @@ namespace cdmp::session2::rpb {
 // pa::ClientFrameEventTreePulling::vf1 (this, &err, event, ?, &actor holder):
 //   48 89 5C 24 08 | 48 89 74 24 10 | 57 | 48 83 EC 30 | 48 8B FA | 48 8B 44 24 60 (the 5th argument).
 // Referenced by its vtable slot 0x5584138 only (and .pdata).
-inline constexpr uintptr_t kTreePull = 0x7D1D10;
+inline constexpr uintptr_t kTreePull = 0x7D2430;
 inline constexpr uint8_t kTreePullHead[23] = {0x48, 0x89, 0x5C, 0x24, 0x08, 0x48, 0x89, 0x74, 0x24, 0x10, 0x57, 0x48,
                                               0x83, 0xEC, 0x30, 0x48, 0x8B, 0xFA, 0x48, 0x8B, 0x44, 0x24, 0x60};
 inline constexpr uint32_t kTreePullBoundaries[] = {5, 10, 11, 15, 18, 23};
 // The only patch size accepted: safetyhook's 5-byte jump (its 14-byte fallback is refused).
 inline constexpr uint32_t kTreePullPatch[] = {5};
-inline constexpr uintptr_t kTreePullVtbl = 0x598F5F0;
-inline constexpr uintptr_t kTreePullSlot = 0x598F5F8;  // vf1
+inline constexpr uintptr_t kTreePullVtbl = 0x5994618;
+inline constexpr uintptr_t kTreePullSlot = 0x5994620;  // vf1
 // The tree pull's per-frame apply 0x8A30C0 (mc, float dt in xmm1):
 //   48 8B C4 mov rax,rsp | 57 push rdi | 48 81 EC 00 01 00 00 sub rsp,0x100 | C5 FA 10 91 3C 06 00 00 (the timer).
-inline constexpr uintptr_t kPullApply = 0x9BAF10;
+inline constexpr uintptr_t kPullApply = 0x9BB790;
 inline constexpr uint8_t kPullApplyHead[19] = {0x48, 0x8B, 0xC4, 0x57, 0x48, 0x81, 0xEC, 0x00, 0x01, 0x00, 0x00, 0xC5, 0xFA, 0x10, 0x91, 0xA4, 0x06, 0x00, 0x00};
 inline constexpr uint32_t kPullApplyBoundaries[] = {3, 4, 11, 19};
 // The only patch size accepted: the 5-byte jump moves the first three whole instructions (11 bytes).
 inline constexpr uint32_t kPullApplyPatch[] = {11};
 // Its only caller, the movement update 0x87A700 (from cdmp_MovementController_UpdateByMode 0x88F4E0), under the
 // actor's lock (cdmp_Actor_Lock at 0x87B2B8): vmovaps xmm1,xmm10 | mov rcx,rsi | call 0x8A30C0.
-inline constexpr uintptr_t kPullApplyCall = 0x98EEC1;
+inline constexpr uintptr_t kPullApplyCall = 0x98F741;
 inline constexpr uint8_t kPullApplyCallBytes[13] = {0xC4, 0xC1, 0x78, 0x28, 0xCB, 0x48, 0x8B, 0xCE, 0xE8, 0x42, 0xC0, 0x02, 0x00};
-inline constexpr uintptr_t kPullApplyReturn = 0x98EECE;
+inline constexpr uintptr_t kPullApplyReturn = 0x98F74E;
 
 // The movement controller (0x8A30C0's argument): [mc+0x68] the actor; +0x63C the tree-pull timer (-1 off, >= 0
 // running, back to -1 after DAT_146cb8788); +0x638 the value applied this frame (-1 when it ends); +0x188 -> +0x50 the
@@ -190,7 +190,7 @@ inline const char* dev_event_name(DevEvent e) {
 }
 inline std::optional<DevEvent> dev_event(uint32_t hash) {
     switch (hash) {
-        case 0x003ECC59: return DevEvent::Deploy;
+        case 0x003ED069: return DevEvent::Deploy;
         case 0xDA667CC9: return DevEvent::Catch;
         case 0x92786A19: return DevEvent::E9278;
         case 0xA55A59FF: return DevEvent::EA55A;

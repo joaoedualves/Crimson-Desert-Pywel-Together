@@ -37,28 +37,28 @@ namespace p = p8p;
 
 // PrepareSequencerAck 2661's client handler 0xC05BB0(this, int* res, wrapper*):
 //   raw = [R8+0x18] (u16 opcode | i8 | u16 len | payload), the payload length check at 0xC05BDB.
-constexpr uintptr_t kIn2661 = 0xD6C750;  // mov [rsp+8],rbx ; push rbp ...                      patch 5
+constexpr uintptr_t kIn2661 = 0xD6D1A0;  // mov [rsp+8],rbx ; push rbp ...                      patch 5
 constexpr uint8_t kIn2661Bytes[] = {0x48, 0x89, 0x5C, 0x24, 0x08, 0x55, 0x56, 0x57,
                                     0x41, 0x54, 0x41, 0x55, 0x41, 0x56, 0x41, 0x57};
 // Its frame: rbp = rsp - 0xA0 (0xC05BC0); kind [rbp+0xF0] -> ebx (0xC060C6); the resolved actor
 // stored in [R12] (0xC060C2; R12 = the wrapper from 0xC05BCF); the field attacher at [rbp-0x48]
 // (+8 = [rbp-0x40] the ClientField, +0x10 = [rbp-0x38] valid) whose vf48 is called at 0xC06120;
 // 0xA9CA40(manager, &[rbp-0x50] result, &[rbp] play data, &[rbp-0x80] bindings) at 0xC06179.
-constexpr uintptr_t kFrame2661 = 0xD6C765;
+constexpr uintptr_t kFrame2661 = 0xD6D1B5;
 constexpr uint8_t kFrame2661Bytes[] = {0x48, 0x8D, 0xAC, 0x24, 0x50, 0xFF, 0xFF, 0xFF};
-constexpr uintptr_t kKind2661 = 0xD6CB99;
+constexpr uintptr_t kKind2661 = 0xD6D5E9;
 constexpr uint8_t kKind2661Bytes[] = {0x44, 0x0F, 0xB6, 0xB5, 0x08, 0x01, 0x00};
-constexpr uintptr_t kActor2661 = 0xD6CB95;
+constexpr uintptr_t kActor2661 = 0xD6D5E5;
 constexpr uint8_t kActor2661Bytes[] = {0x49, 0x89, 0x1C, 0x24};
-constexpr uintptr_t kVf48_2661 = 0xD6CBF4;
+constexpr uintptr_t kVf48_2661 = 0xD6D644;
 constexpr uint8_t kVf48_2661Bytes[] = {0x48, 0x8B, 0x4D, 0xD8, 0x48, 0x8B, 0x01, 0xFF, 0x50, 0x48};
-constexpr uintptr_t kCreate2661 = 0xD6CC4B;
+constexpr uintptr_t kCreate2661 = 0xD6D69B;
 constexpr uint8_t kCreate2661Bytes[] = {0x4C, 0x8D, 0x4D, 0x80, 0x4C, 0x8D, 0x45, 0x10, 0x48, 0x8D, 0x95, 0x00, 0x01, 0x00, 0x00, 0x48, 0x8B, 0xC8, 0xE8, 0x2E};
 //   0xC0612A cmp bl,4 ; je 0xC06179 (RAX = the manager vf48 returned)            patch 5 (the short je is relocated)
-constexpr uintptr_t kRoute2661 = 0xD6CBFE;
-constexpr uint8_t kRoute2661Bytes[] = {0x41, 0x80, 0xFE, 0x04, 0x74, 0x47, 0x48, 0x8D, 0x05, 0x85, 0x85, 0xC6, 0x04, 0x48, 0x89, 0x44};
+constexpr uintptr_t kRoute2661 = 0xD6D64E;
+constexpr uint8_t kRoute2661Bytes[] = {0x41, 0x80, 0xFE, 0x04, 0x74, 0x47, 0x48, 0x8D, 0x05, 0xC5, 0xCA, 0xC6, 0x04, 0x48, 0x89, 0x44};
 //   0xC061C1 mov dword [rdi],0 (both the created path and the "no actor" path)   patch 6
-constexpr uintptr_t kResult2661 = 0xD6CC96;
+constexpr uintptr_t kResult2661 = 0xD6D6E6;
 constexpr uint8_t kResult2661Bytes[] = {0x44, 0x89, 0x3E, 0x4C, 0x89, 0xA5, 0x80, 0x00, 0x00, 0x00, 0x4C, 0x89, 0xAD, 0x80, 0x00, 0x00};
 
 // 0xA9CA40(manager, result*, play data*, bindings*): rbp = rsp - 0x3C8 after the pushes, so
@@ -66,100 +66,100 @@ constexpr uint8_t kResult2661Bytes[] = {0x44, 0x89, 0x3E, 0x4C, 0x89, 0xA5, 0x80
 // Bindings loop: R14 = the 12-byte binding (0xA9CB87 type, 0xA9CB98 actor key); a type 4/5
 // actor not found jumps from 0xA9CC13 to 0xA9CE81 (the error path):
 //   0xA9CE87 mov r14,[rbp+0x418]                                                  patch 7
-constexpr uintptr_t kMissing = 0xBE0154;
+constexpr uintptr_t kMissing = 0xBE0BA4;
 constexpr uint8_t kMissingBytes[] = {0x4C, 0x8B, 0xB5, 0x38, 0x04, 0x00, 0x00, 0x41, 0x89, 0x06, 0x48, 0x89, 0x74, 0x24, 0x38, 0x80};
-constexpr uintptr_t kCreateHomes = 0xBDFC90;
+constexpr uintptr_t kCreateHomes = 0xBE06E0;
 constexpr uint8_t kCreateHomesBytes[] = {0x48, 0x89, 0x5C, 0x24, 0x20, 0x48, 0x89, 0x54, 0x24, 0x10, 0x48, 0x89, 0x4C, 0x24, 0x08};
-constexpr uintptr_t kBindType = 0xBDFE58;
+constexpr uintptr_t kBindType = 0xBE08A8;
 constexpr uint8_t kBindTypeBytes[] = {0x41, 0x0F, 0xB6, 0x46, 0x08, 0x3C, 0x04, 0x74, 0x08, 0x3C, 0x05};
-constexpr uintptr_t kBindActor = 0xBDFE69;
+constexpr uintptr_t kBindActor = 0xBE08B9;
 constexpr uint8_t kBindActorBytes[] = {0x45, 0x8B, 0x46, 0x04};
-constexpr uintptr_t kBindMissing = 0xBDFED9;
+constexpr uintptr_t kBindMissing = 0xBE0929;
 constexpr uint8_t kBindMissingBytes[] = {0x80, 0x7C, 0x24, 0x48, 0x00, 0x0F, 0x84, 0x6A, 0x02, 0x00, 0x00};
 
 // StageBranchStateAck 2981's handler 0xC073A0 (R15 = the wrapper from 0xC073BC; [R15] = the
 // resolved actor at 0xC076E6; field = [rbp-0x38], vf48 at 0xC0773F):
-constexpr uintptr_t kIn2981 = 0xD6E200;  //                                                    patch 5
+constexpr uintptr_t kIn2981 = 0xD6EC50;  //                                                    patch 5
 constexpr uint8_t kIn2981Bytes[] = {0x48, 0x89, 0x5C, 0x24, 0x08, 0x55, 0x56, 0x57,
                                     0x41, 0x54, 0x41, 0x55, 0x41, 0x56, 0x41, 0x57};
-constexpr uintptr_t kWrap2981 = 0xD6E221;
+constexpr uintptr_t kWrap2981 = 0xD6EC71;
 constexpr uint8_t kWrap2981Bytes[] = {0x4D, 0x8B, 0xF8};
-constexpr uintptr_t kActor2981 = 0xC076E6;
+constexpr uintptr_t kActor2981 = 0xC08136;
 constexpr uint8_t kActor2981Bytes[] = {0x49, 0x89, 0x3F};
-constexpr uintptr_t kVf48_2981 = 0xD6E71A;
+constexpr uintptr_t kVf48_2981 = 0xD6F16A;
 constexpr uint8_t kVf48_2981Bytes[] = {0x48, 0x8B, 0x4D, 0xF0, 0x48, 0x8B, 0x01, 0xFF, 0x50, 0x48};
 //   0xC07749 lea rcx,[rbp-0x80] ; mov [rsp+0x30],rcx (RAX = the manager)           patch 9
-constexpr uintptr_t kRoute2981 = 0xD6E724;
+constexpr uintptr_t kRoute2981 = 0xD6F174;
 constexpr uint32_t kRoute2981Patch = 9;
 constexpr uint8_t kRoute2981Bytes[] = {0x48, 0x8D, 0x4D, 0x80, 0x48, 0x89, 0x4C, 0x24, 0x30, 0x48, 0x8D, 0x4D, 0xD0, 0x48, 0x89, 0x4C};
 
 // DeleteSequencerAck 2810's handler 0xC06330 (field = [rbp-0x48], vf48 at 0xC06594):
-constexpr uintptr_t kIn2810 = 0xD6CE70;  //                                                    patch 5
+constexpr uintptr_t kIn2810 = 0xD6D8C0;  //                                                    patch 5
 constexpr uint8_t kIn2810Bytes[] = {0x48, 0x89, 0x5C, 0x24, 0x08, 0x55, 0x56, 0x57,
                                     0x41, 0x54, 0x41, 0x55, 0x41, 0x56, 0x41, 0x57};
-constexpr uintptr_t kVf48_2810 = 0xD6D0EB;
+constexpr uintptr_t kVf48_2810 = 0xD6DB3B;
 constexpr uint8_t kVf48_2810Bytes[] = {0x48, 0x8B, 0x4D, 0xF0, 0x48, 0x8B, 0x01, 0xFF, 0x50, 0x48};
 //   0xC0659E movzx ecx,byte [rbp+0x70] ; mov [rsp+0x20],cl (RAX = the manager)      patch 8
-constexpr uintptr_t kRoute2810 = 0xD6D0F5;
+constexpr uintptr_t kRoute2810 = 0xD6DB45;
 constexpr uint32_t kRoute2810Patch = 8;
 constexpr uint8_t kRoute2810Bytes[] = {0x0F, 0xB6, 0x8D, 0x80, 0x00, 0x00, 0x00, 0x88, 0x4C, 0x24, 0x20, 0x4C, 0x8D, 0x4D, 0xB0, 0x4C};
 
 // PlayAllPreLoadSequencerAck 2322's handler 0xB87890: field attacher at [rbp-0x60] (0xB87A28),
 // field [rbp-0x58], valid [rbp-0x50]; R14 = raw (0xB879B7), the actor key at raw+5.
 //   0xB87A32 cmp byte [rbp-0x50],0 ; jne 0xB87A5D                                 patch 6 (the short jne is relocated)
-constexpr uintptr_t kRoute2322 = 0xCD5606;
+constexpr uintptr_t kRoute2322 = 0xCD6056;
 constexpr uint32_t kRoute2322Patch = 6;
-constexpr uint8_t kRoute2322Bytes[] = {0x80, 0x7D, 0xC0, 0x00, 0x75, 0x25, 0x48, 0x8D, 0x05, 0x55, 0x05, 0x07, 0x05, 0x48, 0x89, 0x45};
-constexpr uintptr_t kField2322 = 0xCD55FC;
-constexpr uint8_t kField2322Bytes[] = {0x48, 0x8D, 0x55, 0xB0, 0xE8, 0x3B, 0xA2, 0xCC, 0x00};
-constexpr uintptr_t kRaw2322 = 0xCD558B;
+constexpr uint8_t kRoute2322Bytes[] = {0x80, 0x7D, 0xC0, 0x00, 0x75, 0x25, 0x48, 0x8D, 0x05, 0x8D, 0x4D, 0x07, 0x05, 0x48, 0x89, 0x45};
+constexpr uintptr_t kField2322 = 0xCD604C;
+constexpr uint8_t kField2322Bytes[] = {0x48, 0x8D, 0x55, 0xB0, 0xE8, 0x5B, 0xB4, 0xCC, 0x00};
+constexpr uintptr_t kRaw2322 = 0xCD5FDB;
 constexpr uint8_t kRaw2322Bytes[] = {0x41, 0x0F, 0xB7, 0x46, 0x03};
 
 // ClientSequencerPlayDataActorComponent::vf13 0x9ED290 (vtable exe+0x55BEE78 slot 13); r14 =
 // comp (0x9ED2B5), rbp = rsp (0x9ED2A8): checked, never patched (P8Probe relies on them too).
-constexpr uintptr_t kNpcEntry = 0xB29470;  // mov [rsp+0x10],rbx                               patch 5
+constexpr uintptr_t kNpcEntry = 0xB29DB0;  // mov [rsp+0x10],rbx                               patch 5
 constexpr uint8_t kNpcEntryBytes[] = {0x48, 0x89, 0x5C, 0x24, 0x10, 0x55, 0x56, 0x57, 0x41, 0x54, 0x41, 0x55, 0x41, 0x56, 0x41, 0x57};
-constexpr uintptr_t kNpcFrame = 0xB29480;
+constexpr uintptr_t kNpcFrame = 0xB29DC0;
 constexpr uint8_t kNpcFrameBytes[] = {0x48, 0x8B, 0xEC};
-constexpr uintptr_t kNpcComp = 0xB2948A;
+constexpr uintptr_t kNpcComp = 0xB29DCA;
 constexpr uint8_t kNpcCompBytes[] = {0x4C, 0x8B, 0xF1};
 //   0x9ED401 cmp dword [rbp+0x30],0 ; je 0x9ED63B (rel32, relocated)              patch 10
-constexpr uintptr_t kNpcRes8 = 0x9ED401;
+constexpr uintptr_t kNpcRes8 = 0x9EDC81;
 constexpr uint32_t kNpcRes8Patch = 10;
 constexpr uint8_t kNpcRes8Bytes[] = {0x83, 0x7D, 0x30, 0x00, 0x0F, 0x84, 0x30, 0x02,
                                      0x00, 0x00, 0x83, 0x7D, 0x34, 0xFF, 0x0F, 0x84};
 //   0x9ED453 mov rax,[rbp-0x20] ; mov rcx,[rax+0x68] (the owner actor was found)   patch 8
-constexpr uintptr_t kNpcOwner = 0x9ED453;
+constexpr uintptr_t kNpcOwner = 0x9EDCD3;
 constexpr uint32_t kNpcOwnerPatch = 8;
 constexpr uint8_t kNpcOwnerBytes[] = {0x48, 0x8B, 0x45, 0xE0, 0x48, 0x8B, 0x48, 0x68,
                                       0x48, 0x8B, 0x81, 0xA8, 0x00, 0x00, 0x00, 0x48};
 //   0x9ED48C mov r8,[r14+8] ; lea rdx,[rbp+0x30] (RDI = the instance found)       patch 8
-constexpr uintptr_t kNpcInstance = 0xB296CC;
+constexpr uintptr_t kNpcInstance = 0xB2A00C;
 constexpr uint32_t kNpcInstancePatch = 8;
-constexpr uint8_t kNpcInstanceBytes[] = {0x4D, 0x8B, 0x46, 0x08, 0x48, 0x8D, 0x55, 0x40, 0x48, 0x8B, 0xCF, 0xE8, 0xF4, 0x27, 0x9E, 0xFF};
+constexpr uint8_t kNpcInstanceBytes[] = {0x4D, 0x8B, 0x46, 0x08, 0x48, 0x8D, 0x55, 0x40, 0x48, 0x8B, 0xCF, 0xE8, 0xC4, 0x22, 0x9E, 0xFF};
 
 // The loading state machine's writes of M+0x231 (M = 0x9A5BE0(Q), p8-raiz-invitado.md §4.1):
 //   0x77AA8B mov byte [rax+0x231],0 (RAX = M from 0x77AA6C, RDI = P from 0x77AA5C) patch 7
-constexpr uintptr_t kReady0 = 0x883807;
+constexpr uintptr_t kReady0 = 0x883F27;
 constexpr uint8_t kReady0Bytes[] = {0xC6, 0x80, 0x61, 0x02, 0x00, 0x00, 0x00, 0x80, 0xBF, 0x51, 0x02, 0x00, 0x00, 0x00, 0x0F, 0x84};
-constexpr uintptr_t kReady0P = 0x8837D8;
+constexpr uintptr_t kReady0P = 0x883EF8;
 constexpr uint8_t kReady0PBytes[] = {0x48, 0x8B, 0xF9};
-constexpr uintptr_t kReady0M = 0x8837E8;
-constexpr uint8_t kReady0MBytes[] = {0xE8, 0x23, 0xCF, 0x25, 0x00};
+constexpr uintptr_t kReady0M = 0x883F08;
+constexpr uint8_t kReady0MBytes[] = {0xE8, 0xB3, 0xD0, 0x25, 0x00};
 //   0x77B0CE mov byte [r14+0x231],1 (R14 = M from 0x77AE9F, RBP = P from 0x77AE8A) patch 8
-constexpr uintptr_t kReady1 = 0x883E61;
+constexpr uintptr_t kReady1 = 0x884581;
 constexpr uint8_t kReady1Bytes[] = {0xC6, 0x86, 0x61, 0x02, 0x00, 0x00, 0x01, 0x44, 0x89, 0xA6, 0xD0, 0x00, 0x00, 0x00, 0x48, 0x8B};
-constexpr uintptr_t kReady1M = 0x883C41;
+constexpr uintptr_t kReady1M = 0x884361;
 constexpr uint8_t kReady1MBytes[] = {0x4C, 0x8B, 0xF0};
-constexpr uintptr_t kReady1P = 0x77AE8A;
+constexpr uintptr_t kReady1P = 0x77B3AA;
 constexpr uint8_t kReady1PBytes[] = {0x48, 0x8B, 0xE9};
 
 constexpr uint32_t kPatch5 = 5, kPatch6 = 6, kPatch7 = 7;
 
 // 0xA9CA40's error codes (globals of the game, read by the drain thread).
-constexpr uintptr_t kErrMissingActor = 0x71B28E8;  // 0xA9CE81 mov eax,[rip+..]
-constexpr uintptr_t kErrDuplicate = 0x6CF76A4;     // 0xA9D2C4 mov eax,[rip+..]
-constexpr uintptr_t kVtStageManager = 0x59D57E8;   // pa::ClientSequencerStageManager (RTTI)
+constexpr uintptr_t kErrMissingActor = 0x71B8A28;  // 0xA9CE81 mov eax,[rip+..]
+constexpr uintptr_t kErrDuplicate = 0x6CFD01C;     // 0xA9D2C4 mov eax,[rip+..]
+constexpr uintptr_t kVtStageManager = 0x59DA8A8;   // pa::ClientSequencerStageManager (RTTI)
 
 // Structure offsets.
 constexpr uint32_t kActor_Key = 0x60, kActor_Comps = 0x68, kComps_Seq = 0xA8, kSeqComp_Mgr = 0x18;
@@ -176,10 +176,10 @@ enum Kind : uint16_t {
     kKNpcEntry, kKNpcRes8, kKNpcOwner, kKNpcInstance, kKReady0, kKReady1, kKindCount
 };
 constexpr const char* kKindName[kKindCount] = {
-    "2661 in 0xD6C750",       "2661 route 0xD6CBFE", "2661 result 0xD6CC96", "2661 missing actor 0xBE0154",
-    "2981 in 0xD6E200",       "2981 route 0xD6E724", "2810 in 0xD6CE70",     "2810 route 0xD6D0F5",
-    "2322 field 0xCD5606",    "NPC vf13 0xB29470",   "NPC res8 0x9ED401",    "NPC owner 0x9ED453",
-    "NPC instance 0xB296CC",  "M+0x231=0 0x883807",  "M+0x231=1 0x883E61"};
+    "2661 in 0xD6D1A0",       "2661 route 0xD6D64E", "2661 result 0xD6D6E6", "2661 missing actor 0xBE0BA4",
+    "2981 in 0xD6EC50",       "2981 route 0xD6F174", "2810 in 0xD6D8C0",     "2810 route 0xD6DB45",
+    "2322 field 0xCD6056",    "NPC vf13 0xB29DB0",   "NPC res8 0x9EDC81",    "NPC owner 0x9EDCD3",
+    "NPC instance 0xB2A00C",  "M+0x231=0 0x883F27",  "M+0x231=1 0x884581"};
 
 constexpr uint64_t kWindowUs = 5'000'000;
 constexpr uint32_t kPerWindow = 256;
@@ -661,7 +661,7 @@ void drain_one(const p::Event& e) {
             }
             const gsd::Result r =
                 gsd::classify_result(code, read_global(kErrDuplicate), read_global(kErrMissingActor));
-            write_line(k, std::format("{} sequencer 0x{:X} of 0x{:08X} in manager 0x{:X}: 0xBDFC90 result 0x{:X} = {} | "
+            write_line(k, std::format("{} sequencer 0x{:X} of 0x{:08X} in manager 0x{:X}: 0xBE06E0 result 0x{:X} = {} | "
                                       "loading tasks (+0x174) {} -> {}",
                                       head(k, e), e.v[3], static_cast<uint32_t>(e.v[4]), e.v[1], code,
                                       gsd::result_text(r), before, after));
@@ -670,7 +670,7 @@ void drain_one(const p::Event& e) {
         case kKMissing:
             write_line(k, std::format("{} sequencer 0x{:X} (owner 0x{:08X}) in manager 0x{:X}: bound actor 0x{:08X} "
                                       "(node 0x{:08X}, type {}) is NOT on this client -> the whole sequencer is "
-                                      "rejected (0xBE014E)",
+                                      "rejected (0xBE0B9E)",
                                       head(k, e), e.v[3], static_cast<uint32_t>(e.v[4]), e.v[2],
                                       static_cast<uint32_t>(e.v[0] >> 32), static_cast<uint32_t>(e.v[0]), e.v[1]));
             break;
@@ -709,7 +709,7 @@ void drain_one(const p::Event& e) {
             const gsd::ManagerInfo* last = g_book.last_routed();
             write_line(k, std::format("{} {} | field 0x{:X} context {} (owner user in this client's view 0x{:08X}; Q "
                                       "0x{:X}: {}): its [M+0x231] = 2 goes to that owner's character's manager "
-                                      "whatever actor it names (P8Probe [2322 write 0xCD563B] prints M){}",
+                                      "whatever actor it names (P8Probe [2322 write 0xCD608B] prints M){}",
                                       head(k, e), gsd::corr_token(obs::kOpMilestone, actor, 0, 0), e.v[0],
                                       e.v[1] ? "valid" : "INVALID", owner, e.v[3], e.v[3] == e.v[0] ? "same" : "DIFFERENT",
                                       last ? std::format(" | the stage handlers routed last to 0x{:X} (actor 0x{:08X})",
@@ -817,7 +817,7 @@ void summary() {
         st += std::format(" | {}: hits {} queued {} limited {} over budget {} dropped {}", kKindName[k], x.hits.load(),
                           x.queued.load(), x.limited.load(), x.over_budget.load(), x.dropped.load());
     }
-    log::info("GuestStage summary {} | managers seen:{} | NPC side (0xB29470, components with a sequencer key): {} "
+    log::info("GuestStage summary {} | managers seen:{} | NPC side (0xB29DB0, components with a sequencer key): {} "
               "NPCs, owners:{} | passed local_res8 {}, exited there {}, owner actor found {} (its manager = the routed "
               "one: {}), instance found {} | vf13 calls without a sequencer key {} | ring dropped {}{}",
               p8_when(p8_now_us()), ms.empty() ? std::string(" none") : ms, s.npcs,
@@ -962,7 +962,7 @@ DWORD WINAPI install_thread(LPVOID) {
     log::info("GuestStage ON (guest_stage_diag, READ ONLY): hooked:{} | REFUSED:{} | nothing is written to the game and "
               "no game function is called; lines 'GuestStage [...]' every 5 s from the diagnostics thread (2661/2981/2810 "
               "entry + routing with the corr= token the host's ObserverStage lines print, 2322's field context, the NPC "
-              "side 0xB29470 for the first {} calls of each NPC, M+0x231 writes) and a summary every 60 s; error codes "
+              "side 0xB29DB0 for the first {} calls of each NPC, M+0x231 writes) and a summary every 60 s; error codes "
               "missing actor 0x{:X} duplicate 0x{:X}",
               on.empty() ? " none" : on, refused.empty() ? " none" : refused, kFirstPerNpc,
               read_global(kErrMissingActor), read_global(kErrDuplicate));

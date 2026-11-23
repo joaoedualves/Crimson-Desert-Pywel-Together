@@ -69,17 +69,17 @@ constexpr uint8_t kAckBytes[] = {0x48, 0x89, 0x5C, 0x24, 0x10, 0x48, 0x89, 0x74,
 constexpr uint8_t kStartBytes[] = {0x48, 0x89, 0x5C, 0x24, 0x10, 0x4C, 0x89, 0x44,
                                    0x24, 0x18, 0x48, 0x89, 0x4C, 0x24, 0x08, 0x55};
 
-constexpr Site kNullConsumer{0x2590720, kNullConsumerBytes, 5, "0x2590720 (null-action consumer)"};
-constexpr Site kUpdate{0x9729C0, kUpdateBytes, 5, "CharacterControl::Update 0x9729C0"};
-constexpr Site kSpawn{0x55E6D0, kSpawnBytes, 5, "2723's consumer 0x55E6D0"};
-constexpr Site kSpawnAl{0x55E74D, kSpawnAlBytes, 7, "2723's vf188(5) test 0x55E74D"};
-constexpr Site kAck{0x55E2E0, kAckBytes, 5, "2991's consumer 0x55E2E0"};
-constexpr Site kStart{0x976730, kStartBytes, 5, "StartAction 0x976730"};
+constexpr Site kNullConsumer{0x2592BB0, kNullConsumerBytes, 5, "0x2592BB0 (null-action consumer)"};
+constexpr Site kUpdate{0x9730E0, kUpdateBytes, 5, "CharacterControl::Update 0x9730E0"};
+constexpr Site kSpawn{0x55EA10, kSpawnBytes, 5, "2723's consumer 0x55EA10"};
+constexpr Site kSpawnAl{0x55EA8D, kSpawnAlBytes, 7, "2723's vf188(5) test 0x55EA8D"};
+constexpr Site kAck{0x55E620, kAckBytes, 5, "2991's consumer 0x55E620"};
+constexpr Site kStart{0x976E50, kStartBytes, 5, "StartAction 0x976E50"};
 constexpr uint8_t kWeightsBytes[] = {0x48, 0x89, 0x5C, 0x24, 0x08, 0x48, 0x89, 0x6C,
                                      0x24, 0x10, 0x48, 0x89, 0x74, 0x24, 0x18, 0x48};
-constexpr Site kWeights{0x258C8C0, kWeightsBytes, 5, "0x258C8C0 (layer weights, null playing action)"};
-constexpr uintptr_t kNullRead = 0x259075B;
-constexpr uintptr_t kSpawnCall = 0x55E745;
+constexpr Site kWeights{0x258ED50, kWeightsBytes, 5, "0x258ED50 (layer weights, null playing action)"};
+constexpr uintptr_t kNullRead = 0x2592BEB;
+constexpr uintptr_t kSpawnCall = 0x55EA85;
 
 // Offsets (build 2976; p8-raiz-invitado.md §5, companeros.md).
 constexpr uint32_t kCc_Actor = 0x08, kCc_Ack60 = 0x60, kCc_Default0 = 0x70, kCc_Default1 = 0x78, kCc_Layer0 = 0x88,
@@ -293,7 +293,7 @@ void on_weights(safetyhook::Context& ctx) noexcept {
     if (!fp(ctx.rcx + 0x30, p) || !fp(p + 0x1B, idx)) return;
     if (fp(ctx.rcx + kCc_Layer0 + 8ull * idx, l) && l && fp(l + kLayer_Play, cur) && cur) return;
     if (c_weights_skips.fetch_add(1, std::memory_order_relaxed) < 4) {
-        log::warn("GuestS3: 0x258C8C0 skipped for CC 0x{:X} (layer {} has no playing action)", ctx.rcx, idx);
+        log::warn("GuestS3: 0x258ED50 skipped for CC 0x{:X} (layer {} has no playing action)", ctx.rcx, idx);
     }
     ctx.rip = reinterpret_cast<uintptr_t>(g_ret);
 }
@@ -437,7 +437,7 @@ bool read_rsrc() {
     for (WORD i = 0; i < nt.FileHeader.NumberOfSections && i < 64; ++i) {
         IMAGE_SECTION_HEADER h{};
         if (!game::safe_read(first + i * sizeof h, &h, sizeof h)) return false;
-        if (std::memcmp(h.Name, ".reloc\0\0", 8) == 0) {
+        if (std::memcmp(h.Name, ".xpdata\0", 8) == 0) {
             g_rsrc_va = h.VirtualAddress;
             g_rsrc_size = h.Misc.VirtualSize;
             return true;
@@ -554,7 +554,7 @@ DWORD WINAPI install_thread(LPVOID) {
     g_qpc_freq = f.QuadPart ? f.QuadPart : 1;
     g_qpc_base = t.QuadPart;
     if (g_diag.load() && !g_actor_diag.load()) {
-        log::warn("GuestS3: guest_s3_diag=1 with guest_actor_diag=0: the restore results (exit 0x977CFD, hooked by "
+        log::warn("GuestS3: guest_s3_diag=1 with guest_actor_diag=0: the restore results (exit 0x97841D, hooked by "
                   "guest_actor_diag only) are NOT recorded; the 'restore' events and the restore counters stay at 0. "
                   "Set guest_actor_diag=1 to have them");
     }
@@ -576,11 +576,11 @@ DWORD WINAPI install_thread(LPVOID) {
             log::error("GuestS3: no memory for the return stub; nothing hooked");
         } else {
             if (!bytes_match(kNullRead, kNullReadBytes)) {
-                log::error("GuestS3: 0x259075B is not the expected read of the current action; 0x2590720 REFUSED");
+                log::error("GuestS3: 0x2592BEB is not the expected read of the current action; 0x2592BB0 REFUSED");
             } else {
                 g_null_on = make_mid(kNullConsumer, g_h_null, on_null_consumer);
             }
-            log::info("GuestS3: 0x258C8C0 guard {}", make_mid(kWeights, g_h_weights, on_weights) ? "ON" : "OFF");
+            log::info("GuestS3: 0x258ED50 guard {}", make_mid(kWeights, g_h_weights, on_weights) ? "ON" : "OFF");
             if (g_diag.load()) {
                 // One owner per entry: with guest_remote_update_guard=1, horse_diag hooks 0x85FBA0.
                 if (!g_update_taken.load()) g_update_on = make_mid(kUpdate, g_h_update, on_update);
@@ -589,17 +589,17 @@ DWORD WINAPI install_thread(LPVOID) {
                 if (g_spawn_on && bytes_match(kSpawnCall, kSpawnCallBytes)) {
                     g_spawn_al_on = make_mid(kSpawnAl, g_h_spawn_al, on_spawn_al);
                 } else if (g_spawn_on) {
-                    log::error("GuestS3: 0x55E745 is not the expected vf188(5) call; 0x55E74D REFUSED");
+                    log::error("GuestS3: 0x55EA85 is not the expected vf188(5) call; 0x55EA8D REFUSED");
                 }
                 g_ack_on = make_mid(kAck, g_h_ack, on_ack);
                 g_start_on = make_start();
             }
         }
-        log::info("GuestS3 ON: {}{} | sites: 0x2590720 {} | Update 0x9729C0 {} | 2723 0x55E6D0 {} / 0x55E74D {} | "
-                  "2991 0x55E2E0 {} | StartAction 0x976730 {} | crash capture {} | patched bytes checked inside .rsrc "
+        log::info("GuestS3 ON: {}{} | sites: 0x2592BB0 {} | Update 0x9730E0 {} | 2723 0x55EA10 {} / 0x55EA8D {} | "
+                  "2991 0x55E620 {} | StartAction 0x976E50 {} | crash capture {} | patched bytes checked inside .rsrc "
                   "[exe+0x{:X}, exe+0x{:X})",
                   g_diag.load() ? "probe (read only)" : "no probe",
-                  g_guard.load() ? ", UPDATE GUARD (contention, not a fix): 0x2590720 returns at once for an actor "
+                  g_guard.load() ? ", UPDATE GUARD (contention, not a fix): 0x2592BB0 returns at once for an actor "
                                    "not controlled locally whose current action is null"
                                  : "",
                   g_null_on ? "on" : "OFF",
@@ -611,7 +611,7 @@ DWORD WINAPI install_thread(LPVOID) {
                   static_cast<uint64_t>(g_rsrc_va) + g_rsrc_size);
         if (g_guard.load() && !g_null_on) {
             log::error("GuestS3: the update guard could NOT be installed; actors without an action stay unguarded at "
-                       "0x2590720");
+                       "0x2592BB0");
         }
     } else {
         log::info("GuestS3 ON: crash capture {} only", g_crash_on ? "on" : "OFF");
@@ -659,8 +659,8 @@ std::string flags_text(uint32_t f) {
 
 const char* caller_name(uint32_t c) {
     switch (static_cast<s3::StartCaller>(c)) {
-        case s3::StartCaller::Spawn2723: return "2723 0x55E6D0";
-        case s3::StartCaller::Ack2991: return "2991 0x55E2E0";
+        case s3::StartCaller::Spawn2723: return "2723 0x55EA10";
+        case s3::StartCaller::Ack2991: return "2991 0x55E620";
         case s3::StartCaller::Other: break;
     }
     return "other";
@@ -788,7 +788,7 @@ void guard_report() {
         if (!(logged & 1)) {
             s.logged.fetch_or(1);
             if (g_guard_key_lines.fetch_add(1) < kGuardKeyLines) {
-                log::info("GuestS3 update guard: holding 0x{:08X} (ctrl 0x{:08X}, local 0x{:08X}) since {}: 0x2590720 "
+                log::info("GuestS3 update guard: holding 0x{:08X} (ctrl 0x{:08X}, local 0x{:08X}) since {}: 0x2592BB0 "
                           "entered with its current action (snapshot+0x10) null; returned at once (CONTENTION, not a "
                           "fix)",
                           key, s.control.load(), local(), when(s.first_qpc.load()));
@@ -832,7 +832,7 @@ std::string summary() {
         "GuestS3: 2005 records {} (restore 0: {}, 1: {}, no CC: {}) | rx 2723 {} 2991 {} | restore ok {} byte0 {} "
         "failed {} | first Update {} (chart without action {}) | 2723 consumer {} (vf188 true {}, FALSE {}) | 2991 "
         "consumer {} (discarded {}) | StartAction installed/success-without-action/error: from 2723 {}, from 2991 {}, "
-        "other {} | null action at 0x2590720 {} (not controlled here {}, controlled here {}) | guard skips {} keys {} "
+        "other {} | null action at 0x2592BB0 {} (not controlled here {}, controlled here {}) | guard skips {} keys {} "
         "recovered {} stuck {} (table full {}) | ring {} records, {} lost before printing, {} lines suppressed | crash "
         "events {} (recorded {}, concurrent {}) dumps {}",
         c_rx2005.load(), c_rx2005_r0.load(), c_rx2005_r1.load(), c_rx2005_rx.load(), c_rx2723.load(), c_rx2991.load(),
@@ -890,7 +890,7 @@ void tick_once() {
 // does not handle and ends the process; its reporter (Sentry) may replace our
 // top-level filter, so there the vectored handler is the only place sure to run.
 
-constexpr uintptr_t kKnownCrashSite = 0x259075F;
+constexpr uintptr_t kKnownCrashSite = 0x2592BEF;
 constexpr uint32_t kMaxCrashRecords = 64;
 constexpr size_t kKeepDumps = 2;  // cdmp_crash_*.dmp kept next to cdmp.asi (the newest)
 
@@ -1011,7 +1011,7 @@ std::string ctx_text(const CONTEXT& c) {
 // 180710_6364_1): Shadow's second crash read the layer of B01004BF (R14 actor, RDX CC); RSI was this component of
 // B0100578, which only QUERIED its parent B01004BF through the hierarchy. The S34 line called RSI a CharacterControl
 // of B0100578: wrong actor. Such a register is now named for what it is, with its parent's key.
-constexpr uint32_t kVtClientHierarchy = 0x5983F30, kHier_Parent = 0x1C;
+constexpr uint32_t kVtClientHierarchy = 0x5989018, kHier_Parent = 0x1C;
 
 // A register that looks like a CharacterControl (its +8 is an actor whose key is an actor key).
 void describe_cc(const char* reg, uintptr_t cc) {
@@ -1142,7 +1142,7 @@ LONG CALLBACK crash_veh(EXCEPTION_POINTERS* ep) {
     }
     if (known && kind == 0 && addr < 0x10000 && !t_in_crash) {
         t_in_crash = true;
-        capture(ep, "first chance at the known site exe+0x259075F, vectored; the game does not handle it");
+        capture(ep, "first chance at the known site exe+0x2592BEF, vectored; the game does not handle it");
         t_in_crash = false;
     }
     return EXCEPTION_CONTINUE_SEARCH;  // never handled here

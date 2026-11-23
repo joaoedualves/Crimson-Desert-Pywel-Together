@@ -44,71 +44,71 @@ constexpr uintptr_t kH1 = 0x2A78D0D;
 constexpr uint32_t kH1Patch = 8;
 constexpr uint8_t kH1Bytes[] = {0x41, 0x80, 0xBF, 0x81, 0x02, 0x00, 0x00, 0x00, 0x74, 0x11, 0x49, 0x8B, 0xCE, 0xE8, 0x71, 0x72};
 // 0x2A78CB0 lea rbp,[rsp-0xB0]
-constexpr uintptr_t kH1Frame = 0x2D6F0E0;
+constexpr uintptr_t kH1Frame = 0x2D73B70;
 constexpr uint8_t kH1FrameBytes[] = {0x48, 0x8D, 0xAC, 0x24, 0x50, 0xFF, 0xFF, 0xFF};
 // 0x2A78CBF mov r13,r9 (session) ; mov r12,r8 (-> the two action layers) ; mov rsi,rdx ; mov r14,rcx
-constexpr uintptr_t kH1Args = 0x2D6F0EF;
+constexpr uintptr_t kH1Args = 0x2D73B7F;
 constexpr uint8_t kH1ArgsBytes[] = {0x4D, 0x8B, 0xE9, 0x4D, 0x8B, 0xE0, 0x48, 0x8B, 0xF2, 0x4C, 0x8B, 0xF1};
 // 0x2A78CCB mov rbx,[rcx+8] (the actor)
-constexpr uintptr_t kH1Actor = 0x2D6F102;
+constexpr uintptr_t kH1Actor = 0x2D73B92;
 constexpr uint8_t kH1ActorBytes[] = {0x48, 0x8B, 0x59, 0x08};
 // 0x2A78D06 mov r15,[rbp+0x110] (block B, the 5th argument)
 constexpr uintptr_t kH1B = 0x2A78D06;
 constexpr uint8_t kH1BBytes[] = {0x4C, 0x8B, 0xBD, 0x10, 0x01, 0x00, 0x00};
 // 0x2A78D15 je ; mov rcx,r14 ; call 0x232FF90 (-> .xtls) ; xor edi,edi ; mov [rsi],edi ; jmp (return: NO relay)
-constexpr uintptr_t kH1Local = 0x2D6F145;
-constexpr uint8_t kH1LocalBytes[] = {0x74, 0x11, 0x49, 0x8B, 0xCE, 0xE8, 0x51, 0x40, 0x82, 0xFF, 0x33, 0xFF, 0x89, 0x3E, 0xE9, 0x70, 0x03, 0x00, 0x00};
+constexpr uintptr_t kH1Local = 0x2D73BD5;
+constexpr uint8_t kH1LocalBytes[] = {0x74, 0x11, 0x49, 0x8B, 0xCE, 0xE8, 0x51, 0x1A, 0x82, 0xFF, 0x33, 0xFF, 0x89, 0x3E, 0xE9, 0x70, 0x03, 0x00, 0x00};
 //   0x2A79060 cmp byte [rbp+0xF0],0 ; jne 0x2A79082                                 patch 7
-constexpr uintptr_t kH1b = 0x2D6F490;
+constexpr uintptr_t kH1b = 0x2D73F20;
 constexpr uint32_t kH1bPatch = 7;
 constexpr uint8_t kH1bBytes[] = {0x80, 0xBD, 0xF0, 0x00, 0x00, 0x00, 0x00, 0x75, 0x19, 0xC6, 0x44, 0x24, 0x20, 0x00, 0x4D, 0x8B};
 // 0x2A78FF8 lea rax,[rbp+0xF0] (ServerStartActionOnServer's out flag)
-constexpr uintptr_t kH1bOut = 0x2D6F428;
+constexpr uintptr_t kH1bOut = 0x2D73EB8;
 constexpr uint8_t kH1bOutBytes[] = {0x48, 0x8D, 0x85, 0xF0, 0x00, 0x00, 0x00};
 // 0x2A7906E mov r9,r15 ; lea r8,[rsp+0x60] ; lea rdx,[rbp-0x40] ; mov rcx,r14 ; call 0x2A797C0 (the broadcast)
-constexpr uintptr_t kH1bCall = 0x2D6F49E;
+constexpr uintptr_t kH1bCall = 0x2D73F2E;
 constexpr uint8_t kH1bCallBytes[] = {0x4D, 0x8B, 0xCF, 0x4C, 0x8D, 0x44, 0x24, 0x60, 0x48, 0x8D,
                                      0x55, 0xC0, 0x49, 0x8B, 0xCE, 0xE8, 0x3E, 0x07, 0x00, 0x00};
 
 // H2: 0x20853D0(ai, handle, &scene key, list): writes [[ai+0x90]] = key and the handle to [[ai+0x90]+8].
 //   0x20853D0 push rbx ; push rbp ; push rsi ; push rdi                            patch 5
-constexpr uintptr_t kBindAi = 0x22B5550;
+constexpr uintptr_t kBindAi = 0x22B7170;
 constexpr uint8_t kBindAiBytes[] = {0x40, 0x53, 0x55, 0x56, 0x57, 0x41, 0x54, 0x41, 0x56, 0x41, 0x57, 0x48, 0x83, 0xEC, 0x50, 0x4D};
 // its two callers: the AI's vf107 0x91CD90 and the 2874 handler 0xC0CE50
-constexpr uintptr_t kBindAiVf107 = 0xA3935A, kBindAiVf107Ret = 0xA3935F;
-constexpr uint8_t kBindAiVf107Bytes[] = {0xE8, 0xF1, 0xC1, 0x87, 0x01};
-constexpr uintptr_t kBindAi2874 = 0xD758F5, kBindAi2874Ret = 0xD758FA;
-constexpr uint8_t kBindAi2874Bytes[] = {0xE8, 0x56, 0xFC, 0x53, 0x01};
+constexpr uintptr_t kBindAiVf107 = 0xA39BDA, kBindAiVf107Ret = 0xA39BDF;
+constexpr uint8_t kBindAiVf107Bytes[] = {0xE8, 0x91, 0xD5, 0x87, 0x01};
+constexpr uintptr_t kBindAi2874 = 0xD76345, kBindAi2874Ret = 0xD7634A;
+constexpr uint8_t kBindAi2874Bytes[] = {0xE8, 0x26, 0x0E, 0x54, 0x01};
 // 0x9F2FA0(sequencer play-data component, &scene key): vf13's body with the key as a parameter.
 //   0x9F2FA0 mov [rsp+0x10],rbx                                                    patch 5
-constexpr uintptr_t kRebind = 0xB2F430;
+constexpr uintptr_t kRebind = 0xB2FD70;
 constexpr uint8_t kRebindBytes[] = {0x48, 0x89, 0x5C, 0x24, 0x10, 0x48, 0x89, 0x74, 0x24, 0x20, 0x55, 0x57, 0x41, 0x56, 0x48, 0x8B};
 // its callers: vf107 tail-jumps (0x91CE05), the 2874 handler calls (0xC0D24D, returns to 0xC0D252)
-constexpr uintptr_t kRebindVf107 = 0xA39385;
-constexpr uint8_t kRebindVf107Bytes[] = {0xE9, 0xA6, 0x60, 0x0F, 0x00};
-constexpr uintptr_t kRebind2874 = 0xD7590D, kRebind2874Ret = 0xD75912;
-constexpr uint8_t kRebind2874Bytes[] = {0xE8, 0x1E, 0x9B, 0xDB, 0xFF};
+constexpr uintptr_t kRebindVf107 = 0xA39C05;
+constexpr uint8_t kRebindVf107Bytes[] = {0xE9, 0x66, 0x61, 0x0F, 0x00};
+constexpr uintptr_t kRebind2874 = 0xD7635D, kRebind2874Ret = 0xD76362;
+constexpr uint8_t kRebind2874Bytes[] = {0xE8, 0x0E, 0x9A, 0xDB, 0xFF};
 //   0x9F30CB cmp dword [rbp+0x20],0 ; je 0x9F321A (rel32, relocated)                patch 10
-constexpr uintptr_t kRebindRes8 = 0xB2F55A;
+constexpr uintptr_t kRebindRes8 = 0xB2FE9A;
 constexpr uint32_t kRebindRes8Patch = 10;
 constexpr uint8_t kRebindRes8Bytes[] = {0x83, 0x7D, 0x20, 0x00, 0x0F, 0x84, 0x3E, 0x01, 0x00, 0x00, 0x83, 0x7D, 0x24, 0xFF, 0x0F, 0x84};
 // 0x9F2FAE mov rbp,rsp ; sub rsp,0x70 ; mov rsi,rdx ; mov rdi,rcx
-constexpr uintptr_t kRebindFrame = 0xB2F43E;
+constexpr uintptr_t kRebindFrame = 0xB2FD7E;
 constexpr uint8_t kRebindFrameBytes[] = {0x48, 0x8B, 0xEC, 0x48, 0x83, 0xEC, 0x70, 0x48, 0x8B, 0xF2, 0x48, 0x8B, 0xF9};
 // 0x9F30A5 ... mov [rbp+0x20],rax (local_res8 = the stage file's entry, as vf13 0x9ED3CC..)
-constexpr uintptr_t kRebindRes8Src = 0xB2F534;
+constexpr uintptr_t kRebindRes8Src = 0xB2FE74;
 constexpr uint8_t kRebindRes8SrcBytes[] = {0x48, 0x8B, 0x45, 0xD0, 0x48, 0x8B, 0x48, 0x50,
                                            0x48, 0x8B, 0x04, 0x0A, 0x48, 0x89, 0x45, 0x20};
 //   0x9F312D mov rcx,[rbp-0x48] ; test rcx,rcx (the je rel32 after it is checked, not patched)   patch 7
-constexpr uintptr_t kRebindInst = 0xB2F5B5;
+constexpr uintptr_t kRebindInst = 0xB2FEF5;
 constexpr uint32_t kRebindInstPatch = 7;
 constexpr uint8_t kRebindInstBytes[] = {0x48, 0x8B, 0x4D, 0xB8, 0x48, 0x85, 0xC9, 0x0F, 0x84, 0xC2, 0x00, 0x00, 0x00};
 // 0x9F3118 mov rcx,[rcx+0x148] ; mov rax,[rcx] ; mov r8,rsi ; lea rdx,[rbp-0x48] ; call [rax+8] ; nop
-constexpr uintptr_t kRebindLookup = 0xB2F5A0;
+constexpr uintptr_t kRebindLookup = 0xB2FEE0;
 constexpr uint8_t kRebindLookupBytes[] = {0x48, 0x8B, 0x89, 0x78, 0x01, 0x00, 0x00, 0x48, 0x8B, 0x01, 0x4C, 0x8B, 0xC6, 0x48, 0x8D, 0x55, 0xB8, 0xFF, 0x50, 0x08, 0x90};
 // 0x9F313A mov r8,[rdi+8] ; lea rdx,[rbp+0x20] ; call 0x43B4B0 (the binding)
-constexpr uintptr_t kRebindBind = 0xB2F5C2;
-constexpr uint8_t kRebindBindBytes[] = {0x4C, 0x8B, 0x47, 0x08, 0x48, 0x8D, 0x55, 0x20, 0xE8, 0x01, 0xC9, 0x9D, 0xFF};
+constexpr uintptr_t kRebindBind = 0xB2FF02;
+constexpr uint8_t kRebindBindBytes[] = {0x4C, 0x8B, 0x47, 0x08, 0x48, 0x8D, 0x55, 0x20, 0xE8, 0xD1, 0xC3, 0x9D, 0xFF};
 
 // G1 on the host's client: the AI block reader's two points (scene_points.h, shared with the guest).
 using scp::kAiDone, scp::kAiDoneBytes, scp::kAiDoneCall, scp::kAiDoneCallBytes, scp::kAiDonePatch, scp::kAiDoneThis,
@@ -118,12 +118,12 @@ using scp::kAiDone, scp::kAiDoneBytes, scp::kAiDoneCall, scp::kAiDoneCallBytes, 
 
 // vf13 0x9ED290's local_res8 on the host (on the guest it is GuestStage's point; never both on one PC).
 //   0x9ED401 cmp dword [rbp+0x30],0 ; je 0x9ED63B (rel32, relocated)               patch 10
-constexpr uintptr_t kVf13Res8 = 0x9ED401;
+constexpr uintptr_t kVf13Res8 = 0x9EDC81;
 constexpr uint32_t kVf13Res8Patch = 10;
 constexpr uint8_t kVf13Res8Bytes[] = {0x83, 0x7D, 0x30, 0x00, 0x0F, 0x84, 0x30, 0x02, 0x00, 0x00, 0x83, 0x7D, 0x34, 0xFF, 0x0F, 0x84};
-constexpr uintptr_t kVf13Frame = 0xB29480;  // mov rbp,rsp
+constexpr uintptr_t kVf13Frame = 0xB29DC0;  // mov rbp,rsp
 constexpr uint8_t kVf13FrameBytes[] = {0x48, 0x8B, 0xEC};
-constexpr uintptr_t kVf13Comp = 0xB2948A;  // mov r14,rcx
+constexpr uintptr_t kVf13Comp = 0xB29DCA;  // mov r14,rcx
 constexpr uint8_t kVf13CompBytes[] = {0x4C, 0x8B, 0xF1};
 
 constexpr uint32_t kPatch5 = 5;
@@ -143,9 +143,9 @@ enum Kind : uint16_t {
     kKindCount
 };
 constexpr const char* kKindName[kKindCount] = {
-    "H1 flag 0x2A78D0D", "H1 relay 0x2D6F490",  "G1 AI block 0x206DE6B", "vf13 res8 0x9ED401",
-    "AI rebind 0x22B5550", "rebind 0xB2F430",   "rebind res8 0xB2F55A",  "rebind instance 0xB2F5B5",
-    "to session 2",       "from the guest",     "entry 0x2ED4302",       "session 1 (sniffer)"};
+    "H1 flag 0x2A78D0D", "H1 relay 0x2D73F20",  "G1 AI block 0x206FA8B", "vf13 res8 0x9EDC81",
+    "AI rebind 0x22B7170", "rebind 0xB2FD70",   "rebind res8 0xB2FE9A",  "rebind instance 0xB2FEF5",
+    "to session 2",       "from the guest",     "entry 0x2ED8852",       "session 1 (sniffer)"};
 constexpr uint64_t kWindowUs = 5'000'000;
 constexpr uint32_t kPerWindow = 512;
 constexpr uint32_t kPerWindowOut = 4096;  // "to session 2": a zone load queues ~235 NPC 2005 in a second
@@ -483,9 +483,9 @@ std::string head(Kind k, const p::Event& e) {
 }
 
 std::string ret_text(uint32_t r) {
-    if (r == kBindAiVf107Ret) return "the AI's vf107 (0xA3935F)";
-    if (r == kBindAi2874Ret) return "the 2874 handler (0xD758FA)";
-    if (r == kRebind2874Ret) return "the 2874 handler (0xD75912)";
+    if (r == kBindAiVf107Ret) return "the AI's vf107 (0xA39BDF)";
+    if (r == kBindAi2874Ret) return "the 2874 handler (0xD7634A)";
+    if (r == kRebind2874Ret) return "the 2874 handler (0xD76362)";
     return r ? std::format("exe+0x{:X}", r) : std::string("?");
 }
 
@@ -554,7 +554,7 @@ void drain_one(const p::Event& e) {
                               head(k, e), fresh ? "NEW KEY:" : std::format("flagged #{}:", e.v[6]), key, e.v[1], control,
                               e.v[7], scd::action_hash(h[0], h[1], h[2], h[3]), h[0], h[1], h[2], h[3], flag,
                               ok ? "" : " (UNREADABLE)",
-                              flag ? "applied by 0x232FF90 and NOT relayed (kept local)"
+                              flag ? "applied by 0x2331C10 and NOT relayed (kept local)"
                                    : "goes on to the checks and the broadcast",
                               e.v[5] && e.v[5] == s2 ? "SESSION 2 (the guest)" : std::format("session 0x{:X}", e.v[5]),
                               u2 ? "logged in" : "absent"));
@@ -568,7 +568,7 @@ void drain_one(const p::Event& e) {
                                       "[rbp+0xF0] = {} -> {}",
                                       head(k, e), key, e.v[1], static_cast<uint32_t>(e.v[2]),
                                       ((e.v[2] >> 32) & 1) ? "" : " (not paired)", ok ? std::to_string(out) : "?",
-                                      ok && !out ? "BROADCAST (0x2D6F4AD call 0x2D6FBF0)" : "kept (no broadcast)"));
+                                      ok && !out ? "BROADCAST (0x2D73F3D call 0x2D74680)" : "kept (no broadcast)"));
             break;
         }
         case kKAiRead:
@@ -611,11 +611,11 @@ void drain_one(const p::Event& e) {
             const uint32_t ret = static_cast<uint32_t>(e.v[2]), before = static_cast<uint32_t>(e.v[2] >> 32);
             write_line(k, std::format("{} NPC 0x{:08X} (#{}) owner comp+0x2D8 0x{:08X} | scene key 0x{:X} | called {}{}",
                                       head(k, e), npc, e.v[4], static_cast<uint32_t>(e.v[0] >> 32), e.v[1],
-                                      ret == kRebind2874Ret ? std::string("by the 2874 handler (0xD7590D)")
+                                      ret == kRebind2874Ret ? std::string("by the 2874 handler (0xD7635D)")
                                                             : std::format("returning to {}", ret_text(ret)),
-                                      before == kBindAiVf107Ret ? " | after 0x22B5550 from the AI's vf107 (its tail jump "
-                                                                  "0xA39385)"
-                                      : before == kBindAi2874Ret ? " | after 0x22B5550 from the 2874 handler"
+                                      before == kBindAiVf107Ret ? " | after 0x22B7170 from the AI's vf107 (its tail jump "
+                                                                  "0xA39C05)"
+                                      : before == kBindAi2874Ret ? " | after 0x22B7170 from the 2874 handler"
                                                                  : ""));
             break;
         }
@@ -642,7 +642,7 @@ void drain_one(const p::Event& e) {
             write_line(k, std::format("{} NPC 0x{:08X} (#{}) scene key 0x{:X} | owner actor 0x{:08X} manager X 0x{:X} | "
                                       "instance in X+0x148: {}{}",
                                       head(k, e), npc, e.v[5], e.v[2], static_cast<uint32_t>(e.v[4]), e.v[3],
-                                      e.v[1] ? std::format("0x{:X} FOUND: 0x50BED0 binds it now", e.v[1])
+                                      e.v[1] ? std::format("0x{:X} FOUND: 0x50C2E0 binds it now", e.v[1])
                                              : std::string("NONE: no binding"),
                                       rel));
             break;
@@ -671,7 +671,7 @@ void drain_one(const p::Event& e) {
             g_trips.on_entry(e.qpc_us, user == owner);
             if (user == owner) break;
             const scd::TripFacts* f = g_trips.current();
-            write_line(k, std::format("{} user 0x{:08X} actor 0x{:08X} entered (0x2ED4302, END of MoveFieldCompleteCore) "
+            write_line(k, std::format("{} user 0x{:08X} actor 0x{:08X} entered (0x2ED8852, END of MoveFieldCompleteCore) "
                                       "field 0x{:X} owned by 0x{:08X} | this trip so far: packets to session 2 {}, NPC "
                                       "2005 records before the 2549 {}, after it {} | the host's live scene ledger (field "
                                       "#{}): {} schedule(s) (2335), {} sequencer(s) (2661), {} NPC init(s) (2874)",
@@ -736,7 +736,7 @@ void drain_one(const p::Event& e) {
                     const uint32_t res = static_cast<uint32_t>(e.v[2]), node = static_cast<uint32_t>(e.v[2] >> 32);
                     g_ledger.init({b, a, res, node, e.v[3], e.qpc_us});
                     what = std::format("2874 InitializeNPCScheduleAck actor 0x{:08X} NPC 0x{:08X} resource 0x{:08X} node "
-                                       "0x{:08X} scene 0x{:X}{} | {} | the native re-binding path (0xD75500)",
+                                       "0x{:08X} scene 0x{:X}{} | {} | the native re-binding path (0xD75F50)",
                                        a, b, res, node, e.v[3], e.v[4] ? "" : " (NOT 64 bytes)",
                                        gsd::corr_token(op, a, e.v[3], b));
                     break;
@@ -814,7 +814,7 @@ void trip_lines() {
         const auto it = g_trip_scenes.find(f->index);
         const TripScenes ts = it != g_trip_scenes.end() ? it->second : TripScenes{};
         write_line(kKOut,
-                   std::format("SceneDiag [trip] {} | trip {} of user 2: 2174 {} | 2549 {} (x{}) | entry 0x2ED4302 {} | "
+                   std::format("SceneDiag [trip] {} | trip {} of user 2: 2174 {} | 2549 {} (x{}) | entry 0x2ED8852 {} | "
                                "2144 {} | 2322 {} | first NPC 2005 {} (packet #{} of {} to session 2, NPC 0x{:08X}) -> {} | "
                                "NPC records: before 2549 {}, 2549..2144 {}, after 2144 {} | of those queued: read on the "
                                "host's client {}, whose scene is a live schedule {} / sequencer {} / none {}; the record "
@@ -912,14 +912,14 @@ void summary() {
     for (const auto& [k, t] : g_book.all()) {
         if (!t.t_bind_ai && !t.t_bind_2874 && !t.t_instance) continue;
         if (++n > 24) break;
-        late += std::format(" 0x{:08X}(res8 {} | AI {} | 2874 {} | 0xB2F55A {} {} | instance {})", k,
+        late += std::format(" 0x{:08X}(res8 {} | AI {} | 2874 {} | 0xB2FE9A {} {} | instance {})", k,
                             t.vf13_passed ? "pass" : t.t_vf13 ? "EXIT" : "?", scd::rel_text(t.t_bind_ai, t.t_2005),
                             scd::rel_text(t.t_bind_2874, t.t_2005), scd::rel_text(t.t_rebind, t.t_2005),
                             t.rebind_passed ? "pass" : "exit", scd::rel_text(t.t_instance, t.t_2005));
     }
     log::info("SceneDiag [H2 summary] {} | the host's client: NPC AI blocks read {} (with a scene {}), handle valid {}, "
               "file NOT loaded {}, node not found {} | vf13 local_res8 passed {} | re-bound by the AI's vf107 {} / by a "
-              "2874 {} | 0xB2F430 local_res8 passed {} | instance found {} | NPCs bound later (times from their 2005):{} "
+              "2874 {} | 0xB2FD70 local_res8 passed {} | instance found {} | NPCs bound later (times from their 2005):{} "
               "| book overflow {}",
               p8_when(p8_now_us()), s.npcs, s.with_scene, s.valid, s.file_missing, s.node_missing, s.vf13_passed,
               s.bound_ai, s.bound_2874, s.rebind_passed, s.instance, late.empty() ? std::string(" none") : late,
@@ -988,22 +988,22 @@ void host_scene_diag_install(uintptr_t base, std::span<const gad::Section> secs)
                                      {kRebind2874, kRebind2874Bytes}};
     const std::vector<PointDef> defs = {
         {kKH1, "H1 flag 0x2A78D0D", kH1, kH1Patch, kH1Bytes, h1, on_h1},
-        {kKH1b, "H1 relay 0x2D6F490", kH1b, kH1bPatch, kH1bBytes,
+        {kKH1b, "H1 relay 0x2D73F20", kH1b, kH1bPatch, kH1bBytes,
          {{kH1Frame, kH1FrameBytes}, {kH1Args, kH1ArgsBytes}, {kH1bOut, kH1bOutBytes}, {kH1bCall, kH1bCallBytes}}, on_h1b},
-        {kKAiRead, "G1 inner 0x20CDF96", kAiRead, kAiReadPatch, kAiReadBytes,
+        {kKAiRead, "G1 inner 0x20CFBB6", kAiRead, kAiReadPatch, kAiReadBytes,
          {{kAiReadFrame, kAiReadFrameBytes}, {kAiReadArg, kAiReadArgBytes}, {kAiReadInit, kAiReadInitBytes},
           {kAiReadCall, kAiReadCallBytes}},
          on_ai_read},
-        {kKAiRead, "G1 0x206DE6B", kAiDone, kAiDonePatch, kAiDoneBytes,
+        {kKAiRead, "G1 0x206FA8B", kAiDone, kAiDonePatch, kAiDoneBytes,
          {{kAiDoneThis, kAiDoneThisBytes}, {kAiDoneCall, kAiDoneCallBytes}}, on_ai_done},
-        {kKVf13, "vf13 res8 0x9ED401", kVf13Res8, kVf13Res8Patch, kVf13Res8Bytes,
+        {kKVf13, "vf13 res8 0x9EDC81", kVf13Res8, kVf13Res8Patch, kVf13Res8Bytes,
          {{kVf13Frame, kVf13FrameBytes}, {kVf13Comp, kVf13CompBytes}}, on_vf13},
-        {kKBindAi, "AI rebind 0x22B5550", kBindAi, kPatch5, kBindAiBytes,
+        {kKBindAi, "AI rebind 0x22B7170", kBindAi, kPatch5, kBindAiBytes,
          {{kBindAiVf107, kBindAiVf107Bytes}, {kBindAi2874, kBindAi2874Bytes}}, on_bind_ai},
-        {kKRebind, "rebind 0xB2F430", kRebind, kPatch5, kRebindBytes, rebind, on_rebind},
-        {kKRebindRes8, "rebind res8 0xB2F55A", kRebindRes8, kRebindRes8Patch, kRebindRes8Bytes,
+        {kKRebind, "rebind 0xB2FD70", kRebind, kPatch5, kRebindBytes, rebind, on_rebind},
+        {kKRebindRes8, "rebind res8 0xB2FE9A", kRebindRes8, kRebindRes8Patch, kRebindRes8Bytes,
          {{kRebindFrame, kRebindFrameBytes}, {kRebindRes8Src, kRebindRes8SrcBytes}}, on_rebind_res8},
-        {kKRebindInst, "rebind instance 0xB2F5B5", kRebindInst, kRebindInstPatch, kRebindInstBytes,
+        {kKRebindInst, "rebind instance 0xB2FEF5", kRebindInst, kRebindInstPatch, kRebindInstBytes,
          {{kRebindFrame, kRebindFrameBytes}, {kRebindLookup, kRebindLookupBytes}, {kRebindBind, kRebindBindBytes}},
          on_rebind_inst},
     };
@@ -1035,7 +1035,7 @@ void host_scene_diag_install(uintptr_t base, std::span<const gad::Section> secs)
     log::info("SceneDiag ON (s1_scene_diag, host, READ ONLY): hooked:{} | REFUSED:{} | nothing is written to the game, no "
               "game function is called, nothing is sent; lines 'SceneDiag [...]' once a second from observer_stage's "
               "thread: H1 (each new actor key at the flag check, the first {} flagged actions of each NPC, the relay "
-              "decision), H2 (the host client's NPC AI block, vf13 and the re-binding 0x22B5550/0xB2F430, first {} per "
+              "decision), H2 (the host client's NPC AI block, vf13 and the re-binding 0x22B7170/0xB2FD70, first {} per "
               "NPC), H3 (the host's scene ledger from its client's capture, user 2's trips and the NPC 2005 queued to "
               "it); summaries every 60 s",
               on.empty() ? " none" : on, refused.empty() ? " none" : refused, kFirstPerKey, kFirstPerNpc);

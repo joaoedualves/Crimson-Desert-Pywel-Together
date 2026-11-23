@@ -259,7 +259,7 @@ inline ConsumeOut decide_consume(const TsSnap& before) {
 inline const char* consume_branch(const TsSnap& s) {
     if (!s.ok || !s.pending) return "none";
     if (s.f568) return "+0x568 set: GameLoadingStart_Step (field change)";
-    if (s.f569) return "+0x569 set: 0x1595740 (reload in the same field: 2643 + 3066 expected)";
+    if (s.f569) return "+0x569 set: 0x15972C0 (reload in the same field: 2643 + 3066 expected)";
     return "neither flag: no Ack branch known";
 }
 

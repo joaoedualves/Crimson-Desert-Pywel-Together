@@ -394,7 +394,7 @@ enum H1Col : size_t {
 // replica does neither; it may read a container being changed: every read is
 // checked and the walk bounded.)
 struct ScheduleLayout {
-    static constexpr uintptr_t kManagerSlot = 0x7160120;  // exe+..: pa::NPCScheduleManager*
+    static constexpr uintptr_t kManagerSlot = 0x71661D8;  // exe+..: pa::NPCScheduleManager*
     static constexpr uint32_t kManager_Container = 0x08;
     static constexpr uint32_t kUsed = 0x24, kBuckets = 0x20, kBucketArray = 0x30, kEntries = 0x38;
     static constexpr uint32_t kBucketSize = 0x100, kBucketMax = 31, kEntryKey = 4, kEntryHolder = 8;
@@ -705,9 +705,9 @@ inline const char* first_npc_text(FirstNpc p) {
         case FirstNpc::Before2549:
             return "BEFORE the guest's 2549: a snapshot must be queued before MoveFieldCompleteCore (at the 2174)";
         case FirstNpc::Between2549And2144:
-            return "between 2549 and 2144: the START of MoveFieldCompleteCore 0x2ED3360 (not its end 0x2ED4302) is "
+            return "between 2549 and 2144: the START of MoveFieldCompleteCore 0x2ED78B0 (not its end 0x2ED8852) is "
                    "early enough";
-        case FirstNpc::After2144: return "after 2144: the entry hook 0x2ED4302 would be early enough";
+        case FirstNpc::After2144: return "after 2144: the entry hook 0x2ED8852 would be early enough";
     }
     return "?";
 }

@@ -136,11 +136,11 @@ inline uint32_t schedule_key_of_name(std::string_view name) {
 // ---------------------------------------------------------------- the manager (build 1.0.0.2976)
 
 struct Layout {
-    static constexpr uintptr_t kManagerSlot = 0x7160120;   // exe+..: pa::NPCScheduleManager* (ctor 0x1861F00)
-    static constexpr uintptr_t kClientRootSlot = 0x7245548;  // [..]+0x40: the manager the client's 0xA9FEE0 uses
-    static constexpr uintptr_t kServerRootSlot = 0x7245550;  // [..]+0x40: the one the server uses (TLS +0x1EB = 1)
+    static constexpr uintptr_t kManagerSlot = 0x71661D8;   // exe+..: pa::NPCScheduleManager* (ctor 0x1861F00)
+    static constexpr uintptr_t kClientRootSlot = 0x724B6D8;  // [..]+0x40: the manager the client's 0xA9FEE0 uses
+    static constexpr uintptr_t kServerRootSlot = 0x724B6E0;  // [..]+0x40: the one the server uses (TLS +0x1EB = 1)
     static constexpr uint32_t kRoot_Manager = 0x40;
-    static constexpr uintptr_t kVtManager = 0x5BF89D8;     // pa::NPCScheduleManager (RTTI; written at 0x1861F27)
+    static constexpr uintptr_t kVtManager = 0x5BFDD88;     // pa::NPCScheduleManager (RTTI; written at 0x1861F27)
     static constexpr uint32_t kManager_Container = 0x08;   // ThreadSafeRefCountedContainer<u32, NPCScheduleData_File>
     static constexpr uint32_t kManager_FileSystem = 0x90;  // 0x18643B0: [mgr+0x90]->vf40 reads the file
     // The schedule-context table, inline at mgr+0x10 (0x1862F53 deserializes it; 0x281B78D / 0xA9FF4D read it).

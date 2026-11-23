@@ -31,9 +31,9 @@ using cfl::Skip;
 
 // The host client's game clock as its threads read it (remote_motion.cpp, divergence_probe): frame ms + us/1000
 // + the client->server bias. Only differences of it are used (the anchor), so the bias cancels out.
-constexpr uintptr_t kClockBase = 0x71600E8;
-constexpr uintptr_t kClockFrac = 0x71600F0;
-constexpr uintptr_t kClockBias = 0x7245468;
+constexpr uintptr_t kClockBase = 0x71661A0;
+constexpr uintptr_t kClockFrac = 0x71661B0;
+constexpr uintptr_t kClockBias = 0x724B5F8;
 // Client actor -> components (+0x68) -> TransformSync (+0x1A0): quat +0xA4, pos +0xB4 (sector-local), sector
 // i16 x/z +0xC0 (actor_lookup.cpp); the control state byte [actor+0xC8] (mirror-ack-formats.md §5: 1/2 =
 // simulated by this client, 0 = remote).

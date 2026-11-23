@@ -253,7 +253,7 @@ int extra_fault(EXCEPTION_POINTERS* ep) noexcept {
     g_extra.store(nullptr, std::memory_order_release);
     g_extra_faulted.fetch_add(1, std::memory_order_relaxed);
     return game::game_fault_continue(ep, "Sniffer recv-extra",
-                                     "ClientNet::OnRecvPacket (exe+0x3A9CF0) took the mod's derived packet");
+                                     "ClientNet::OnRecvPacket (exe+0x3AA100) took the mod's derived packet");
 }
 void deliver_extra(void* net, void* session, uint64_t arg3, const uint8_t* pkt, uint16_t size) noexcept {
     __try {

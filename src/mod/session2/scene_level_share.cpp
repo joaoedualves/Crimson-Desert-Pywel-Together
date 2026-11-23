@@ -326,14 +326,14 @@ bool build_and_pdata(uint32_t begin, uint32_t end, std::string& why) {
     IMAGE_DOS_HEADER dos{};
     IMAGE_NT_HEADERS64 nt{};
     if (g_base != sls::kImageBase || !game::safe_read(g_base, &dos, sizeof dos) || dos.e_magic != IMAGE_DOS_SIGNATURE ||
-        dos.e_lfanew <= 0 || dos.e_lfanew > 0x114F20 ||
+        dos.e_lfanew <= 0 || dos.e_lfanew > 0x115110 ||
         !game::safe_read(g_base + static_cast<uint32_t>(dos.e_lfanew), &nt, sizeof nt) ||
         nt.Signature != IMAGE_NT_SIGNATURE || nt.FileHeader.TimeDateStamp != sls::kPeTimestamp) {
         why = "no es la build 1.0.0.2976 (base/PE)";
         return false;
     }
     const auto pd = nt.OptionalHeader.DataDirectory[IMAGE_DIRECTORY_ENTRY_EXCEPTION];
-    if (!pd.VirtualAddress || !pd.Size || pd.Size % sizeof(RUNTIME_FUNCTION) || pd.Size > 0x1000000) {
+    if (!pd.VirtualAddress || !pd.Size || pd.Size % sizeof(RUNTIME_FUNCTION) || pd.Size > 0x1000780) {
         why = ".pdata ilegible";
         return false;
     }
@@ -367,7 +367,7 @@ bool install_a(std::span<const gad::Section> secs) {
     // The cmp (7 bytes, what the hook relocates) and its jnz, from the signature.
     const std::span<const uint8_t> at(sls::kGateSig.data() + sls::kGateSigPatchAt, 13);
     if (!p8_install_mid(g_base, secs, sls::kGateRva, sls::kGatePatch, at, &on_gate, g_gate_hook, "SceneLevelShare",
-                        "A, la puerta de dueno 0x2ADBE4D (cmp [r8+0x180],eax)")) {
+                        "A, la puerta de dueno 0x2ADE59D (cmp [r8+0x180],eax)")) {
         log::warn("SceneLevelShare: A REFUSED (ver el error anterior); A queda apagada");
         return false;
     }
@@ -389,7 +389,7 @@ bool install_b(std::span<const gad::Section> secs) {
     }
     const auto accept = [](const std::vector<uint8_t>& b) { return sls::delete_patch_ok(b); };
     auto h = game::prepare_inline(g_base + sls::kDeleteRva, reinterpret_cast<void*>(&delete_detour), accept,
-                                  "SceneLevelShare", "B, el borrado de SceneLevel 0x2AD51C0");
+                                  "SceneLevelShare", "B, el borrado de SceneLevel 0x2AD7910");
     if (!h || !accept(h->original_bytes())) {
         log::warn("SceneLevelShare: B REFUSED: el gancho no se pudo preparar con exactamente los 5 B verificados; B queda "
                   "apagada");
@@ -499,7 +499,7 @@ void format_gate(const p8p::Event& e) {
                       : why == sls::GateWhy::Owner    ? "[owner native]"
                                                       : "[gate]";
     log::info("SceneLevelShare {} {} nivel {} hash-nombre 0x{:08X} base 0x{:08X} cache {} | actor 0x{:08X} usuario "
-              "0x{:08X} dueno-campo 0x{:08X} | troc del usuario 2 {} opcode {} ({}) [0x2ADBE4D{}]",
+              "0x{:08X} dueno-campo 0x{:08X} | troc del usuario 2 {} opcode {} ({}) [0x2ADE59D{}]",
               tag, p8_when(e.qpc_us), name_of(e, len, ok), static_cast<uint32_t>(e.v[3]),
               static_cast<uint32_t>(e.v[3] >> 32), hex_or_none(static_cast<uint32_t>(e.v[4])), key, eax, owner,
               same ? "sobre este actor" : "no", opcode, sls::gate_why_name(why),
@@ -714,7 +714,7 @@ DWORD WINAPI module_thread(LPVOID) {
               b ? std::format("(entrada 5 B 44 88 4C 24 20, .pdata [0x{:X},0x{:X}) verificada; marco del 2834 {}): {}",
                               sls::kDeleteRva, sls::kDeleteEnd, g_frame_ok.load() ? "verificado" : "NO verificado",
                               mode == Mode::On ? "omite SOLO el borrado del 2834 de un nivel que otro usuario tiene "
-                                                 "cargado (hash verificado); 0x2AE1AB0 y el cargador solo observan"
+                                                 "cargado (hash verificado); 0x2AE4200 y el cargador solo observan"
                                                : "solo mide [would keep]")
                 : std::string("REFUSED"),
               hooked ? "enganchado" : "SIN GANCHO: A nunca actua y B no sabe quien provoca (llama siempre al original)",
@@ -742,8 +742,8 @@ void scene_level_share_start(const std::string& raw, bool guest) {
     if (g_started.exchange(true)) return;
     g_mode.store(static_cast<uint8_t>(p.mode));
     g_ingress_on.store(true, std::memory_order_release);
-    log::info("SceneLevelShare ON (scene_level_share={}): A = listo tambien para el usuario 2 en 0x2ADBE4D, B = no borrar "
-              "un SceneLevel que otro usuario sigue teniendo cargado en 0x2AD51C0 ({})",
+    log::info("SceneLevelShare ON (scene_level_share={}): A = listo tambien para el usuario 2 en 0x2ADE59D, B = no borrar "
+              "un SceneLevel que otro usuario sigue teniendo cargado en 0x2AD7910 ({})",
               sls::mode_name(p.mode), p.mode == Mode::On ? "1: A cambia eax; B omite solo borrados de 2834" : "probe: solo mide");
     CloseHandle(CreateThread(nullptr, 0, module_thread, nullptr, 0, nullptr));
 }

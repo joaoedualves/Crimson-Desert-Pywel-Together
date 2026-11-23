@@ -35,7 +35,7 @@ namespace g2976 = game::build_2976;
 using csq::Mode;
 
 // Hooks only at verified function entries inside [0x1000, 0x5613000) (.rsrc, never .xtls).
-constexpr uintptr_t kCodeBegin = 0x1000, kCodeEnd = 0x5613000;
+constexpr uintptr_t kCodeBegin = 0x1000, kCodeEnd = 0x5618000;
 constexpr uint32_t kTickMs = 500;
 constexpr uint32_t kWorldTicks = 6;     // the local player read 6 ticks in a row (3 s) before the hook goes in
 constexpr uint64_t kMinuteMs = 60000;
@@ -181,7 +181,7 @@ bool bytes_at(uintptr_t rva, std::span<const uint8_t> expected) {
 bool install_hook() {
     std::vector<gad::Section> secs;
     if (!p8_exe_sections(g_base, secs)) {
-        log::error("CatchSeq: the exe's sections are unreadable; the hook on 0xA548B0 is REFUSED, nothing written");
+        log::error("CatchSeq: the exe's sections are unreadable; the hook on 0xA55130 is REFUSED, nothing written");
         return false;
     }
     const auto in_code = [&](uintptr_t rva, size_t n) {
@@ -189,18 +189,18 @@ bool install_hook() {
                gad::in_real_code(secs, static_cast<uint32_t>(rva), static_cast<uint32_t>(n));
     };
     if (!in_code(csq::kApply, sizeof csq::kApplyHead) || !bytes_at(csq::kApply, csq::kApplyHead)) {
-        log::error("CatchSeq: 0xA548B0 (exe+0x{:X}) is not build 2976's .rsrc entry 48 89 5C 24 08 48 89 74 24 10 48 89 "
+        log::error("CatchSeq: 0xA55130 (exe+0x{:X}) is not build 2976's .rsrc entry 48 89 5C 24 08 48 89 74 24 10 48 89 "
                    "7C 24 18 4C 89 4C 24 20 55 41 54 41 55; REFUSED, nothing written",
                    csq::kApply);
         return false;
     }
     if (!in_code(csq::kApplyCall, sizeof csq::kApplyCallBytes) || !bytes_at(csq::kApplyCall, csq::kApplyCallBytes)) {
-        log::error("CatchSeq: its only caller 0xC9DD0B is not `call 0xA548B0` (E8 88 D4 DD FF); REFUSED, nothing "
+        log::error("CatchSeq: its only caller 0xC9E75B is not `call 0xA55130` (E8 88 D4 DD FF); REFUSED, nothing "
                    "written");
         return false;
     }
     if (!in_code(csq::kCheckSite, sizeof csq::kCheckSiteBytes) || !bytes_at(csq::kCheckSite, csq::kCheckSiteBytes)) {
-        log::error("CatchSeq: the comparison 0xA54923..0xA5497A (argument 17, argument 20, [[[[comp+8]+0x68]+0x40]+0x48]"
+        log::error("CatchSeq: the comparison 0xA551A3..0xA551FA (argument 17, argument 20, [[[[comp+8]+0x68]+0x40]+0x48]"
                    "+0x93) is not the one this module mirrors; REFUSED, nothing written");
         return false;
     }
@@ -212,15 +212,15 @@ bool install_hook() {
     };
     // P8 S26 (montura-regresion.md section 7.1): refused attempts logged and tried again (bounded), nothing written.
     auto h = game::prepare_inline(g_base + csq::kApply, reinterpret_cast<void*>(&apply_detour), whole, "CatchSeq",
-                                  "ClientCatch_ApplyResult 0xA548B0");
+                                  "ClientCatch_ApplyResult 0xA55130");
     if (!h) {
-        log::error("CatchSeq: the hook on 0xA548B0 could not be prepared ({}); REFUSED",
+        log::error("CatchSeq: the hook on 0xA55130 could not be prepared ({}); REFUSED",
                    game::inline_error_text(h.error()));
         return false;
     }
     const auto& orig = h->original_bytes();
     if (!whole(orig)) {
-        log::error("CatchSeq: the hook on 0xA548B0 would patch {} bytes, not whole verified instructions; REFUSED, "
+        log::error("CatchSeq: the hook on 0xA55130 would patch {} bytes, not whole verified instructions; REFUSED, "
                    "nothing written",
                    orig.size());
         return false;
@@ -228,12 +228,12 @@ bool install_hook() {
     const size_t patched = orig.size();  // `orig` belongs to *h: empty once it is moved
     g_hook = std::move(*h);
     if (!g_hook.enable()) {
-        log::error("CatchSeq: the hook on 0xA548B0 could not be enabled; REFUSED");
+        log::error("CatchSeq: the hook on 0xA55130 could not be enabled; REFUSED");
         g_hook = {};
         return false;
     }
     g_hook_on.store(true);
-    log::info("CatchSeq: exe+0xA548B0 (ClientCatch_ApplyResult, the 2156 apply; one caller 0xC9DD0B) hooked at its "
+    log::info("CatchSeq: exe+0xA55130 (ClientCatch_ApplyResult, the 2156 apply; one caller 0xC9E75B) hooked at its "
               "entry ({} bytes patched); {}",
               patched,
               mode() == Mode::On
@@ -278,7 +278,7 @@ void log_event(const p8p::Event& e) {
     const uintptr_t ret = static_cast<uintptr_t>(e.v[9]);
     const std::string from =
         ret == g_base + csq::kApplyReturn
-            ? std::string("from exe+0xC9DD10 (the 2156 handler)")
+            ? std::string("from exe+0xC9E760 (the 2156 handler)")
             : (ret >= g_base && ret < g_base + kCodeEnd ? std::format("from exe+0x{:X} (UNEXPECTED caller)", ret - g_base)
                                                         : std::format("from 0x{:X} (UNEXPECTED caller)", ret));
     log::info("CatchSeq [{}] #{} {}: grabber 0x{:08X} ({}) -> victim {} ({}) | c8 {} | packet seq {} | grabber's byte "
@@ -366,7 +366,7 @@ void catch_seq_start(const std::string& raw, bool guest) {
         return;
     }
     g_mode.store(static_cast<uint8_t>(p.mode), std::memory_order_release);
-    log::info("CatchSeq ON (catch_seq={}, host): a hook at the entry of ClientCatch_ApplyResult 0xA548B0 once the world "
+    log::info("CatchSeq ON (catch_seq={}, host): a hook at the entry of ClientCatch_ApplyResult 0xA55130 once the world "
               "is up; {}",
               csq::mode_name(p.mode),
               p.mode == Mode::On

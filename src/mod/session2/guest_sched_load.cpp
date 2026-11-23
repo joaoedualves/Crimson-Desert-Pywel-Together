@@ -48,22 +48,22 @@ struct Body {
     uintptr_t rva, end;
     uint64_t fnv;
 };
-constexpr Body kLoader{0x1A0BAE0, 0x1A0BD48, 0xF3C2E60AB4F2C62Aull};  // build 3663: 616 bytes (old 616)
-constexpr Body kReader{0x1A0BD60, 0x1A0C688, 0x7F4535692BCC88A9ull};  // build 3663: 2344 bytes (old 2344)
-constexpr Body kLookup{0x1A11A60, 0x1A11BE9, 0xD35D03A474EEDE22ull};  // build 3663: 393 bytes (old 393)
-constexpr Body kRelease{0x3DB480, 0x3DB4DC, 0x9F799744CF2F1875ull};  // build 3663: 92 bytes (old 92)
-constexpr uintptr_t kNodeLookupRva = 0x1A11270;
+constexpr Body kLoader{0x1A0D750, 0x1A0D9B8, 0x66A4E0ED966116C2ull};  // build 3663: 616 bytes (old 616)
+constexpr Body kReader{0x1A0D9D0, 0x1A0E2F8, 0x4F0736AFCC0EE02Aull};  // build 3663: 2344 bytes (old 2344)
+constexpr Body kLookup{0x1A136D0, 0x1A13859, 0xF3BD9AA017A1D44Eull};  // build 3663: 393 bytes (old 393)
+constexpr Body kRelease{0x3DB890, 0x3DB8EC, 0x9F799744CF2F1875ull};  // build 3663: 92 bytes (old 92)
+constexpr uintptr_t kNodeLookupRva = 0x1A12EE0;
 constexpr uint8_t kNodeLookupBytes[] = {0x48, 0x89, 0x54, 0x24, 0x10, 0x48, 0x89, 0x4C,
                                         0x24, 0x08, 0x53, 0x55, 0x56, 0x57, 0x41, 0x56};
-constexpr uintptr_t kKeyLookupRva = 0x1A0A1A0;
+constexpr uintptr_t kKeyLookupRva = 0x1A0BE10;
 constexpr uint8_t kKeyLookupBytes[] = {0x44, 0x89, 0x44, 0x24, 0x18, 0x48, 0x89, 0x54,
                                        0x24, 0x10, 0x53, 0x48, 0x83, 0xEC, 0x30, 0x48};
 // Session 12 (the hold): 0xA9FEE0 (only caller 0xC0B619 in the 2335 handler 0xC0AFC0) calls 0x1862A80 at 0xA9FFC3
 // (E8 B8 2A DC 00): at the lookup's entry, [rsp] = 0xA9FFC8 means "this 2335 is running now" (checked at install).
-constexpr uintptr_t kStageCallRva = 0xBE36F3, kStageRetRva = 0xBE36F8;
-constexpr uint8_t kStageCallBytes[] = {0xE8, 0xA8, 0x6A, 0xE2, 0x00};
+constexpr uintptr_t kStageCallRva = 0xBE4143, kStageRetRva = 0xBE4148;
+constexpr uint8_t kStageCallBytes[] = {0xE8, 0xC8, 0x7C, 0xE2, 0x00};
 // pa::NPCScheduleData_File (ctor 0x1860C10 [V]): vtable, refcount u32 (+0x10), "atomic count" byte (+0x14 = 1).
-constexpr uintptr_t kVtFile = 0x5BF89E8;
+constexpr uintptr_t kVtFile = 0x5BFDD98;
 constexpr uint32_t kFile_Refs = 0x10, kFile_Atomic = 0x14;
 constexpr uint32_t kTlsRealm = 0x1EB;      // the server-realm byte of the exe's TLS block (0x281B757, 0xA9FF2A)
 constexpr uint32_t kLookupSample = 8;      // the lookup watch's full path: 1 call in 8 per thread (+ verifications)
@@ -219,7 +219,7 @@ bool guarded_load(uintptr_t mgr, uintptr_t* out, uintptr_t name_field) noexcept 
     __try {
         g_load(mgr, out, name_field, 0);
         return true;
-    } __except (call_fault(GetExceptionInformation(), "0x1A0BAE0(mgr, &handle, name, 0) loaded a schedule file")) {
+    } __except (call_fault(GetExceptionInformation(), "0x1A0D750(mgr, &handle, name, 0) loaded a schedule file")) {
         return false;  // never reached: the filter passes it on
     }
 }
@@ -227,7 +227,7 @@ bool guarded_lookup(uintptr_t container, uintptr_t* out, const uint32_t* key) no
     __try {
         g_lookup(container, out, key);
         return true;
-    } __except (call_fault(GetExceptionInformation(), "0x1A11A60(container, &file, &key) looked a schedule file up")) {
+    } __except (call_fault(GetExceptionInformation(), "0x1A136D0(container, &file, &key) looked a schedule file up")) {
         return false;
     }
 }
@@ -235,7 +235,7 @@ bool guarded_release(uintptr_t* handle) noexcept {
     __try {
         g_release(handle);
         return true;
-    } __except (call_fault(GetExceptionInformation(), "0x3DB480(&handle) released a schedule file's handle")) {
+    } __except (call_fault(GetExceptionInformation(), "0x3DB890(&handle) released a schedule file's handle")) {
         return false;
     }
 }
@@ -532,7 +532,7 @@ std::string line_of(const p::Event& e) {
     switch (e.kind) {
         case kELoad: {
             const auto st = static_cast<KeyState>(v[4] & 0xFF);
-            return std::format("GuestSchedLoad [load] {} T{} | resource 0x{:08X} {} named by {}: 0x1A0BAE0 -> handle {}, "
+            return std::format("GuestSchedLoad [load] {} T{} | resource 0x{:08X} {} named by {}: 0x1A0D750 -> handle {}, "
                                "container {} -> {} in {:.2f} ms{} (attempts {}; container files {}){}",
                                when, e.tid, key, name_of(key), op_text(v[2]), (v[4] >> 8) & 1 ? "set" : "NULL",
                                (v[4] >> 9) & 1 ? "has it" : "LACKS it", gsl::state_name(st),
@@ -545,26 +545,26 @@ std::string line_of(const p::Event& e) {
             return std::format("GuestSchedLoad [hold end] {} T{} | resource 0x{:08X} {}: our handle {} {}, after {:.1f} "
                                "s held (container files {})",
                                when, e.tid, key, name_of(key),
-                               why == gsl::HoldEnd::Kept || why == gsl::HoldEnd::Dropped ? "is" : "given back (0x3DB480)", gsl::hold_end_name(why),
+                               why == gsl::HoldEnd::Kept || why == gsl::HoldEnd::Dropped ? "is" : "given back (0x3DB890)", gsl::hold_end_name(why),
                                static_cast<double>(v[4]) / 1e6, v[5]);
         }
         case kEEarly:
             return std::format("GuestSchedLoad [released early] {} T{} | resource 0x{:08X} {}: a 2335 named it, the "
-                               "container had it ({}) and it is GONE before that 2335 ran (no 0xBE3610 lookup since); "
+                               "container had it ({}) and it is GONE before that 2335 ran (no 0xBE4060 lookup since); "
                                "named now by {}; last hold: {}",
                                when, e.tid, key, name_of(key), gsl::state_name(static_cast<KeyState>(v[3])),
                                op_text(v[2]),
                                v[4] ? gsl::hold_end_name(static_cast<gsl::HoldEnd>(v[4] - 1)) : "never held");
         case kEStage:
             return std::format("GuestSchedLoad [2335 lookup miss] {} T{} | resource 0x{:08X} {}: the 2335 ran "
-                               "(0xBE3610 -> 0x1A0A1A0) and the container has NO file: its stage is not created | "
+                               "(0xBE4060 -> 0x1A0BE10) and the container has NO file: its stage is not created | "
                                "state {}, {}named by a 2335, held now {}, last hold: {}, named {} packet(s)",
                                when, e.tid, key, name_of(key), gsl::state_name(static_cast<KeyState>(v[1])),
                                v[5] ? "" : "NOT ", v[2] ? "YES (?)" : "no",
                                v[3] ? gsl::hold_end_name(static_cast<gsl::HoldEnd>(v[3] - 1)) : "never held", v[4]);
         case kEWould:
             return std::format("GuestSchedLoad [would load] {} T{} | resource 0x{:08X} {} named by {}: not in the "
-                               "container ({} files), context entry 0x{:X}, name hashes back to the key: 0x1A0BAE0 "
+                               "container ({} files), context entry 0x{:X}, name hashes back to the key: 0x1A0D750 "
                                "WOULD be called here ({})",
                                when, e.tid, key, name_of(key), op_text(v[2]), v[5], v[3],
                                g_eng.latched.load() ? "LATCHED to probe after a slow load" : "probe");
@@ -583,7 +583,7 @@ std::string line_of(const p::Event& e) {
             return std::format("GuestSchedLoad [lookup miss] {} T{} | resource 0x{:08X} {}: {} found no file (first "
                                "sampled miss of this key; its state: {}, named by {} packet(s) before delivery){}",
                                when, e.tid, key, name_of(key),
-                               v[1] == 0 ? "0x1A11270 (AI block / 2874 node)" : "0x1A0A1A0 (2335 / stage lookup)",
+                               v[1] == 0 ? "0x1A12EE0 (AI block / 2874 node)" : "0x1A0BE10 (2335 / stage lookup)",
                                gsl::state_name(static_cast<KeyState>(v[2])), v[3],
                                v[3] == 0 ? " | NO host packet named it before this lookup (the scan missed it, or it "
                                            "is this client's own)"
@@ -710,8 +710,8 @@ void summary() {
               "retry set {} | decisions:{} | LOADED {} failed {} (calls {} of cap {}) | load time: total {:.1f} ms, max "
               "{:.2f} ms, slow (>{} ms) {}, histogram:{} | retry set {} (dropped {}, retried {}) | present while being "
               "unloaded {} | keys: present {} loaded {} would {} failed {} no-context {} bad-name {} (book {} / {}, "
-              "untracked {}, overflow book {}, untracked failures {}) | lookups 0x1A11270 {:.0f}/s ({} sampled: found "
-              "{}, missing {}), 0x1A0A1A0 {:.0f}/s ({} sampled: found {}, missing {}), server-thread {} / {}, other "
+              "untracked {}, overflow book {}, untracked failures {}) | lookups 0x1A12EE0 {:.0f}/s ({} sampled: found "
+              "{}, missing {}), 0x1A0BE10 {:.0f}/s ({} sampled: found {}, missing {}), server-thread {} / {}, other "
               "manager {} / {}, inside our calls {} | VERIFY: found after our load {}, missing after our load {} | keys "
               "with misses:{} | hooks {}/2, faults {}{}, limited {} lost {}",
               g_mode.load() == 2 ? "1" : "probe", g_eng.latched.load() ? ", LATCHED TO PROBE after a slow load" : "",
@@ -763,14 +763,14 @@ void summary() {
               "{} (peak {} of {}) | taken {}, named again while held {}, table full {} | given back: after the 2335 "
               "ran {}, by TIMEOUT {} | not given back: last reference {} (odd file {}), module off {}, DROPPED (another "
               "connection / manager / container, or the connection ended: no call) {} | 2335 lookups "
-              "(0xBE3610 -> 0x1A0A1A0{}): found {} (while held {}), MISSING {} (of files the container had for us {}), "
+              "(0xBE4060 -> 0x1A0BE10{}): found {} (while held {}), MISSING {} (of files the container had for us {}), "
               "keys no packet named {} | RELEASED BEFORE THEIR 2335 RAN (seen at load) {}",
               gsl::kHoldGraceUs / 1'000'000, gsl::kHoldMaxUs / 1'000'000, g_eng.held_now.load(), g_eng.held_peak.load(),
               gsl::kHolds, g_eng.holds_taken.load(), g_eng.holds_refreshed.load(), g_eng.holds_full.load(),
               he[static_cast<size_t>(gsl::HoldEnd::Seen)].load(), he[static_cast<size_t>(gsl::HoldEnd::Timeout)].load(),
               he[static_cast<size_t>(gsl::HoldEnd::Kept)].load(), g_hold_odd.load(), g_eng.holds_dropped.load(),
               he[static_cast<size_t>(gsl::HoldEnd::Dropped)].load(),
-              g_stage_ret_ok.load() ? "" : "; NOT WATCHED: the call at 0xBE36F3 differs, holds end by timeout",
+              g_stage_ret_ok.load() ? "" : "; NOT WATCHED: the call at 0xBE4143 differs, holds end by timeout",
               g_stage_found.load(), g_stage_found_held.load(), g_stage_missing.load(), g_stage_missing_after.load(),
               g_stage_unnamed.load(), g_eng.early.load());
 }
@@ -817,7 +817,7 @@ DWORD WINAPI install_thread(LPVOID) {
         g_release = reinterpret_cast<ReleaseFn>(g_base + kRelease.rva);
         g_code_ok.store(true, std::memory_order_release);
     } else {
-        log::error("GuestSchedLoad: the loader 0x1A0BAE0 / 0x1A0BD60, the lookup 0x1A11A60 or the release 0x3DB480 is "
+        log::error("GuestSchedLoad: the loader 0x1A0D750 / 0x1A0D9D0, the lookup 0x1A136D0 or the release 0x3DB890 is "
                    "not build 2976's .rsrc code; nothing will be loaded (the lookups are still watched)");
     }
     // Session 12: the 2335's call into the hooked lookup (read only; it is not hooked).
@@ -826,26 +826,26 @@ DWORD WINAPI install_thread(LPVOID) {
                          std::equal(std::begin(call), std::end(call), std::begin(kStageCallBytes)) &&
                          gad::in_real_code(secs, static_cast<uint32_t>(kStageCallRva), sizeof call));
     if (p8_install_mid(g_base, secs, kNodeLookupRva, 5, kNodeLookupBytes, on_node_lookup, g_hook_node,
-                       "GuestSchedLoad", "the node lookup 0x1A11270 (entry)")) {
+                       "GuestSchedLoad", "the node lookup 0x1A12EE0 (entry)")) {
         g_hooked.fetch_add(1);
     }
     if (p8_install_mid(g_base, secs, kKeyLookupRva, 5, kKeyLookupBytes, on_key_lookup, g_hook_key, "GuestSchedLoad",
-                       "the file lookup 0x1A0A1A0 (entry)")) {
+                       "the file lookup 0x1A0BE10 (entry)")) {
         g_hooked.fetch_add(1);
     }
     g_watch_on.store(true);
     const auto mode = static_cast<gsl::Mode>(g_mode.load());
-    log::info("GuestSchedLoad {} (guest_schedule_load): loader {} | lookups watched {}/2 (0x1A11270, 0x1A0A1A0; read "
+    log::info("GuestSchedLoad {} (guest_schedule_load): loader {} | lookups watched {}/2 (0x1A12EE0, 0x1A0BE10; read "
               "only, 1 in {} sampled) | before each host 2005 / 2335 / 2874 is delivered (client NetworkThread): the "
-              "schedule files it names that the container lacks (native lookup 0x1A11A60, its reader lock) {} with "
-              "0x1A0BAE0(mgr, &handle, context name, 0) + 0x3DB480 | session 13: a key the packet names is not "
+              "schedule files it names that the container lacks (native lookup 0x1A136D0, its reader lock) {} with "
+              "0x1A0D750(mgr, &handle, context name, 0) + 0x3DB890 | session 13: a key the packet names is not "
               "deferred by a count (only once this packet's loads took {} ms or this second's {} ms: LATE); the retry "
               "set: {} ms per packet, {} ms per second; {} loads per session; one load over {} ms, or {} over {} ms, "
               "latch probe | session 12: the "
-              "handle of a file a 2335 names is KEPT until that 2335 ran (0xBE3610's call at 0xBE36F3 {}) + {} s, at "
+              "handle of a file a 2335 names is KEPT until that 2335 ran (0xBE4060's call at 0xBE4143 {}) + {} s, at "
               "most {} s; up to {} files",
               gsl::mode_name(mode),
-              g_code_ok.load() ? "verified (whole bodies of 0x1A0BAE0, 0x1A0BD60, 0x1A11A60, 0x3DB480)" : "REFUSED",
+              g_code_ok.load() ? "verified (whole bodies of 0x1A0D750, 0x1A0D9D0, 0x1A136D0, 0x3DB890)" : "REFUSED",
               g_hooked.load(), kLookupSample, mode == gsl::Mode::On ? "are LOADED" : "would be loaded (probe: nothing called)",
               gsl::kOwnPacketCapUs / 1000, gsl::kOwnWindowLoadUs / 1000, gsl::kRetryPacketUs / 1000,
               gsl::kWindowLoadUs / 1000, gsl::kSessionCap, gsl::kLatchUs / 1000, gsl::kSlowLatchCount,
@@ -895,7 +895,7 @@ void selfcheck_context(const ManagerView& mv) {
         }
     }
     log::info("ScheduleSelfCheck [context] the schedule-context table (mgr+0x10) has {} keys; names read {}; names that "
-              "hash back to their key (lookup3 0xC5EDE of the base name, as 0x1A0BAE0): {}/{} {} | e.g.{}{}",
+              "hash back to their key (lookup3 0xC5EDE of the base name, as 0x1A0D750): {}/{} {} | e.g.{}{}",
               keys.size(), named, matched, keys.size(),
               matched == keys.size() ? "ALL (the loader would file each under the same key)" : "NOT ALL",
               samples.empty() ? " none" : samples, bad.empty() ? "" : std::format(" | mismatches:{}", bad));

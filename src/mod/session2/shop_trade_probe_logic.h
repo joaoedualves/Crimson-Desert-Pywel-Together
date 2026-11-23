@@ -70,7 +70,7 @@ inline constexpr uint32_t kShopKey = 0x1074A1;  // the shop interaction (S11, S1
 inline constexpr uint32_t kMaxScan = 32;          // entries a hook reads at most (a shop NPC has a handful)
 // The InteractionInfo table (0x87E65F0, the thunk 0x3888B0): [exe+0x6D69AB8] -> tbl; u32 count [tbl+8]; the
 // pointers [tbl+0x58] (8 bytes per u16 index; null = not loaded yet: the game loads it lazily); key = u32 [info].
-inline constexpr uint32_t kInfoTableSlot = 0x7246388, kTbl_Count = 0x8, kTbl_Array = 0x58;
+inline constexpr uint32_t kInfoTableSlot = 0x724C528, kTbl_Count = 0x8, kTbl_Array = 0x58;
 
 // No default member initializers: a hook's stack array of these is NOT zeroed (a zeroing of that size may become a
 // CRT memset call, which may use AVX and clobber the upper halves of the game's YMM registers inside a mid hook).
@@ -243,8 +243,8 @@ struct R0Plan {
 };
 // Review F5: the lock object [actor+8] is a pa::WindowsRWLock<...> (RTTI, build 2976: 11 instances sharing vf18
 // 0x1371AD0 = AcquireSRWLockShared with dl != 0 / exclusive, recursive, with dl = 0). Their vtables (RVA):
-inline constexpr uint32_t kRwLockVtables[11] = {0x5987FE8, 0x5990B68, 0x5991FF8, 0x5B340F8, 0x5B3FFB0, 0x5BCEE40,
-                                                0x5CFC5C8, 0x5BF6598, 0x5D2B770, 0x5D2B720, 0x5D3B248};
+inline constexpr uint32_t kRwLockVtables[11] = {0x598D0C0, 0x5995C30, 0x59970D0, 0x5B392A0, 0x5B45288, 0x5BD4CD0,
+                                                0x5D01C08, 0x5BFB948, 0x5D30B50, 0x5D30860, 0x5D40638};
 inline bool is_rw_lock_vtable(uint32_t rva) {
     for (uint32_t v : kRwLockVtables) {
         if (v == rva) return true;
@@ -529,18 +529,18 @@ struct Caller {
     bool server;
 };
 inline constexpr Caller kCallers[] = {
-    {0x2F0C385, "2789 BuyStockFromStoreReq (0x2F0C0F0)", true},
-    {0x2F11135, "2366 SellItemToItemStoreReq (0x2F10EB0)", true},
-    {0x2F0C935, "store op 0x2F0C760", true},
-    {0x2F12AFF, "store op 0x2F12980", true},
-    {0x2F149E1, "store op 0x2F147F0", true},
-    {0x2F17478, "store op 0x2F17260", true},
-    {0x2E4A375, "store op 0x2E4A160", true},
-    {0x243D58B, "0x243D550", true},
-    {0xB5CD07, "client UI check 0xB5CBA0", false},
-    {0xB5E01A, "client UI check 0xB5DED0", false},
-    {0xB5EB5C, "client UI check 0xB5EA00", false},
-    {0xB5F21D, "client UI check 0xB5F0A0", false},
+    {0x2F108D5, "2789 BuyStockFromStoreReq (0x2F10640)", true},
+    {0x2F15685, "2366 SellItemToItemStoreReq (0x2F15400)", true},
+    {0x2F10E85, "store op 0x2F10CB0", true},
+    {0x2F1704F, "store op 0x2F16ED0", true},
+    {0x2F18F31, "store op 0x2F18D40", true},
+    {0x2F1B9C8, "store op 0x2F1B7B0", true},
+    {0x2E4EE05, "store op 0x2E4EBF0", true},
+    {0x243F85B, "0x243F820", true},
+    {0xB5D647, "client UI check 0xB5D4E0", false},
+    {0xB5E95A, "client UI check 0xB5E810", false},
+    {0xB5F49C, "client UI check 0xB5F340", false},
+    {0xB5FB5D, "client UI check 0xB5F9E0", false},
 };
 inline const Caller* caller_of(uint32_t ret_rva) {
     for (const Caller& c : kCallers) {

@@ -212,29 +212,29 @@ namespace {
 // .rsrc/.xtls/.text/.xtext lands in its first 0x20 bytes except a junk byte
 // run at 0x20C24B4 (between int3 paddings, aiming at 0x2B7F4D4, the middle of
 // the first instruction: not code).
-constexpr uintptr_t kLobbyLoad = 0x2E879A0;  // (comp, int* res, -, data**) -> res; r8 unused, no stack args
+constexpr uintptr_t kLobbyLoad = 0x2E8C100;  // (comp, int* res, -, data**) -> res; r8 unused, no stack args
 constexpr uint8_t kLobbyLoadHead[] = {0x48, 0x89, 0x5C, 0x24, 0x08, 0x48, 0x89, 0x54, 0x24, 0x10, 0x55, 0x56, 0x57, 0x41, 0x54, 0x41, 0x55, 0x41, 0x56, 0x41, 0x57, 0x48, 0x8D, 0xAC, 0x24, 0xF0, 0xFD, 0xFF, 0xFF, 0x48, 0x81, 0xEC, 0x10, 0x03};
-constexpr uintptr_t kLobbyVtable = 0x5F6F2E8;     // ServerLobbyActorComponent; +0x50 = 0x2B7F4D0
-constexpr uintptr_t kLobbyConstant = 0x2E87DB0;   // movabs rax,7FFF.. ; mov [rsp+0x70],rax
+constexpr uintptr_t kLobbyVtable = 0x5F74678;     // ServerLobbyActorComponent; +0x50 = 0x2B7F4D0
+constexpr uintptr_t kLobbyConstant = 0x2E8C510;   // movabs rax,7FFF.. ; mov [rsp+0x70],rax
 constexpr uint8_t kLobbyConstantBytes[] = {0x48, 0xB8, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0x7F, 0x48, 0x89, 0x45, 0xC0, 0xC5};
-constexpr uintptr_t kLobbyAddCall = 0x2E87E10;    // call 0x2143E70 (adds the entry, R8 = &number)
-constexpr uint8_t kLobbyAddCallBytes[] = {0xE8, 0x4B, 0x6C, 0x4F, 0xFF};
+constexpr uintptr_t kLobbyAddCall = 0x2E8C570;    // call 0x2143E70 (adds the entry, R8 = &number)
+constexpr uint8_t kLobbyAddCallBytes[] = {0xE8, 0x1B, 0x3F, 0x4F, 0xFF};
 // The 3093's ClearLobby: lobby = [[user+0x68]+0x10], owner [lobby+8], list [lobby+0x18].
-constexpr uintptr_t kClearLobbySite = 0x2F4AF52;
+constexpr uintptr_t kClearLobbySite = 0x2F4F4A2;
 constexpr uint8_t kClearLobbySiteBytes[] = {0x49, 0x8B, 0x47, 0x68, 0x48, 0x8B, 0x58, 0x10, 0x48, 0x8B, 0x7B, 0x08};
-constexpr uintptr_t kClearListSite = 0x2F4AF79;
+constexpr uintptr_t kClearListSite = 0x2F4F4C9;
 constexpr uint8_t kClearListSiteBytes[] = {0x48, 0x8B, 0x4B, 0x18};
-constexpr uintptr_t kStatusVtable = 0x5F63430;    // ServerStatusActorComponent; +0x50 = 0x2C160B0 (thunk into .data1) on 3663
-constexpr uintptr_t kStatusLoad = 0x2C160B0;
+constexpr uintptr_t kStatusVtable = 0x5F687B0;    // ServerStatusActorComponent; +0x50 = 0x2C160B0 (thunk into .data1) on 3663
+constexpr uintptr_t kStatusLoad = 0x2C1AB40;
 // The logged-in actors that FindByCharacterNo 0x2A83F80 searches: manager =
 // [[exe+0x6D696A8]] (0x2777A18), array [mgr+0xB8], u32 count [mgr+0xC0].
-constexpr uintptr_t kLoginMgrSite = 0x2A12A58;
-constexpr uint8_t kLoginMgrSiteBytes[] = {0x48, 0x8B, 0x0D, 0x81, 0x2C, 0x83, 0x04, 0x48, 0x8B, 0x09};
-constexpr uintptr_t kLoginMgrSlot = 0x72456E0;
-constexpr uintptr_t kFindByNoScan = 0x2D7A726;
+constexpr uintptr_t kLoginMgrSite = 0x2A151D8;
+constexpr uint8_t kLoginMgrSiteBytes[] = {0x48, 0x8B, 0x0D, 0x91, 0x66, 0x83, 0x04, 0x48, 0x8B, 0x09};
+constexpr uintptr_t kLoginMgrSlot = 0x724B870;
+constexpr uintptr_t kFindByNoScan = 0x2D7F1B6;
 constexpr uint8_t kFindByNoScanBytes[] = {0x48, 0x8B, 0x8D, 0xB8, 0x00, 0x00, 0x00, 0x8B, 0x85, 0xC0, 0x00, 0x00,
                                           0x00, 0x48, 0x8D, 0x14, 0xC1};
-constexpr uintptr_t kFindByNoRead = 0x2D7A750;
+constexpr uintptr_t kFindByNoRead = 0x2D7F1E0;
 constexpr uint8_t kFindByNoReadBytes[] = {0x4C, 0x8B, 0x31, 0x49, 0x8B, 0x46, 0x68, 0x48, 0x8B, 0x40, 0x20};
 constexpr uint32_t kLoginMgrActors = 0xB8;
 constexpr uint32_t kLoginMgrCount = 0xC0;
@@ -558,7 +558,7 @@ bool identity_fix_install() {
     calls.before_phases = &before_phases;
     if (!identity_shared_hooks_install(calls)) {
         g_lobby = {};  // never enabled
-        log::error("Session2 C2 identity: the shared hooks 0x22951B0 / 0x2C17410 could not be installed");
+        log::error("Session2 C2 identity: the shared hooks 0x2296DD0 / 0x2C1BEA0 could not be installed");
         return false;
     }
     if (!g_lobby.enable()) {
@@ -568,7 +568,7 @@ bool identity_fix_install() {
     }
     g_active.store(true);
     log::info("Session2 C2 identity fix ON: user 2's characterNo = 0x{:X}, the host keeps 0x{:X} (lobby exe+0x{:X}, "
-              "Status after exe+0x22951B0, invariant at exe+0x2C17410); uniqueness check {}",
+              "Status after exe+0x2296DD0, invariant at exe+0x2C1BEA0); uniqueness check {}",
               idf::kUser2, idf::kNative, kLobbyLoad, g_unique_on.load() ? "on" : "OFF (its code differs)");
     return true;
 }

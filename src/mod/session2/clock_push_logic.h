@@ -35,15 +35,15 @@ inline constexpr size_t kAckPacket = kHeader + kAckPayload;  // 40
 inline constexpr size_t kLoadingAckPayload = 13;
 
 // The game's addresses (exe+, build 2976), read only.
-inline constexpr uintptr_t kServerClock = 0x6F31C98;   // server FieldTime (the host's world clock)
-inline constexpr uintptr_t kClientClock = 0x6F31C78;   // client FieldTime (what this client's sky follows)
-inline constexpr uintptr_t kWorldSystem = 0x72451C0;   // [exe+] -> world system; +0x28 -> the time manager
+inline constexpr uintptr_t kServerClock = 0x6F37C98;   // server FieldTime (the host's world clock)
+inline constexpr uintptr_t kClientClock = 0x6F37C78;   // client FieldTime (what this client's sky follows)
+inline constexpr uintptr_t kWorldSystem = 0x724B350;   // [exe+] -> world system; +0x28 -> the time manager
 inline constexpr uint32_t kWorldTimeMgr = 0x28;
 inline constexpr uint32_t kMgrFlags = 0x28;            // +0x28 active (set by the 2762), +0x29 private calendar,
                                                        // +0x2A its previous value, +0x2B off
 inline constexpr uint32_t kMgrPrivateTime = 0x30;      // FieldTime of the private calendar (+0x30..+0x4F)
 inline constexpr uint32_t kMgrDumpSize = 0x30;         // +0x28 .. +0x57
-inline constexpr uintptr_t kClockBias = 0x7245468;     // i64: server tick - this client's FrameClock (2188, 0xBDF310)
+inline constexpr uintptr_t kClockBias = 0x724B5F8;     // i64: server tick - this client's FrameClock (2188, 0xBDF310)
 
 struct FieldTime {
     uint32_t day = 0, hour = 0, minute = 0, second = 0, ms = 0;

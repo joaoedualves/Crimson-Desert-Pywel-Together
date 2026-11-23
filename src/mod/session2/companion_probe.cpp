@@ -27,7 +27,7 @@ namespace {
 // ---- 1. creation of a user-owned actor on the client
 // CreateOwnedActor(mgr, out, u8 type, u32 key, u32 owner [rsp+0x28], u8 index
 // [rsp+0x30], u64 [rsp+0x38], bool [rsp+0x40]) -> out; out+8 = actor, 0 = failed.
-constexpr uintptr_t kCreate = 0x9C7660;
+constexpr uintptr_t kCreate = 0x9C7EE0;
 constexpr uint8_t kCreateHead[] = {0x48, 0x89, 0x5C, 0x24, 0x08, 0x48, 0x89, 0x54, 0x24, 0x10, 0x55, 0x56,
                                    0x57, 0x41, 0x54, 0x41, 0x55, 0x41, 0x56, 0x41, 0x57, 0x48, 0x8D, 0x6C,
                                    0x24, 0xF9, 0x48, 0x81, 0xEC, 0xC0, 0x00, 0x00, 0x00, 0x41, 0x8B, 0xD9,
@@ -35,22 +35,22 @@ constexpr uint8_t kCreateHead[] = {0x48, 0x89, 0x5C, 0x24, 0x08, 0x48, 0x89, 0x5
 // lea rdx,[rbp-0x21] ; mov rcx,r13 ; call 0x8ADFE0 (FindChecked(mgr, &att, owner))
 // ; nop ; cmp byte [rbp-0x11],0 ; jne. At 0x8AF61B the attacher is filled:
 // [rbp-0x19] = the owner user, [rbp-0x11] = its "valid" byte.
-constexpr uintptr_t kFindSite = 0x9C76EE;
+constexpr uintptr_t kFindSite = 0x9C7F6E;
 constexpr uint8_t kFindSiteBytes[] = {0x48, 0x8D, 0x55, 0xDF, 0x49, 0x8B, 0xCD, 0xE8, 0x96, 0xE8, 0xFF, 0xFF, 0x90, 0x80, 0x7D, 0xEF, 0x00, 0x75, 0x45};
 constexpr uintptr_t kFindHook = kFindSite + 13;  // 0x8AF61B
 // ... mov rdx,[rbp-0x19] ; call 0x4634C0 (the child factory) ; mov rcx,r12 ;
 // mov [rbp-0x51],rcx. At 0x8AF696 RAX = the new actor (0 = the factory failed).
-constexpr uintptr_t kFactorySite = 0x9C7765;
-constexpr uint8_t kFactorySiteBytes[] = {0x44, 0x0F, 0xB6, 0x4D, 0x6F, 0x44, 0x8B, 0xC3, 0x48, 0x8B, 0x55, 0xE7, 0xE8, 0x5A, 0xD2, 0xB6, 0xFF, 0x49, 0x8B, 0xCC, 0x48, 0x89, 0x4D, 0xAF};
+constexpr uintptr_t kFactorySite = 0x9C7FE5;
+constexpr uint8_t kFactorySiteBytes[] = {0x44, 0x0F, 0xB6, 0x4D, 0x6F, 0x44, 0x8B, 0xC3, 0x48, 0x8B, 0x55, 0xE7, 0xE8, 0xEA, 0xCD, 0xB6, 0xFF, 0x49, 0x8B, 0xCC, 0x48, 0x89, 0x4D, 0xAF};
 constexpr uintptr_t kFactoryHook = kFactorySite + 17;  // 0x8AF696
 // lea r8,[rbp-0x51] ; lea rdx,[rbp+0x57] ; mov rcx,[r13+8] ; call 0x463320 (map
 // insert) ; mov edi,[rax] ; mov rax,[rbx]. At 0x8AF6D7 RAX = int* result.
-constexpr uintptr_t kMapSite = 0x9C77A6;
-constexpr uint8_t kMapSiteBytes[] = {0x4C, 0x8D, 0x45, 0xAF, 0x48, 0x8D, 0x55, 0x57, 0x49, 0x8B, 0x4D, 0x08, 0xE8, 0x69, 0xD0, 0xB6, 0xFF, 0x8B, 0x38, 0x48, 0x8B, 0x03};
+constexpr uintptr_t kMapSite = 0x9C8026;
+constexpr uint8_t kMapSiteBytes[] = {0x4C, 0x8D, 0x45, 0xAF, 0x48, 0x8D, 0x55, 0x57, 0x49, 0x8B, 0x4D, 0x08, 0xE8, 0xF9, 0xCB, 0xB6, 0xFF, 0x8B, 0x38, 0x48, 0x8B, 0x03};
 constexpr uintptr_t kMapHook = kMapSite + 17;  // 0x8AF6D7
 // ConfirmSlot(user, int* res, child, u8 slot) -> res: r12 = user, r13 = res,
 // r15 = child, esi = slot; rdi = [[user+0x68]+0x18] (its child container).
-constexpr uintptr_t kConfirm = 0x2297C20;
+constexpr uintptr_t kConfirm = 0x2299840;
 constexpr uint8_t kConfirmHead[] = {0x48, 0x89, 0x5C, 0x24, 0x18, 0x44, 0x88, 0x4C, 0x24, 0x20, 0x48, 0x89,
                                     0x54, 0x24, 0x10, 0x55, 0x56, 0x57, 0x41, 0x54, 0x41, 0x55, 0x41, 0x56,
                                     0x41, 0x57, 0x48, 0x8B, 0xEC, 0x48, 0x81, 0xEC, 0x80, 0x00, 0x00, 0x00,
@@ -59,27 +59,27 @@ constexpr uint8_t kConfirmHead[] = {0x48, 0x89, 0x5C, 0x24, 0x18, 0x44, 0x88, 0x
 // mov eax,[global] ; test eax,eax ; je ; mov [r13],eax ; mov rdi,[rbp-0x40].
 // 0x206B39E runs only with EAX != 0: the slot error (vf+0x140's, or the global
 // when the user is not in state 4 / +0x4A).
-constexpr uintptr_t kSlotErrSite = 0x2297CE4;
-constexpr uint8_t kSlotErrSiteBytes[] = {0x8B, 0x05, 0x06, 0xAC, 0xF1, 0x04, 0x85, 0xC0, 0x74, 0x55, 0x41, 0x89, 0x45, 0x00, 0x48, 0x8B, 0x7D, 0xC0};
+constexpr uintptr_t kSlotErrSite = 0x2299904;
+constexpr uint8_t kSlotErrSiteBytes[] = {0x8B, 0x05, 0x26, 0xF1, 0xF1, 0x04, 0x85, 0xC0, 0x74, 0x55, 0x41, 0x89, 0x45, 0x00, 0x48, 0x8B, 0x7D, 0xC0};
 constexpr uintptr_t kSlotErrHook = kSlotErrSite + 10;  // 0x206B39E
 // mov edx,4 ; mov r8d,0x10 ; mov rax,[rdi] ; mov rcx,rdi ; call [rax+0xC0] ;
 // test al,al ; je ; mov al,1. RDI = the main ([user+0xD0]), AL = acquired.
-constexpr uintptr_t kMainAcqSite = 0x2297DEE;
+constexpr uintptr_t kMainAcqSite = 0x2299A0E;
 constexpr uint8_t kMainAcqSiteBytes[] = {0xBA, 0x04, 0x00, 0x00, 0x00, 0x41, 0xB8, 0x10, 0x00, 0x00,
                                          0x00, 0x48, 0x8B, 0x07, 0x48, 0x8B, 0xCF, 0xFF, 0x90, 0xC0,
                                          0x00, 0x00, 0x00, 0x84, 0xC0, 0x74, 0x04, 0xB0, 0x01};
 constexpr uintptr_t kMainAcqHook = kMainAcqSite + 23;  // 0x206B4B5
 // mov rax,[rdi+0x68] ; mov r14,[rax+0x18] (the main's container), then
 // call ; nop ; mov rax,[r14+8] ; test byte [rax+0x5E],0x10.
-constexpr uintptr_t kMainCompSite = 0x2297E4D;
+constexpr uintptr_t kMainCompSite = 0x2299A6D;
 constexpr uint8_t kMainCompSiteBytes[] = {0x48, 0x8B, 0x47, 0x68, 0x4C, 0x8B, 0x70, 0x18};
-constexpr uintptr_t kMainStateSite = 0x2297E7F;
-constexpr uint8_t kMainStateSiteBytes[] = {0xE8, 0x1C, 0xCD, 0x14, 0xFE, 0x90, 0x49, 0x8B, 0x46, 0x08, 0xF6, 0x40, 0x5E, 0x10};
+constexpr uintptr_t kMainStateSite = 0x2299A9F;
+constexpr uint8_t kMainStateSiteBytes[] = {0xE8, 0x0C, 0xB5, 0x14, 0xFE, 0x90, 0x49, 0x8B, 0x46, 0x08, 0xF6, 0x40, 0x5E, 0x10};
 constexpr uintptr_t kMainStateHook = kMainStateSite + 6;  // 0x206B535
 // lea rcx,[rdi+0x18] ; mov rax,[rcx] ; call [rax+0x10] ; test r13d,r13d ; je.
 // R13D = the attach result: 0 attached (0x206B51B), else vf+0x148's or the
 // global (main not in state 0x10 / +0x4A).
-constexpr uintptr_t kAttachSite = 0x2297F20;
+constexpr uintptr_t kAttachSite = 0x2299B40;
 constexpr uint8_t kAttachSiteBytes[] = {0x48, 0x8D, 0x4F, 0x18, 0x48, 0x8B, 0x01, 0xFF, 0x50, 0x10,
                                         0x45, 0x85, 0xED, 0x0F, 0x84, 0xCE, 0x00, 0x00, 0x00};
 constexpr uintptr_t kAttachHook = kAttachSite + 10;  // 0x206B5DA
@@ -99,30 +99,30 @@ using cmp::kRestoreSiteBytes;
 // +0x20..+0x38, ...): its only caller 0x232D2A0 (rdi = CC) loads the layer at
 // 0x232D51E, copies it at 0x232D543 and calls at 0x232D5AD. 0x232D5FB reads
 // [r8+0x10] and 0x232D5FF dereferences it: the crash of C2-0.
-constexpr uintptr_t kCrash = 0x2590720;
+constexpr uintptr_t kCrash = 0x2592BB0;
 constexpr uint8_t kCrashHead[] = {0x4C, 0x89, 0x4C, 0x24, 0x20, 0x4C, 0x89, 0x44, 0x24, 0x18,
                                   0x88, 0x54, 0x24, 0x10, 0x48, 0x89, 0x4C, 0x24, 0x08};
-constexpr uintptr_t kCrashSite = 0x259074E;
+constexpr uintptr_t kCrashSite = 0x2592BDE;
 constexpr uint8_t kCrashSiteBytes[] = {0x49, 0x8B, 0xF1, 0x4D, 0x8B, 0xF8, 0x44, 0x0F, 0xB6, 0xEA, 0x48, 0x8B, 0xF9, 0x49, 0x8B, 0x40, 0x10, 0x0F, 0xB7, 0x80, 0xE8, 0x00, 0x00, 0x00};
-constexpr uintptr_t kCallerLayer = 0x2590647;
+constexpr uintptr_t kCallerLayer = 0x2592AD7;
 constexpr uint8_t kCallerLayerBytes[] = {0x48, 0x8B, 0x8C, 0xDF, 0x88, 0x00, 0x00, 0x00};
 constexpr uintptr_t kCallerCopy = 0x232D543;
 constexpr uint8_t kCallerCopyBytes[] = {0xC5, 0xF8, 0x10, 0x01, 0xC5, 0xF8, 0x11, 0x44, 0x24, 0x48, 0xC5,
                                         0xFB, 0x10, 0x49, 0x10, 0xC5, 0xFB, 0x11, 0x4C, 0x24, 0x58};
-constexpr uintptr_t kCallerCall = 0x25906FE;
+constexpr uintptr_t kCallerCall = 0x2592B8E;
 constexpr uint8_t kCallerCallBytes[] = {0x4C, 0x8D, 0x4C, 0x24, 0x48, 0x4C, 0x8D, 0x44, 0x24, 0x30, 0x0F, 0xB6, 0xD3, 0x48, 0x8B, 0xCF, 0xE8, 0x0D, 0x00, 0x00, 0x00};
 
 // ---- 3. ScopeSenderAck 2042 (companeros.md, Revisión 2)
-constexpr uintptr_t kScopeAck = 0xE240B0;
+constexpr uintptr_t kScopeAck = 0xE24AE0;
 constexpr uint8_t kScopeAckHead[] = {0x4C, 0x89, 0x44, 0x24, 0x18, 0x48, 0x89, 0x54, 0x24, 0x10, 0x55,
                                      0x53, 0x56, 0x57, 0x41, 0x54, 0x41, 0x55, 0x41, 0x56, 0x41, 0x57};
 
 // ---- 4. The crash after user 2's logout with its held child (diary, D-52, 12:01:50):
 // 0xAAFC00 (generic, ~180 callers) reads [this+0x210] at 0xAAFC1D (rdi = this)
 // and faulted on an unreadable this. Read-only: name the callers, then let it go.
-constexpr uintptr_t kBadThisFn = 0xAA47E0;
-constexpr uint8_t kBadThisFnHead[] = {0x48, 0x89, 0x5C, 0x24, 0x08, 0x48, 0x89, 0x74, 0x24, 0x10, 0x48, 0x89, 0x7C, 0x24, 0x18, 0x41, 0x56, 0x48, 0x83, 0xEC, 0x20, 0x48, 0x8B, 0xF9, 0xE8, 0x63, 0x1A, 0xFB, 0xFF};
-constexpr uintptr_t kBadThis = 0xAA47FD;  // mov rbx, [rdi+0x210]
+constexpr uintptr_t kBadThisFn = 0xAA5090;
+constexpr uint8_t kBadThisFnHead[] = {0x48, 0x89, 0x5C, 0x24, 0x08, 0x48, 0x89, 0x74, 0x24, 0x10, 0x48, 0x89, 0x7C, 0x24, 0x18, 0x41, 0x56, 0x48, 0x83, 0xEC, 0x20, 0x48, 0x8B, 0xF9, 0xE8, 0x33, 0x1A, 0xFB, 0xFF};
+constexpr uintptr_t kBadThis = 0xAA50AD;  // mov rbx, [rdi+0x210]
 constexpr uint8_t kBadThisBytes[] = {0x48, 0x8B, 0x9F, 0x10, 0x02, 0x00, 0x00};
 
 enum Point : int {
@@ -130,10 +130,10 @@ enum Point : int {
     kPtRestore, kPtRestoreExit, kPtCrash, kPtScopeAck, kPtBadThis, kPoints
 };
 constexpr const char* kPointName[kPoints] = {
-    "create 0x9C7660",     "find 0x9C76FB",       "factory 0x9C7776",  "map 0x9C77B7",
-    "confirm 0x2297C20",   "slot error 0x2297CEE", "main acq 0x2297E05", "main state 0x2297E85",
-    "attach 0x2297F2A",    "restore 0x9778DC",    "restore exit 0x977CFD", "crash 0x2590720",
-    "2042 0xE240B0",       "bad this 0xAA47E0"};
+    "create 0x9C7EE0",     "find 0x9C7F7B",       "factory 0x9C7FF6",  "map 0x9C8037",
+    "confirm 0x2299840",   "slot error 0x229990E", "main acq 0x2299A25", "main state 0x2299AA5",
+    "attach 0x2299B4A",    "restore 0x977FFC",    "restore exit 0x97841D", "crash 0x2592BB0",
+    "2042 0xE24AE0",       "bad this 0xAA5090"};
 // Lines per point (the mid hooks of creation only fill the CompCreate line).
 constexpr uint64_t kPointCap[kPoints] = {80, 0, 0, 0, 12, 0, 0, 0, 0, 40, 40, 24, 4, 4};
 constexpr uint64_t kMaxHostLines = 6;  // the host's own actors, for comparison (per point)
@@ -438,7 +438,7 @@ void* __fastcall create_detour(void* mgr, void* out, uint64_t type, uint64_t key
                  f->id, f->owner, comp_who_name(f->who), f->key, comp_key_class_name(f->key), unsigned{f->type},
                  unsigned{f->slot}, f->data, f->flag ? 1 : 0, find, factory, f->confirms, confirm, map, actor,
                  actor ? std::string("CREATED")
-                       : std::format("REJECTED (the game error \"Actor ... failed\" from exe+0x9D732C should name "
+                       : std::format("REJECTED (the game error \"Actor ... failed\" from exe+0x9D7BAC should name "
                                      "0x{:08X})",
                                      f->key));
         } catch (...) {
@@ -480,7 +480,7 @@ int* __fastcall confirm_detour(void* user, int* res, void* child, uint64_t slot)
                 const CompWho w = who_of(ukey);
                 if (w == CompWho::User2) g_pt[kPtConfirm].user2.fetch_add(1);
                 if (w != CompWho::Host) {
-                    note(kPtConfirm, false, "CompConfirm (outside 0x9C7660) user key 0x{:08X} ({}) child {} | {}", ukey,
+                    note(kPtConfirm, false, "CompConfirm (outside 0x9C7EE0) user key 0x{:08X} ({}) child {} | {}", ukey,
                          comp_who_name(w), actor_text(c->child), confirm_text(*c));
                 }
             }
@@ -633,7 +633,7 @@ void on_crash(safetyhook::Context& ctx) noexcept {
         const uintptr_t ret = peekp(ctx.rsp);
         const uintptr_t r8_0 = peekp(ctx.r8), r8_8 = peekp(ctx.r8 + 8);
         note(kPtCrash, false,
-             "CompCrash 0x2590720 about to read [[r8+0x10]+0xE4] with [r8+0x10] = 0 (exe+0x259075F): CC 0x{:X} "
+             "CompCrash 0x2592BB0 about to read [[r8+0x10]+0xE4] with [r8+0x10] = 0 (exe+0x2592BEF): CC 0x{:X} "
              "layer {} (copy +0 {} +8 {}) caller {} | actor {} ({}) {} | {}",
              ctx.rcx, static_cast<unsigned>(ctx.rdx & 0xFF), r8_0 ? 1 : 0, r8_8 ? 1 : 0, rva(ret),
              ok ? actor_text(c.actor) : std::string("unreadable"), comp_who_name(i.who), known_text(c.key),
@@ -671,7 +671,7 @@ void on_bad_this(safetyhook::Context& ctx) noexcept {
             }
         }
         note(kPtBadThis, false,
-             "CompBadThis 0xAA47E0 is about to read [this+0x210] with an unreadable this 0x{:X} (exe+0xAA47FD) | "
+             "CompBadThis 0xAA5090 is about to read [this+0x210] with an unreadable this 0x{:X} (exe+0xAA50AD) | "
              "caller {} | stack values in the image:{}",
              ctx.rdi, rva(ret), chain.empty() ? std::string(" none") : chain);
     } catch (...) {
@@ -681,7 +681,7 @@ void on_bad_this(safetyhook::Context& ctx) noexcept {
 void on_scope_ack(safetyhook::Context& ctx) noexcept {
     try {
         g_pt[kPtScopeAck].calls.fetch_add(1);
-        note(kPtScopeAck, false, "ScopeSenderAck 2042 entry 0xE240B0 (rcx 0x{:X}) caller {}", ctx.rcx,
+        note(kPtScopeAck, false, "ScopeSenderAck 2042 entry 0xE24AE0 (rcx 0x{:X}) caller {}", ctx.rcx,
              rva(peekp(ctx.rsp)));
     } catch (...) {
     }
@@ -840,7 +840,7 @@ bool companion_probe_install() {
         return false;
     }
     g_active.store(true);
-    log::info("Session2 Comp probe ON (read only: owned-actor creation, restore of remote actors, the 0x2590720 "
+    log::info("Session2 Comp probe ON (read only: owned-actor creation, restore of remote actors, the 0x2592BB0 "
               "null, 2042 entries): on{} off{} | host user key 0x{:08X} user 2 0x{:08X}",
               on, off.empty() ? std::string(" none") : off, g_host_key.load(), g_user2_key.load());
     return true;
@@ -849,7 +849,7 @@ bool companion_probe_install() {
 bool companion_probe_active() { return g_active.load(); }
 
 std::string companion_probe_describe() {
-    std::string s = std::format("Comp probe: owned creations {} (created {}, rejected {}) | 0x2590720 nulls {} |",
+    std::string s = std::format("Comp probe: owned creations {} (created {}, rejected {}) | 0x2592BB0 nulls {} |",
                                 g_creates.load(), g_created.load(), g_rejected.load(), g_crash_nulls.load());
     for (int p = 0; p < kPoints; ++p) {
         const PointStats& t = g_pt[p];

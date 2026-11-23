@@ -43,37 +43,37 @@ using gsr::Point;
 // their definition and the point.
 
 //   0xC0612A cmp bl,4 ; je 0xC06179 (RAX = the manager vf48 returned; RAX reaches 0xC06185 mov rcx,rax)
-constexpr uintptr_t kP2661 = 0xD6CBFE;
-constexpr uint8_t kP2661Bytes[] = {0x41, 0x80, 0xFE, 0x04, 0x74, 0x47, 0x48, 0x8D, 0x05, 0x85, 0x85, 0xC6, 0x04, 0x48, 0x89, 0x44};
+constexpr uintptr_t kP2661 = 0xD6D64E;
+constexpr uint8_t kP2661Bytes[] = {0x41, 0x80, 0xFE, 0x04, 0x74, 0x47, 0x48, 0x8D, 0x05, 0xC5, 0xCA, 0xC6, 0x04, 0x48, 0x89, 0x44};
 constexpr uint8_t kFrame2661Bytes[] = {0x48, 0x8D, 0xAC, 0x24, 0x50, 0xFF, 0xFF, 0xFF};  // 0xC05BC0
 constexpr uint8_t kKind2661Bytes[] = {0x44, 0x0F, 0xB6, 0xB5, 0x08, 0x01, 0x00};          // 0xC060C6
 constexpr uint8_t kActor2661Bytes[] = {0x4D, 0x89, 0x34, 0x24};                            // 0xC060C2 mov [r12],rbx
 constexpr uint8_t kVf48_2661Bytes[] = {0x48, 0x8B, 0x4D, 0xD8, 0x48, 0x8B, 0x01, 0xFF, 0x50, 0x48};  // 0xC06120
 constexpr uint8_t kWrap2661Bytes[] = {0x4D, 0x8B, 0xE0};  // 0xC05BCF mov r12,r8 (the wrapper)
 //   0xC07749 lea rcx,[rbp-0x80] ; mov [rsp+0x30],rcx (RAX = the manager; RAX reaches 0xC0776E mov rcx,rax)
-constexpr uintptr_t kP2981 = 0xD6E724;
+constexpr uintptr_t kP2981 = 0xD6F174;
 constexpr uint8_t kP2981Bytes[] = {0x48, 0x8D, 0x4D, 0x80, 0x48, 0x89, 0x4C, 0x24, 0x30, 0x48, 0x8D, 0x4D, 0xD0, 0x48, 0x89, 0x4C};
 constexpr uint8_t kWrap2981Bytes[] = {0x4D, 0x8B, 0xF0};                                   // 0xC073BC mov r15,r8
 constexpr uint8_t kActor2981Bytes[] = {0x49, 0x89, 0x3E};                                  // 0xC076E6 mov [r15],rdi
 constexpr uint8_t kVf48_2981Bytes[] = {0x48, 0x8B, 0x4D, 0xF0, 0x48, 0x8B, 0x01, 0xFF, 0x50, 0x48};  // 0xC0773F
 //   0xC0659E movzx ecx,byte [rbp+0x70] ; mov [rsp+0x20],cl (RAX = the manager; RAX reaches 0xC065B2 mov rcx,rax)
-constexpr uintptr_t kP2810 = 0xD6D0F5;
+constexpr uintptr_t kP2810 = 0xD6DB45;
 constexpr uint8_t kP2810Bytes[] = {0x0F, 0xB6, 0x8D, 0x80, 0x00, 0x00, 0x00, 0x88, 0x4C, 0x24, 0x20, 0x4C, 0x8D, 0x4D, 0xB0, 0x4C};
 constexpr uint8_t kVf48_2810Bytes[] = {0x48, 0x8B, 0x4D, 0xC8, 0x48, 0x8B, 0x01, 0xFF, 0x50, 0x48};  // 0xC06594
 constexpr uint8_t kFrame2810Bytes[] = {0x48, 0x8D, 0x6C, 0x24, 0xD0};                     // 0xC06340 lea rbp,[rsp-0x20]
 // 0xC06505 mov r8d,[rbp+0x78] ; lea rdx,[rbp-0x10] ; mov rcx,rsi ; call 0x8A67E0 ; nop ;
 //          cmp byte [rbp],0 ; je 0xC06545 ; mov rsi,[rbp-8]   (the actor found: [rbp-8], found: [rbp])
-constexpr uint8_t kFind2810Bytes[] = {0x44, 0x8B, 0x85, 0x88, 0x00, 0x00, 0x00, 0x48, 0x8D, 0x55, 0x00, 0x48, 0x8B, 0xCE, 0xE8, 0xD4, 0x15, 0xC5, 0xFF, 0x90, 0x80, 0x7D, 0x10, 0x00, 0x74, 0x29, 0x48};
+constexpr uint8_t kFind2810Bytes[] = {0x44, 0x8B, 0x85, 0x88, 0x00, 0x00, 0x00, 0x48, 0x8D, 0x55, 0x00, 0x48, 0x8B, 0xCE, 0xE8, 0x04, 0x14, 0xC5, 0xFF, 0x90, 0x80, 0x7D, 0x10, 0x00, 0x74, 0x29, 0x48};
 constexpr uint8_t kSeq2810Bytes[] = {0x4C, 0x8B, 0x45, 0xB8};  // 0xC065AA mov r8,[rbp-0x58] (the sequencer's u64)
 //   0xB87A67 mov byte [rax+0x231],2 (RAX = M from 0xB87A5D..0xB87A64; R14 = the raw packet from 0xB878B8;
 //            the handler's own lookup 0xB879DD 0x8A67E0(rsi, &[rbp-0x18], key): found = byte [rbp-8], actor =
 //            [rbp-0x10], neither written again before 0xB87A67)
-constexpr uintptr_t kP2322 = 0xCD563B;
-constexpr uint8_t kP2322Bytes[] = {0xC6, 0x80, 0x61, 0x02, 0x00, 0x00, 0x02, 0x48, 0x8D, 0x05, 0x1F, 0x05, 0x07, 0x05};
+constexpr uintptr_t kP2322 = 0xCD608B;
+constexpr uint8_t kP2322Bytes[] = {0xC6, 0x80, 0x61, 0x02, 0x00, 0x00, 0x02, 0x48, 0x8D, 0x05, 0x57, 0x4D, 0x07, 0x05};
 constexpr uint8_t kVf48_2322Bytes[] = {0x48, 0x8B, 0x4D, 0xB8, 0x48, 0x8B, 0x01, 0xFF, 0x50, 0x48};  // 0xB87A5D
 constexpr uint8_t kRaw2322Bytes[] = {0x49, 0x8B, 0xF8, 0x48, 0x8B, 0xDA, 0x48, 0x8B, 0xF1, 0x45, 0x33, 0xFF, 0x4D, 0x8B, 0x70, 0x18, 0x41, 0x0F, 0xB7, 0x4E, 0x03};  // 0xB878AC
 // 0xB879D6 lea rdx,[rbp-0x18] ; mov rcx,rsi ; call 0x8A67E0 ; nop ; cmp byte [rbp-8],0 ; je ; mov rsi,[rbp-0x10]
-constexpr uint8_t kFind2322Bytes[] = {0x48, 0x8D, 0x55, 0xF8, 0x48, 0x8B, 0xCE, 0xE8, 0x8A, 0x90, 0xCE, 0xFF, 0x90, 0x80, 0x7D, 0x08, 0x00, 0x74, 0x29, 0x48, 0x8B, 0x75, 0x00};
+constexpr uint8_t kFind2322Bytes[] = {0x48, 0x8D, 0x55, 0xF8, 0x48, 0x8B, 0xCE, 0xE8, 0xBA, 0x8E, 0xCE, 0xFF, 0x90, 0x80, 0x7D, 0x08, 0x00, 0x74, 0x29, 0x48, 0x8B, 0x75, 0x00};
 // guest_seq_play_live (p8-impl-escenas-play.md §3), the 2524 StageOnBranchEventAck handler 0xC07D00:
 //   0xC07D25 mov r15,r8 ; mov rdi,rdx ; mov rbx,rcx ; xor edx,edx ; mov r14,[r8+0x18]   (R15 = the wrapper, not
 //            written again before the point; [R15+0x18] = the raw packet: u32 actor @5, u64 sequencer @9)
@@ -83,10 +83,10 @@ constexpr uint8_t kFind2322Bytes[] = {0x48, 0x8D, 0x55, 0xF8, 0x48, 0x8B, 0xCE, 
 //   0xC08178 lea rcx,[rbp-8] ; mov [rsp+0x28],rcx   THE POINT (9 bytes, two whole instructions, no branch into
 //            0xC0817C, no RIP-relative operand)
 //   0xC08188 ... 0xC08198 mov rcx,rax ; call 0xA9E480(M, field, seq, ...)   (RAX not written in between)
-constexpr uintptr_t kP2524 = 0xD6F2A0;
+constexpr uintptr_t kP2524 = 0xD6FCF0;
 constexpr uint8_t kP2524Bytes[] = {0x48, 0x8D, 0x4D, 0x08, 0x48, 0x89, 0x4C, 0x24, 0x28, 0x0F, 0xB6, 0x8D, 0xB8, 0x10, 0x00, 0x00};
 constexpr uint8_t kWrap2524Bytes[] = {0x4D, 0x8B, 0xF8, 0x48, 0x8B, 0xFA, 0x48, 0x8B, 0xD9, 0x45, 0x33, 0xED, 0x4D, 0x8B, 0x70};  // 0xC07D25
-constexpr uint8_t kFind2524Bytes[] = {0x44, 0x8B, 0x45, 0xB0, 0x48, 0x8D, 0x55, 0x18, 0x49, 0x8B, 0xCC, 0xE8, 0x37, 0xF4, 0xC4, 0xFF, 0x90, 0x80, 0x7D, 0x28, 0x00, 0x74, 0x29, 0x48, 0x8B, 0x5D, 0x20};  // 0xC080D1
+constexpr uint8_t kFind2524Bytes[] = {0x44, 0x8B, 0x45, 0xB0, 0x48, 0x8D, 0x55, 0x18, 0x49, 0x8B, 0xCC, 0xE8, 0x67, 0xF2, 0xC4, 0xFF, 0x90, 0x80, 0x7D, 0x28, 0x00, 0x74, 0x29, 0x48, 0x8B, 0x5D, 0x20};  // 0xC080D1
 constexpr uint8_t kActor2524Bytes[] = {0x49, 0x89, 0x1F};  // 0xC0810E mov [r15],rbx
 constexpr uint8_t kVf48_2524Bytes[] = {0x48, 0x8B, 0x4D, 0xC8, 0x48, 0x8B, 0x01, 0xFF, 0x50, 0x48};  // 0xC0816E
 constexpr uint8_t kUse2524Bytes[] = {0x88, 0x4C, 0x24, 0x20, 0x44, 0x8B, 0x4D, 0xB4, 0x4C, 0x8B, 0x45, 0xB8, 0x48, 0x8B, 0x55, 0xC8, 0x48, 0x8B, 0xC8, 0xE8, 0xB8, 0x28, 0xE7, 0xFF};  // 0xC08188
@@ -100,12 +100,12 @@ constexpr uint8_t kUse2524Bytes[] = {0x88, 0x4C, 0x24, 0x20, 0x44, 0x8B, 0x4D, 0
 //        0xC0B55E movzx ebx,byte [rbp+0x10F0] (kind @0: BL) ; 0xC0B5B7 mov rcx,[rbp-0x28] ; mov rax,[rcx] ; call [rax+0x48]
 //        0xC0B5C1 lea rcx,[rbp+8] ; mov [rsp+0x58],rcx   THE POINT (9 bytes)
 //        0xC0B612 mov rdx,[rbp-0x28] ; mov rcx,rax ; call 0xA9FEE0(G, field, kind, ...)   resource @9 = [rbp-0x48]
-constexpr uintptr_t kS2335 = 0xD73401;  // 3663: lea rcx,[rbp-0x28] ; mov [rsp+0x60],rcx
+constexpr uintptr_t kS2335 = 0xD73E51;  // 3663: lea rcx,[rbp-0x28] ; mov [rsp+0x60],rcx
 constexpr uint8_t kS2335Bytes[] = {0x48, 0x8D, 0x4D, 0xD8, 0x48, 0x89, 0x4C, 0x24, 0x60, 0x48, 0x8D, 0x4D, 0x30, 0x48, 0x89, 0x4C};
 constexpr uint8_t kS2335Frame[] = {0x48, 0x8D, 0xAC, 0x24, 0x50, 0xEF, 0xFF, 0xFF};           // 0xC0AFD0 lea rbp,[rsp-0x10A0]
 constexpr uint8_t kS2335Wrap[] = {0x4D, 0x8B, 0xF8};                                          // 0xC0AFE5
 constexpr uint8_t kS2335Key[] = {0x48, 0x8B, 0x45, 0xB8, 0x48, 0x89, 0x45, 0xD0};               // 0xC0B242
-constexpr uint8_t kS2335Find[] = {0x44, 0x8B, 0x45, 0xC0, 0x48, 0x8D, 0x55, 0x70, 0x49, 0x8B, 0xCC, 0xE8, 0xE9, 0xB2, 0xC4, 0xFF, 0x90, 0x80, 0xBD, 0x80, 0x00, 0x00, 0x00, 0x00, 0x74, 0x29, 0x48};  // 0xC0B50A
+constexpr uint8_t kS2335Find[] = {0x44, 0x8B, 0x45, 0xC0, 0x48, 0x8D, 0x55, 0x70, 0x49, 0x8B, 0xCC, 0xE8, 0x19, 0xB1, 0xC4, 0xFF, 0x90, 0x80, 0xBD, 0x80, 0x00, 0x00, 0x00, 0x00, 0x74, 0x29, 0x48};  // 0xC0B50A
 constexpr uint8_t kS2335Kind[] = {0x0F, 0xB6, 0x9D, 0x00, 0x11, 0x00, 0x00};                    // 0xC0B55E
 constexpr uint8_t kS2335Vf48[] = {0x48, 0x8B, 0x4D, 0x00, 0x48, 0x8B, 0x01, 0xFF, 0x50, 0x48};  // 0xC0B5B7
 constexpr uint8_t kS2335Use[] = {0x48, 0x8B, 0x55, 0x00, 0x48, 0x8B, 0xC8, 0xE8, 0xA9, 0x01, 0xE7, 0xFF};  // 0xC0B612
@@ -115,11 +115,11 @@ constexpr uint8_t kS2335Use[] = {0x48, 0x8B, 0x55, 0x00, 0x48, 0x8B, 0xC8, 0xE8,
 //        0xC0BA44 mov rcx,[rbp-0x58] ; mov rax,[rcx] ; call [rax+0x48]
 //        0xC0BA4E lea rdx,[rbp+0x78] ; mov rcx,[rax+0x148]   THE POINT (11 bytes: the relocated second instruction
 //                 reads RAX after the callback, so RAX := X also makes it X's container) ; 0xC0BA59 call 0x43C750
-constexpr uintptr_t kS2126 = 0xD73BBB;
-constexpr uint8_t kS2126Bytes[] = {0x48, 0x8D, 0x95, 0x88, 0x00, 0x00, 0x00, 0x48, 0x8B, 0x88, 0x78, 0x01, 0x00, 0x00, 0xE8, 0xC2};
+constexpr uintptr_t kS2126 = 0xD7460B;
+constexpr uint8_t kS2126Bytes[] = {0x48, 0x8D, 0x95, 0x88, 0x00, 0x00, 0x00, 0x48, 0x8B, 0x88, 0x78, 0x01, 0x00, 0x00, 0xE8, 0x82};
 constexpr uint8_t kS2126Frame[] = {0x48, 0x8D, 0x6C, 0x24, 0xD0};                             // 0xC0B850 lea rbp,[rsp-0x20]
 constexpr uint8_t kS2126Key[] = {0x48, 0x8B, 0x85, 0x88, 0x00, 0x00, 0x00, 0x48};               // 0xC0B98E
-constexpr uint8_t kS2126Find[] = {0x44, 0x8B, 0x85, 0x80, 0x00, 0x00, 0x00, 0x48, 0x8D, 0x55, 0xF8, 0x48, 0x8B, 0xCE, 0xE8, 0x0E, 0xAB, 0xC4, 0xFF, 0x90, 0x80, 0x7D, 0x08, 0x00, 0x74, 0x29, 0x48};  // 0xC0B9B5
+constexpr uint8_t kS2126Find[] = {0x44, 0x8B, 0x85, 0x80, 0x00, 0x00, 0x00, 0x48, 0x8D, 0x55, 0xF8, 0x48, 0x8B, 0xCE, 0xE8, 0x3E, 0xA9, 0xC4, 0xFF, 0x90, 0x80, 0x7D, 0x08, 0x00, 0x74, 0x29, 0x48};  // 0xC0B9B5
 constexpr uint8_t kS2126Vf48[] = {0x48, 0x8B, 0x4D, 0xB8, 0x48, 0x8B, 0x01, 0xFF, 0x50, 0x48};  // 0xC0BA44
 //   2958 0xC0C3F0 / 2909 0xC0C920 (the same body; offsets +0x530):
 //        0xC0C5BA / 0xC0CAEA mov rax,[rbp-0x60] ; mov [rbp-0x60],rax (u64 key @9; u32 resource @5 = [rbp-0x58])
@@ -128,12 +128,12 @@ constexpr uint8_t kS2126Vf48[] = {0x48, 0x8B, 0x4D, 0xB8, 0x48, 0x8B, 0x01, 0xFF
 //        0xC0C757 / 0xC0CC87 mov rcx,[rbp-0x48] ; mov rax,[rcx] ; call [rax+0x48]
 //        0xC0C761 / 0xC0CC91 lea r9,[rbp-8] ; lea r8,[rbp-0x60]   THE POINT (8 bytes)
 //        0xC0C769 / 0xC0CC99 lea rdx,[rbp-0x58] ; mov rcx,rax ; call 0xAA0F00 / 0xAA1850 (.xtls 0x9FA5090)
-constexpr uintptr_t kS2958 = 0xD74AF7, kS2909 = 0xD75247;
+constexpr uintptr_t kS2958 = 0xD75547, kS2909 = 0xD75C97;
 constexpr uint8_t kSChangeBytes[] = {0x4C, 0x8D, 0x4D, 0x08, 0x4C, 0x8D, 0x45, 0xB0, 0x48, 0x8D, 0x55, 0xB8, 0x48, 0x8B, 0xC8, 0xE8};
 constexpr uint8_t kSChangeFrame[] = {0x48, 0x8D, 0xAC, 0x24, 0xA0, 0xEF, 0xFF, 0xFF};  // 0xC0C400 / 0xC0C930 lea rbp,[rsp-0x1050]
 constexpr uint8_t kSChangeKey[] = {0x48, 0x8B, 0x45, 0xB0, 0x48, 0x89, 0x45, 0xB0};
-constexpr uint8_t kS2958Find[] = {0x44, 0x8B, 0x85, 0xB8, 0x10, 0x00, 0x00, 0x48, 0x8D, 0x55, 0x18, 0x49, 0x8B, 0xCC, 0xE8, 0xE0, 0x9B, 0xC4, 0xFF, 0x90, 0x80, 0x7D, 0x28, 0x00, 0x74, 0x29, 0x48, 0x8B, 0x5D, 0x20};
-constexpr uint8_t kS2909Find[] = {0x44, 0x8B, 0x85, 0xB8, 0x10, 0x00, 0x00, 0x48, 0x8D, 0x55, 0x18, 0x49, 0x8B, 0xCC, 0xE8, 0x90, 0x94, 0xC4, 0xFF, 0x90, 0x80, 0x7D, 0x28, 0x00, 0x74, 0x29, 0x48, 0x8B, 0x5D, 0x20};
+constexpr uint8_t kS2958Find[] = {0x44, 0x8B, 0x85, 0xB8, 0x10, 0x00, 0x00, 0x48, 0x8D, 0x55, 0x18, 0x49, 0x8B, 0xCC, 0xE8, 0x10, 0x9A, 0xC4, 0xFF, 0x90, 0x80, 0x7D, 0x28, 0x00, 0x74, 0x29, 0x48, 0x8B, 0x5D, 0x20};
+constexpr uint8_t kS2909Find[] = {0x44, 0x8B, 0x85, 0xB8, 0x10, 0x00, 0x00, 0x48, 0x8D, 0x55, 0x18, 0x49, 0x8B, 0xCC, 0xE8, 0xC0, 0x92, 0xC4, 0xFF, 0x90, 0x80, 0x7D, 0x28, 0x00, 0x74, 0x29, 0x48, 0x8B, 0x5D, 0x20};
 constexpr uint8_t kSChangeVf48[] = {0x48, 0x8B, 0x4D, 0xC8, 0x48, 0x8B, 0x01, 0xFF, 0x50, 0x48};
 constexpr uint8_t kS2958Use[] = {0x48, 0x8D, 0x55, 0xB8, 0x48, 0x8B, 0xC8, 0xE8, 0x75, 0xFB, 0xE6, 0xFF};  // 0xC0C769
 constexpr uint8_t kS2909Use[] = {0x48, 0x8D, 0x55, 0xB8, 0x48, 0x8B, 0xC8, 0xE8, 0x75, 0xFD, 0xE6, 0xFF};  // 0xC0CC99
@@ -148,8 +148,8 @@ constexpr uint32_t kComp_Stage = 0x318, kComp_Wait = 0x3D9;
 // 2524 [rbp-0x48]; nothing writes it between that call and the point.
 constexpr uint32_t kFieldSlot[gsr::kPoints] = {0x28, 0x10, 0x38, 0x48, 0x38};  // 3663 (kVf48_* sites)
 
-constexpr uintptr_t kVtStageManager = 0x59D57E8;  // pa::ClientSequencerStageManager (RTTI)
-constexpr uintptr_t kVtSeqPlayComp = 0x59CB770;   // pa::ClientSequencerPlayDataActorComponent (RTTI)
+constexpr uintptr_t kVtStageManager = 0x59DA8A8;  // pa::ClientSequencerStageManager (RTTI)
+constexpr uintptr_t kVtSeqPlayComp = 0x59D0850;   // pa::ClientSequencerPlayDataActorComponent (RTTI)
 
 // Structure offsets (guest_stage_diag.cpp; p8-s1-escenas-npc.md §2.1).
 constexpr uint32_t kActor_Key = 0x60, kActor_Comps = 0x68, kComps_Seq = 0xA8, kSeqComp_Mgr = 0x18, kComps_Play = 0xB0;
@@ -227,13 +227,13 @@ std::atomic<uint64_t> g_branch2{0};
 //            0xA9E55C..0xA9E565; rdi := 0 takes the native not-found path 0xA9E566: lock released, then
 //            0xA9ECBC: the inline vector [rbp+0x870] (not grown yet) and the reference [rsp+0x58] released)
 //   0xA9E62E mov r13,[rsi+0x58] ; ... mov rax,[r13+0x38] ; mov rdx,[rax+8] ; mov rax,[rdx+r12*8]  (what it guards)
-constexpr uintptr_t kP2524Lookup = 0xBE1C5B;
+constexpr uintptr_t kP2524Lookup = 0xBE26AB;
 constexpr uint8_t kLookupBytes[] = {0x41, 0xBF, 0xFE, 0x01, 0x00, 0x00, 0x48, 0x85, 0xFF, 0x75, 0x59};
 constexpr uint8_t kLookupHomeBytes[] = {0x48, 0x89, 0x4C, 0x24, 0x08};                         // 0xA9E48F
 constexpr uint8_t kLookupFrameBytes[] = {0x55, 0x56, 0x57, 0x41, 0x54, 0x41, 0x55, 0x41, 0x56, 0x41,
                                          0x57, 0x48, 0x8D, 0xAC, 0x24, 0xE0, 0xE7, 0xFF, 0xFF};  // 0xA9E494
 constexpr uint8_t kLookupBranchBytes[] = {0x45, 0x8B, 0xE1, 0x48, 0x8B, 0xF9};                 // 0xA9E4B4
-constexpr uint8_t kLookupCallBytes[] = {0x48, 0x8B, 0xCF, 0xE8, 0x3C, 0x3B, 0x5E, 0x01};        // 0xA9E50C
+constexpr uint8_t kLookupCallBytes[] = {0x48, 0x8B, 0xCF, 0xE8, 0x0C, 0x4D, 0x5E, 0x01};        // 0xA9E50C
 constexpr uint8_t kLookupInstBytes[] = {0x49, 0x8B, 0x1F, 0x48, 0x89, 0x5C, 0x24,
                                         0x58, 0x4D, 0x89, 0x2F, 0x48, 0x8B, 0xFB};               // 0xA9E534
 constexpr uint8_t kLookupUseBytes[] = {0x4C, 0x8B, 0x7E, 0x60, 0x4C, 0x89, 0x7D, 0x98, 0x49, 0x8B, 0x47, 0x38, 0x48, 0x8B, 0x50, 0x08, 0x4E, 0x8B, 0x2C, 0xE2, 0x4C};  // 0xA9E62E
@@ -506,14 +506,14 @@ std::string line_of(const p::Event& e) {
                                                "scene data NOT LOADED -> taken the game's not-found path",
                                                "branch NOT USABLE -> taken the game's not-found path"};
         const auto r = static_cast<size_t>(v[0]);
-        return std::format("GuestSeqRoute [2524 scene check 0xBE1C5B] {} T{} | X 0x{:X}: instance 0x{:X}, stage +0x58 "
+        return std::format("GuestSeqRoute [2524 scene check 0xBE26AB] {} T{} | X 0x{:X}: instance 0x{:X}, stage +0x58 "
                            "0x{:X}, data +0x38 0x{:X}, branches +8 0x{:X} (count {}, capacity {}), branch {} -> entry "
                            "0x{:X} | {}",
                            when, e.tid, v[1], v[2], v[3], v[4], v[5], static_cast<uint32_t>(v[6]),
                            static_cast<uint32_t>(v[6] >> 32), v[7], v[8], r < 5 ? kWhy[r] : "?");
     }
     if (e.kind == kETear) {
-        return std::format("GuestSchedRoute [stage teardown 0x50BB06] {} T{} | stage 0x{:X} (scene 0x{:X}) of X 0x{:X} "
+        return std::format("GuestSchedRoute [stage teardown 0x50BF16] {} T{} | stage 0x{:X} (scene 0x{:X}) of X 0x{:X} "
                            "(character 0x{:08X}, now its X is 0x{:X}) | X GONE: its vf12 call sent to the mod's "
                            "do-nothing manager (the stage outlived X through an NPC's comp+0x318)",
                            when, e.tid, v[1], v[4], v[2], static_cast<uint32_t>(v[3]), v[5]);
@@ -561,7 +561,7 @@ std::string line_of(const p::Event& e) {
         const auto cls = static_cast<gsr::World2524>(v[6] & 0xFF);
         const auto peek = static_cast<uint32_t>((v[6] >> 8) & 0xFF);
         world = std::format(" | scene class: {} | binds {} (NPC {}, in this client {}, type 3 {}) | name '{}' (via {}) | "
-                            "inner check on X (read-only peek, as 0xBE1C5B would judge it): {}",
+                            "inner check on X (read-only peek, as 0xBE26AB would judge it): {}",
                             gsr::world_2524_name(cls), (v[6] >> 48) & 0x7F, (v[6] >> 24) & 0xFF, (v[6] >> 32) & 0xFF,
                             (v[6] >> 40) & 0xFF, name,
                             gsr::name_via_name(static_cast<gsr::NameVia>((v[6] >> 16) & 0xFF)),
@@ -607,14 +607,14 @@ std::string text_2524(gsr::Mode mode) {
     if (m == gsr::Mode2524::Probe || mode != gsr::Mode::On || !ticks) {
         return std::format("guest_seq_route_2524=PROBE: every 2524 classified (WORLD = binds a type-3 NPC present here, "
                            "name read, not cd_seq_funcnpc_*, not denied) and judged, the WORLD ones with a read-only "
-                           "peek of the inner check 0xBE1C5B on X; NOTHING routed{} | allow list:{}",
+                           "peek of the inner check 0xBE26AB on X; NOTHING routed{} | allow list:{}",
                            m != gsr::Mode2524::On  ? ""
                            : mode != gsr::Mode::On ? " (guest_seq_route is not 1)"
                                                    : " (guest_seq_play is not 1: nothing ticks X)",
                            allow_text());
     }
     return std::format("guest_seq_route_2524=1: ONLY the WORLD scenes' 2524 routed into X (and only an X guest_seq_play "
-                       "ticks, X and this client at 3, the inner check 0xBE1C5B under the game's lock), independent of "
+                       "ticks, X and this client at 3, the inner check 0xBE26AB under the game's lock), independent of "
                        "guest_seq_play_live | allow list:{}",
                        allow_text());
 }
@@ -765,7 +765,7 @@ std::string summary_2524() {
     return std::format(
         "GuestSeqRoute [2524 world summary] guest_seq_route_2524={} | classes:{} | WORLD: ROUTED {}, WOULD route {} | "
         "WORLD pre_2524 (X / this client at 3, X not loading): ok {}, not playing {} | WORLD inner check on X (read-only "
-        "peek, what 0xBE1C5B would say): ok {}, no instance {}, NOT LOADED {}, bad branch {} | the inner hook (routed "
+        "peek, what 0xBE26AB would say): ok {}, no instance {}, NOT LOADED {}, bad branch {} | the inner hook (routed "
         "calls, under the lock): ok {}, NOT LOADED {}, bad branch {} | name via inst {}, via [inst+0x58] {}, none {} | "
         "allow list:{} | WORLD resources seen (for guest_seq_route_2524_allow): {} | scenes ({}):{}",
         m == gsr::Mode2524::On ? "1" : m == gsr::Mode2524::Probe ? "probe" : "0", cls.empty() ? " none" : cls,
@@ -869,7 +869,7 @@ void sched_census_tick() {
     if (last.x && last.stages && last.chr == t.x_char && t.xg != last.x && g_lines.fetch_add(1) < kMaxLines) {
         log::warn("GuestSchedRoute [X gone] character 0x{:08X} {} while its X 0x{:X} held {} stage(s) ({} node(s) with "
                   "an NPC) | NPCs still holding such a stage (comp+0x318) keep it alive past X: their last release runs "
-                  "0x50B8C0 again, whose [stage+0x28]->vf12 the teardown guard (0x50BB06, {}) sends to the mod's "
+                  "0x50BCD0 again, whose [stage+0x28]->vf12 the teardown guard (0x50BF16, {}) sends to the mod's "
                   "do-nothing manager | watched NPCs bound to a gone X now: {}",
                   last.chr, xa ? std::format("got another X 0x{:X}", t.xg) : std::string("left this client's actor table"),
                   last.x, last.stages, last.bound_nodes, g_teardown_on.load() ? "in" : "NOT installed", t.orphan);
@@ -991,19 +991,19 @@ struct SchedDef {
 std::vector<SchedDef> sched_points() {
     return {
         {gsr::SchedPoint::P2335, kS2335, 9, kS2335Bytes,
-         {{0xD72C70, kS2335Frame}, {0xD72C85, kS2335Wrap}, {0xD72F71, kS2335Key}, {0xD73347, kS2335Find},
-          {0xD7339E, kS2335Kind}, {0xD733F7, kS2335Vf48}, {0xD7345B, kS2335Use}},
+         {{0xD736C0, kS2335Frame}, {0xD736D5, kS2335Wrap}, {0xD739C1, kS2335Key}, {0xD73D97, kS2335Find},
+          {0xD73DEE, kS2335Kind}, {0xD73E47, kS2335Vf48}, {0xD73EAB, kS2335Use}},
          on_s2335},
         {gsr::SchedPoint::P2126, kS2126, 14, kS2126Bytes,
-         {{0xD739A0, kS2126Frame}, {0xD73AF2, kS2126Key}, {0xD73B1F, kS2126Find}, {0xD73BB1, kS2126Vf48}},
+         {{0xD743F0, kS2126Frame}, {0xD74542, kS2126Key}, {0xD7456F, kS2126Find}, {0xD74601, kS2126Vf48}},
          on_s2126},
         {gsr::SchedPoint::P2958, kS2958, 8, kSChangeBytes,
-         {{0xD74670, kSChangeFrame}, {0xD748BF, kSChangeKey}, {0xD74A4D, kS2958Find}, {0xD74AED, kSChangeVf48},
-          {0xD74AFF, kS2958Use}},
+         {{0xD750C0, kSChangeFrame}, {0xD7530F, kSChangeKey}, {0xD7549D, kS2958Find}, {0xD7553D, kSChangeVf48},
+          {0xD7554F, kS2958Use}},
          on_s2958},
         {gsr::SchedPoint::P2909, kS2909, 8, kSChangeBytes,
-         {{0xD74DC0, kSChangeFrame}, {0xD7500F, kSChangeKey}, {0xD7519D, kS2909Find}, {0xD7523D, kSChangeVf48},
-          {0xD7524F, kS2909Use}},
+         {{0xD75810, kSChangeFrame}, {0xD75A5F, kSChangeKey}, {0xD75BED, kS2909Find}, {0xD75C8D, kSChangeVf48},
+          {0xD75C9F, kS2909Use}},
          on_s2909},
     };
 }
@@ -1011,22 +1011,22 @@ std::vector<SchedDef> sched_points() {
 std::vector<PointDef> points() {
     return {
         {Point::P2661, kP2661, 5, kP2661Bytes,
-         {{0xD6C765, kFrame2661Bytes}, {0xD6CB99, kKind2661Bytes}, {0xD6CB95, kActor2661Bytes},
-          {0xD6CBF4, kVf48_2661Bytes}, {0xD6C774, kWrap2661Bytes}},
+         {{0xD6D1B5, kFrame2661Bytes}, {0xD6D5E9, kKind2661Bytes}, {0xD6D5E5, kActor2661Bytes},
+          {0xD6D644, kVf48_2661Bytes}, {0xD6D1C4, kWrap2661Bytes}},
          on_p2661},
         {Point::P2981, kP2981, 9, kP2981Bytes,
-         {{0xD6E221, kWrap2981Bytes}, {0xD6E6C1, kActor2981Bytes}, {0xD6E71A, kVf48_2981Bytes}},
+         {{0xD6EC71, kWrap2981Bytes}, {0xD6F111, kActor2981Bytes}, {0xD6F16A, kVf48_2981Bytes}},
          on_p2981},
         {Point::P2810, kP2810, 8, kP2810Bytes,
-         {{0xD6D0EB, kVf48_2810Bytes}, {0xD6CE80, kFrame2810Bytes}, {0xD6D059, kFind2810Bytes},
-          {0xD6D104, kSeq2810Bytes}},
+         {{0xD6DB3B, kVf48_2810Bytes}, {0xD6D8D0, kFrame2810Bytes}, {0xD6DAA9, kFind2810Bytes},
+          {0xD6DB54, kSeq2810Bytes}},
          on_p2810},
         {Point::P2322, kP2322, 7, kP2322Bytes,
-         {{0xCD5631, kVf48_2322Bytes}, {0xCD546C, kRaw2322Bytes}, {0xCD55AA, kFind2322Bytes}},
+         {{0xCD6081, kVf48_2322Bytes}, {0xCD5EBC, kRaw2322Bytes}, {0xCD5FFA, kFind2322Bytes}},
          on_p2322},
         {Point::P2524, kP2524, 9, kP2524Bytes,
-         {{0xD6EE05, kWrap2524Bytes}, {0xD6F1F9, kFind2524Bytes}, {0xD6F236, kActor2524Bytes},
-          {0xD6F296, kVf48_2524Bytes}, {0xD6F2B0, kUse2524Bytes}},
+         {{0xD6F855, kWrap2524Bytes}, {0xD6FC49, kFind2524Bytes}, {0xD6FC86, kActor2524Bytes},
+          {0xD6FCE6, kVf48_2524Bytes}, {0xD6FD00, kUse2524Bytes}},
          on_p2524},
     };
 }
@@ -1071,7 +1071,7 @@ void install_sched(std::span<const gad::Section> secs) {
     const auto mode = static_cast<gsr::Mode>(g_sched_mode.load());
     log::info("GuestSchedRoute {} (guest_sched_route): points:{} | REFUSED:{} | a 2335/2126/2958/2909 naming another "
               "character (0xA...) than this client's field owner's goes to THAT character's ClientSequencerStageManager "
-              "X (vtable exe+0x{:X}, X+0x148 present) instead of M, where the NPCs' vf13 0xB29470 looks for it; a "
+              "X (vtable exe+0x{:X}, X+0x148 present) instead of M, where the NPCs' vf13 0xB29DB0 looks for it; a "
               "2126/2958/2909 goes where its 2335 went (ledger). Never gated, never refused; nothing written to comp+0x318 "
               "or stage+0x178",
               mode == gsr::Mode::On ? "ON" : "PROBE (decides, never writes RAX)", on.empty() ? " none" : on,
@@ -1084,16 +1084,16 @@ void install_sched(std::span<const gad::Section> secs) {
         static constexpr uint8_t kTearEntry[] = {0x48, 0x89, 0x5C, 0x24, 0x20, 0x48, 0x89, 0x4C, 0x24, 0x08};  // 0x43AE50
         static constexpr uint8_t kTearRdi[] = {0x48, 0x8B, 0xF9};                                  // 0x43AE71
         static constexpr uint8_t kTearReload[] = {0x48, 0x8B, 0xBD, 0xC0, 0x00, 0x00, 0x00};       // 0x43B08F
-        const Ctx tear[] = {{0x43B0A3, kTearWake}, {0x50B8C0, kTearEntry}, {0x50B8E1, kTearRdi}, {0x50BAD8, kTearReload}};
+        const Ctx tear[] = {{0x43B4B3, kTearWake}, {0x50BCD0, kTearEntry}, {0x50BCF1, kTearRdi}, {0x50BEE8, kTearReload}};
         bool ok = true;
         for (const Ctx& c : tear) {
             ok = ok && gad::in_real_code(secs, static_cast<uint32_t>(c.rva), static_cast<uint32_t>(c.bytes.size())) &&
                  bytes_at(c.rva, c.bytes);
         }
-        ok = ok && p8_install_mid(g_base, secs, 0x50BB06, 6, kTearBytes, on_stage_teardown, g_teardown_hook,
-                                  "GuestSchedRoute", "stage teardown guard in 0x50B8C0 0x50BB06");
+        ok = ok && p8_install_mid(g_base, secs, 0x50BF16, 6, kTearBytes, on_stage_teardown, g_teardown_hook,
+                                  "GuestSchedRoute", "stage teardown guard in 0x50BCD0 0x50BF16");
         g_teardown_on.store(ok);
-        log::info("GuestSchedRoute: stage teardown guard 0x50BB06 {}: a stage's last release after its X (the host "
+        log::info("GuestSchedRoute: stage teardown guard 0x50BF16 {}: a stage's last release after its X (the host "
                   "character's manager) is gone no longer calls into the freed X (its vf12 goes to a do-nothing "
                   "manager of the mod); other managers untouched",
                   ok ? "in" : "NOT installed (code not build 2976's or refused)");
@@ -1146,10 +1146,10 @@ DWORD WINAPI install_thread(LPVOID) {
         }
         std::string why;
         if (d.point == Point::P2524) {  // the inner check first: no 2524 into X without it
-            const Ctx inner[] = {{kP2524Lookup, kLookupBytes},       {0xBE1B8F, kLookupHomeBytes},
-                                 {0xBE1B94, kLookupFrameBytes},      {0xBE1BB4, kLookupBranchBytes},
-                                 {0xBE1C0C, kLookupCallBytes},       {0xBE1C34, kLookupInstBytes},
-                                 {0xBE1D2E, kLookupUseBytes},        {0xBE1C66, kLookupMissBytes}};
+            const Ctx inner[] = {{kP2524Lookup, kLookupBytes},       {0xBE25DF, kLookupHomeBytes},
+                                 {0xBE25E4, kLookupFrameBytes},      {0xBE2604, kLookupBranchBytes},
+                                 {0xBE265C, kLookupCallBytes},       {0xBE2684, kLookupInstBytes},
+                                 {0xBE277E, kLookupUseBytes},        {0xBE26B6, kLookupMissBytes}};
             for (const Ctx& c : inner) {
                 if (!gad::in_real_code(secs, static_cast<uint32_t>(c.rva), static_cast<uint32_t>(c.bytes.size())) ||
                     !bytes_at(c.rva, c.bytes)) {
@@ -1158,10 +1158,10 @@ DWORD WINAPI install_thread(LPVOID) {
                 }
             }
             if (why.empty() && p8_install_mid(g_base, secs, kP2524Lookup, 6, kLookupBytes, on_2524_lookup,
-                                              g_lookup_hook, "GuestSeqRoute", "2524 scene check in 0xBE1B80 0xBE1C5B")) {
+                                              g_lookup_hook, "GuestSeqRoute", "2524 scene check in 0xBE25D0 0xBE26AB")) {
                 g_lookup_on.store(true);
             } else if (why.empty()) {
-                why = "the inner check 0xBE1C5B was refused (see the line above)";
+                why = "the inner check 0xBE26AB was refused (see the line above)";
             }
         }
         for (const Ctx& c : d.ctx) {

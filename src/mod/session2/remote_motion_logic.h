@@ -129,7 +129,7 @@ inline uint8_t climb_result(ClimbOut o, uint8_t orig) { return o == ClimbOut::Fo
 // The game's code: [0x1000, 0x5613000) (the section named .rsrc). Nothing of
 // the mod's ever writes there except verified hooks; the data byte must be
 // outside it, outside .xtls (Denuvo) and in a writable, non-executable section.
-inline constexpr uint32_t kCodeBegin = 0x1000, kCodeEnd = 0x5613000;
+inline constexpr uint32_t kCodeBegin = 0x1000, kCodeEnd = 0x5618000;
 inline constexpr uint32_t kScnExecute = 0x20000000, kScnRead = 0x40000000, kScnWrite = 0x80000000;
 
 struct SectionInfo {
@@ -143,7 +143,7 @@ inline const char* byte_site_name(ByteSite s) {
     switch (s) {
         case ByteSite::Ok: return "ok";
         case ByteSite::NoSection: return "in no section of the image";
-        case ByteSite::InCode: return "inside the game's code [0x1000, 0x5613000)";
+        case ByteSite::InCode: return "inside the game's code [0x1000, 0x5618000)";
         case ByteSite::Xtls: return "inside .xtls (Denuvo)";
         case ByteSite::NotWritable: return "in a section that is not writable";
         case ByteSite::Executable: return "in an executable section";
@@ -162,7 +162,7 @@ inline ByteSite check_data_byte(std::span<const SectionInfo> secs, uint32_t rva)
     if (rva >= kCodeBegin && rva < kCodeEnd) return ByteSite::InCode;
     const SectionInfo* s = section_info_of(secs, rva);
     if (!s) return ByteSite::NoSection;
-    if (std::string_view(s->name) == ".data1") return ByteSite::Xtls;
+    if (std::string_view(s->name) == ".text1") return ByteSite::Xtls;
     if (s->flags & kScnExecute) return ByteSite::Executable;
     if (!(s->flags & kScnWrite)) return ByteSite::NotWritable;
     return ByteSite::Ok;

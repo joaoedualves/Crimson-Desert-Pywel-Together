@@ -51,7 +51,7 @@ constexpr const char* ev_name(Ev e) {
         case Ev::Spawn2723Vf188: return "2723 vf188(5)";
         case Ev::Ack2991: return "2991 consumer";
         case Ev::StartAction: return "StartAction";
-        case Ev::NullAction: return "NULL ACTION at 0x2590720";
+        case Ev::NullAction: return "NULL ACTION at 0x2592BB0";
         case Ev::GuardFirst: return "guard first skip";
         case Ev::GuardRecovered: return "guard recovered";
         case Ev::Crash: return "ACCESS VIOLATION (first chance)";
@@ -464,8 +464,8 @@ inline size_t parse_2005(std::span<const uint8_t> payload, std::span<Rec2005> ou
 enum class StartCaller : uint8_t { Other = 0, Spawn2723 = 1, Ack2991 = 2 };
 constexpr StartCaller start_caller(uint64_t ret_rva) {
     // .pdata bounds of the two consumers (build 2976).
-    if (ret_rva >= 0x55E6D0 && ret_rva < 0x48B3F6) return StartCaller::Spawn2723;
-    if (ret_rva >= 0x55E2E0 && ret_rva < 0x48B11E) return StartCaller::Ack2991;
+    if (ret_rva >= 0x55EA10 && ret_rva < 0x48B806) return StartCaller::Spawn2723;
+    if (ret_rva >= 0x55E620 && ret_rva < 0x48B52E) return StartCaller::Ack2991;
     return StartCaller::Other;
 }
 

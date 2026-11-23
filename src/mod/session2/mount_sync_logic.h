@@ -1267,7 +1267,7 @@ struct SeatState {
 // P8 S22 [V capstone 0x4FE260]: what the rider's vf178 answers, i.e. whether vf54's tail would launch 0xA45AC0 on the
 // LOCAL player: `[+0xA0] == local user && [+0x94]`. 0x8A67D0 (+0x94 alone) is the account/server realm's, never a
 // client in-game actor's; any other slot (or an unread local user) counts as local, so the seat is refused.
-inline constexpr uint32_t kVf178Actor = 0x5DF1C0, kVf178User = 0x9BE630;
+inline constexpr uint32_t kVf178Actor = 0x5DF500, kVf178User = 0x9BEEB0;
 inline bool seat_local_user(const SeatState& s) {
     if (s.vf178 == kVf178Actor) {
         return s.local_user == 0 || s.rider_user == 0 || (s.rider_user == s.local_user && s.rider_local != 0);
@@ -1307,7 +1307,7 @@ inline const char* seat_why_name(SeatWhy w) {
         case SeatWhy::AttachBusy: return "attach type already set (not by this horse)";
         case SeatWhy::RiderType: return "rider actor type != 1";
         case SeatWhy::HorseType7: return "horse actor type 7";
-        case SeatWhy::HorseType: return "horse actor type not seated by 0xB85D30";
+        case SeatWhy::HorseType: return "horse actor type not seated by 0xB86670";
         case SeatWhy::Local: return "the rider is the local character";
         case SeatWhy::ParentSet: return "a hierarchy parent is already set (or unreadable)";
         case SeatWhy::NotInit: return "CC+0x228 != 1 (component not initialised)";
@@ -1389,7 +1389,7 @@ inline const char* seat_cause_name(SeatCause c) {
         case SeatCause::Detach: return "the observer's retirement here";
         case SeatCause::RideOff: return "its RideOff::Enter here";
         case SeatCause::OnFoot: return "its first on-foot action";
-        case SeatCause::Retired: return "the mod's retirement 0x2470330 (flag 12)";
+        case SeatCause::Retired: return "the mod's retirement 0x2472600 (flag 12)";
         case SeatCause::Count: break;
     }
     return "?";

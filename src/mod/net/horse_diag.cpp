@@ -28,20 +28,20 @@ struct Site {
     uint8_t head[16];
     const char* name;
 };
-constexpr Site kCcUpdate = {0x9729C0, {0x48, 0x89, 0x5C, 0x24, 0x10, 0x55, 0x56, 0x57, 0x41, 0x54, 0x41, 0x55,
+constexpr Site kCcUpdate = {0x9730E0, {0x48, 0x89, 0x5C, 0x24, 0x10, 0x55, 0x56, 0x57, 0x41, 0x54, 0x41, 0x55,
                                        0x41, 0x56, 0x41, 0x57}, "CC update"};
-constexpr Site kCcPost = {0x973BB0, {0x48, 0x89, 0x5C, 0x24, 0x10, 0x48, 0x89, 0x6C, 0x24, 0x18, 0x56, 0x57,
+constexpr Site kCcPost = {0x9742D0, {0x48, 0x89, 0x5C, 0x24, 0x10, 0x48, 0x89, 0x6C, 0x24, 0x18, 0x56, 0x57,
                                      0x41, 0x56, 0x48, 0x83}, "CC post-update"};
-constexpr Site kRestore = {0x9778B0, {0x48, 0x8B, 0xC4, 0x48, 0x89, 0x58, 0x20, 0x48, 0x89, 0x50, 0x10, 0x55,
+constexpr Site kRestore = {0x977FD0, {0x48, 0x8B, 0xC4, 0x48, 0x89, 0x58, 0x20, 0x48, 0x89, 0x50, 0x10, 0x55,
                                       0x56, 0x57, 0x41, 0x54}, "restore actions"};
-constexpr Site kPending = {0x258CDA0, {0x48, 0x89, 0x5C, 0x24, 0x10, 0x48, 0x89, 0x6C, 0x24, 0x18, 0x48, 0x89,
+constexpr Site kPending = {0x258F230, {0x48, 0x89, 0x5C, 0x24, 0x10, 0x48, 0x89, 0x6C, 0x24, 0x18, 0x48, 0x89,
                                        0x74, 0x24, 0x20, 0x57}, "pending actions"};
 
 SafetyHookMid g_cc_hook, g_post_hook, g_restore_hook, g_pending_hook;
-constexpr Site kCompJob = {0x821620, {0x48, 0x89, 0x5C, 0x24, 0x10, 0x48, 0x89, 0x6C, 0x24, 0x18, 0x48, 0x89,
+constexpr Site kCompJob = {0x821D40, {0x48, 0x89, 0x5C, 0x24, 0x10, 0x48, 0x89, 0x6C, 0x24, 0x18, 0x48, 0x89,
                                       0x74, 0x24, 0x20, 0x57}, "component job"};
 SafetyHookMid g_job_hook;
-constexpr Site kMcJob = {0x994CD0, {0x4C, 0x8B, 0xDC, 0x49, 0x89, 0x5B, 0x18, 0x49, 0x89, 0x73, 0x20, 0x57,
+constexpr Site kMcJob = {0x995550, {0x4C, 0x8B, 0xDC, 0x49, 0x89, 0x5B, 0x18, 0x49, 0x89, 0x73, 0x20, 0x57,
                                     0x41, 0x54, 0x41, 0x55}, "movement job"};
 SafetyHookMid g_mc_hook;
 const uintptr_t g_exe_base0 = reinterpret_cast<uintptr_t>(GetModuleHandleW(nullptr));
@@ -300,7 +300,7 @@ void on_mc_job(safetyhook::Context& ctx) {
     if (contain_remote(cc, g_remote_skipped_job)) ctx.rip = reinterpret_cast<uintptr_t>(g_ret);
 }
 
-constexpr Site kFlagSet = {0x1932980, {0x48, 0x8B, 0xC4, 0x48, 0x89, 0x58, 0x10, 0x48, 0x89, 0x68, 0x18, 0x48,
+constexpr Site kFlagSet = {0x1934810, {0x48, 0x8B, 0xC4, 0x48, 0x89, 0x58, 0x10, 0x48, 0x89, 0x68, 0x18, 0x48,
                                       0x89, 0x70, 0x20, 0x57}, "status flag setter"};
 SafetyHookMid g_flag_hook;
 std::atomic<uint64_t> g_unhidden{0};
@@ -352,7 +352,7 @@ void on_restore(safetyhook::Context& ctx) {
     State s;
     s.key = key;
     if (!read_state(ctx.rcx, s)) return;
-    log_state("RESTORE(0x9778B0)", s);
+    log_state("RESTORE(0x977FD0)", s);
     // The restore data: bytes +0x30..+0x40 and the u64 at +0xF8 of [CC+0x40].
     uint8_t raw[0x10] = {};
     uint64_t f8 = 0;
@@ -371,7 +371,7 @@ void on_pending(safetyhook::Context& ctx) {
     State s;
     s.key = key;
     if (!read_state(ctx.rcx, s)) return;
-    if (s.pending) log_state("PENDING(0x258CDA0)", s);
+    if (s.pending) log_state("PENDING(0x258F230)", s);
 }
 
 bool hook(const Site& site, SafetyHookMid& out, safetyhook::MidHookFn fn) {
@@ -440,7 +440,7 @@ bool horse_diag_install_remote() {
         if (!g_post_hook && !hook(kCcPost, g_post_hook, on_cc_post)) return false;
         g_coop_too = true;
         g_remote_mode = true;
-        if (!g_job_hook && !hook(kCompJob, g_job_hook, on_comp_job)) log::warn("RemoteUpdateGuard: the component job 0x821620 is NOT guarded");
+        if (!g_job_hook && !hook(kCompJob, g_job_hook, on_comp_job)) log::warn("RemoteUpdateGuard: the component job 0x821D40 is NOT guarded");
         return true;
     }
     g_t0 = now_ms();
@@ -455,8 +455,8 @@ bool horse_diag_install_remote() {
         g_remote_mode = false;
         return false;
     }
-    if (!hook(kCompJob, g_job_hook, on_comp_job)) log::warn("RemoteUpdateGuard: the component job 0x821620 is NOT guarded");
-    if (!g_mc_hook && !hook(kMcJob, g_mc_hook, on_mc_job)) log::warn("RemoteUpdateGuard: the movement job 0x994CD0 is NOT guarded");
+    if (!hook(kCompJob, g_job_hook, on_comp_job)) log::warn("RemoteUpdateGuard: the component job 0x821D40 is NOT guarded");
+    if (!g_mc_hook && !hook(kMcJob, g_mc_hook, on_mc_job)) log::warn("RemoteUpdateGuard: the movement job 0x995550 is NOT guarded");
     g_contain = true;
     return true;
 }
@@ -503,7 +503,7 @@ void unhide_install() {
     CloseHandle(CreateThread(nullptr, 0, [](LPVOID) -> DWORD {
         for (int i = 0; i < 240; ++i) {
             if (hook(kFlagSet, g_flag_hook, on_flag_set)) {
-                log::info("Unhide ON: the other user's character is never hidden by Status flag 0x100000 (exe+0x1932980)");
+                log::info("Unhide ON: the other user's character is never hidden by Status flag 0x100000 (exe+0x1934810)");
                 for (;;) {
                     Sleep(30000);
                     log::info("Unhide: {} hide(s) of the other user's character turned into a clear", g_unhidden.load());
@@ -511,7 +511,7 @@ void unhide_install() {
             }
             Sleep(1000);
         }
-        log::error("Unhide: the status flag setter exe+0x1932980 could NOT be hooked");
+        log::error("Unhide: the status flag setter exe+0x1934810 could NOT be hooked");
         return 0;
     }, nullptr, 0, nullptr));
 }
@@ -525,7 +525,7 @@ void horse_diag_remote_report() {
     const uint32_t local = g_remote_local.load(std::memory_order_relaxed);
     g_remote_first.drain([local](uint32_t key, uint32_t ctrl, size_t i) {
         log::info("RemoteUpdateGuard: holding actor 0x{:08X} (control 0x{:08X}, not the local user 0x{:08X}): a "
-                  "layer has a chart and no action; CharacterControl::Update 0x9729C0 and PostUpdate 0x973BB0 "
+                  "layer has a chart and no action; CharacterControl::Update 0x9730E0 and PostUpdate 0x9742D0 "
                   "return at once until it has one (key {} of the first 32 logged)",
                   key, ctrl, local, i + 1);
     });

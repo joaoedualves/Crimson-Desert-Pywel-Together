@@ -35,7 +35,7 @@ namespace g2976 = game::build_2976;
 using wsy::Mode;
 
 // The rule of the task: hooks only at verified function entries inside [0x1000, 0x5613000) (.rsrc, never .xtls).
-constexpr uintptr_t kCodeBegin = 0x1000, kCodeEnd = 0x5613000;
+constexpr uintptr_t kCodeBegin = 0x1000, kCodeEnd = 0x5618000;
 constexpr uint32_t kTickMs = 200;           // the worker: 5 Hz
 constexpr uint64_t kProbeEveryMs = 5000;
 constexpr uint64_t kMinuteMs = 60000;
@@ -545,7 +545,7 @@ bool bytes_at(uintptr_t rva, std::span<const uint8_t> expected) {
 bool install_hook() {
     std::vector<gad::Section> secs;
     if (!p8_exe_sections(g_base, secs)) {
-        log::error("WeatherSync: the exe's sections are unreadable; the hook on 0x4143B20 is REFUSED, nothing written");
+        log::error("WeatherSync: the exe's sections are unreadable; the hook on 0x4148010 is REFUSED, nothing written");
         return false;
     }
     const auto in_code = [&](uintptr_t rva, size_t n) {
@@ -553,13 +553,13 @@ bool install_hook() {
                gad::in_real_code(secs, static_cast<uint32_t>(rva), static_cast<uint32_t>(n));
     };
     if (!in_code(wsy::kUpdate, sizeof wsy::kUpdateHead) || !bytes_at(wsy::kUpdate, wsy::kUpdateHead)) {
-        log::error("WeatherSync: 0x4143B20 (exe+0x{:X}) is not build 2976's .rsrc entry 48 89 5C 24 10 55 56 57 48 83 EC "
+        log::error("WeatherSync: 0x4148010 (exe+0x{:X}) is not build 2976's .rsrc entry 48 89 5C 24 10 55 56 57 48 83 EC "
                    "50 C5 F8 29 74 24 40; REFUSED, nothing written",
                    wsy::kUpdate);
         return false;
     }
     if (!in_code(wsy::kUpdateCall, sizeof wsy::kUpdateCallBytes) || !bytes_at(wsy::kUpdateCall, wsy::kUpdateCallBytes)) {
-        log::error("WeatherSync: its only caller 0x3E74457 is not `call 0x4143B20` (E8 F4 3F 2B 00); REFUSED, nothing "
+        log::error("WeatherSync: its only caller 0x3E78947 is not `call 0x4148010` (E8 F4 3F 2B 00); REFUSED, nothing "
                    "written");
         return false;
     }
@@ -571,15 +571,15 @@ bool install_hook() {
     };
     // P8 S26 (montura-regresion.md section 7.1): refused attempts logged and tried again (bounded), nothing written.
     auto h = game::prepare_inline(g_base + wsy::kUpdate, reinterpret_cast<void*>(&update_detour), whole, "WeatherSync",
-                                  "0x4143B20");
+                                  "0x4148010");
     if (!h) {
-        log::error("WeatherSync: the hook on 0x4143B20 could not be prepared ({}); REFUSED",
+        log::error("WeatherSync: the hook on 0x4148010 could not be prepared ({}); REFUSED",
                    game::inline_error_text(h.error()));
         return false;
     }
     const auto& orig = h->original_bytes();
     if (!whole(orig)) {
-        log::error("WeatherSync: the hook on 0x4143B20 would patch {} bytes, not whole verified instructions; REFUSED, "
+        log::error("WeatherSync: the hook on 0x4148010 would patch {} bytes, not whole verified instructions; REFUSED, "
                    "nothing written",
                    orig.size());
         return false;
@@ -587,12 +587,12 @@ bool install_hook() {
     const size_t patched = orig.size();  // `orig` belongs to *h: empty once it is moved
     g_hook = std::move(*h);
     if (!g_hook.enable()) {
-        log::error("WeatherSync: the hook on 0x4143B20 could not be enabled; REFUSED");
+        log::error("WeatherSync: the hook on 0x4148010 could not be enabled; REFUSED");
         g_hook = {};
         return false;
     }
     g_hook_on.store(true);
-    log::info("WeatherSync: exe+0x4143B20 (X's update, one caller 0x3E74457) hooked at its entry ({} bytes patched); "
+    log::info("WeatherSync: exe+0x4148010 (X's update, one caller 0x3E78947) hooked at its entry ({} bytes patched); "
               "{}",
               patched,
               mode() == Mode::Selftest
@@ -788,7 +788,7 @@ void drain_events(uint64_t& lines) {
                 break;
             case kEvStCheck:
                 log::info("WeatherSync selftest: one frame later (the original ran once in viewer mode): X+0x31 = {} "
-                          "precipitation(12C) {} rain(16C) {} snow(168) {} 164 {} temperature(198) {} (0x3B814D0: "
+                          "precipitation(12C) {} rain(16C) {} snow(168) {} 164 {} temperature(198) {} (0x3B85A20: "
                           "temperature > 0 -> rain = precipitation, else snow)",
                           e.v[1], fbits(e.v[2]), fbits(e.v[3]), fbits(e.v[4]), fbits(e.v[5]), fbits(e.v[6]));
                 break;
@@ -1015,11 +1015,11 @@ DWORD WINAPI worker_thread(LPVOID) {
                                             c_tx_refused.load(), c_sample_insane.load());
                     }
                     log::info("WeatherSync [{} {}]: tick {} (%60000 = {}) | X {} (M+0x60+0xF68{}) / {} "
-                              "([0x72451C8]+0x38+0x38): {}, vtable {}, viewer X+0x31 = {} | holder {} A {} B {} C {} | "
+                              "([0x724B358]+0x38+0x38): {}, vtable {}, viewer X+0x31 = {} | holder {} A {} B {} C {} | "
                               "WeatherComponents X+0x88 = {} | {} | local sample A+0x198.. {} | sanity: {} non-finite, {} "
                               "huge, {} outside [0,1], {} FLT_MAX (not set) | X changes {} | world ready {}{}",
                               wsy::mode_name(m), role(), r.tick_ok ? std::format("{}", r.tick) : std::string("unreadable"),
-                              tmod, hex(r.xa), r.getter_ok ? "" : ", getter NOT 0x7D7940", hex(r.xb),
+                              tmod, hex(r.xa), r.getter_ok ? "" : ", getter NOT 0x7D8060", hex(r.xb),
                               !r.xa || !r.xb ? "one missing" : r.xa == r.xb ? "same" : "DIFFERENT",
                               r.vt_ok ? "ok" : (r.x ? "BAD" : "-"), r.flag_ok ? std::format("{}", r.flag) : std::string("?"),
                               hex(r.holder), hex(r.a), hex(r.b), hex(r.c),
@@ -1075,17 +1075,17 @@ void weather_sync_start(const std::string& raw, bool guest, uint32_t radius_m) {
     g_guest = guest;
     g_radius_m = radius_m ? radius_m : wsy::kDefaultRadiusM;
     if (!getter_bytes_ok()) {
-        log::warn("WeatherSync: exe+0x7D7940 is not `mov rax,[rcx+0x60]; ret` (the simulators' path to X is then not "
-                  "[[exe+0x7160240]+0x60]+0xF68); the probe says so on each line");
+        log::warn("WeatherSync: exe+0x7D8060 is not `mov rax,[rcx+0x60]; ret` (the simulators' path to X is then not "
+                  "[[exe+0x71662E0]+0x60]+0xF68); the probe says so on each line");
     }
     g_mode.store(static_cast<uint8_t>(m), std::memory_order_release);
     const char* what =
         m == Mode::Probe ? "READ ONLY: every 5 s the X line, X changes at once, target changes with tick % 60000"
         : m == Mode::Selftest
-            ? "the probe + SELFTEST (P1, this PC alone): a hook at 0x4143B20 once the world is up; 15 s later X+0x31 = 1 "
+            ? "the probe + SELFTEST (P1, this PC alone): a hook at 0x4148010 once the world is up; 15 s later X+0x31 = 1 "
               "and A+0x12C = 1.0 for 30 s, then put back"
         : guest ? "the probe + MIRROR: caps 0x04 to the host; the host's state-12 samples written in viewer mode by a hook "
-                  "at 0x4143B20 while fresh and the gates pass"
+                  "at 0x4148010 while fresh and the gates pass"
                 : "the probe + SAMPLES at 5 Hz to a guest that announced caps 0x04 (tunnel control state 12)";
     log::info("WeatherSync ON (weather_sync={}, {}): {}{}", wsy::mode_name(m), role(), what,
               m == Mode::On && guest ? std::format("; weather_sync_radius_m {}", g_radius_m) : std::string());

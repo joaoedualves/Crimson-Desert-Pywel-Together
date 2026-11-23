@@ -908,7 +908,7 @@ bool install(const Options& opt) {
     }
     if (g_block_weather) {
         log::info("Session2 W1 ON (block_guest_weather=1): user 2's SyncWeatherStateReq 2560 never reaches the host's "
-                  "server (it would write the host field's weather flags, 0x231BDE0, with no owner check); counted");
+                  "server (it would write the host field's weather flags, 0x231DA60, with no owner check); counted");
     }
     // C2 (pendientes/identidad.md §5): before the tunnel opens and before the
     // probe (which then shares its two entry hooks). Wanted and not installed:

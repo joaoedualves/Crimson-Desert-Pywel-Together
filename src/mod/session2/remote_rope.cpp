@@ -36,7 +36,7 @@ namespace g2976 = game::build_2976;
 using rrp::Mode;
 
 // Hooks only at verified function entries inside [0x1000, 0x5613000) (.rsrc, never .xtls).
-constexpr uintptr_t kCodeBegin = 0x1000, kCodeEnd = 0x5613000;
+constexpr uintptr_t kCodeBegin = 0x1000, kCodeEnd = 0x5618000;
 constexpr uint32_t kTickMs = 500;
 constexpr uint32_t kWorldTicks = 6;  // the local player read 6 ticks in a row (3 s) before the hooks go in
 constexpr uint64_t kMinuteMs = 60000;
@@ -861,7 +861,7 @@ bool install_hooks(bool host) {
     g_code_n = 0;
     for (const auto& s : secs) {
         const std::string_view n(s.name);
-        if ((n == ".reloc" || n == ".data1") && g_code_n < std::size(g_code)) {
+        if ((n == ".xpdata" || n == ".text1") && g_code_n < std::size(g_code)) {
             g_code[g_code_n++] = {g_base + s.va, g_base + s.va + s.size};
         }
     }
@@ -875,32 +875,32 @@ bool install_hooks(bool host) {
         const char* what;
     };
     std::vector<Check> checks = {
-        {rrp::kApply, rrp::kApplyHead, "RemoteCatchComponent_Apply 0x67AF30's entry"},
-        {rrp::kApplyCall, rrp::kApplyCallBytes, "its only caller 0xCA11B3 (call 0x67AF30)"},
-        {rrp::kInfoCopy, rrp::kInfoCopyBytes, "the target block's copy 0x67AF7F..0x5923B4 (+0x18 = the handle)"},
-        {rrp::kMapSite, rrp::kMapSiteBytes, "the thrower's mapping 0x67D40C..0x59484E (scene id -> handle)"},
-        {rrp::kResolve, rrp::kResolveHead, "ResolveUuidLookup 0x19F84A0"},
-        {rrp::kAttDtor, rrp::kAttDtorHead, "the attacher dtor 0x1659380"},
-        {rrp::kRelease, rrp::kReleaseHead, "the release request 0x68F130"},
-        {rrp::kReleaseThreadCheck, rrp::kReleaseThreadCheckBytes, "its main-thread check 0x68F19D"},
-        {rrp::k2471Handler, rrp::k2471HandlerHead, "ReleaseRemoteCatchResultAck::vf2 0xCA13F0's entry"},
-        {rrp::k2471Release, rrp::k2471ReleaseBytes, "its release call 0xCA15DE..0xB5BF61"},
+        {rrp::kApply, rrp::kApplyHead, "RemoteCatchComponent_Apply 0x67B2A0's entry"},
+        {rrp::kApplyCall, rrp::kApplyCallBytes, "its only caller 0xCA1C03 (call 0x67B2A0)"},
+        {rrp::kInfoCopy, rrp::kInfoCopyBytes, "the target block's copy 0x67B2EF..0x5926F4 (+0x18 = the handle)"},
+        {rrp::kMapSite, rrp::kMapSiteBytes, "the thrower's mapping 0x67D77C..0x594B8E (scene id -> handle)"},
+        {rrp::kResolve, rrp::kResolveHead, "ResolveUuidLookup 0x19FA110"},
+        {rrp::kAttDtor, rrp::kAttDtorHead, "the attacher dtor 0x165AF00"},
+        {rrp::kRelease, rrp::kReleaseHead, "the release request 0x68F4A0"},
+        {rrp::kReleaseThreadCheck, rrp::kReleaseThreadCheckBytes, "its main-thread check 0x68F50D"},
+        {rrp::k2471Handler, rrp::k2471HandlerHead, "ReleaseRemoteCatchResultAck::vf2 0xCA1E40's entry"},
+        {rrp::k2471Release, rrp::k2471ReleaseBytes, "its release call 0xCA202E..0xB5C8A1"},
     };
     if (host) {
-        checks.push_back({rrp::kSrvRelease, rrp::kSrvReleaseHead, "ServerFrameEventReleaseRemoteCatch::vf1 0x2A794D0"});
-        checks.push_back({rrp::kSrvArgs, rrp::kSrvArgsBytes, "its argument reads 0x2A794F4..0x27D914B"});
-        checks.push_back({rrp::kWriter, rrp::kWriterHead, "the 2471 writer 0x2C428E0"});
-        checks.push_back({rrp::kWriterSite, rrp::kWriterSiteBytes, "0x2BD5960's ToNear call 0x2BD5A89..0x2903AB1"});
-        checks.push_back({rrp::kToNearVf1, rrp::kToNearVf1Bytes, "ToNear::vf1 0x2D6C210 ([[actor+0x68]+0x1A0])"});
-        checks.push_back({rrp::kTsOwnerCall, rrp::kTsOwnerCallBytes, "0x2ED05F0's owner call 0x2ED0612 ([ts+8]->vfE8)"});
-        checks.push_back({rrp::kActRelease, rrp::kActReleaseHead, "the remote catch component's vf140 0x19ACF60"});
+        checks.push_back({rrp::kSrvRelease, rrp::kSrvReleaseHead, "ServerFrameEventReleaseRemoteCatch::vf1 0x2A7BC20"});
+        checks.push_back({rrp::kSrvArgs, rrp::kSrvArgsBytes, "its argument reads 0x2A7BC44..0x27DB8AB"});
+        checks.push_back({rrp::kWriter, rrp::kWriterHead, "the 2471 writer 0x2C47370"});
+        checks.push_back({rrp::kWriterSite, rrp::kWriterSiteBytes, "0x2BD8380's ToNear call 0x2BD84A9..0x2906211"});
+        checks.push_back({rrp::kToNearVf1, rrp::kToNearVf1Bytes, "ToNear::vf1 0x2D70CA0 ([[actor+0x68]+0x1A0])"});
+        checks.push_back({rrp::kTsOwnerCall, rrp::kTsOwnerCallBytes, "0x2ED4B40's owner call 0x2ED4B62 ([ts+8]->vfE8)"});
+        checks.push_back({rrp::kActRelease, rrp::kActReleaseHead, "the remote catch component's vf140 0x19AEBD0"});
         checks.push_back({rrp::kActDispatch, rrp::kActDispatchBytes,
-                          "the action change's vf140 call 0x2328EE4..0x2328F02 ([[actor+0x68]+0x78])"});
+                          "the action change's vf140 call 0x232AB64..0x232AB82 ([[actor+0x68]+0x78])"});
         checks.push_back(
-            {rrp::kActClientCall, rrp::kActClientCallBytes, "the client's vf140 call 0x673E69 (call 0x19ACF60)"});
-        checks.push_back({rrp::kActKeepTest, rrp::kActKeepTestBytes, "0x19ACF60's keep-flag test 0x19AD1E0"});
-        checks.push_back({rrp::kActNotify, rrp::kActNotifyBytes, "0x19ACF60's target vf148 call 0x19AD216"});
-        checks.push_back({rrp::kActSelfRelease, rrp::kActSelfReleaseBytes, "0x19ACF60's own vf158 call 0x19AD2AF"});
+            {rrp::kActClientCall, rrp::kActClientCallBytes, "the client's vf140 call 0x6741D9 (call 0x19AEBD0)"});
+        checks.push_back({rrp::kActKeepTest, rrp::kActKeepTestBytes, "0x19AEBD0's keep-flag test 0x19AEE50"});
+        checks.push_back({rrp::kActNotify, rrp::kActNotifyBytes, "0x19AEBD0's target vf148 call 0x19AEE86"});
+        checks.push_back({rrp::kActSelfRelease, rrp::kActSelfReleaseBytes, "0x19AEBD0's own vf158 call 0x19AEF1F"});
     }
     for (const Check& c : checks) {
         if (!in_rsrc(c.rva, c.bytes.size()) || !bytes_at(c.rva, c.bytes)) {
@@ -910,41 +910,41 @@ bool install_hooks(bool host) {
         }
     }
     if (!qword_at(rrp::k2471HandlerSlot, g_base + rrp::k2471Handler)) {
-        log::error("RemoteRope: the vtable slot 0x5A179E8 does not hold 0xCA13F0; REFUSED, nothing written");
+        log::error("RemoteRope: the vtable slot 0x5A1CBB0 does not hold 0xCA1E40; REFUSED, nothing written");
         return false;
     }
     if (host && !qword_at(rrp::kSrvReleaseSlot, g_base + rrp::kSrvRelease)) {
-        log::error("RemoteRope: the vtable slot 0x5F609D8 does not hold 0x2A794D0; REFUSED, nothing written");
+        log::error("RemoteRope: the vtable slot 0x5F65A18 does not hold 0x2A7BC20; REFUSED, nothing written");
         return false;
     }
     if (host && (!qword_at(rrp::kActReleaseSlot, g_base + rrp::kActRelease) ||
                  !qword_at(rrp::kSrvCompVf158Slot, g_base + rrp::kSlotReset))) {
-        log::error("RemoteRope: ServerRemoteCatchActorComponent's vtable 0x5F62490 does not hold 0x19ACF60 (vf140) and "
-                   "0x19AD850 (vf158); REFUSED, nothing written");
+        log::error("RemoteRope: ServerRemoteCatchActorComponent's vtable 0x5F67818 does not hold 0x19AEBD0 (vf140) and "
+                   "0x19AF4C0 (vf158); REFUSED, nothing written");
         return false;
     }
     uint64_t tonear = 0;
     if (host && (!game::safe_read(g_base + rrp::kToNearVtbl, &tonear, sizeof tonear) || !in_code(tonear) ||
                  !qword_at(rrp::kToNearVtbl + 8, g_base + rrp::kToNearVf1))) {
-        log::error("RemoteRope: ToNearSendTargetFinder's vtable 0x5F68780 does not point at code / its vf1 is not "
-                   "0x2D6C210; REFUSED");
+        log::error("RemoteRope: ToNearSendTargetFinder's vtable 0x5F6DA80 does not point at code / its vf1 is not "
+                   "0x2D70CA0; REFUSED");
         return false;
     }
     if (!game::fast<uint32_t>(g_base + rrp::kMainThreadId)) {
-        log::error("RemoteRope: the main thread's id 0x6F29B54 is unreadable; REFUSED, nothing written");
+        log::error("RemoteRope: the main thread's id 0x6F2FB54 is unreadable; REFUSED, nothing written");
         return false;
     }
 
     std::vector<Prepared> ready;
     if (!prepare(rrp::kApply, reinterpret_cast<void*>(&apply_detour), rrp::kApplyHead, rrp::kApplyBoundaries,
-                 "RemoteCatchComponent_Apply 0x67AF30", g_apply_hook, ready) ||
+                 "RemoteCatchComponent_Apply 0x67B2A0", g_apply_hook, ready) ||
         !prepare(rrp::k2471Handler, reinterpret_cast<void*>(&h2471_detour), rrp::k2471HandlerHead,
-                 rrp::k2471HandlerBoundaries, "ReleaseRemoteCatchResultAck::vf2 0xCA13F0", g_h2471_hook, ready) ||
+                 rrp::k2471HandlerBoundaries, "ReleaseRemoteCatchResultAck::vf2 0xCA1E40", g_h2471_hook, ready) ||
         (host && !prepare(rrp::kSrvRelease, reinterpret_cast<void*>(&srv_detour), rrp::kSrvReleaseHead,
-                          rrp::kSrvReleaseBoundaries, "ServerFrameEventReleaseRemoteCatch::vf1 0x2A794D0", g_srv_hook,
+                          rrp::kSrvReleaseBoundaries, "ServerFrameEventReleaseRemoteCatch::vf1 0x2A7BC20", g_srv_hook,
                           ready)) ||
         (host && !prepare(rrp::kActRelease, reinterpret_cast<void*>(&act_detour), rrp::kActReleaseHead,
-                          rrp::kActReleaseBoundaries, "the remote catch component's vf140 0x19ACF60", g_act_hook,
+                          rrp::kActReleaseBoundaries, "the remote catch component's vf140 0x19AEBD0", g_act_hook,
                           ready))) {
         return false;
     }
@@ -963,10 +963,10 @@ bool install_hooks(bool host) {
         enabled.push_back(p.slot);
     }
     g_hooks_on.store(true);
-    log::info("RemoteRope: hooked at their entries ({} bytes patched): exe+0x67AF30 (RemoteCatchComponent_Apply, the "
-              "2763 apply; one caller 0xCA11B3), exe+0xCA13F0 (the 2471 handler, log only){}; {}",
+    log::info("RemoteRope: hooked at their entries ({} bytes patched): exe+0x67B2A0 (RemoteCatchComponent_Apply, the "
+              "2763 apply; one caller 0xCA1C03), exe+0xCA1E40 (the 2471 handler, log only){}; {}",
               patched,
-              host ? ", exe+0x2A794D0 (the server's release frame event), exe+0x19ACF60 (the remote catch "
+              host ? ", exe+0x2A7BC20 (the server's release frame event), exe+0x19AEBD0 (the remote catch "
                      "component's vf140: the action change that frees the slot on a launch; the server's component only)"
                    : "",
               mode() == Mode::On
@@ -1053,7 +1053,7 @@ std::string flight_text(const FlightRead& r, float speed, uint64_t after_ms) {
 
 const char* writer_text(uint64_t w) {
     switch (w) {
-        case kWriteOk: return " (writer 0x2C428E0 returned)";
+        case kWriteOk: return " (writer 0x2C47370 returned)";
         case kWriteUnsafe:
             return " (writer NOT called: the thrower's TransformSync or its owner's vtable is not the expected one)";
         default: return " (writer FAULTED, or off after a fault: F2 off)";
@@ -1200,7 +1200,7 @@ void log_action(const p8p::Event& e, const std::string& thrower) {
     const uint64_t writer = (e.v[4] >> 8) & 0xFF;
     log::info("RemoteRope [{}] #{} server release on an ACTION CHANGE {}: thrower 0x{:08X} ({}) slot {} reason {} | "
               "server slot kind {} class {} target actor 0x{:08X} scene {:016X}:{:016X} handle {} -> kind {} after "
-              "vf140 0x19ACF60 (the launch path: no release frame event, and the native code sends a 2471 only for an "
+              "vf140 0x19AEBD0 (the launch path: no release frame event, and the native code sends a 2471 only for an "
               "actor target) | {}{}{} | server thread {}",
               rrp::mode_name(mode()), static_cast<uint32_t>(e.v[8]), p8_when(e.qpc_us), key, who_here(key),
               (e.v[0] >> 32) & 0xFF, (e.v[0] >> 40) & 0xFF, b8(e.v[1]), b8(e.v[1] >> 16),
@@ -1364,11 +1364,11 @@ void remote_rope_start(const std::string& raw, bool guest) {
     }
     g_guest.store(guest);
     g_mode.store(static_cast<uint8_t>(p.mode), std::memory_order_release);
-    log::info("RemoteRope ON (remote_rope={}, {}): hooks at the entries of RemoteCatchComponent_Apply 0x67AF30 and the "
-              "2471 handler 0xCA13F0{} once the world is up; {} (docs/research/s25/gancho-cuerda.md)",
+    log::info("RemoteRope ON (remote_rope={}, {}): hooks at the entries of RemoteCatchComponent_Apply 0x67B2A0 and the "
+              "2471 handler 0xCA1E40{} once the world is up; {} (docs/research/s25/gancho-cuerda.md)",
               rrp::mode_name(p.mode), guest ? "guest" : "host",
-              guest ? "" : ", of the server's ServerFrameEventReleaseRemoteCatch::vf1 0x2A794D0 and of the remote catch "
-                           "component's vf140 0x19ACF60 (the action change: the launch)",
+              guest ? "" : ", of the server's ServerFrameEventReleaseRemoteCatch::vf1 0x2A7BC20 and of the remote catch "
+                           "component's vf140 0x19AEBD0 (the action change: the launch)",
               p.mode == Mode::On ? "a remote thrower's tree handle is translated to this PC's and its stale slot "
                                    "released; the host's server sends the release 2471 for trees"
                                  : "every rope computed, logged and counted with native-equivalent reads (the "

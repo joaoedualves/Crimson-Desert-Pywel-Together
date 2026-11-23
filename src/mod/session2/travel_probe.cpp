@@ -108,7 +108,7 @@ void format(const p8p::Event& e) {
                 "TravelContext trip {} {}: vf48 returning to exe+0x{:X} | user 2's character {} | field owner {} | the "
                 "owner's manager 0x{:X} (its +0x18 {}; read, not called) | returned 0x{:X} (its +0x18 {}) | {} -> {}",
                 e.v[0], when, e.v[1], key(e.v[2]), key(e.v[3]), e.v[4], key(e.v[8]), e.v[5], key(e.v[6]),
-                e.v[1] == ftl::kApplyVf48Ret ? "second (0x2ED00D0)" : "first (the 2283 handler)",
+                e.v[1] == ftl::kApplyVf48Ret ? "second (0x2ED4620)" : "first (the 2283 handler)",
                 ok ? "user 2's own (ok)" : "NOT user 2's own");
             if (ok) {
                 log::info("{}", line);
@@ -130,7 +130,7 @@ void format(const p8p::Event& e) {
             const tpl::PreparedOut o = tpl::decide_prepared(in);
             const std::string line = std::format(
                 "TravelPrepared trip {} {}: user 2's 2283 ({}) | TS_user2 before [{}] after [{}] | TS_host before [{}] "
-                "after [{}] | host manager +0x6A0 {} | setter 0x2ED00D0 seen {} | F3 {} | ExecuteTroc result {} -> {}",
+                "after [{}] | host manager +0x6A0 {} | setter 0x2ED4620 seen {} | F3 {} | ExecuteTroc result {} -> {}",
                 e.v[0], when, key(e.v[1]), ts(e.v[2]), ts(e.v[3]), ts(e.v[4]), ts(e.v[5]),
                 in.host_mgr_ok ? std::format("{} -> {}", in.host_6a0_before, in.host_6a0_after) : std::string("unreadable"),
                 e.v[7] ? "yes" : "no", e.v[9] ? std::format("real manager 0x{:X}", e.v[9]) : e.v[10] ? "block" : "none",
@@ -179,7 +179,7 @@ void format(const p8p::Event& e) {
             const tpl::TsSnap before = tpl::unpack(e.v[2]);
             const tpl::ConsumeOut o = tpl::decide_consume(before);
             const std::string line = std::format(
-                "TravelConsume trip {} {}: user 2's 2437 ({}) | TS_user2 before [{}] after [{}] | 0x2ED5980: {} ({}) | "
+                "TravelConsume trip {} {}: user 2's 2437 ({}) | TS_user2 before [{}] after [{}] | 0x2ED9ED0: {} ({}) | "
                 "ExecuteTroc result {}",
                 e.v[0], when, key(e.v[1]), ts(e.v[2]), ts(e.v[3]), tpl::consume_name(o), tpl::consume_branch(before),
                 e.v[5] ? std::format("0x{:X}", e.v[4]) : std::string("unreadable"));

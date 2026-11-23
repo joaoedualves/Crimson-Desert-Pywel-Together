@@ -837,27 +837,27 @@ namespace {
 
 // Entries and body instructions checked against the copy analysed for D-53
 // (prologues alone repeat; companeros-publicacion.md §1.2-§1.3, §2).
-constexpr uintptr_t kNotifyAppear = 0x2DFE6D0;
+constexpr uintptr_t kNotifyAppear = 0x2E03160;
 constexpr uint8_t kNotifyAppearHead[] = {0x48, 0x89, 0x5C, 0x24, 0x08, 0x48, 0x89, 0x74, 0x24, 0x10, 0x48, 0x89, 0x7C, 0x24, 0x18, 0x55, 0x41, 0x54, 0x41, 0x55, 0x41, 0x56, 0x41, 0x57, 0x48, 0x8B, 0xEC, 0x48, 0x83, 0xEC, 0x50, 0x4D, 0x8B, 0xE0, 0x4C, 0x8B, 0xF2, 0x45, 0x33, 0xED};
-constexpr uintptr_t kNotifyReadSessions = 0x2DFE7DC;  // mov rbx,[rsi] ; mov eax,[rsi+8]
+constexpr uintptr_t kNotifyReadSessions = 0x2E0326C;  // mov rbx,[rsi] ; mov eax,[rsi+8]
 constexpr uint8_t kNotifyReadSessionsBytes[] = {0x49, 0x8B, 0x1E, 0x41, 0x8B, 0x46};
-constexpr uintptr_t kNotifyReadKeys = 0x2DFE847;  // mov rax,[r15] ; mov [rbp-0x10],rax ; mov eax,[r15+8]
+constexpr uintptr_t kNotifyReadKeys = 0x2E032D7;  // mov rax,[r15] ; mov [rbp-0x10],rax ; mov eax,[r15+8]
 constexpr uint8_t kNotifyReadKeysBytes[] = {0x49, 0x8B, 0x04, 0x24, 0x48, 0x89, 0x45, 0xF0, 0x41, 0x8B, 0x44};
-constexpr uintptr_t kNotifyFindCall = 0x2DFE85F;  // call 0x2B060E0 (keys -> actors, owner filter)
+constexpr uintptr_t kNotifyFindCall = 0x2E032EF;  // call 0x2B060E0 (keys -> actors, owner filter)
 constexpr uint8_t kNotifyFindCallBytes[] = {0xE8, 0x9C, 0x85, 0x00, 0x00};
-constexpr uintptr_t kCallerNewObservers = 0x2DF6D9B;  // call 0x2B000C0
+constexpr uintptr_t kCallerNewObservers = 0x2DFB82B;  // call 0x2B000C0
 constexpr uint8_t kCallerNewObserversBytes[] = {0xE8, 0x30, 0x79, 0x00, 0x00};
-constexpr uintptr_t kCallerMovingUser = 0x2DF6F9C;  // call 0x2B000C0
+constexpr uintptr_t kCallerMovingUser = 0x2DFBA2C;  // call 0x2B000C0
 constexpr uint8_t kCallerMovingUserBytes[] = {0xE8, 0x2F, 0x77, 0x00, 0x00};
-constexpr uintptr_t kStartAction = 0x2C46FA0;  // TrocTrStartActionReq::vf2 (this, int* res, ctx*) -> res
+constexpr uintptr_t kStartAction = 0x2C4BA30;  // TrocTrStartActionReq::vf2 (this, int* res, ctx*) -> res
 constexpr uint8_t kStartActionHead[] = {0x48, 0x89, 0x5C, 0x24, 0x08, 0x55, 0x56, 0x57, 0x41, 0x54, 0x41, 0x55, 0x41, 0x56, 0x41, 0x57, 0x48, 0x8D, 0xAC, 0x24, 0xD0, 0xFC, 0xFF, 0xFF, 0x48, 0x81, 0xEC, 0x40, 0x04, 0x00, 0x00, 0x4D, 0x8B, 0xE0, 0x4C, 0x8B, 0xF2, 0x4C, 0x8B, 0xF9};
-constexpr uintptr_t kStartActionVtable = 0x5F682B8;  // .?AVTrocTrStartActionReq@pa@@, vf2 at +0x10
-constexpr uintptr_t kRestoreWrite = 0x258B7AA;  // mov rax,[r14+0x40] ; mov byte [rax+0x30],1 (the only writer)
+constexpr uintptr_t kStartActionVtable = 0x5F6D858;  // .?AVTrocTrStartActionReq@pa@@, vf2 at +0x10
+constexpr uintptr_t kRestoreWrite = 0x258DC3A;  // mov rax,[r14+0x40] ; mov byte [rax+0x30],1 (the only writer)
 constexpr uint8_t kRestoreWriteBytes[] = {0x49, 0x8B, 0x47, 0x40, 0xC6, 0x40, 0x30, 0x01};
 // ServerRunThread's entry 0x2773390 marks its thread as the server's realm
 // (TLS block 0 +0x1EB = 1) before its loop; NotifyAppear's key lookup picks the
 // server's actor manager by that byte (0x2B06147).
-constexpr uintptr_t kServerRealmSet = 0x2A0E1B6;  // mov eax,0x1EB ; mov byte [rax+rbx],1
+constexpr uintptr_t kServerRealmSet = 0x2A10936;  // mov eax,0x1EB ; mov byte [rax+rbx],1
 constexpr uint8_t kServerRealmSetBytes[] = {0xB8, 0xEB, 0x01, 0x00, 0x00, 0xC6, 0x04, 0x18, 0x01};
 constexpr uint32_t kTlsServerRealm = 0x1EB;
 
@@ -1191,7 +1191,7 @@ std::string note_text(const p8p::Event& e) {
         case kNoteNpcWithheldU2:
             return std::format("Session2 observer hold: NPC 0x{:08X} withheld from the host (session 0x{:X}): user 2 "
                                "controls it (0x{:08X}), restore 0 for {} ms; never released to the host with restore 0 "
-                               "(U-e, the exe+0x1831598 crash): waits for restore 1, the host as its controller or a drop",
+                               "(U-e, the exe+0x1833188 crash): waits for restore 1, the host as its controller or a drop",
                                v[0], v[1], v[2], v[3]);
         case kNoteNpcDropped:
             return std::format("Session2 observer hold: NPC 0x{:08X} (type {}, controller 0x{:08X}) / session 0x{:X} ({}) "
@@ -1406,7 +1406,7 @@ std::string note_text(const p8p::Event& e) {
         case kNoteOutOrphan:
             return std::format("Session2 family order: ORPHAN queued for user 2: record 0x{:08X} (type {}) names "
                                "parent 0x{:08X}, which user 2 has not been given (no earlier 2005 since its last 2516, "
-                               "not in this 2005: {} record(s), {} orphan(s)); its client destroys it (0x9D0EA3)",
+                               "not in this 2005: {} record(s), {} orphan(s)); its client destroys it (0x9D1723)",
                                v[0], v[1], v[2], v[3], v[4]);
         case kNotePubRefused:
             return std::format("Session2 publication gate: {} 0x{:08X} (type {}) to {}'s session 0x{:X}: {} (parent "
@@ -2653,7 +2653,7 @@ void note_announced(std::span<const uint32_t> keys, std::span<const uintptr_t> s
 std::atomic<uint64_t> g_user2_travel_ms{0};  // section 43
 // Section 40: the host's own client is loading (fast travel, revive): its actors are being rebuilt.
 bool host_client_loading() noexcept {
-    const auto ws = game::fast_ptr(g_base + 0x72451C0);
+    const auto ws = game::fast_ptr(g_base + 0x724B350);
     if (!ws || !*ws) return false;
     const auto p = game::fast_ptr(*ws + 0x60);
     if (!p || !*p) return false;
@@ -2700,7 +2700,7 @@ void reload_refresh_pass() noexcept {
         size_t from_client = 0;
         {
             // Section 46: what the host's own client has (both players stand in the same place after the travel).
-            const auto ws = game::fast_ptr(g_base + 0x72451C0);
+            const auto ws = game::fast_ptr(g_base + 0x724B350);
             const auto mgr = ws && *ws ? game::fast_ptr(*ws + 0x30) : std::nullopt;
             const auto tab = mgr && *mgr ? game::fast_ptr(*mgr + 8) : std::nullopt;
             const auto nb = tab && *tab ? game::fast<uint32_t>(*tab + 0x88) : std::nullopt;
@@ -4613,9 +4613,9 @@ bool child_hold_install(bool children, bool observers, bool characters) {
     // Section 48: the observer serialiser's missing holder.
     {
         static const uint8_t kSerCall[] = {0x48, 0x8B, 0x4F, 0x08, 0x48, 0x8B, 0xD3, 0xE8};
-        if (code_ok(0x2353B40, kSerCall, sizeof kSerCall, "the observer serialiser's holder call")) {
-            g_ser_hook = safetyhook::create_mid(reinterpret_cast<void*>(g_base + 0x2353B47), &on_ser_holder);
-            log::info("Session2 serialiser fix (section 48): {}", g_ser_hook ? "ON (exe+0x2353B47: a missing holder is "
+        if (code_ok(0x23557B0, kSerCall, sizeof kSerCall, "the observer serialiser's holder call")) {
+            g_ser_hook = safetyhook::create_mid(reinterpret_cast<void*>(g_base + 0x23557B7), &on_ser_holder);
+            log::info("Session2 serialiser fix (section 48): {}", g_ser_hook ? "ON (exe+0x23557B7: a missing holder is "
                       "written as absent)" : "could NOT be hooked");
         }
     }

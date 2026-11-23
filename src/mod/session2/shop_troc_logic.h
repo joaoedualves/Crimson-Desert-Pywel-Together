@@ -11,7 +11,7 @@
 
 namespace cdmp::session2::shop_troc {
 
-inline bool retained_dispatch(uint32_t ret) { return ret == 0x2A0F114 || ret == 0x2A0F95D; }
+inline bool retained_dispatch(uint32_t ret) { return ret == 0x2A11894 || ret == 0x2A120DD; }
 
 struct MutationFacts {
     bool on = false, guest = false, current = false, retained = false;

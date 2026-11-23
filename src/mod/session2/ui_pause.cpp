@@ -53,7 +53,7 @@ using uip::Site;
 //   0x35CD9A6 sub rsp,0x30          48 83 EC 30
 //   0x35CD9AA mov rax,[rcx+0x38]    48 8B 41 38      (rcx: the only argument)
 // None is RIP-relative; the first one is (0x35CD9B4 vmovss xmm6,[rip+..] = 1.0f).
-constexpr uintptr_t kScale = 0x39191C0;
+constexpr uintptr_t kScale = 0x391D710;
 constexpr uint8_t kScaleHead[] = {0x48, 0x89, 0x5C, 0x24, 0x08, 0x48, 0x89, 0x6C, 0x24, 0x10,
                                   0x48, 0x89, 0x74, 0x24, 0x18, 0x48, 0x89, 0x7C, 0x24, 0x20,
                                   0x41, 0x56, 0x48, 0x83, 0xEC, 0x30, 0x48, 0x8B, 0x41, 0x38};
@@ -62,17 +62,17 @@ constexpr uint8_t kScaleHead[] = {0x48, 0x89, 0x5C, 0x24, 0x08, 0x48, 0x89, 0x6C
 // end on one of them.
 constexpr uint32_t kBoundaries[] = {5, 10, 15, 20, 22, 26, 30};
 // The callers (0xAD1300): 0xAD143C call (vf 0x160's scale) / 0xAD14D6 call (the dt).
-constexpr uintptr_t kCall1 = 0xC160EC, kCall2 = 0xC16186;
-constexpr uint8_t kCall1Bytes[] = {0xE8, 0xCF, 0x30, 0xD0, 0x02};
-constexpr uint8_t kCall2Bytes[] = {0xE8, 0x35, 0x30, 0xD0, 0x02};
-constexpr uintptr_t kRet1 = 0xC160F1, kRet2 = 0xC1618B;
+constexpr uintptr_t kCall1 = 0xC16B3C, kCall2 = 0xC16BD6;
+constexpr uint8_t kCall1Bytes[] = {0xE8, 0xCF, 0x6B, 0xD0, 0x02};
+constexpr uint8_t kCall2Bytes[] = {0xE8, 0x35, 0x6B, 0xD0, 0x02};
+constexpr uintptr_t kRet1 = 0xC16B41, kRet2 = 0xC16BDB;
 // vf 0x168 of every UI root: vmovss xmm0,[rip+..] (1.0f) ; ret.
-constexpr uintptr_t kTrivialVf = 0x63DA70;
+constexpr uintptr_t kTrivialVf = 0x63DDE0;
 constexpr uint8_t kTrivialVfBytes[] = {0xC5, 0xFA, 0x10, 0x05, 0x3C, 0x56, 0x73, 0x05, 0xC3};
 // FrameClock_NowMs 0x1416B80's globals (read only, from the drain thread).
-constexpr uintptr_t kClockLocal = 0x71600AD;  // u8: 1 = the per-frame scaled clock for every thread
-constexpr uintptr_t kClockBase = 0x71600E8;   // u64 ms
-constexpr uintptr_t kClockFrac = 0x71600F0;   // u64 us (added dt * 1e6 per frame, 0xAD19D3)
+constexpr uintptr_t kClockLocal = 0x716616D;  // u8: 1 = the per-frame scaled clock for every thread
+constexpr uintptr_t kClockBase = 0x71661A0;   // u64 ms
+constexpr uintptr_t kClockFrac = 0x71661B0;   // u64 us (added dt * 1e6 per frame, 0xAD19D3)
 
 constexpr uint32_t kOneBits = 0x3F800000;  // 1.0f
 constexpr uint32_t kSourceCheckEvery = 30;  // first-call frames between two walks while a UI value is in force
@@ -241,10 +241,10 @@ bool install() {
         std::span<const uint8_t> bytes;
         const char* what;
     };
-    const Ctx ctx[] = {{kScale, kScaleHead, "the UI time scale 0x39191C0 (30-byte prologue)"},
-                       {kCall1, kCall1Bytes, "its caller 0xC160EC"},
-                       {kCall2, kCall2Bytes, "its caller 0xC16186"},
-                       {kTrivialVf, kTrivialVfBytes, "the roots' vf 0x168 0x63DA70"}};
+    const Ctx ctx[] = {{kScale, kScaleHead, "the UI time scale 0x391D710 (30-byte prologue)"},
+                       {kCall1, kCall1Bytes, "its caller 0xC16B3C"},
+                       {kCall2, kCall2Bytes, "its caller 0xC16BD6"},
+                       {kTrivialVf, kTrivialVfBytes, "the roots' vf 0x168 0x63DDE0"}};
     for (const Ctx& c : ctx) {
         if (!gad::in_real_code(g_secs, static_cast<uint32_t>(c.rva), static_cast<uint32_t>(c.bytes.size()))) {
             const gad::Section* s = gad::section_of(g_secs, static_cast<uint32_t>(c.rva));
@@ -264,7 +264,7 @@ bool install() {
     };
     // P8 S26 (montura-regresion.md section 7.1): refused attempts logged and tried again (bounded), nothing written.
     auto h = game::prepare_inline(g_base + kScale, reinterpret_cast<void*>(&scale_detour), whole, "UiPause",
-                                  "scale 0x39191C0");
+                                  "scale 0x391D710");
     if (!h) {
         log::error("UiPause: the hook at exe+0x{:X} could not be prepared ({}); REFUSED", kScale,
                    game::inline_error_text(h.error()));
@@ -278,7 +278,7 @@ bool install() {
         return false;  // destroyed disabled: the game's code was never touched
     }
     g_patch = static_cast<uint32_t>(orig.size());
-    g_mark = freeze_watchdog_register("UiPause", "scale 0x39191C0 (detour + the game's original)");
+    g_mark = freeze_watchdog_register("UiPause", "scale 0x391D710 (detour + the game's original)");
     g_hook = std::move(*h);  // the detour calls through it: in place before enabling
     if (!g_hook.enable()) {
         log::error("UiPause: the hook at exe+0x{:X} could not be enabled; REFUSED", kScale);
@@ -308,7 +308,7 @@ std::string fmt_hit(const uip::ViewHit& h) {
                                            : std::string("a view without a UI root");
     return std::format("{} view 0x{:X} index {} state {} timeScale {}{}", root, h.view, h.index, h.state,
                        fmt_scale(h.scale_bits),
-                       h.custom_vf ? " [its root's vf 0x168 is not 0x63DA70: value not readable]" : "");
+                       h.custom_vf ? " [its root's vf 0x168 is not 0x63DDE0: value not readable]" : "");
 }
 
 std::string fmt_decision(const uip::Note& n) {
@@ -351,7 +351,7 @@ void format_event(const p8p::Event& e) {
         }
         if (n.walk.hits == 0) src += " | source: NO open view explains it";
     }
-    const char* site = n.site == Site::First ? "0xC160EC" : n.site == Site::Second ? "0xC16186" : "other caller";
+    const char* site = n.site == Site::First ? "0xC16B3C" : n.site == Site::Second ? "0xC16BD6" : "other caller";
     if (n.kind == uip::kEvTransition) {
         log::info("UiPause [{}] {}: UI timeScale {} -> {} ({}) | {} | session {} | seen at {}{} | previous episode: {} "
                   "frames ({} blocked)",
@@ -429,7 +429,7 @@ std::string startup_diag(const ClockSample& before, const ClockSample& now) {
     const game::HookTrapStats t = game::hook_trap_stats();
     std::string clock = "game clock unreadable";
     if (before.ok && now.ok) {
-        clock = std::format("game clock (0x163B030) {:+} ms in {} ms of wall time",
+        clock = std::format("game clock (0x163CBB0) {:+} ms in {} ms of wall time",
                             static_cast<int64_t>(now.game_ms - before.game_ms), now.wall_ms - before.wall_ms);
     }
     return std::format("{} | safetyhook trap handler: redirected {}, retried {} | passed on: execute {}, read/write {} | "
@@ -491,7 +491,7 @@ void watch_frames(FrameWatch& w) {
     const uint64_t now = GetTickCount64();
     if (calls != w.last_calls || !w.last_change_ms) {
         if (w.warned) {
-            log::info("UiPause: frames again (0x39191C0 called) after {} s without", (now - w.last_change_ms) / 1000);
+            log::info("UiPause: frames again (0x391D710 called) after {} s without", (now - w.last_change_ms) / 1000);
         }
         w.last_calls = calls;
         w.last_change_ms = now;
@@ -567,7 +567,7 @@ DWORD WINAPI ui_thread(LPVOID) {
             const bool scaled = bits != kOneBits;
             if ((scaled || clock_was_scaled) && c.ok && last_clock.ok) {
                 const uip::Decision d = uip::decide(mode, live, std::bit_cast<float>(bits));
-                log::info("UiPause clock: game clock (0x163B030) {:+} ms in {} ms of wall time | local clock byte {} | "
+                log::info("UiPause clock: game clock (0x163CBB0) {:+} ms in {} ms of wall time | local clock byte {} | "
                           "UI value now {} ({})",
                           static_cast<int64_t>(c.game_ms - last_clock.game_ms), c.wall_ms - last_clock.wall_ms,
                           c.local, fmt_scale(bits),

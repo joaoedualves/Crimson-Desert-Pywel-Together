@@ -16,7 +16,7 @@ namespace {
 // .pdata 209CB30..209CD2C; firma de 40 B única en .rsrc del exe 2976.
 // Primeras tres instrucciones mov [rsp+off], reg: 5+5+5 B, sin referencias RIP
 // ni saltos entrantes al interior. Únicas longitudes aceptadas: 5 y 15.
-constexpr uintptr_t kRva = 0x209CB30;
+constexpr uintptr_t kRva = 0x209E750;
 constexpr uint8_t kBytes[] = {0x48, 0x89, 0x5c, 0x24, 0x10, 0x48, 0x89, 0x6c,
                               0x24, 0x18, 0x48, 0x89, 0x74, 0x24, 0x20, 0x48,
                               0x89, 0x4c, 0x24, 0x08, 0x57, 0x41, 0x56, 0x41,
@@ -86,7 +86,7 @@ void enemy_damage_probe_start(std::string_view raw, bool host) {
       !gad::in_real_code(secs, static_cast<uint32_t>(kRva), sizeof kBytes) ||
       !game::fast_read(g_base + kRva, actual, sizeof actual) ||
       std::memcmp(actual, kBytes, sizeof actual) != 0) {
-    log::error("EnemyDamageProbe: 0x209CB30 no coincide con .rsrc 2976; no se "
+    log::error("EnemyDamageProbe: 0x209E750 no coincide con .rsrc 2976; no se "
                "instala");
     return;
   }
@@ -96,7 +96,7 @@ void enemy_damage_probe_start(std::string_view raw, bool host) {
   };
   auto h = game::prepare_inline(g_base + kRva,
                                 reinterpret_cast<void *>(&check_immune), accept,
-                                "EnemyDamageProbe", "0x209CB30 entrada");
+                                "EnemyDamageProbe", "0x209E750 entrada");
   if (!h || !accept(h->original_bytes())) {
     log::error("EnemyDamageProbe: gancho no preparado con instrucciones "
                "completas; no se instala");
@@ -110,7 +110,7 @@ void enemy_damage_probe_start(std::string_view raw, bool host) {
     log::error("EnemyDamageProbe: no se pudo habilitar; apagado");
     return;
   }
-  log::info("EnemyDamageProbe: {} SOLO OBSERVACION en 0x209CB30; retorno "
+  log::info("EnemyDamageProbe: {} SOLO OBSERVACION en 0x209E750; retorno "
             "intacto; vtable/caller separan "
             "actores cliente y servidor; no equivale a daño aplicado",
             raw);

@@ -35,9 +35,9 @@ using gsr::BindWhy;
 // The frame: 0xC0AFD0 lea rbp,[rsp-0x10A0] (rbp not written again in the function); [rbp-0x38] = the scene key
 // (0xC0B242), passed by address to 0xA9FEE0 and compared again here. 0xC0B5C1 (guest_seq_route's 2335 point) runs
 // first in the same call: 0xC0B5C1..0xC0B626 is straight-line code whose only call is 0xA9FEE0.
-constexpr uintptr_t kPoint = 0xD7346F;
+constexpr uintptr_t kPoint = 0xD73EBF;
 constexpr uint8_t kPointBytes[] = {0x48, 0x89, 0x45, 0xF8, 0x80, 0x7D, 0x08, 0x00, 0x74, 0x0E, 0x48, 0x8B, 0x4D, 0x20, 0x48, 0x8B};
-constexpr uint8_t kCallBytes[] = {0x48, 0x8B, 0x55, 0x00, 0x48, 0x8B, 0xC8, 0xE8, 0xA9, 0x01, 0xE7, 0xFF, 0x90, 0x48, 0x8D, 0x05, 0xF9, 0x26, 0xFD, 0x04};  // 0xC0B612
+constexpr uint8_t kCallBytes[] = {0x48, 0x8B, 0x55, 0x00, 0x48, 0x8B, 0xC8, 0xE8, 0xA9, 0x01, 0xE7, 0xFF, 0x90, 0x48, 0x8D, 0x05, 0x31, 0x6F, 0xFD, 0x04};  // 0xC0B612
 constexpr uint8_t kFrameBytes[] = {0x48, 0x8D, 0xAC, 0x24, 0x50, 0xEF, 0xFF, 0xFF};             // 0xC0AFD0
 constexpr uint8_t kKeyBytes[] = {0x48, 0x8B, 0x45, 0xB8, 0x48, 0x89, 0x45, 0xD0};               // 0xC0B242
 constexpr uint8_t kArgKeyBytes[] = {0x48, 0x8D, 0x4D, 0xD0, 0x48, 0x89, 0x4C, 0x24, 0x30};       // 0xC0B5EC
@@ -54,11 +54,11 @@ struct Body {
     uintptr_t rva, end;
     uint64_t fnv;
 };
-constexpr Body kBind{0xB2F430, 0xB2F6BF, 0x94460709C1F84E46ull};  // build 3663: 655 bytes (old 655)
-constexpr Body kFind{0x9C6280, 0x9C6465, 0x1CD8BB817741001Full};  // build 3663: 485 bytes (old 485)
-constexpr Body kRelease{0x1659380, 0x165941C, 0x3FA7949A2E381275ull};  // build 3663: 156 bytes (old 156)
-constexpr Body kLink{0x50BED0, 0x50C1A1, 0xCE9F55831A9D6E5Full};  // build 3663: 721 bytes (old 721)
-constexpr uintptr_t kVtHolderDtor = 0x5B40000;  // what the game writes into a holder before 0x1434880 (0x9F3206)
+constexpr Body kBind{0xB2FD70, 0xB2FFFF, 0xCAADE7DCA2DA7909ull};  // build 3663: 655 bytes (old 655)
+constexpr Body kFind{0x9C6B00, 0x9C6CE5, 0x6DCD276143308727ull};  // build 3663: 485 bytes (old 485)
+constexpr Body kRelease{0x165AF00, 0x165AF9C, 0x3FA7949A2E381275ull};  // build 3663: 156 bytes (old 156)
+constexpr Body kLink{0x50C2E0, 0x50C5B1, 0x0DBAED371BB2C07Dull};  // build 3663: 721 bytes (old 721)
+constexpr uintptr_t kVtHolderDtor = 0x5B45300;  // what the game writes into a holder before 0x1434880 (0x9F3206)
 constexpr uint32_t kTlsRealm = 0x1EB;           // the exe's TLS block byte: 0 client, 1 server (0xA9FF2A)
 
 using BindFn = void(__fastcall*)(uintptr_t comp, const uint64_t* key);
@@ -66,8 +66,8 @@ using FindFn = void*(__fastcall*)(uintptr_t mgr, void* holder, uint32_t key);
 using ReleaseFn = void(__fastcall*)(void* holder);
 
 // Structure offsets (guest_seq_route.cpp; the disassembly of 0x9F2FA0 / 0x9ED290).
-constexpr uintptr_t kVtStageManager = 0x59D57E8;  // pa::ClientSequencerStageManager
-constexpr uintptr_t kVtSeqPlayComp = 0x59CB770;   // pa::ClientSequencerPlayDataActorComponent
+constexpr uintptr_t kVtStageManager = 0x59DA8A8;  // pa::ClientSequencerStageManager
+constexpr uintptr_t kVtSeqPlayComp = 0x59D0850;   // pa::ClientSequencerPlayDataActorComponent
 constexpr uint32_t kActor_Key = 0x60, kActor_Comps = 0x68, kActor_Type = 0x88, kActor_C2 = 0xC2, kActor_CF = 0xCF;
 // u16 actor state (guest_lifecycle.h: 0x10 logged in, 0x20 logging out, 0x40 released). 0x8AE1A0 refuses an actor
 // without 0x10 (0x8AE2C9 test byte [rax+0x5e],0x10 ; je 0x8AE331: the empty holder). Session 12: 0x08 while loading.
@@ -98,7 +98,7 @@ std::atomic<uintptr_t> g_refused_rva{0};
 std::string refused_text() {
     switch (g_refused.load()) {
         case kRefNeedsRoute: return "guest_sched_route is not 1";
-        case kRefNo2335: return "guest_sched_route's 2335 point 0xC0B5C1 is not in (nothing would arm it)";
+        case kRefNo2335: return "guest_sched_route's 2335 point 0xC0C011 is not in (nothing would arm it)";
         case kRefCode: return "the handler's code around the point is not build 2976's";
         case kRefBody: return std::format("the body of exe+0x{:X} is not build 2976's", g_refused_rva.load());
         case kRefInstall: return "p8_install_mid refused it (see its line)";
@@ -288,7 +288,7 @@ bool guarded_find(uintptr_t mgr, Holder* h, uint32_t key) noexcept {
     __try {
         g_find(mgr, h, key);
         return true;
-    } __except (call_fault(GetExceptionInformation(), "0x9C6280(actor manager, &holder, key) took an NPC")) {
+    } __except (call_fault(GetExceptionInformation(), "0x9C6B00(actor manager, &holder, key) took an NPC")) {
         return false;  // never reached: the filter passes it on
     }
 }
@@ -296,7 +296,7 @@ bool guarded_bind(uintptr_t comp, const uint64_t* key) noexcept {
     __try {
         g_bind(comp, key);
         return true;
-    } __except (call_fault(GetExceptionInformation(), "0xB2F430(component, &scene key) bound an NPC to its stage")) {
+    } __except (call_fault(GetExceptionInformation(), "0xB2FD70(component, &scene key) bound an NPC to its stage")) {
         return false;
     }
 }
@@ -305,7 +305,7 @@ bool guarded_release(Holder* h) noexcept {
         *reinterpret_cast<uintptr_t*>(h->b) = g_base + kVtHolderDtor;  // as 0x9F3206..0x9F320D before the call
         g_release(h);
         return true;
-    } __except (call_fault(GetExceptionInformation(), "0x1659380(&holder) released an NPC's reference")) {
+    } __except (call_fault(GetExceptionInformation(), "0x165AF00(&holder) released an NPC's reference")) {
         return false;
     }
 }
@@ -733,14 +733,14 @@ std::string line_of(const p::Event& e) {
     const std::string when = p8_when(e.qpc_us);
     if (e.kind == kEPass) {
         if (v[0] == 1) {
-            return std::format("GuestSchedBind [2335 0xD7346F] {} T{} | scene 0x{:X} of character 0x{:08X} (resource "
-                               "0x{:08X}) | X 0x{:X}: NO stage with that key in X+0x148 after 0xBE3610 (its schedule "
+            return std::format("GuestSchedBind [2335 0xD73EBF] {} T{} | scene 0x{:X} of character 0x{:08X} (resource "
+                               "0x{:08X}) | X 0x{:X}: NO stage with that key in X+0x148 after 0xBE4060 (its schedule "
                                "file not in the container at this time: see 'GuestSchedLoad [lookup miss]'; or "
                                "deduplicated by wake spot / another kind): nothing to bind",
                                when, e.tid, v[2], static_cast<uint32_t>(v[1]), static_cast<uint32_t>(v[1] >> 32), v[5]);
         }
         return std::format(
-            "GuestSchedBind [2335 0xD7346F] {} T{} | scene 0x{:X} of character 0x{:08X} (resource 0x{:08X}) | stage "
+            "GuestSchedBind [2335 0xD73EBF] {} T{} | scene 0x{:X} of character 0x{:08X} (resource 0x{:08X}) | stage "
             "0x{:X} in X 0x{:X} (active +0x178 {}) | table: {} entries in {} buckets | its NPCs: {} with comp+0x318 0, "
             "{} already bound ({} to this stage: vf13 found it), {} without an AI node path | called {}: bound {}, "
             "still 0 {}; over the cap {}",
@@ -753,17 +753,17 @@ std::string line_of(const p::Event& e) {
         const std::string head = std::format(
             "GuestSchedBind [retry {}] {} T{} | NPC 0x{:08X} (owner 0x{:08X}, scene 0x{:X}, X 0x{:X}) | queued {} ms ago, "
             "{} passes not ready",
-            e.flags ? "frame 0x8B6144" : "2335 0xD7346F", when, e.tid, static_cast<uint32_t>(v[1]),
+            e.flags ? "frame 0x8B6864" : "2335 0xD73EBF", when, e.tid, static_cast<uint32_t>(v[1]),
             static_cast<uint32_t>(v[1] >> 32), v[2], v[8], v[9], v[10]);
         if (step != gsr::RetryStep::Call) return std::format("{} | dropped: {}", head, gsr::retry_step_name(step));
         const uint64_t f = v[6];
         const auto r = static_cast<BindResult>(v[0]);
         return std::format(
             "{} | comp 0x{:X} stage 0x{:X} (active +0x178 {}) | actor type {}, +0xC2 {}, +0xCF {}, AI mode [X1+0x66] {} | "
-            "0xB2F430: {}{}{}",
+            "0xB2FD70: {}{}{}",
             head, v[3], v[4], f & 0xFF, (f >> 16) & 0xFF, (f >> 32) & 0xFF, (f >> 40) & 0xFF, (f >> 24) & 0xFF,
             gsr::bind_result_name(r), v[5] ? std::format(": comp+0x318 0x{:X}", v[5]) : std::string(),
-            r == BindResult::Bound ? ((f >> 8) & 1 ? ", a node of it now carries the NPC (0x50BED0)"
+            r == BindResult::Bound ? ((f >> 8) & 1 ? ", a node of it now carries the NPC (0x50C2E0)"
                                                    : ", NO node carries the NPC (its node was taken)")
                                    : std::string());
     }
@@ -776,13 +776,13 @@ std::string line_of(const p::Event& e) {
         (f >> 16) & 0xFF, (f >> 32) & 0xFF, (f >> 40) & 0xFF, (f >> 48) & 1, (f >> 49) & 1, v[7],
         v[7] && v[7] != v[2] ? " (NOT this scene)" : "", (f >> 24) & 0xFF);
     if (e.kind == kECand) {
-        return std::format("GuestSchedBind [probe 0xD7346F] {} T{} | {} | WOULD call 0xB2F430(comp, &scene)", when,
+        return std::format("GuestSchedBind [probe 0xD73EBF] {} T{} | {} | WOULD call 0xB2FD70(comp, &scene)", when,
                            e.tid, npc);
     }
     const auto r = static_cast<BindResult>(v[0]);
-    return std::format("GuestSchedBind [0xB2F430] {} T{} | {} | {}{}{}", when, e.tid, npc, gsr::bind_result_name(r),
+    return std::format("GuestSchedBind [0xB2FD70] {} T{} | {} | {}{}{}", when, e.tid, npc, gsr::bind_result_name(r),
                        v[5] ? std::format(": comp+0x318 0x{:X}", v[5]) : std::string(),
-                       r == BindResult::Bound ? ((f >> 8) & 1 ? ", a node of it now carries the NPC (0x50BED0)"
+                       r == BindResult::Bound ? ((f >> 8) & 1 ? ", a node of it now carries the NPC (0x50C2E0)"
                                                               : ", NO node carries the NPC (its node was taken)")
                                               : std::string());
 }
@@ -823,8 +823,8 @@ void guest_sched_bind_install(uintptr_t base, std::span<const gad::Section> secs
     };
     if (!p2335_on) {
         why = kRefNo2335;
-    } else if (!bytes_at(0xD7345B, kCallBytes) || !bytes_at(0xD72C70, kFrameBytes) || !bytes_at(0xD72F71, kKeyBytes) ||
-               !bytes_at(0xD73435, kArgKeyBytes)) {
+    } else if (!bytes_at(0xD73EAB, kCallBytes) || !bytes_at(0xD736C0, kFrameBytes) || !bytes_at(0xD739C1, kKeyBytes) ||
+               !bytes_at(0xD73E85, kArgKeyBytes)) {
         why = kRefCode;
     } else {
         for (const Body* b : {&kBind, &kFind, &kRelease, &kLink}) {
@@ -840,7 +840,7 @@ void guest_sched_bind_install(uintptr_t base, std::span<const gad::Section> secs
         g_find = reinterpret_cast<FindFn>(base + kFind.rva);
         g_release = reinterpret_cast<ReleaseFn>(base + kRelease.rva);
         if (!p8_install_mid(base, secs, kPoint, 8, kPointBytes, on_point, g_hook, "GuestSchedBind",
-                            "after 0xBE3610 in the 2335 handler 0xD7346F")) {
+                            "after 0xBE4060 in the 2335 handler 0xD73EBF")) {
             why = kRefInstall;
         }
     }
@@ -850,13 +850,13 @@ void guest_sched_bind_install(uintptr_t base, std::span<const gad::Section> secs
         log::error("GuestSchedBind: NOT installed ({}): no NPC is re-bound", refused_text());
         return;
     }
-    log::info("GuestSchedBind {} (guest_sched_bind): point 0xD7346F (after 0xBE3610 in the 2335 handler) | for a 2335 "
+    log::info("GuestSchedBind {} (guest_sched_bind): point 0xD73EBF (after 0xBE4060 in the 2335 handler) | for a 2335 "
               "routed into X whose stage is now in X+0x148: the host character's NPCs of that scene with comp+0x318 0 "
-              "(client actor table, at most {} per 2335) {} | bodies checked: 0xB2F430 0x9C6280 0x1659380 0x50BED0",
+              "(client actor table, at most {} per 2335) {} | bodies checked: 0xB2FD70 0x9C6B00 0x165AF00 0x50C2E0",
               mode == gsr::Mode::On ? "ON" : "PROBE (lists them, calls nothing)", gsr::kBindCap,
-              mode == gsr::Mode::On ? "-> 0x9C6280 (a reference), 0xB2F430(comp, &scene), comp+0x318 read back, 0x1659380; "
+              mode == gsr::Mode::On ? "-> 0x9C6B00 (a reference), 0xB2FD70(comp, &scene), comp+0x318 read back, 0x165AF00; "
                                       "an NPC or owner not logged in yet (+0x5E & 0x10) is queued and retried from the "
-                                      "frame hook 0x8B6144 (guest_seq_play) once both are and M+0x231 == 3, else at the "
+                                      "frame hook 0x8B6864 (guest_seq_play) once both are and M+0x231 == 3, else at the "
                                       "next routed 2335 (every 250 ms at most, 32 calls per pass, 120 s per NPC)"
                                     : "are logged");
 }
@@ -931,9 +931,9 @@ void guest_sched_bind_tick() noexcept {
             }
         }
         const int m_state = g_m_state.load();
-        log::info("GuestSchedBind retry summary | queue now {} (queued {}, full {}) | passes: frame 0x8B6144 {} (frames "
+        log::info("GuestSchedBind retry summary | queue now {} (queued {}, full {}) | passes: frame 0x8B6864 {} (frames "
                   "seen {}{}), routed 2335 {}, realm not client {}, busy {} | this client's M+0x231 {} | outcomes:{} | "
-                  "retried calls {}:{} | refused by 0x9C6280 although logged in {} | stage active +0x178 at the retried "
+                  "retried calls {}:{} | refused by 0x9C6B00 although logged in {} | stage active +0x178 at the retried "
                   "calls: 0 {}, 1 {} | longest wait {} ms",
                   g_queue_n.load(), g_queued.load(), g_queue_full.load(), g_passes_frame.load(), g_frames_seen.load(),
                   g_frames_seen.load() ? "" : ": guest_seq_play's hook not in, only routed 2335s retry",

@@ -62,36 +62,36 @@ struct PointDef {
     const char* name;
 };
 constexpr uint8_t kCBytes[] = {0x4C, 0x89, 0x4C, 0x24, 0x20, 0x44, 0x88, 0x44, 0x24, 0x18};  // mov [rsp+20],r9 ; mov [rsp+18],r8b
-constexpr uint8_t kDBytes[] = {0xE9, 0x5B, 0x6A, 0xD7, 0x0B};  // jmp .xtls 0x10225FC0
-constexpr uint8_t kLBytes[] = {0xE9, 0xDB, 0xEA, 0xD6, 0x0B};  // jmp .xtls 0x102C2A30
+constexpr uint8_t kDBytes[] = {0xE9, 0x3B, 0x63, 0x61, 0x0B};  // jmp .xtls 0x10225FC0
+constexpr uint8_t kLBytes[] = {0xE9, 0xDB, 0x2F, 0x61, 0x0B};  // jmp .xtls 0x102C2A30
 constexpr uint8_t kUBytes[] = {0x48, 0x89, 0x5C, 0x24, 0x10, 0x48, 0x89, 0x6C, 0x24};  // mov [rsp+18],rbx ; mov [rsp+10],dl
 constexpr uint8_t kNBytes[] = {0x4C, 0x89, 0x4C, 0x24, 0x20, 0x48, 0x89, 0x54, 0x24, 0x10, 0x55};  // mov rax,rsp ; mov [rax+10],rbx
 constexpr uint8_t kTBytes[] = {0x48, 0x89, 0x5C, 0x24, 0x18, 0x44, 0x88, 0x4C, 0x24, 0x20};  // mov [rsp+18],rbx ; mov [rsp+20],r9b
-constexpr uint8_t kSBytes[] = {0xE9, 0x3B, 0x95, 0xD8, 0x0B};  // jmp .xtls 0x1025E4C0
-constexpr uint8_t kFBytes[] = {0xE9, 0x3B, 0x84, 0xD6, 0x0B};  // jmp .xtls 0x101FD480
+constexpr uint8_t kSBytes[] = {0xE9, 0x6B, 0xF5, 0x62, 0x0B};  // jmp .xtls 0x1025E4C0
+constexpr uint8_t kFBytes[] = {0xE9, 0x1B, 0x1C, 0x61, 0x0B};  // jmp .xtls 0x101FD480
 constexpr uint8_t kPBytes[] = {0x48, 0x89, 0x5C, 0x24, 0x10, 0x4C, 0x89, 0x4C, 0x24, 0x20};  // mov [rsp+10],rbx ; mov [rsp+20],r9
 // U-0b (S29): ServerActor::Logout's thunk (actor rcx, out rdx, reason r8b, error r9d; [rsp] the caller).
-constexpr uint8_t kOBytes[] = {0xE9, 0x1B, 0xD9, 0x9E, 0x0A};  // jmp .xtls 0xE0D9AF0
+constexpr uint8_t kOBytes[] = {0xE9, 0x4B, 0xF2, 0x42, 0x0A};  // jmp .xtls 0xE0D9AF0
 
 enum Pt : uint8_t { kPtC, kPtD, kPtL, kPtU, kPtN, kPtT, kPtS, kPtF, kPtP, kPtO, kPtCount };
 const PointDef kPoints[kPtCount] = {
-    {0x2AC0BA0, 5, kCBytes, "C, the stage close (ServerNPCScheduleStage vf13) 0x2AC0BA0"},
-    {0x2AB0E50, 5, kDBytes, "D, DeleteStage of the schedule spawn manager 0x2AB0E50"},
-    {0x2B3E530, 5, kLBytes, "L, the owner's load step 0x2B3E530"},
-    {0x2B3E3A0, 5, kUBytes, "U, the manager's unload-all 0x2B3E3A0"},
-    {0x2AAF800, 5, kNBytes, "N, the schedule stage creation 0x2AAF800"},
-    {0x2B3E690, 5, kTBytes, "T, the 2043 tick 0x2B3E690"},
-    {0x2ACDF90, 5, kSBytes, "S, the schedule update 0x2ACDF90"},
-    {0x2AA1B70, 5, kFBytes, "F, the faction spawn update 0x2AA1B70"},
-    {0x2B3F9B0, 5, kPBytes, "P, the manager's preparation 0x2B3F9B0"},
-    {0x2294C50, 5, kOBytes, "O, ServerActor::Logout 0x2294C50 (reasons and callers)"},
+    {0x2AC32F0, 5, kCBytes, "C, the stage close (ServerNPCScheduleStage vf13) 0x2AC32F0"},
+    {0x2AB35A0, 5, kDBytes, "D, DeleteStage of the schedule spawn manager 0x2AB35A0"},
+    {0x2B40C80, 5, kLBytes, "L, the owner's load step 0x2B40C80"},
+    {0x2B40AF0, 5, kUBytes, "U, the manager's unload-all 0x2B40AF0"},
+    {0x2AB1F50, 5, kNBytes, "N, the schedule stage creation 0x2AB1F50"},
+    {0x2B40DE0, 5, kTBytes, "T, the 2043 tick 0x2B40DE0"},
+    {0x2AD06E0, 5, kSBytes, "S, the schedule update 0x2AD06E0"},
+    {0x2AA42C0, 5, kFBytes, "F, the faction spawn update 0x2AA42C0"},
+    {0x2B42100, 5, kPBytes, "P, the manager's preparation 0x2B42100"},
+    {0x2296870, 5, kOBytes, "O, ServerActor::Logout 0x2296870 (reasons and callers)"},
 };
 
 // U-a: the owner gate (ShopProbe's point; this module installs it only when shop_probe is off).
 //   0x288B867 mov rax,[r13+0xA0] ; test ; je ; mov eax,[rax+0x60] ; jmp ; mov eax,esi
 //   0x288B87A cmp [r15+0x180],eax (41 39 87 80 01 00 00) ; 0x288B881 jne 0x288BDEE (not patched; 0x288B876 jumps to
 //   the patch's first byte)
-constexpr uintptr_t kGate = 0x2B4D72A, kGateCtx = 0x2B4D716;
+constexpr uintptr_t kGate = 0x2B4FE7A, kGateCtx = 0x2B4FE66;
 constexpr uint32_t kGatePatch = 7;
 constexpr uint8_t kGateBytes[] = {0x41, 0x39, 0x87, 0x80, 0x01, 0x00, 0x00, 0x0F, 0x85, 0x80, 0x05, 0x00, 0x00};
 constexpr uint8_t kGateCtxBytes[] = {0x49, 0x8B, 0x85, 0xA0, 0x00, 0x00, 0x00, 0x48, 0x85, 0xC0, 0x74, 0x05, 0x8B, 0x40, 0x60, 0xEB, 0x03, 0x41, 0x8B};
@@ -109,11 +109,11 @@ constexpr uint8_t kGateCtxBytes[] = {0x49, 0x8B, 0x85, 0xA0, 0x00, 0x00, 0x00, 0
 // c827729: FindUser on user 2's key fails in its logout window -> rbx 0 -> a null read in 0x387EF0). Frame (prologue:
 // 8 pushes, sub rsp 0x1C2C8): the caller's rsi at [rsp+0x1C2F0], the return address at [rsp+0x1C308], the field
 // (rdx's home slot) at [rsp+0x1C318].
-constexpr uintptr_t kGate2 = 0x2BE40DA, kGate2Ctx = 0x2BE409B;
+constexpr uintptr_t kGate2 = 0x2BE6AFA, kGate2Ctx = 0x2BE6ABB;
 constexpr uint32_t kGate2Patch = 7;
-constexpr uint8_t kGate2Bytes[] = {0x48, 0x8B, 0xD3, 0x48, 0x8D, 0x4D, 0x98, 0xE8, 0x5A, 0x4B, 0x7F, 0xFD, 0x90, 0xBB, 0x01, 0x00, 0x00, 0x00};
-constexpr uint8_t kGate2CtxBytes[] = {0xE8, 0x80, 0x4B, 0x19, 0x00, 0x90, 0x80, 0x7D, 0xB8, 0x00, 0x75, 0x05, 0x49, 0x8B, 0xDF, 0xEB, 0x1A, 0x48, 0x8B, 0x45, 0xB0, 0x48, 0x8B, 0x88, 0xD0, 0x00, 0x00, 0x00, 0x48, 0x8B, 0x41, 0x68, 0x48, 0x8B, 0x88, 0xA8, 0x00, 0x00, 0x00, 0x48, 0x8B, 0x59, 0x18};
-constexpr uint32_t kG2_CallerRsi = 0x1C2F0, kG2_Ret = 0x1C308, kG2_Field = 0x1C318, kG2_RetRva = 0x2B42994;
+constexpr uint8_t kGate2Bytes[] = {0x48, 0x8B, 0xD3, 0x48, 0x8D, 0x4D, 0x98, 0xE8, 0x4A, 0x25, 0x7F, 0xFD, 0x90, 0xBB, 0x01, 0x00, 0x00, 0x00};
+constexpr uint8_t kGate2CtxBytes[] = {0xE8, 0xF0, 0x6B, 0x19, 0x00, 0x90, 0x80, 0x7D, 0xB8, 0x00, 0x75, 0x05, 0x49, 0x8B, 0xDF, 0xEB, 0x1A, 0x48, 0x8B, 0x45, 0xB0, 0x48, 0x8B, 0x88, 0xD0, 0x00, 0x00, 0x00, 0x48, 0x8B, 0x41, 0x68, 0x48, 0x8B, 0x88, 0xA8, 0x00, 0x00, 0x00, 0x48, 0x8B, 0x59, 0x18};
+constexpr uint32_t kG2_CallerRsi = 0x1C2F0, kG2_Ret = 0x1C308, kG2_Field = 0x1C318, kG2_RetRva = 0x2B450E4;
 // H (log only, the 288f87b run: second gate passed 42, elements still 0): inside the cell evaluation 0x28818F0,
 // right after 0x2883AA0(mgr, ctx) and the save manager's call (0x2881A13):
 //   0x2881A19 xor edx,edx ; mov [rsp+0x70],rdx   (7 bytes; no branch of the exe lands inside, raw scan)
@@ -122,13 +122,13 @@ constexpr uint32_t kG2_CallerRsi = 0x1C2F0, kG2_Ret = 0x1C308, kG2_Field = 0x1C3
 // id list [mgr+0x150]/+0x158 (what the element loop walks), its active map count +0x74, the list +0xF0, the context's
 // quest manager [+0x10]'s key, [+0x178], [+0x186]/[+0x188] (the two ids accepted outright) and its stage-state map
 // count [+0x4C] (the third acceptance case).
-constexpr uintptr_t kEval = 0x2B429D9, kEvalCtx = 0x2B429C4;
+constexpr uintptr_t kEval = 0x2B45129, kEvalCtx = 0x2B45114;
 constexpr uint32_t kEvalPatch = 7;
 constexpr uint8_t kEvalBytes[] = {0x33, 0xD2, 0x48, 0x89, 0x54, 0x24, 0x70};
-constexpr uint8_t kEvalCtxBytes[] = {0x48, 0x8D, 0x55, 0x10, 0x48, 0x8B, 0x0D, 0xF9, 0x2C, 0x70, 0x04, 0x48, 0x8B, 0x49, 0x08, 0xE8, 0x28, 0x65, 0xED, 0xFE, 0x90};
+constexpr uint8_t kEvalCtxBytes[] = {0x48, 0x8D, 0x55, 0x10, 0x48, 0x8B, 0x0D, 0x39, 0x67, 0x70, 0x04, 0x48, 0x8B, 0x49, 0x08, 0xE8, 0x48, 0x5A, 0xED, 0xFE, 0x90};
 // U-f: the stage element 0x288A970(mgr rcx, int* res rdx, stage r8, element r9, a5 [rsp+0x28]); one caller,
 // 0x288760C in 0x2885BD0. Entry: mov [rsp+8],rbx (5 bytes, the inline hook's jmp) ; mov [rsp+0x10],rsi ...
-constexpr uintptr_t kElem = 0x2B4C6E0;
+constexpr uintptr_t kElem = 0x2B4EE30;
 constexpr uint32_t kElemPatch = 5;
 constexpr uint8_t kElemBytes[] = {0x48, 0x89, 0x5C, 0x24, 0x08, 0x48, 0x89, 0x74, 0x24, 0x10, 0x48, 0x89, 0x7C, 0x24, 0x18};
 constexpr uint32_t kElem_Res = 0x08, kElem_Schedule = 0x10, kElem_Class2 = 0x18;
@@ -141,18 +141,18 @@ constexpr uint32_t kElem_Res = 0x08, kElem_Schedule = 0x10, kElem_Class2 = 0x18;
 // (user 2's manager made 0x268D4087 six times at six places).
 constexpr uint32_t kElem_Pos = 0x20C, kStage_Id = 0x08, kPlay_Pos = 0x38;
 // What 0x288A970 stores in *res when the schedule creation gave no stage (0x288AD21: mov eax,[exe+0x6CF7DFC] ; mov [r14],eax).
-constexpr uintptr_t kNoStageCode = 0x6CF7DFC;
+constexpr uintptr_t kNoStageCode = 0x6CFD774;
 // U-c / U-d: the functions called (first bytes compared before the module's hooks are written).
-constexpr uintptr_t kArmFn = 0x2B3FF00;      // thunk -> .xtls 0x102CA7F0(mgr): +0x6A0 = 2, the cell tables cleared
-constexpr uint8_t kArmFnBytes[] = {0xE9, 0x2B, 0x3B, 0xD7, 0x0B};
-constexpr uintptr_t kLoadFn = 0x2B3E530;     // thunk -> .xtls 0x102C2A30(mgr, u8, u8): +0x6A0 = 1 + an immediate 2043
-constexpr uintptr_t kUnloadFn = 0x2B3E3A0;   // (mgr, u8, u8): every stage of the manager closed (reason 19)
-constexpr uintptr_t kEnqueueFn = 0x2A0F2A0;  // thunk -> .xtls 0x100B4050: ServerNet::EnqueueTimer
-constexpr uint8_t kEnqueueFnBytes[] = {0xE9, 0x7B, 0x5B, 0xCE, 0x0B};
-constexpr uintptr_t kServerNetSlot = 0x72456B8;   // [exe+...] = g_ServerNet (0x287F188)
-constexpr uintptr_t kPeriodSlot = 0x71DF338;      // i32: the 2043 period / 10 ms (0x287F139)
-constexpr uintptr_t kTroc2043Slot = 0x747EC70;    // the periodic 2043's Troc (0x287F171; set by the host's 0x287EF60)
-constexpr uintptr_t kZeroCell = 0x5970B48;        // the 8-byte zero cell copied into the payload (0x287F0DB)
+constexpr uintptr_t kArmFn = 0x2B42650;      // thunk -> .xtls 0x102CA7F0(mgr): +0x6A0 = 2, the cell tables cleared
+constexpr uint8_t kArmFnBytes[] = {0xE9, 0xDB, 0x89, 0x61, 0x0B};
+constexpr uintptr_t kLoadFn = 0x2B40C80;     // thunk -> .xtls 0x102C2A30(mgr, u8, u8): +0x6A0 = 1 + an immediate 2043
+constexpr uintptr_t kUnloadFn = 0x2B40AF0;   // (mgr, u8, u8): every stage of the manager closed (reason 19)
+constexpr uintptr_t kEnqueueFn = 0x2A11A20;  // thunk -> .xtls 0x100B4050: ServerNet::EnqueueTimer
+constexpr uint8_t kEnqueueFnBytes[] = {0xE9, 0xEB, 0x71, 0x54, 0x0B};
+constexpr uintptr_t kServerNetSlot = 0x724B848;   // [exe+...] = g_ServerNet (0x287F188)
+constexpr uintptr_t kPeriodSlot = 0x71E5478;      // i32: the 2043 period / 10 ms (0x287F139)
+constexpr uintptr_t kTroc2043Slot = 0x7484EB0;    // the periodic 2043's Troc (0x287F171; set by the host's 0x287EF60)
+constexpr uintptr_t kZeroCell = 0x5975BC8;        // the 8-byte zero cell copied into the payload (0x287F0DB)
 constexpr uint16_t kOp2322 = 2941, kOp2335 = 2224, kOp2126 = 2338, kOp2958 = 3099, kOp2909 = 2509;
 constexpr uint16_t kOp2283 = 3018, kOp2362 = 2887, kOp2437 = 2350, kOp2001 = 2001;
 
@@ -166,9 +166,9 @@ constexpr uint16_t kOp2283 = 3018, kOp2362 = 2887, kOp2437 = 2350, kOp2001 = 200
 // Called once per arm, inside its first armed tick at the owner gate (0x288B87A, inside 0x288B7A0 under 0x287DBB0 in
 // its 2043 Troc: the field attached, no manager lock held), with r12 = 0x288B7A0's 4th argument, the same actor the
 // tick passes to 0x287EF60 (0x287DCC2: r9 = [rbp-0x41]).
-constexpr uintptr_t kListFn = 0x2B595B0;
+constexpr uintptr_t kListFn = 0x2B5BD00;
 constexpr uint8_t kListFnBytes[] = {0x4C, 0x89, 0x44, 0x24, 0x18, 0x48, 0x89, 0x54, 0x24, 0x10, 0x48, 0x89, 0x4C, 0x24, 0x08};
-constexpr uintptr_t kInterestFn = 0x2B405E0;
+constexpr uintptr_t kInterestFn = 0x2B42D30;
 constexpr uint8_t kInterestFnBytes[] = {0x48, 0x89, 0x5C, 0x24, 0x20, 0x48, 0x89, 0x4C, 0x24, 0x08};
 using ListFn = void(__fastcall*)(uintptr_t mgr, uintptr_t field, uintptr_t actor);
 using InterestFn = void(__fastcall*)(uintptr_t mgr, uintptr_t field);
@@ -269,7 +269,7 @@ std::atomic<uint64_t> g_tick_vf40_own{0};
 // user 2's quest manager made the NPCs' buffs flip (ApplyBuffAck x13743, UnapplyBuffAck x2494 to the peer, 95x the
 // run before): only the context builder's call (return 0x2880D74) gets it now; the others are counted.
 std::atomic<uint64_t> g_tick_vf40_other{0};
-constexpr uint32_t kCtxVf40Ret = 0x2B41A82;
+constexpr uint32_t kCtxVf40Ret = 0x2B441D2;
 // The other vf48 calls inside its armed 2043 tick answered with its own manager (review M3, the 753f275 run).
 std::atomic<uint64_t> g_tick_vf48_own{0};
 // U-f2: schedule elements not created because the other player's manager has that stage alive (user 2's / the host's).
@@ -2702,7 +2702,7 @@ bool guarded_arm(uintptr_t mgr) noexcept {
     __try {
         reinterpret_cast<ArmFn>(g_base + kArmFn)(mgr);
         return true;
-    } __except (call_fault(GetExceptionInformation(), "0x2B3FF00(user 2's manager): the arm")) {
+    } __except (call_fault(GetExceptionInformation(), "0x2B42650(user 2's manager): the arm")) {
         return false;
     }
 }
@@ -2710,7 +2710,7 @@ bool guarded_load(uintptr_t mgr) noexcept {
     __try {
         reinterpret_cast<LoadFn>(g_base + kLoadFn)(mgr, 0, 0);
         return true;
-    } __except (call_fault(GetExceptionInformation(), "0x2B3E530(user 2's manager, 0, 0): the drain")) {
+    } __except (call_fault(GetExceptionInformation(), "0x2B40C80(user 2's manager, 0, 0): the drain")) {
         return false;
     }
 }
@@ -2718,7 +2718,7 @@ bool guarded_unload(uintptr_t mgr) noexcept {
     __try {
         reinterpret_cast<UnloadFn>(g_base + kUnloadFn)(mgr, 0, 0);
         return true;
-    } __except (call_fault(GetExceptionInformation(), "0x2B3E3A0(user 2's manager, 0, 0): the synchronous unload")) {
+    } __except (call_fault(GetExceptionInformation(), "0x2B40AF0(user 2's manager, 0, 0): the synchronous unload")) {
         return false;
     }
 }
@@ -2727,7 +2727,7 @@ bool guarded_lists(uintptr_t mgr, uintptr_t field, uintptr_t actor) noexcept {
         reinterpret_cast<ListFn>(g_base + kListFn)(mgr, field, actor);
         reinterpret_cast<InterestFn>(g_base + kInterestFn)(mgr, field);
         return true;
-    } __except (call_fault(GetExceptionInformation(), "0x2B595B0 / 0x2B405E0(user 2's manager): its id list and tables")) {
+    } __except (call_fault(GetExceptionInformation(), "0x2B5BD00 / 0x2B42D30(user 2's manager): its id list and tables")) {
         return false;
     }
 }
@@ -2737,7 +2737,7 @@ bool guarded_enqueue(uintptr_t net, int* res, uint32_t delay, uintptr_t actor, c
         reinterpret_cast<EnqueueFn>(g_base + kEnqueueFn)(net, res, delay, actor, cell, troc, payload,
                                                           static_cast<uint16_t>(u2s::kTimerPayload));
         return true;
-    } __except (call_fault(GetExceptionInformation(), "ServerNet::EnqueueTimer 0x2A0F2A0: user 2's 2043")) {
+    } __except (call_fault(GetExceptionInformation(), "ServerNet::EnqueueTimer 0x2A11A20: user 2's 2043")) {
         return false;
     }
 }
@@ -2763,7 +2763,7 @@ const char* arm_why_name(uint64_t w) {
         case kWhyAfter: return "the arm ran but its state is not 2";
         case kWhyAborted: return "U-1 aborted";
         case kWhyDist: return "user 2 is no longer >= 10 cells from the host in the same field";
-        case kWhySlots: return "ServerNet [exe+0x72456B8], the 2043 Troc [exe+0x747EC70] or the period read 0";
+        case kWhySlots: return "ServerNet [exe+0x724B848], the 2043 Troc [exe+0x7484EB0] or the period read 0";
         case kWhyBusy: return "another arm / drain / cleanup of this module was running (asked again)";
         case kWhyFastStale:
             return "a FAST arm no longer valid at the Req (user 2 loading / leaving, or g_p_draining held: a drain at "
@@ -3091,9 +3091,9 @@ bool drain_now(uintptr_t mgr, bool sync, uint16_t op, Cause cause) noexcept {
 // cdmp_FieldAttacher__dtor 0x1434880). Inside it, with the full key and [+0x90] == user 2's key checked,
 // ServerActor::Logout 0x2068340(actor, &out, 0x19, [exe+0x6CF76F8]): the collector's own call (0x2C38F02..0x2C38F14);
 // the client AI's 2291 reaches Logout(42) inside its Req's actor scope too (0x2AC6EA4).
-constexpr uintptr_t kFindActorFn = 0x2D78E40, kScopeDtorFn = 0x1659380, kLookupSlot = 0x72456D0,
-                    kVtScopeBase = 0x5B40000, kLogoutFn = 0x2294C50, kLogoutErrSlot = 0x71D0724,
-                    kAlreadyLogoutingSlot = 0x71B2838;  // eErrNoUserAlreadyLogouting, Logout's out when already leaving
+constexpr uintptr_t kFindActorFn = 0x2D7D8D0, kScopeDtorFn = 0x165AF00, kLookupSlot = 0x724B860,
+                    kVtScopeBase = 0x5B45300, kLogoutFn = 0x2296870, kLogoutErrSlot = 0x71D6864,
+                    kAlreadyLogoutingSlot = 0x71B8978;  // eErrNoUserAlreadyLogouting, Logout's out when already leaving
 constexpr uint8_t kFindActorBytes[] = {0x44, 0x89, 0x44, 0x24, 0x18, 0x48, 0x89, 0x54, 0x24, 0x10};
 constexpr uint8_t kScopeDtorBytes[] = {0x48, 0x89, 0x5C, 0x24, 0x10, 0x48, 0x89, 0x74, 0x24, 0x18};
 using FindActorFn = void*(__fastcall*)(uintptr_t sam, void* scope, uint32_t key);
@@ -5717,7 +5717,7 @@ bool g_abort_logged = false;
 std::string mode1_missing() {
     std::string s;
     if (!g_gate_own.load() && !shop_probe_gate_live()) s += " the owner gate (U-a) is not hooked;";
-    if (!g_gate2_on.load()) s += " the collector's manager guard 0x2BE40DA (U-a2) is not hooked;";
+    if (!g_gate2_on.load()) s += " the collector's manager guard 0x2BE6AFA (U-a2) is not hooked;";
     if (!g_elem_on.load()) s += " the element filter (U-f) is not hooked;";
     if (!user2_funnels_vf48_live()) s += " user2_funnels' vf48 / subject hooks (U-b) are not live;";
     if (!g_calls_ok.load()) s += " the called functions are not build 2976's;";
@@ -6494,12 +6494,12 @@ std::string line_of(const p::Event& e) {
                                when, e.tid, v[0], static_cast<uint32_t>(v[1]), u2s::who_name(w), v[2],
                                ret_text(static_cast<uint32_t>(v[3])));
         case kELoad:
-            return std::format("User2Stages [owner load] {} T{} | 0x2B3E530(mgr, {}, {}) puts the manager 0x{:X} of "
+            return std::format("User2Stages [owner load] {} T{} | 0x2B40C80(mgr, {}, {}) puts the manager 0x{:X} of "
                                "0x{:08X} ({}) in state 1 (was {}) | ExecuteTroc subject: {} (opcode {})",
                                when, e.tid, v[5], v[6], v[0], static_cast<uint32_t>(v[1]), u2s::who_name(w), v[4],
                                v[2] ? "user 2" : "none (the host's or another)", v[3]);
         case kEUnload:
-            return std::format("User2Stages [unload] {} T{} | 0x2B3E3A0 on the manager 0x{:X} of 0x{:08X} ({}) state {} | "
+            return std::format("User2Stages [unload] {} T{} | 0x2B40AF0 on the manager 0x{:X} of 0x{:08X} ({}) state {} | "
                                "lists: sequencers {} schedules {} factions {} | subject {}",
                                when, e.tid, v[0], static_cast<uint32_t>(v[1]), u2s::who_name(w), v[5], v[2], v[3], v[4],
                                v[6] ? "user 2" : "none");
@@ -6536,7 +6536,7 @@ std::string line_of(const p::Event& e) {
                                ret_text(static_cast<uint32_t>(v[2])), cells(v[3]), cells(v[4]));
         }
         case kEPrep:
-            return std::format("User2Stages [prepare] {} T{} | 0x2B3F9B0 on the manager 0x{:X} of 0x{:08X} ({}) state {} "
+            return std::format("User2Stages [prepare] {} T{} | 0x2B42100 on the manager 0x{:X} of 0x{:08X} ({}) state {} "
                                "for character 0x{:08X} | subject {} (opcode {})",
                                when, e.tid, v[0], static_cast<uint32_t>(v[1]), u2s::who_name(w), v[3],
                                static_cast<uint32_t>(v[2]), v[4] ? "user 2" : "none", v[5]);
@@ -6544,7 +6544,7 @@ std::string line_of(const p::Event& e) {
             switch (static_cast<Ctl>(v[0])) {
                 case kCtlArm:
                     return std::format(
-                        "User2Stages [ARMED] {} T{} | 0x2B3FF00 on user 2's manager 0x{:X}: state {} -> {} ({}) | "
+                        "User2Stages [ARMED] {} T{} | 0x2B42650 on user 2's manager 0x{:X}: state {} -> {} ({}) | "
                         "before it, its map +0x70 {} +0x74 {} | its 2043 chain: {} | at the exit of its Req {} | the "
                         "gate (U-a) is live{}",
                         when, e.tid, v[1], v[2], v[3], arm_why_name(v[6]), static_cast<uint32_t>(v[7]),
@@ -6600,22 +6600,22 @@ std::string line_of(const p::Event& e) {
                                            : std::string(),
                                        v[5]);
                 case kCtlDrain:
-                    return std::format("User2Stages [DRAINED] {} T{} | {} | 0x2B3E530 on user 2's manager 0x{:X}: state {} "
-                                       "-> {} (its immediate 2043 runs 0x2B3E3A0 on it: its stages close with reason 19) "
+                    return std::format("User2Stages [DRAINED] {} T{} | {} | 0x2B40C80 on user 2's manager 0x{:X}: state {} "
+                                       "-> {} (its immediate 2043 runs 0x2B40AF0 on it: its stages close with reason 19) "
                                        "| at the exit of its Req {}",
                                        when, e.tid, cause_name(v[4]), v[1], v[2], v[3], v[5]);
                 case kCtlDrainSync:
-                    return std::format("User2Stages [DRAINED now] {} T{} | {} | 0x2B3E530 + 0x2B3E3A0 on user 2's manager "
+                    return std::format("User2Stages [DRAINED now] {} T{} | {} | 0x2B40C80 + 0x2B40AF0 on user 2's manager "
                                        "0x{:X}: state {} -> {} | {}",
                                        when, e.tid, cause_name(v[4]), v[1], v[2], v[3],
                                        v[4] == kCauseHostPrep
-                                           ? std::string("at the host's preparation 0x2B3F9B0, before its evaluation")
+                                           ? std::string("at the host's preparation 0x2B42100, before its evaluation")
                                        : (v[5] & 0xF000) == 0xF000
                                            ? std::format("at ServerActor::Logout of its character (reason {})",
                                                          v[5] & 0xFFF)
                                            : std::format("before its {} reaches the game", v[5]));
                 case kCtlBuilt:
-                    return std::format("User2Stages [lists built] {} T{} | 0x2B595B0 + 0x2B405E0 on user 2's manager 0x{:X} "
+                    return std::format("User2Stages [lists built] {} T{} | 0x2B5BD00 + 0x2B42D30 on user 2's manager 0x{:X} "
                                        "(the native preparation's steps after its arm) | id list [+0x150] {} -> {} | "
                                        "category table [+0x408] {} | actor 0x{:X} (key 0x{:08X})",
                                        when, e.tid, v[1], v[2], v[3], v[4], v[6], static_cast<uint32_t>(v[7]));
@@ -6636,8 +6636,8 @@ std::string line_of(const p::Event& e) {
                         return std::format("User2Stages [control cleanup] {} T{} | SKIPPED: {} ({} NPC(s) still given to "
                                            "user 2 wait for the next round) | Troc {}",
                                            when, e.tid,
-                                           v[9] == 1 ? "the actor lookup [exe+0x72456D0] is 0"
-                                                     : "the actor lookup's SAM pointer [[exe+0x72456D0]] is 0",
+                                           v[9] == 1 ? "the actor lookup [exe+0x724B860] is 0"
+                                                     : "the actor lookup's SAM pointer [[exe+0x724B860]] is 0",
                                            v[1], v[5]);
                     }
                     return std::format("User2Stages [control cleanup] {} T{} | {}: {} NPC(s) still given to user 2 -> "
@@ -6732,7 +6732,7 @@ std::string line_of(const p::Event& e) {
         case kENpcCtl:
             return std::format("User2Stages [{}] {} T{} | NPC 0x{:08X} (type {}) of user 2's stage "
                                "(CreateServerActorDesc_NPCSchedule, born in its {}; its vf48 gave its own manager: {}): "
-                               "controller 0x{:08X} (the field owner, the host) {} 0x{:08X} (user 2) at 0x2A2F43B{} | "
+                               "controller 0x{:08X} (the field owner, the host) {} 0x{:08X} (user 2) at 0x2A31BBB{} | "
                                "schedule handle data 0x{:08X} node 0x{:X} [H]: a live stage of it in user 2's manager "
                                "0x{:X}, in the host's 0x{:X}",
                                v[5] ? "control" : "would control", when, e.tid, static_cast<uint32_t>(v[0]), v[3], v[4],
@@ -6744,7 +6744,7 @@ std::string line_of(const p::Event& e) {
             const auto ret = static_cast<uint32_t>(v[1]);
             const auto cnt = [](uint64_t x, int sh) { return static_cast<uint32_t>((x >> sh) & 0xFFFFF); };
             const uint64_t since_ms = v[11] >> 32;
-            return std::format("User2Stages [{}] {} T{} | 0x2B3F9B0 on the host's manager (state {}) called from {} "
+            return std::format("User2Stages [{}] {} T{} | 0x2B42100 on the host's manager (state {}) called from {} "
                                "({}) | {} | user 2's Trocs in flight {} | U-1 armed {}{}{} | the last drain of user 2's "
                                "manager {} | ExecuteTroc subject {} (opcode {}) | distance {} (off threshold {}) | user "
                                "2's manager 0x{:X} state {}, lists: sequencers {} schedules {} factions {} | {}",
@@ -6762,7 +6762,7 @@ std::string line_of(const p::Event& e) {
                                (v[3] & 0xFF) ? "user 2" : "none (the host's or another)", v[3] >> 8,
                                v[4] == UINT32_MAX ? std::string("unknown") : std::format("{} cells", v[4]),
                                u2s::Thresholds{}.off_cells, v[5], v[6], cnt(v[7], 0), cnt(v[7], 20), cnt(v[7], 40),
-                               v[10] == 2   ? std::string("user 2's manager drained now (0x2B3E530 + 0x2B3E3A0): see "
+                               v[10] == 2   ? std::string("user 2's manager drained now (0x2B40C80 + 0x2B40AF0): see "
                                                           "'DRAINED now'")
                                : v[10] == 1 ? std::string("probe: nothing called")
                                             : std::format("not drained: {}", u2s::prep_drain_name(pd)));
@@ -6944,7 +6944,7 @@ std::string ctl_text() {
     }
     const u2s::CtlStats& st = g_ctl_last_stats;
     return std::format(
-        "U-e (user2_npc_control={}): hook 0x2A2F43B {} | under user 2's subject:{} | other descriptors under its "
+        "U-e (user2_npc_control={}): hook 0x2A31BBB {} | under user 2's subject:{} | other descriptors under its "
         "armed timers:{} | its NPCs ({}): tracked {} (alive {}, removed {}; table {} of {}, overflow {}), reason-42 "
         "logouts {} (would {} / assigned {}; last minute {}; S43, repeating a stage slot: would {} / assigned {}, last "
         "minute {} (the abort's count, > 10); with no slot (counted as repeats) would {} / assigned {}; first in their "
@@ -7009,27 +7009,27 @@ bool bytes_at(uintptr_t rva, std::span<const uint8_t> expected) {
 
 bool install_elem() {
     if (!bytes_at(kElem, kElemBytes)) {
-        log::error("User2Stages: E, the stage element 0x2B4C6E0 is not build 2976's code; REFUSED (mode 1 stays probe)");
+        log::error("User2Stages: E, the stage element 0x2B4EE30 is not build 2976's code; REFUSED (mode 1 stays probe)");
         return false;
     }
     auto h = game::prepare_inline(
         g_base + kElem, reinterpret_cast<void*>(&elem_detour),
         [&](const std::vector<uint8_t>& o) { return o.size() == kElemPatch && std::memcmp(o.data(), kElemBytes, kElemPatch) == 0; },
-        "User2Stages", "E, the stage element 0x2B4C6E0 (U-f)");
+        "User2Stages", "E, the stage element 0x2B4EE30 (U-f)");
     if (!h) {
-        log::error("User2Stages: E 0x2B4C6E0: the inline hook could not be prepared ({}); REFUSED",
+        log::error("User2Stages: E 0x2B4EE30: the inline hook could not be prepared ({}); REFUSED",
                    game::inline_error_text(h.error()));
         return false;
     }
     const auto& orig = h->original_bytes();
     if (orig.size() != kElemPatch || std::memcmp(orig.data(), kElemBytes, kElemPatch) != 0) {
-        log::error("User2Stages: E 0x2B4C6E0: the hook would patch {} bytes, {} were verified; REFUSED, nothing written",
+        log::error("User2Stages: E 0x2B4EE30: the hook would patch {} bytes, {} were verified; REFUSED, nothing written",
                    orig.size(), kElemPatch);
         return false;
     }
     g_elem_hook = std::move(*h);  // the detour calls through it: in place before enabling
     if (!g_elem_hook.enable()) {
-        log::error("User2Stages: E 0x2B4C6E0: the hook could not be enabled; REFUSED");
+        log::error("User2Stages: E 0x2B4EE30: the hook could not be enabled; REFUSED");
         return false;
     }
     return true;
@@ -7047,9 +7047,9 @@ void install(std::span<const gad::Section> secs) {
     const bool find_ok = bytes_at(kFindActorFn, kFindActorBytes), dtor_ok = bytes_at(kScopeDtorFn, kScopeDtorBytes),
                logout_ok = bytes_at(kLogoutFn, kOBytes);
     g_cleanup_ok.store(find_ok && dtor_ok && logout_ok);
-    const std::string cleanup_bad = std::format("{}{}{}", find_ok ? "" : " SAM::FindActor 0x2D78E40;",
-                                                dtor_ok ? "" : " the scope's dtor 0x1659380;",
-                                                logout_ok ? "" : " ServerActor::Logout's thunk 0x2294C50;");
+    const std::string cleanup_bad = std::format("{}{}{}", find_ok ? "" : " SAM::FindActor 0x2D7D8D0;",
+                                                dtor_ok ? "" : " the scope's dtor 0x165AF00;",
+                                                logout_ok ? "" : " ServerActor::Logout's thunk 0x2296870;");
     std::string state;
     for (size_t i = 0; i < kPtCount; ++i) {
         const PointDef& d = kPoints[i];
@@ -7067,30 +7067,30 @@ void install(std::span<const gad::Section> secs) {
     // U-a: ShopProbe owns the gate when it is on (one owner per address); else this module.
     std::string gate;
     if (shop_probe_active()) {
-        gate = "G 0x2B4D72A: ShopProbe's hook (it calls user2_stages_gate first)";
+        gate = "G 0x2B4FE7A: ShopProbe's hook (it calls user2_stages_gate first)";
     } else if (bytes_at(kGateCtx, kGateCtxBytes) &&
                p8_install_mid(g_base, secs, kGate, kGatePatch, kGateBytes, on_gate, g_gate_hook, "User2Stages",
-                              "G, the owner gate 0x2B4D72A (U-a)")) {
+                              "G, the owner gate 0x2B4FE7A (U-a)")) {
         g_gate_own.store(true);
-        gate = "G 0x2B4D72A: hooked here (shop_probe is off)";
+        gate = "G 0x2B4FE7A: hooked here (shop_probe is off)";
     } else {
-        gate = "G 0x2B4D72A: REFUSED";
+        gate = "G 0x2B4FE7A: REFUSED";
     }
     // U-f: only needed by mode 1, installed in probe too (it counts what user 2's manager would prepare).
     // U-a2: this module's own (nobody else hooks 0x2911300).
     if (bytes_at(kGate2Ctx, kGate2CtxBytes) &&
         p8_install_mid(g_base, secs, kGate2, kGate2Patch, kGate2Bytes, on_gate2, g_gate2_hook, "User2Stages",
-                       "G2, the collector's manager guard 0x2BE40DA (U-a2)")) {
+                       "G2, the collector's manager guard 0x2BE6AFA (U-a2)")) {
         g_gate2_on.store(true);
     }
-    gate += g_gate2_on.load() ? " | G2 0x2BE40DA hooked" : " | G2 0x2BE40DA REFUSED";
+    gate += g_gate2_on.load() ? " | G2 0x2BE6AFA hooked" : " | G2 0x2BE6AFA REFUSED";
     // H, log only.
     if (bytes_at(kEvalCtx, kEvalCtxBytes) &&
         p8_install_mid(g_base, secs, kEval, kEvalPatch, kEvalBytes, on_eval, g_eval_hook, "User2Stages",
-                       "H, after the cell evaluation's 0x2B44D80 (0x2B429D9, log only)")) {
+                       "H, after the cell evaluation's 0x2B474D0 (0x2B45129, log only)")) {
         g_eval_on.store(true);
     }
-    gate += g_eval_on.load() ? " | H 0x2B429D9 hooked (log only)" : " | H 0x2B429D9 REFUSED";
+    gate += g_eval_on.load() ? " | H 0x2B45129 hooked (log only)" : " | H 0x2B45129 REFUSED";
     g_elem_on.store(install_elem());
     // U-e: the server's controller write, one hook owned by docked_gimmicks (installed from here when it is off).
     std::string ctl = "U-e off";
@@ -7113,20 +7113,20 @@ void install(std::span<const gad::Section> secs) {
         }
         // Revisión §4.2: sin el punto O (Logout del personaje del invitado) su salida no retiraría nada.
         if (!g_pt_on[kPtO].load() && road_mode() == npcact::Mode::On) {
-            log::error("User2Road: el punto O (ServerActor::Logout 0x2294C50) no está: user2_road_control=1 queda en "
+            log::error("User2Road: el punto O (ServerActor::Logout 0x2296870) no está: user2_road_control=1 queda en "
                        "probe (la salida del invitado no retiraría sus viajeros)");
             g_road_mode.store(static_cast<uint8_t>(npcact::Mode::Probe));
         }
         g_ctl_hook_on.store(docked_gimmicks_ctl_write_for_user2("User2Stages"));
-        ctl = g_ctl_hook_on.load() ? std::format("U-e (user2_npc_control={}) at 0x2A2F43B: in (docked_gimmicks' mid "
+        ctl = g_ctl_hook_on.load() ? std::format("U-e (user2_npc_control={}) at 0x2A31BBB: in (docked_gimmicks' mid "
                                                  "hook asks user2_stages first)",
                                                  u2s::mode_name(ctl_mode_now()))
-                                   : std::string("U-e at 0x2A2F43B: REFUSED (user2_npc_control does nothing)");
+                                   : std::string("U-e at 0x2A31BBB: REFUSED (user2_npc_control does nothing)");
     }
     // S33 review: the action / node probes and H1b (0x2A79060, owned by host_scene_diag) go in from here, with
     // user2_stages only; with s1_scene_diag=1 observer_stage's thread installs them with the rest of SceneDiag.
     if (npc_probes() && !host_scene_diag_configured()) host_scene_diag_install(g_base, secs);
-    log::info("User2Stages (user2_stages={}, user2_timer_route={}): {} | {} | E 0x2B4C6E0 (U-f) {} | calls {} | {} | "
+    log::info("User2Stages (user2_stages={}, user2_timer_route={}): {} | {} | E 0x2B4EE30 (U-f) {} | calls {} | {} | "
               "user2_drain_at_host_prepare={} (at P)",
               mode_now() == u2s::Mode::On ? "1" : "probe, read only", u2s::mode_name(route_mode_now()), state, gate,
               g_elem_on.load() ? "hooked" : "REFUSED", calls ? "verified" : "REFUSED", ctl,
@@ -7242,7 +7242,7 @@ void user2_stages_start(const std::string& mode, const std::string& timer_route,
         g_family_mode.store(static_cast<uint8_t>(fm));
         if (fm != npcact::Mode::Off) {
             log::info("NpcFamily S36: npc_family_control={} (pedido {}) npc_family_types={} | unidad = raíz + subárbol "
-                      "de descriptores (+0x2F0/+0x2F8) en el mid 0x2A2F43B; reserva entera antes de EAX (marco de Troc "
+                      "de descriptores (+0x2F0/+0x2F8) en el mid 0x2A31BBB; reserva entera antes de EAX (marco de Troc "
                       "{} registros, {} marcos), pila de marcos por Troc anidado, vínculo por nacimiento del padre, "
                       "hojas a raíz en toda salida; tipo 7 {}; nunca actor+0xA0 ni misiones",
                       npcact::mode_name(fm), npcact::mode_name(static_cast<npcact::Mode>(g_family_req.load())),
@@ -7459,7 +7459,7 @@ void user2_stages_set_road_carts(const std::string& value) {
     if (c != road::Carts::Off) {
         log::info("User2Road S40: user2_road_carts={} | con user2_road_control=1, raíces tipo 5 (caballo con jinete, "
                   "carro): unidad entera = raíz + jinete/conductor (_Rider) + vehículos enlazados (_LinkedVehicle "
-                  "exe+0x{:X} de 0x2A34610, sin marca, +0x490 = su padre){}; gimmicks tipo 7 y su carga con el anfitrión "
+                  "exe+0x{:X} de 0x2A36D90, sin marca, +0x490 = su padre){}; gimmicks tipo 7 y su carga con el anfitrión "
                   "(registrados, de hojas a raíz); nunca un vehículo que monta un jugador; {} registros por unidad",
                   road::carts_name(c), road::kVtWrapLinkedVehicle,
                   c == road::Carts::Probe ? " medida como «se asignaría» (ningún controlador escrito)" : " asignada",

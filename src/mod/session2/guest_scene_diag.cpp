@@ -32,13 +32,13 @@ constexpr uint32_t kWorld_ActorMgr = 0x30, kActorMgr_Container = 0x08, kActor_Fl
 constexpr uint32_t kComps_Seq = 0xA8, kSeqComp_Mgr = 0x18;
 constexpr uint32_t kMgr_Stages = 0x178, kStages_Data = 0x18, kStages_Count = 0x20, kMgr_Count = 0x1A4,
                    kMgr_Ready = 0x261;
-constexpr uintptr_t kVtStageManager = 0x59D57E8;  // pa::ClientSequencerStageManager (RTTI)
+constexpr uintptr_t kVtStageManager = 0x59DA8A8;  // pa::ClientSequencerStageManager (RTTI)
 constexpr uint32_t kHostCharacter = 0xA0100001;   // the host's first character on its server (every session so far)
 
 // ---------------------------------------------------------------- events
 
 enum Kind : uint16_t { kKG1 = 0, kKDelivered, kKReq, kKindCount };
-constexpr const char* kKindName[kKindCount] = {"G1 AI block 0x206DE6B", "delivered", "G4 C>S"};
+constexpr const char* kKindName[kKindCount] = {"G1 AI block 0x206FA8B", "delivered", "G4 C>S"};
 
 constexpr uint64_t kWindowUs = 5'000'000;
 constexpr uint32_t kPerWindow = 1024;
@@ -472,11 +472,11 @@ struct PointDef {
 std::vector<PointDef> points() {
     using namespace scp;
     return {
-        {"G1 inner 0x20CDF96", kAiRead, kAiReadPatch, kAiReadBytes,
+        {"G1 inner 0x20CFBB6", kAiRead, kAiReadPatch, kAiReadBytes,
          {{kAiReadFrame, kAiReadFrameBytes}, {kAiReadArg, kAiReadArgBytes}, {kAiReadInit, kAiReadInitBytes},
           {kAiReadCall, kAiReadCallBytes}},
          on_ai_read},
-        {"G1 0x206DE6B", kAiDone, kAiDonePatch, kAiDoneBytes,
+        {"G1 0x206FA8B", kAiDone, kAiDonePatch, kAiDoneBytes,
          {{kAiDoneThis, kAiDoneThisBytes}, {kAiDoneCall, kAiDoneCallBytes}}, on_ai_done},
     };
 }

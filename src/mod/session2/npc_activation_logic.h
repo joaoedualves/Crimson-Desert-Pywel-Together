@@ -498,9 +498,9 @@ inline bool containment_ready(const Readiness& r) noexcept {
 enum class VetoSite : uint8_t { Exact, Group, Parent, Unknown };
 inline VetoSite veto_site(uint32_t return_rva) noexcept {
     switch (return_rva) {
-        case 0x2AC25FC: case 0x2AC3171: case 0x2AC3788: case 0x2AC6C65: return VetoSite::Exact;
-        case 0x2AC32E5: case 0x2AC33B9: return VetoSite::Group;
-        case 0x2ACA351: case 0x2AC696E: return VetoSite::Parent;
+        case 0x2AC4D4C: case 0x2AC58C1: case 0x2AC5ED8: case 0x2AC93B5: return VetoSite::Exact;
+        case 0x2AC5A35: case 0x2AC5B09: return VetoSite::Group;
+        case 0x2ACCAA1: case 0x2AC90BE: return VetoSite::Parent;
         default: return VetoSite::Unknown;
     }
 }
@@ -514,7 +514,7 @@ inline VetoSite veto_site(uint32_t return_rva) noexcept {
 // 0x281CEE0 recibe en rdx ([nodo] recurso, [nodo+4] índice). Se exige el papel: en 0x281A4B5 el nodo es el
 // del líder; en 0x281A589, el de otra entrada del vector. Cualquier lectura fallida o papel no demostrado:
 // false (no se veta). read(dirección, destino, bytes) es una lectura protegida.
-inline constexpr uint32_t kGroupLeaderRet = 0x2AC32E5, kGroupMemberRet = 0x2AC33B9;
+inline constexpr uint32_t kGroupLeaderRet = 0x2AC5A35, kGroupMemberRet = 0x2AC5B09;
 inline constexpr uintptr_t kGroupFrameSlot = 0x88;
 inline constexpr uint32_t kMaxGroup = 64;
 struct GroupNode { uint32_t data = 0, index = 0; };

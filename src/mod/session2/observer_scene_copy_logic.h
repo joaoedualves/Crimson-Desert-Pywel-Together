@@ -190,7 +190,7 @@ inline const char* why_name(Why w) {
         case Why::Copy: return "COPY";
         case Why::Off: return "off";
         case Why::Reentry: return "our own call";
-        case Why::NotDeleteSite: return "not called from 0x2B39783 (DeleteSequencer 0x2B393C0)";
+        case Why::NotDeleteSite: return "not called from 0x2B3BED3 (DeleteSequencer 0x2B3BB10)";
         case Why::Inconsistent: return "the frame is not the expected one ([r8] != [rsi+0x30] or rcx != [r12+0x18])";
         case Why::NoUser2: return "no live user 2 (or its character key is unknown)";
         case Why::NotUser2Scene: return "not user 2's scene (owner [seq+0x98] is another character)";

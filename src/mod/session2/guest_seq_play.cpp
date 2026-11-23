@@ -47,26 +47,26 @@ using gsp::Skip;
 //   0x8B6149 mov rdx,[rbp-0x41] ; mov rcx,rax ; call 0xA953C0     the native tick of M
 //   0x8B63CE / 0x8B67E3 cmp byte [0x6CC0218],0 ; jne ; vmovaps xmm1,xmm6 ; mov rcx,rdi ; call 0x8B2660
 //   (0x8B2660: actor50 && +0x5E & 0x10 && M && mode != 2 -> 0xAA3350(M) ; 0xAA3E70(M, xmm1))
-constexpr uintptr_t kPoint = 0x9CB6D9;  // 3663: movzx r8d,byte [r8+0x58] in the tick 0x9CB630
+constexpr uintptr_t kPoint = 0x9CBF59;  // 3663: movzx r8d,byte [r8+0x58] in the tick 0x9CB630
 constexpr uint32_t kPatch = 5;
-constexpr uint8_t kPointBytes[] = {0x45, 0x0F, 0xB6, 0x40, 0x58, 0x48, 0x8B, 0x54, 0x24, 0x28, 0x48, 0x8B, 0xC8, 0xE8, 0x15, 0xC9};
+constexpr uint8_t kPointBytes[] = {0x45, 0x0F, 0xB6, 0x40, 0x58, 0x48, 0x8B, 0x54, 0x24, 0x28, 0x48, 0x8B, 0xC8, 0xE8, 0xE5, 0xCA};
 constexpr uint8_t kFrameBytes[] = {0x48, 0x8B, 0xCF, 0xE8, 0x31, 0xBE, 0xFF, 0xFF};                                    // 0x8B6076
 constexpr uint8_t kDtBytes[] = {0xC5, 0xF8, 0x28, 0xF1};                                       // 0x8B608F
 constexpr uint8_t kActorBytes[] = {0x48, 0x8B, 0x41, 0x50, 0x48, 0x85, 0xC0, 0x0F, 0x84, 0x22, 0x01, 0x00, 0x00, 0xF6, 0x40, 0x5E, 0x10, 0x0F, 0x84, 0x18, 0x01, 0x00, 0x00};  // 0x8B60AF
 constexpr uint8_t kAttachBytes[] = {0x48, 0x8B, 0x41, 0x70, 0x48, 0x8B, 0x18};       // 0x8B60C6
-constexpr uint8_t kVf48Bytes[] = {0x48, 0x8B, 0xCB, 0xE8, 0x43, 0x50, 0x11, 0x00, 0x48, 0x85, 0xC0, 0x74, 0x1A};   // 0x8B6102
+constexpr uint8_t kVf48Bytes[] = {0x48, 0x8B, 0xCB, 0xE8, 0x73, 0x50, 0x11, 0x00, 0x48, 0x85, 0xC0, 0x74, 0x1A};   // 0x8B6102
 constexpr uint8_t kModePtrBytes[] = {0x4C, 0x8B, 0x87, 0x80, 0x00, 0x00, 0x00};                // 0x8B613D
 constexpr uint8_t kLiveGate1Bytes[] = {0xC5, 0xF8, 0x28, 0xCE, 0x48, 0x8B, 0xCF, 0xE8, 0xB5, 0xBE, 0xFF, 0xFF};  // 0x8B63CE
 constexpr uint8_t kLiveGate2Bytes[] = {0xC5, 0xF8, 0x28, 0xCE, 0x48, 0x8B, 0xCF, 0xE8, 0xB5, 0xBE, 0xFF, 0xFF};  // 0x8B67E3
 // The callees (their first 16 bytes): 0xA953C0(G, Q, u8 mode); 0xAA3E70(G, float dt in xmm1); 0x9A5B70 = the
 // ClientField's vf40 (FindUser([field+0x180]) -> its character's missions, 0 when not found).
-constexpr uintptr_t kTickRva = 0xBD8000;
+constexpr uintptr_t kTickRva = 0xBD8A50;
 constexpr uint8_t kTickBytes[] = {0x48, 0x89, 0x5C, 0x24, 0x10, 0x48, 0x89, 0x6C,
                                   0x24, 0x18, 0x56, 0x57, 0x41, 0x54, 0x41, 0x56};
-constexpr uintptr_t kLiveRva = 0xBE83E0;
+constexpr uintptr_t kLiveRva = 0xBE8E30;
 constexpr uint8_t kLiveBytes[] = {0x48, 0x8B, 0xC4, 0x48, 0x89, 0x58, 0x10, 0x48,
                                   0x89, 0x48, 0x08, 0x55, 0x56, 0x57, 0x41, 0x54};
-constexpr uintptr_t kOwnerRva = 0xAE06A0;
+constexpr uintptr_t kOwnerRva = 0xAE0F50;
 constexpr uint8_t kOwnerBytes[] = {0x40, 0x53, 0x48, 0x83, 0xEC, 0x40, 0x44, 0x8B,
                                    0x81, 0x80, 0x01, 0x00, 0x00, 0x48, 0x8D, 0x54};
 
@@ -84,24 +84,24 @@ constexpr uint8_t kOwnerBytes[] = {0x40, 0x53, 0x48, 0x83, 0xEC, 0x40, 0x44, 0x8
 // between the point and 0xAA4CB2 is left unreleased, nothing released there was built (not 0xAA4CA4: it would
 // release the handle 0x8B4570 never built), no lock is held at the point (the 0xAA43B5 guard is released at
 // 0xAA43ED). rsp is the same at both addresses (every call in between is balanced).
-constexpr uintptr_t kSkipPoint = 0xBE90BF, kSkipResume = 0xBE924A, kBaseVtable = 0x5B40000;
+constexpr uintptr_t kSkipPoint = 0xBE9B0F, kSkipResume = 0xBE9C9A, kBaseVtable = 0x5B45300;
 constexpr uint32_t kSkipPatch = 11;
-constexpr uint8_t kSkipBytes[] = {0x48, 0x8D, 0x55, 0x18, 0x48, 0x8B, 0x0D, 0x46, 0xC1, 0x65, 0x06, 0x48, 0x8B, 0x49, 0x30, 0xE8, 0xBD, 0x4B, 0xDE, 0xFF};  // 0xAA4B27..0xAA4B3A
-constexpr uint8_t kSkipTailBytes[] = {0x48, 0x89, 0x75, 0x18, 0x48, 0x8D, 0x4D, 0x18, 0xE8, 0x37, 0x01, 0xA7, 0x00, 0x90, 0x48, 0x8D, 0x4C, 0x24, 0x38, 0xE8, 0xBC, 0x83, 0x87, 0xFF};  // 0xAA4CA4
-constexpr uint8_t kSkipCopyBytes[] = {0x49, 0x8D, 0x55, 0x28, 0x48, 0x8D, 0x4C, 0x24, 0x38, 0xE8, 0x83, 0xA7, 0x8E, 0xFF};  // 0xAA43C7
+constexpr uint8_t kSkipBytes[] = {0x48, 0x8D, 0x55, 0x18, 0x48, 0x8B, 0x0D, 0x86, 0x18, 0x66, 0x06, 0x48, 0x8B, 0x49, 0x30, 0xE8, 0xED, 0x49, 0xDE, 0xFF};  // 0xAA4B27..0xAA4B3A
+constexpr uint8_t kSkipTailBytes[] = {0x48, 0x89, 0x75, 0x18, 0x48, 0x8D, 0x4D, 0x18, 0xE8, 0x67, 0x12, 0xA7, 0x00, 0x90, 0x48, 0x8D, 0x4C, 0x24, 0x38, 0xE8, 0x7C, 0x7D, 0x87, 0xFF};  // 0xAA4CA4
+constexpr uint8_t kSkipCopyBytes[] = {0x49, 0x8D, 0x55, 0x28, 0x48, 0x8D, 0x4C, 0x24, 0x38, 0xE8, 0x43, 0xA1, 0x8E, 0xFF};  // 0xAA43C7
 constexpr uint8_t kSkipLoopBytes[] = {0x0F, 0x84, 0x41, 0x07, 0x00, 0x00};                   // 0xAA4400 je 0xAA4B27
 constexpr uint8_t kSkipR13Bytes[] = {0x4C, 0x8B, 0xE9};                                       // 0xAA3EA2 mov r13,rcx
-constexpr uint8_t kSkipRsi1Bytes[] = {0x48, 0x8D, 0x35, 0x96, 0x7B, 0xF5, 0x04};            // 0xAA3EF3 lea rsi
-constexpr uint8_t kSkipRsi2Bytes[] = {0x48, 0x8D, 0x35, 0x7B, 0x6F, 0xF5, 0x04};            // 0xAA4AE6 lea rsi
-constexpr uint8_t kSkipRsi3Bytes[] = {0x48, 0x8D, 0x35, 0x4E, 0x6F, 0xF5, 0x04};            // 0xAA4B13 lea rsi
+constexpr uint8_t kSkipRsi1Bytes[] = {0x48, 0x8D, 0x35, 0x46, 0xC4, 0xF5, 0x04};            // 0xAA3EF3 lea rsi
+constexpr uint8_t kSkipRsi2Bytes[] = {0x48, 0x8D, 0x35, 0x2B, 0xB8, 0xF5, 0x04};            // 0xAA4AE6 lea rsi
+constexpr uint8_t kSkipRsi3Bytes[] = {0x48, 0x8D, 0x35, 0xFE, 0xB7, 0xF5, 0x04};            // 0xAA4B13 lea rsi
 // The fields of G that drive 0xAA5040 / 0xAA5400 (the read-only gate).
 constexpr uint32_t kMgr_2A4 = 0x2EC, kMgr_288 = 0x2D0, kMgr_2A8 = 0x2F0, kMgr_2D4 = 0x31C, kMgr_2CC = 0x314;
 constexpr uint32_t kMgr_2B0 = 0x2F8, kMgr_2B4 = 0x2FC;  // floats: 0xAA5081 vmovss/vcomiss, 0xAA50B1 vmovss
 
-constexpr uintptr_t kVtStageManager = 0x59D57E8;  // pa::ClientSequencerStageManager (RTTI)
-constexpr uintptr_t kVtClientField = 0x59C97C0;   // pa::ClientField (RTTI; +0x40 = 0x9A5B70, +0x48 = 0x9A5BE0)
+constexpr uintptr_t kVtStageManager = 0x59DA8A8;  // pa::ClientSequencerStageManager (RTTI)
+constexpr uintptr_t kVtClientField = 0x59CE8A8;   // pa::ClientField (RTTI; +0x40 = 0x9A5B70, +0x48 = 0x9A5BE0)
 constexpr uint32_t kField_Vf40 = 0x40;
-constexpr uintptr_t kLiveGateByte = 0x7195BE8;    // 0x8B63CE / 0x8B67E3
+constexpr uintptr_t kLiveGateByte = 0x719BD38;    // 0x8B63CE / 0x8B67E3
 constexpr uint32_t kFrame_Q = 0x41;               // [rbp-0x41]
 constexpr uint32_t kModeByte = 0x58;              // [r8+0x58] (3663)
 // Structure offsets (guest_seq_route.cpp; p8-s8-escenas.md §3).
@@ -246,7 +246,7 @@ bool guarded_tick_body(uintptr_t x, uintptr_t q, uint8_t mode) noexcept {
     __try {
         g_tick(x, q, mode);
         return true;
-    } __except (call_fault(GetExceptionInformation(), "0xBD8000(X, Q, mode) ran for the host character's manager X")) {
+    } __except (call_fault(GetExceptionInformation(), "0xBD8A50(X, Q, mode) ran for the host character's manager X")) {
         return false;  // never reached: the filter passes it on
     }
 }
@@ -260,7 +260,7 @@ bool guarded_live(uintptr_t x, float dt) noexcept {
     __try {
         g_live_fn(x, dt);
         return true;
-    } __except (call_fault(GetExceptionInformation(), "0xBE83E0(X, dt) ran for the host character's manager X")) {
+    } __except (call_fault(GetExceptionInformation(), "0xBE8E30(X, dt) ran for the host character's manager X")) {
         return false;
     }
 }
@@ -282,7 +282,7 @@ bool guarded_owner(uintptr_t q, uintptr_t& out) noexcept {
     __try {
         out = g_owner(q);
         return true;
-    } __except (call_fault(GetExceptionInformation(), "the field's vf40 0xAE06A0 ran before a tick of X")) {
+    } __except (call_fault(GetExceptionInformation(), "the field's vf40 0xAE0F50 ran before a tick of X")) {
         return false;
     }
 }
@@ -556,7 +556,7 @@ std::string line_of(const p::Event& e) {
         case kEWrite:
             return std::format("GuestSeqPlay [3] {} T{} | slot {} X 0x{:X} (character 0x{:08X}, routed 2322 #{}): {} "
                                "X+0x231 2 -> 3 (lists +0x1B0 {}, +0x1C0 {}; M+0x231 {}) at frame {} | the tick plays "
-                               "what is preloaded from now on, at most one per call (0xBDA383)",
+                               "what is preloaded from now on, at most one per call (0xBDADD3)",
                                when, e.tid, v[0], v[1], static_cast<uint32_t>(v[2]), v[3],
                                (v[4] >> 40) & 1 ? "WOULD WRITE (probe)" : "WROTE", v[4] & 0xFFFF, (v[4] >> 16) & 0xFFFF,
                                (v[4] >> 32) & 0xFF, v[5]);
@@ -568,13 +568,13 @@ std::string line_of(const p::Event& e) {
                                v[3] == static_cast<uint64_t>(Skip::None) && v[7] ? " (probe: would tick)" : "", v[4],
                                v[5], v[6]);
         case kEFirst:
-            return std::format("GuestSeqPlay [first tick] {} T{} | slot {} X 0x{:X} (character 0x{:08X}): {} 0xBD8000(X, "
+            return std::format("GuestSeqPlay [first tick] {} T{} | slot {} X 0x{:X} (character 0x{:08X}): {} 0xBD8A50(X, "
                                "Q, mode){} | X+0x231 {}, +0x1B0 {}, +0x1C0 {}",
                                when, e.tid, v[0], v[1], static_cast<uint32_t>(v[2]), v[5] ? "WOULD call (probe)" : "calls",
-                               v[3] ? " + 0xBE83E0(X, dt)" : "", v[4], static_cast<uint32_t>(v[6]), v[6] >> 32);
+                               v[3] ? " + 0xBE8E30(X, dt)" : "", v[4], static_cast<uint32_t>(v[6]), v[6] >> 32);
         case kEOwner:
-            return std::format("GuestSeqPlay [vf40] {} T{} | the field's vf40 0xAE06A0 returned NULL at frame {}: no tick "
-                               "of X this frame (0x6EC8A0 would fault at 0x6EC8F7 / 0x1C9F790)",
+            return std::format("GuestSeqPlay [vf40] {} T{} | the field's vf40 0xAE0F50 returned NULL at frame {}: no tick "
+                               "of X this frame (0x6ECC10 would fault at 0x6ECC67 / 0x1CA13B0)",
                                when, e.tid, v[1]);
         case kEStuck:
         {
@@ -582,15 +582,15 @@ std::string line_of(const p::Event& e) {
             return std::format("GuestSeqPlay [live held] {} T{} | slot {} X 0x{:X} (character 0x{:08X}): its live update "
                                "has been held {:.1f} s: X+0x2A4 {}, +0x288 0x{:X}, +0x2A8 0x{:X} (+0x2B0 {}, +0x2B4 {}), "
                                "+0x2D4 {}, +0x2CC {} | M: +0x2A8 0x{:X} (+0x2B0 {}, +0x2B4 {}) | idle = +0x2A4/+0x288/"
-                               "+0x2D4 0, +0x2CC <= 0 and (+0x2A8 0 or +0x2B0 < 0); only 0xBE95D0 / 0xBE9990 (skipped "
-                               "for X) or the manager's vf1 0xA94660 clear them: not forced, the hold goes on",
+                               "+0x2D4 0, +0x2CC <= 0 and (+0x2A8 0 or +0x2B0 < 0); only 0xBEA020 / 0xBEA3E0 (skipped "
+                               "for X) or the manager's vf1 0xA94EE0 clear them: not forced, the hold goes on",
                                when, e.tid, v[0], v[1], static_cast<uint32_t>(v[2]),
                                static_cast<double>(v[3]) / 1e6, v[4], v[5], v[6], fl(v[9]), fl(v[9] >> 32), v[7],
                                fl(v[8]), v[10], fl(v[11]), fl(v[11] >> 32));
         }
         case kELatch:
-            return std::format("GuestSeqPlay [live OFF] {} T{} | X 0x{:X}: the skip hook at 0xBE90BF saw r13 0x{:X} in our "
-                               "own 0xBE83E0(X) call, so it did NOT cut the local player's part: the live update of every "
+            return std::format("GuestSeqPlay [live OFF] {} T{} | X 0x{:X}: the skip hook at 0xBE9B0F saw r13 0x{:X} in our "
+                               "own 0xBE8E30(X) call, so it did NOT cut the local player's part: the live update of every "
                                "X is OFF for this session (fail closed; the tick and the 3 go on)",
                                when, e.tid, v[0], v[1]);
         default:
@@ -626,7 +626,7 @@ void summary() {
         if (const uint64_t n = g_skips[k].load()) skips += std::format(" {} x{};", gsp::skip_name(static_cast<Skip>(k)), n);
     }
     if (g_live.load()) {
-        log::info("GuestSeqPlay live (phase 2): skip hook {}{} | 0xBE83E0(X) calls {}: local-player part skipped {} (rsi "
+        log::info("GuestSeqPlay live (phase 2): skip hook {}{} | 0xBE8E30(X) calls {}: local-player part skipped {} (rsi "
                   "set {}), NOT skipped {} | held back: X's +0x2A4/+0x288/+0x2A8/+0x2D4/+0x2CC not idle {} (and right "
                   "after the tick {}), no skip hook or latched off {} | held > {} s (stuck, not forced) {}",
                   g_skip_ok.load() ? "in" : "MISSING (no live call)",
@@ -678,9 +678,9 @@ DWORD WINAPI install_thread(LPVOID) {
         Sleep(500);
     }
     const Ctx ctx[] = {
-        {0x9CF7F7, kFrameBytes},      {0x9CF7E5, kDtBytes},     {0x9CB64B, kActorBytes},
-        {0x9CB662, kAttachBytes},     {0x9CB6C5, kVf48Bytes},   {0x9CB6D2, kModePtrBytes},
-        {0x9CF8DF, kLiveGate1Bytes},  {0x9CF8DF, kLiveGate2Bytes}, {kTickRva, kTickBytes},
+        {0x9D0077, kFrameBytes},      {0x9D0065, kDtBytes},     {0x9CBECB, kActorBytes},
+        {0x9CBEE2, kAttachBytes},     {0x9CBF45, kVf48Bytes},   {0x9CBF52, kModePtrBytes},
+        {0x9D015F, kLiveGate1Bytes},  {0x9D015F, kLiveGate2Bytes}, {kTickRva, kTickBytes},
         {kLiveRva, kLiveBytes},       {kOwnerRva, kOwnerBytes},
     };
     for (const Ctx& c : ctx) {
@@ -696,16 +696,16 @@ DWORD WINAPI install_thread(LPVOID) {
     g_live_fn = reinterpret_cast<LiveFn>(g_base + kLiveRva);
     g_owner = reinterpret_cast<OwnerFn>(g_base + kOwnerRva);
     if (!p8_install_mid(g_base, secs, kPoint, kPatch, kPointBytes, on_frame, g_hook, "GuestSeqPlay",
-                        "the frame's sequencer tick 0x8B6144")) {
+                        "the frame's sequencer tick 0x8B6864")) {
         return 0;  // the line above says why
     }
     // Phase 2: the skip hook first (0xAA3E70(X) is never called without it: gsp::plan).
     std::string skip_line = "not wanted (live=0)";
     if (g_live.load()) {
         const Ctx skip_ctx[] = {
-            {0xBE923C, kSkipTailBytes},          {0xBE893F, kSkipCopyBytes}, {0xBE8978, kSkipLoopBytes},
-            {0xBE8412, kSkipR13Bytes},           {0xBE8463, kSkipRsi1Bytes}, {0xBE907E, kSkipRsi2Bytes},
-            {0xBE90AB, kSkipRsi3Bytes},
+            {0xBE9C8C, kSkipTailBytes},          {0xBE938F, kSkipCopyBytes}, {0xBE93C8, kSkipLoopBytes},
+            {0xBE8E62, kSkipR13Bytes},           {0xBE8EB3, kSkipRsi1Bytes}, {0xBE9ACE, kSkipRsi2Bytes},
+            {0xBE9AFB, kSkipRsi3Bytes},
         };
         bool ok = true;
         for (const Ctx& c : skip_ctx) {
@@ -717,24 +717,24 @@ DWORD WINAPI install_thread(LPVOID) {
             }
         }
         if (ok && p8_install_mid(g_base, secs, kSkipPoint, kSkipPatch, kSkipBytes, on_skip, g_skip_hook, "GuestSeqPlay",
-                                 "the live update's local-player skip 0xBE90BF")) {
+                                 "the live update's local-player skip 0xBE9B0F")) {
             g_skip_ok.store(true, std::memory_order_release);
-            skip_line = "hooked 0xBE90BF -> 0xBE924A for our calls only";
+            skip_line = "hooked 0xBE9B0F -> 0xBE9C9A for our calls only";
         } else if (ok) {
             skip_line = "REFUSED (see the line above)";
         }
     }
     g_code_ok.store(true, std::memory_order_release);
     const auto mode = static_cast<gsp::Mode>(g_mode.load());
-    log::info("GuestSeqPlay {} (guest_seq_play, live={}): hooked 0x8B6144 (movzx r8d,byte [r8+0x50]; main loop, once per "
-              "frame, before the native 0xBD8000(M, Q, mode)) | per X routed by guest_seq_route (the host's character's "
-              "ClientSequencerStageManager, vtable exe+0x{:X} checked, never M): 0xBD8000(X, Q, mode) when mode != 2, "
+    log::info("GuestSeqPlay {} (guest_seq_play, live={}): hooked 0x8B6864 (movzx r8d,byte [r8+0x50]; main loop, once per "
+              "frame, before the native 0xBD8A50(M, Q, mode)) | per X routed by guest_seq_route (the host's character's "
+              "ClientSequencerStageManager, vtable exe+0x{:X} checked, never M): 0xBD8A50(X, Q, mode) when mode != 2, "
               "M+0x231 == 3, the field's vf40 != 0; X+0x231 = 3 once per routed 2322 (X at 2, +0x174 0, +0x1B0/+0x1C0 "
               "not empty){} | live skip hook: {} | guest_seq_route={}{}",
               gsp::mode_name(mode), g_live.load() ? 1 : 0, kVtStageManager,
-              g_live.load() ? "; 0xBE83E0(X, dt) when X is at 3, byte [0x6CC0218] == 0, the skip hook is in and X+0x2A4/"
-                              "+0x288/+0x2A8/+0x2D4 are 0 and +0x2CC <= 0 (the local player's part and 0xBE95D0/"
-                              "0xBE9990 never run for X); the 2524 routed to X"
+              g_live.load() ? "; 0xBE8E30(X, dt) when X is at 3, byte [0x6CC0218] == 0, the skip hook is in and X+0x2A4/"
+                              "+0x288/+0x2A8/+0x2D4 are 0 and +0x2CC <= 0 (the local player's part and 0xBEA020/"
+                              "0xBEA3E0 never run for X); the 2524 routed to X"
                             : "",
               skip_line,
               g_route_on.load() ? "1" : "NOT 1",

@@ -33,20 +33,20 @@ using u2f::Mode;
 // State 0x12 of 0x7797F0 (p8-s15-viaje-tunel.md §3, §8): its lock and the list's count,
 //   0x779E8B mov r14,[rdi+0xB8] ; lea rbx,[r14+0x10] ; mov [rbp+0x40],rbx ; mov rax,[rbx] ; mov rcx,rbx ;
 //            call [rax+8] (lock) ; nop ; mov rsi,[r14+8] ; mov eax,[rsi+0x80] ; test eax,eax ; jne 0x779ED0
-constexpr uintptr_t kWaitHead = 0x882DD0;
+constexpr uintptr_t kWaitHead = 0x8834F0;
 constexpr uint8_t kWaitHeadBytes[] = {0x49, 0x8B, 0xB5, 0xA8, 0x01, 0x00, 0x00, 0x48, 0x8D, 0x5E, 0x10, 0x48, 0x89, 0x5D, 0x50, 0x48, 0x8B, 0x03, 0x48, 0x8B, 0xCB, 0xFF, 0x50, 0x08, 0x90, 0x48, 0x8B, 0x7E, 0x08, 0x8B, 0x87, 0x80, 0x00, 0x00, 0x00, 0x85, 0xC0, 0x75, 0x19};
 //   0x779ED0 the front key [[rsi+0x78]] -> Find 0x464290(C = [r14+8]) -> vf1D8 -> je 0x779F14 (wait)
-constexpr uintptr_t kWaitLoop = 0x882E10;
-constexpr uint8_t kWaitLoopBytes[] = {0x48, 0x8B, 0x57, 0x78, 0x8B, 0x12, 0x48, 0x8B, 0x4E, 0x08, 0xE8, 0xC1, 0x29, 0xCB, 0xFF, 0x48, 0x85, 0xC0, 0x74, 0x13, 0x48, 0x8B, 0x08, 0x48, 0x8B, 0x91, 0xD8, 0x01, 0x00, 0x00, 0x48, 0x8B, 0xC8, 0xFF, 0xD2, 0x84, 0xC0, 0x74, 0x1D};
+constexpr uintptr_t kWaitLoop = 0x883530;
+constexpr uint8_t kWaitLoopBytes[] = {0x48, 0x8B, 0x57, 0x78, 0x8B, 0x12, 0x48, 0x8B, 0x4E, 0x08, 0xE8, 0xB1, 0x26, 0xCB, 0xFF, 0x48, 0x85, 0xC0, 0x74, 0x13, 0x48, 0x8B, 0x08, 0x48, 0x8B, 0x91, 0xD8, 0x01, 0x00, 0x00, 0x48, 0x8B, 0xC8, 0xFF, 0xD2, 0x84, 0xC0, 0x74, 0x1D};
 //   0x779EF7 the removal (grw::swap_remove_front), then 0x779F14 the unlock [rax+0x10]
-constexpr uintptr_t kWaitRemove = 0x882E37;
+constexpr uintptr_t kWaitRemove = 0x883557;
 constexpr uint8_t kWaitRemoveBytes[] = {0x8B, 0x87, 0x80, 0x00, 0x00, 0x00, 0x83, 0xE8, 0x01, 0x74, 0x09, 0x48, 0x8B, 0x57, 0x78, 0x8B, 0x0C, 0x82, 0x89, 0x0A, 0x83, 0x87, 0x80, 0x00, 0x00, 0x00, 0xFF, 0x75, 0xBC, 0x48, 0x8B, 0x03, 0x48, 0x8B, 0xCB, 0xFF, 0x50, 0x10};
 // vf1D8 = 0x4FE240: cmp byte [rcx+0xC2],0 ; jne ; xor al,al ; ret ; movzx eax,byte [rcx+0xCF] ; ret
-constexpr uintptr_t kReady = 0x5DF1A0;
+constexpr uintptr_t kReady = 0x5DF4E0;
 constexpr uint8_t kReadyBytes[] = {0x80, 0xB9, 0xC2, 0x00, 0x00, 0x00, 0x00, 0x75, 0x03, 0x32,
                                    0xC0, 0xC3, 0x0F, 0xB6, 0x81, 0xCF, 0x00, 0x00, 0x00, 0xC3};
 // ClientActorContainer::Find 0x464290 (replayed by gad::container_find, never called).
-constexpr uintptr_t kFind = 0x5357E0;
+constexpr uintptr_t kFind = 0x535BF0;
 constexpr uint8_t kFindBytes[] = {0x48, 0x89, 0x5C, 0x24, 0x08, 0x83, 0xB9, 0x8C, 0x00, 0x00, 0x00, 0x00, 0x44,
                                   0x8B, 0xC2, 0x4C, 0x8B, 0xD1, 0x74, 0x4F, 0x8B, 0x89, 0x88, 0x00, 0x00, 0x00};
 
@@ -58,7 +58,7 @@ constexpr uint32_t kActor_Parent = 0xAC, kActor_Children = 0xB0, kActor_ChildCou
 constexpr uint32_t kVf_Ready = 0x1D8;
 // The guest character's own ClientSequencerStageManager (guest_seq_play.cpp): [[[A+0x68]+0xA8]+0x18], +0x231.
 constexpr uint32_t kActor_Comps = 0x68, kComps_Seq = 0xA8, kSeqComp_Mgr = 0x18, kMgr_Ready = 0x261;
-constexpr uintptr_t kVtStageManager = 0x59D57E8;
+constexpr uintptr_t kVtStageManager = 0x59DA8A8;
 
 constexpr uint32_t kSnapMax = 1024;
 // S15 had 75 orphan children in one session (S14: 106): the cap only bounds a runaway; more than kWarnDrops in one
@@ -150,7 +150,7 @@ bool in_code(uintptr_t a) {
     const gad::Section* s = gad::section_of(g_secs, static_cast<uint32_t>(a - g_base));
     if (!s) return false;
     const std::string_view n(s->name);
-    return n == ".reloc" || n == ".data1";
+    return n == ".xpdata" || n == ".text1";
 }
 
 // ---------------------------------------------------------------- the actors
@@ -508,7 +508,7 @@ void line_trace(const p8p::Event& e) {
             g_warned_own_2322_trip = trip;
             c_own_2322_warned.fetch_add(1, std::memory_order_relaxed);
             log::warn("GuestReloadWait [0x11 own 2322] {} T{} | trip {} (RELOAD (2643, no 2174)) | [P+0x15C] 0x11 for {} "
-                      "with own M+0x231 {} (0x882D87 waits for 2): NO PlayAllPreLoadSequencerAck 2322 for this client's "
+                      "with own M+0x231 {} (0x8834A7 waits for 2): NO PlayAllPreLoadSequencerAck 2322 for this client's "
                       "own character 0x{:08X} came after its PreLoadSequencerReq 2873 - the host's server sent it to the "
                       "field owner's character; the load stays here (no 2445; at the exit the final save is refused "
                       "while loading). Host: observer_milestone_reload(_any), docs/research/s25/reaparicion.md",
@@ -591,7 +591,7 @@ void line_block(const p8p::Event& e, bool drop) {
               "+0xB0 {}{}{} | when the trip began: {} | verdict: {} | dropped this trip {}",
               what, p8_when(e.qpc_us), e.tid, v[0] & 0xFFFFFFFF, reload ? "reload in the same field" : "not a reload",
               static_cast<double>(v[4]) / 1e6, v[5] & 0xFFFFFFFF, key, v[2], control, v[3] & 0xFFFF, (v[3] >> 16) & 0xFF,
-              (v[3] >> 24) & 0xFF, vf_native ? "0x5DF1A0" : "OTHER", age_text(key), parent,
+              (v[3] >> 24) & 0xFF, vf_native ? "0x5DF4E0" : "OTHER", age_text(key), parent,
               parent ? (parent_found ? " (here)" : " (NOT here)") : "", nchildren, kids.empty() ? "" : ": ",
               kids + (missing_child ? " -> a child is missing: its login group can never form (the orphan-child "
                                       "fault, §8.1)"
@@ -658,7 +658,7 @@ bool guest_reload_wait_configure(const std::string& raw, bool actor_diag) {
     if (p.mode == Mode::Off) return false;
     if (!actor_diag) {
         log::warn("Session2 guest: guest_reload_wait_fix='{}' needs guest_actor_diag=1 (it runs in that module's hook "
-                  "at exe+0x882699); it stays off",
+                  "at exe+0x882DB9); it stays off",
                   raw);
         return false;
     }
@@ -668,7 +668,7 @@ bool guest_reload_wait_configure(const std::string& raw, bool actor_diag) {
               "of the wait list) with its state, age and children; {} (a world actor 0xB... controlled by another user, "
               "waiting for its login +0x5E 8, already NOT READY in the wait list when the trip began (its 2283 or the exit from 0x18), same actor; "
               "reload in the same field only (2643, no 2174); after {} ms in 0x12; at most {} per trip, a warning past 16; under 0x12's own "
-              "lock [M+0x10], as 0x882E37..0x882E4B)",
+              "lock [M+0x10], as 0x883557..0x88356B)",
               u2f::mode_name(p.mode),
               p.mode == Mode::On ? "mode 1 REMOVES such a front key" : "probe: what mode 1 would remove is logged",
               kGraceUs / 1000, kDropCap);

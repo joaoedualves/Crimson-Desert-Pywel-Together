@@ -172,7 +172,7 @@ inline const char* verdict_name(Verdict v) {
         case Verdict::Resolvable: return "seq_bodyanim hash resolvable (native)";
         case Verdict::OtherFailure: return "another hash fails too: untouched (native error)";
         case Verdict::Unreadable: return "a chart is unreadable: untouched";
-        case Verdict::Substituted: return "SUBSTITUTED (idle wait), 0x976A80 runs natively";
+        case Verdict::Substituted: return "SUBSTITUTED (idle wait), 0x9771A0 runs natively";
         case Verdict::Skipped: return "SKIPPED (no restore, result 0: the native restore-byte-0 path)";
         case Verdict::CannotSkip: return "cannot skip (unexpected r14/rsi): untouched";
         default: return "?";

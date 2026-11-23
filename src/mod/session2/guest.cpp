@@ -81,7 +81,7 @@ constexpr uint16_t kOpLoginCharacterToFieldServerReq = 3081;  // u8 | u64 charac
 constexpr uint16_t kOpReserveShutDownServerReq = 2447;
 // g_ServerFrameworkMode (opcion-d-d0.md §1.1): the u32 the host's server writes
 // into its 2002 (0x1051F1E0); the client uses it as PostPacket's index (§1.3).
-constexpr uintptr_t kServerFrameworkMode = 0x6F29B70;
+constexpr uintptr_t kServerFrameworkMode = 0x6F2FB70;
 constexpr uint64_t kMaxDecisionLogged = 32, kMaxInternalLogged = 16, kMaxLoginLogged = 8;
 
 uintptr_t g_base = 0;
@@ -150,7 +150,7 @@ std::atomic<uint64_t> g_n2105{0}, g_n2369{0};
 uint32_t own_key() {
     uintptr_t ws = 0, mgr = 0, me = 0;
     uint32_t key = 0;
-    if (!game::safe_read(g_base + 0x72451C0, &ws, 8) || !ws) return 0;
+    if (!game::safe_read(g_base + 0x724B350, &ws, 8) || !ws) return 0;
     if (!game::safe_read(ws + 0x30, &mgr, 8) || !mgr) return 0;
     if (!game::safe_read(mgr + 0x50, &me, 8) || !me) return 0;
     if (!game::safe_read(me + 0x60, &key, 4)) return 0;
@@ -824,7 +824,7 @@ bool refresh_code_ok(std::string& why) {
     };
     const Check checks[] = {
         {off::kSlotRefreshReqSequence, off::kSlotRefreshReqSequenceBytes, "SaveDataSlotRefreshReq's sequence"},
-        {off::kSaveMgrRefreshSlots, off::kSaveMgrRefreshSlotsHead, "the refresh thunk 0x1A18320"},
+        {off::kSaveMgrRefreshSlots, off::kSaveMgrRefreshSlotsHead, "the refresh thunk 0x1A19F90"},
         {off::kTitlePlayReadsSaveMgr, off::kTitlePlayReadsSaveMgrBytes, "the title's read of [WorldSystem+0x88]"},
         {off::kWindowsLockVf1, off::kWindowsLockVf1Head, "WindowsLock vf1 (lock)"},
         {off::kWindowsLockVf2, off::kWindowsLockVf2Head, "WindowsLock vf2 (unlock)"},
@@ -1303,7 +1303,7 @@ void end_without_host(const goodbye::State& s) noexcept {
         const bool have_state = have_p && game::safe_read(p + 0x24C, &state, sizeof state);
         log::error("Session2 guest: the client said goodbye (2001) {} ms ago with a field of the host (its 3093 went "
                    "to the host) and {}. Answering locally would delete its own user, the field's owner, before the "
-                   "field (session 6: crash at exe+0x226F3DA 22 ms later), so the game ENDS NOW (TerminateProcess, "
+                   "field (session 6: crash at exe+0x2270FFA 22 ms later), so the game ENDS NOW (TerminateProcess, "
                    "exit code 0x{:X}) | field Q 0x{:X}{}, loading state {} | last packet of the host {} | "
                    "pendientes/p8-salida-invitado.md",
                    goodbye::elapsed(s.now_ms, s.goodbye_ms), goodbye::end_reason(s), kGoodbyeExitCode, q,
@@ -1426,7 +1426,7 @@ void guest_pump(safetyhook::Context& ctx) {
                     try {
                         log::warn("Session2 guest: the client said goodbye with a field of the host and {}; "
                                   "guest_goodbye_end=0: the process is NOT ended and no local 2003/2002 is sent "
-                                  "(it would crash at exe+0x226F3DA): the client keeps waiting for its 2002",
+                                  "(it would crash at exe+0x2270FFA): the client keeps waiting for its 2002",
                                   goodbye::end_reason(s));
                     } catch (...) {
                     }
@@ -1895,7 +1895,7 @@ T rd(uintptr_t a) {
 }
 // This client's character and its main layer's action ([[[A+0x68]+0x40]+0x88]+0x3C).
 bool own_action(uint32_t& key, uint32_t& hash) {
-    const uintptr_t ws = rd<uintptr_t>(g_base + 0x72451C0);  // WorldSystem* (game/offsets.h kWorldSystemSlot)
+    const uintptr_t ws = rd<uintptr_t>(g_base + 0x724B350);  // WorldSystem* (game/offsets.h kWorldSystemSlot)
     const uintptr_t mgr = ws ? rd<uintptr_t>(ws + 0x30) : 0;
     const uintptr_t me = mgr ? rd<uintptr_t>(mgr + 0x50) : 0;
     if (!me) return false;
@@ -2125,7 +2125,7 @@ bool guest_reannounce_configure(const std::string& raw, bool errors_hook_expecte
     }
     g_rean_mode.store(static_cast<uint8_t>(p.mode));
     if (p.mode == ran::Mode::Off) return false;
-    log::info("Session2 guest: child_reannounce ON ({}): each CreateOwnedActor failure (exe+0x9D732C) of a user's "
+    log::info("Session2 guest: child_reannounce ON ({}): each CreateOwnedActor failure (exe+0x9D7BAC) of a user's "
               "child {} (at most {} per key and connection, not twice within {} ms)",
               ran::mode_name(p.mode),
               p.mode == ran::Mode::On ? "asks the host, through the tunnel's own control packet, to re-announce it"

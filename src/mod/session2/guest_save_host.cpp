@@ -39,20 +39,20 @@ using gsv::Owner;
 // ---------------------------------------------------------------- build 1.0.0.2976
 
 // Entries (all in .rsrc, inline hooks at the entry only), decoded with capstone over the disk exe (PE 0x6AB28F00).
-constexpr uintptr_t kLoadSlot = 0x1A16C40;  // LoadSlot(mgr, int* res, u32 slot, actor) -> res
+constexpr uintptr_t kLoadSlot = 0x1A188B0;  // LoadSlot(mgr, int* res, u32 slot, actor) -> res
 constexpr uint8_t kLoadSlotHead[] = {0x48, 0x89, 0x5C, 0x24, 0x08, 0x48, 0x89, 0x74, 0x24, 0x10, 0x48, 0x89, 0x7C, 0x24, 0x20, 0x44, 0x89, 0x44, 0x24, 0x18, 0x55, 0x41, 0x54, 0x41, 0x55, 0x41, 0x56, 0x41, 0x57, 0x48, 0x8D, 0xAC, 0x24, 0x50, 0xFF, 0xFF, 0xFF, 0x48, 0x81, 0xEC, 0xB0, 0x01, 0x00, 0x00, 0x4D, 0x8B, 0xF1};
-constexpr uintptr_t kSave = 0x1A15930;  // SavePlayerToSlot(mgr, int* res, u32 slot, character, opts*) -> res
+constexpr uintptr_t kSave = 0x1A175A0;  // SavePlayerToSlot(mgr, int* res, u32 slot, character, opts*) -> res
 constexpr uint8_t kSaveHead[] = {0x4C, 0x89, 0x4C, 0x24, 0x20, 0x44, 0x89, 0x44, 0x24, 0x18, 0x48, 0x89, 0x54, 0x24, 0x10, 0x48, 0x89, 0x4C, 0x24, 0x08, 0x55, 0x53, 0x56, 0x57, 0x41, 0x54, 0x41, 0x55, 0x41, 0x56, 0x41, 0x57, 0x48, 0x8D, 0xAC, 0x24, 0x38, 0xFC, 0xFF, 0xFF, 0x48, 0x81, 0xEC, 0xC8, 0x04, 0x00, 0x00};
 // FlushPendingSaveData(mgr, int* res, character, u16, u8* opts, int* slot_out) -> res (probe only).
-constexpr uintptr_t kFlush = 0x1A192D0;
+constexpr uintptr_t kFlush = 0x1A1AF40;
 constexpr uint8_t kFlushHead[] = {0x48, 0x89, 0x5C, 0x24, 0x10, 0x48, 0x89, 0x74, 0x24, 0x18, 0x55, 0x57,
                                   0x41, 0x55, 0x41, 0x56, 0x41, 0x57, 0x48, 0x8D, 0xAC, 0x24, 0x40, 0xFF,
                                   0xFF, 0xFF, 0x48, 0x81, 0xEC, 0xC0, 0x01, 0x00, 0x00, 0x45, 0x0F, 0xB7,
                                   0xF9, 0x4D, 0x8B, 0xE8, 0x48, 0x8B, 0xF2};
 // Called (never hooked): GetOrCreateSlot's .rsrc thunk (jmp .xtls 0xEF537A0) and AddFile.
-constexpr uintptr_t kGetOrCreate = 0x25BB470;  // (S, const char* name, u8 in_memory) -> slot
-constexpr uint8_t kGetOrCreateHead[] = {0xE9, 0x9B, 0x3B, 0x2A, 0x0B};
-constexpr uintptr_t kAddFile = 0x25C0900;  // (slot, const char* name) -> ...; makes the 0x140-byte file object
+constexpr uintptr_t kGetOrCreate = 0x25BD900;  // (S, const char* name, u8 in_memory) -> slot
+constexpr uint8_t kGetOrCreateHead[] = {0xE9, 0x6B, 0xDB, 0xC3, 0x0A};
+constexpr uintptr_t kAddFile = 0x25C2D90;  // (slot, const char* name) -> ...; makes the 0x140-byte file object
 constexpr uint8_t kAddFileHead[] = {0x40, 0x53, 0x55, 0x56, 0x57, 0x41, 0x54, 0x41, 0x55, 0x41, 0x56, 0x41, 0x57,
                                     0x48, 0x81, 0xEC, 0x88, 0x00, 0x00, 0x00, 0x48, 0x8B, 0xEA, 0x4C, 0x8B, 0xF9};
 
@@ -62,18 +62,18 @@ struct CallSite {
     uintptr_t at, target;
 };
 constexpr CallSite kCallSites[] = {
-    {0x2F242AB, kLoadSlot}, {0x2F4B021, kLoadSlot}, {0x1042ABF3, kLoadSlot},  // UserLogin, 3093 lobby, 3093 character
+    {0x2F287FB, kLoadSlot}, {0x2F4F571, kLoadSlot}, {0x1042ABF3, kLoadSlot},  // UserLogin, 3093 lobby, 3093 character
     {0xCBD86CE, kSave},     {0x103BE99A, kSave},                              // autosave, 2910
-    {0x2BC2A6A, kFlush},    {0x108393C8, kFlush},                             // logout phase, flush timer
+    {0x2BC548A, kFlush},    {0x108393C8, kFlush},                             // logout phase, flush timer
 };
 struct ErrorSite {
     uintptr_t at, global;
     const char* what;
 };
-constexpr ErrorSite kErrBusy = {0x1A16DCE, 0x71D0CFC, "LoadSlot's busy error"};
-constexpr ErrorSite kErrInvalidSlot = {0x1A16D1F, 0x71D092C, "LoadSlot's invalid-slot error"};
-constexpr ErrorSite kErrAbsentSlot = {0x2295FCF, 0x6CF781C, "LoadComponentsFromFile's absent-slot error"};
-constexpr ErrorSite kErrSaveFail = {0x1A15C2A, 0x71D0CF8, "SavePlayerToSlot's own failure"};
+constexpr ErrorSite kErrBusy = {0x1A18A3E, 0x71D6E3C, "LoadSlot's busy error"};
+constexpr ErrorSite kErrInvalidSlot = {0x1A1898F, 0x71D6A6C, "LoadSlot's invalid-slot error"};
+constexpr ErrorSite kErrAbsentSlot = {0x2297BEF, 0x6CF781C, "LoadComponentsFromFile's absent-slot error"};
+constexpr ErrorSite kErrSaveFail = {0x1A1789A, 0x71D6E38, "SavePlayerToSlot's own failure"};
 
 // Fields (evidence in the report and in guest_save_logic.h).
 constexpr uint32_t kSlotMemoryOnly = 0x699;  // u8: GetOrCreateSlot .xtls 0xEF538D7, CommitSlot .xtls 0xEF5186D
@@ -427,7 +427,7 @@ bool guarded_get_or_create(uintptr_t store, uintptr_t& slot) noexcept {
     __try {
         slot = g_get_or_create(store, g_slot_name, 0);
         return true;
-    } __except (call_fault(GetExceptionInformation(), "0x25BB470 GetOrCreateSlot(S, guest slot, 0)")) {
+    } __except (call_fault(GetExceptionInformation(), "0x25BD900 GetOrCreateSlot(S, guest slot, 0)")) {
         return false;  // never reached: the filter passes it on
     }
 }
@@ -435,7 +435,7 @@ bool guarded_add_file(uintptr_t slot, const char* name) noexcept {
     __try {
         g_add_file(slot, name);
         return true;
-    } __except (call_fault(GetExceptionInformation(), "0x25C0900 AddFile(guest slot, lobby/save)")) {
+    } __except (call_fault(GetExceptionInformation(), "0x25C2D90 AddFile(guest slot, lobby/save)")) {
         return false;
     }
 }
@@ -833,7 +833,7 @@ int* __fastcall load_slot_detour(uintptr_t mgr, int* res, uint32_t slot, uintptr
         if (g_lines_load.take(!mine)) {
             logged = true;
             const gsv::Decision would = gsv::decide_load_on(owner, caller, s, slot, gsv::kGuestSlot);
-            log::info("Session2 guest save probe: LoadSlot 0x1A16C40 from {} ({}) | actor 0x{:X}{} of user 0x{:X} = {} "
+            log::info("Session2 guest save probe: LoadSlot 0x1A188B0 from {} ({}) | actor 0x{:X}{} of user 0x{:X} = {} "
                       "| slot {} -> {} {} ({}){} | state {} | {}",
                       rva_text(ret), gsv::load_caller_name(caller), actor, self ? " (user actor)" : "", user,
                       gsv::owner_name(owner), slot, gsv::action_name(d.action), d.slot, d.why,
@@ -906,7 +906,7 @@ int* __fastcall save_detour(uintptr_t mgr, int* res, uint32_t slot, uintptr_t ch
             uint32_t options = 0;
             const bool opts_ok = peek(opts, options);
             const gsv::Decision would = gsv::decide_save_on(owner, s, same_login, slot, gsv::kGuestSlot);
-            log::info("Session2 guest save probe: SavePlayerToSlot 0x1A15930 from {} ({}) | character 0x{:X} of user "
+            log::info("Session2 guest save probe: SavePlayerToSlot 0x1A175A0 from {} ({}) | character 0x{:X} of user "
                       "0x{:X} = {} | slot {} options {} -> {} {} ({}){} | state {} | {}",
                       rva_text(ret), gsv::save_caller_name(caller), character, user, gsv::owner_name(owner), slot,
                       opts_ok ? std::format("0x{:X}", options) : std::string("unreadable"), gsv::action_name(d.action),
@@ -1012,7 +1012,7 @@ int* __fastcall flush_detour(uintptr_t mgr, int* res, uintptr_t character, uint6
             int32_t code = -1, out = -1;
             const bool code_ok = peek(reinterpret_cast<uintptr_t>(r), code);
             const bool out_ok = peek(reinterpret_cast<uintptr_t>(slot_out), out);
-            log::info("Session2 guest save probe: FlushPendingSaveData 0x1A192D0 from {} ({}) | character 0x{:X} of "
+            log::info("Session2 guest save probe: FlushPendingSaveData 0x1A1AF40 from {} ({}) | character 0x{:X} of "
                       "user 0x{:X} = {} | options {} counter {} | pending slot +0x5C before {} | committed slot {} | "
                       "returned {} | {}",
                       rva_text(ret), gsv::flush_caller_name(ret), character, user, gsv::owner_name(owner),
@@ -1129,11 +1129,11 @@ bool guest_save_install(const GuestSaveOptions& opt) {
     }
 
     // The code: three entries to hook, two functions to call, the callers and the error codes.
-    const bool load_ok = bytes_ok(kLoadSlot, kLoadSlotHead, sizeof kLoadSlotHead, "LoadSlot 0x1A16C40");
-    const bool save_ok = bytes_ok(kSave, kSaveHead, sizeof kSaveHead, "SavePlayerToSlot 0x1A15930");
-    const bool flush_ok = bytes_ok(kFlush, kFlushHead, sizeof kFlushHead, "FlushPendingSaveData 0x1A192D0");
-    const bool calls_ok = bytes_ok(kGetOrCreate, kGetOrCreateHead, sizeof kGetOrCreateHead, "GetOrCreateSlot 0x25BB470") &&
-                          bytes_ok(kAddFile, kAddFileHead, sizeof kAddFileHead, "AddFile 0x25C0900");
+    const bool load_ok = bytes_ok(kLoadSlot, kLoadSlotHead, sizeof kLoadSlotHead, "LoadSlot 0x1A188B0");
+    const bool save_ok = bytes_ok(kSave, kSaveHead, sizeof kSaveHead, "SavePlayerToSlot 0x1A175A0");
+    const bool flush_ok = bytes_ok(kFlush, kFlushHead, sizeof kFlushHead, "FlushPendingSaveData 0x1A1AF40");
+    const bool calls_ok = bytes_ok(kGetOrCreate, kGetOrCreateHead, sizeof kGetOrCreateHead, "GetOrCreateSlot 0x25BD900") &&
+                          bytes_ok(kAddFile, kAddFileHead, sizeof kAddFileHead, "AddFile 0x25C2D90");
     bool sites = true;
     for (const CallSite& s : kCallSites) {
         if (!call_site_ok(s)) {
@@ -1165,7 +1165,7 @@ bool guest_save_install(const GuestSaveOptions& opt) {
         calls.before = &phase_before;
         calls.after = &phase_after;
         if (!identity_load_hook_share(calls)) {
-            return forced_off(mode, "the shared LoadComponentsFromFile 0x22951B0 entry hook could not be installed");
+            return forced_off(mode, "the shared LoadComponentsFromFile 0x2296DD0 entry hook could not be installed");
         }
         g_get_or_create = reinterpret_cast<GetOrCreateFn>(g_base + kGetOrCreate);
         g_add_file = reinterpret_cast<AddFileFn>(g_base + kAddFile);
@@ -1187,11 +1187,11 @@ bool guest_save_install(const GuestSaveOptions& opt) {
         return false;
     };
     const bool h_load = hook(load_ok, kLoadSlot, reinterpret_cast<void*>(&load_slot_detour), g_h_load_slot,
-                             "LoadSlot 0x1A16C40");
+                             "LoadSlot 0x1A188B0");
     const bool h_save = hook(save_ok, kSave, reinterpret_cast<void*>(&save_detour), g_h_save,
-                             "SavePlayerToSlot 0x1A15930");
+                             "SavePlayerToSlot 0x1A175A0");
     const bool h_flush =
-        hook(flush_ok, kFlush, reinterpret_cast<void*>(&flush_detour), g_h_flush, "FlushPendingSaveData 0x1A192D0");
+        hook(flush_ok, kFlush, reinterpret_cast<void*>(&flush_detour), g_h_flush, "FlushPendingSaveData 0x1A1AF40");
     if (mode == Mode::On && (!h_load || !h_save)) {
         // Disabled, not destroyed: a thread may be inside a detour. The shared load phase stays and refuses.
         for (SafetyHookInline* h : {&g_h_load_slot, &g_h_save, &g_h_flush}) {

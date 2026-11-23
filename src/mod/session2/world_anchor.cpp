@@ -23,7 +23,7 @@ namespace w = wal;
 
 // Build 1.0.0.2976, checked at configure (docs/research/noche/mundo-invitado.md, "Implementado"): the two writes of
 // the native 2245 handler and the collector's read of the slot. Anything else: off.
-constexpr uintptr_t kHandlerWrite = 0x29C2915;  // mov byte [rsi+0x2E4], r14b ; mov dword [rsi+0x2E8], ebx
+constexpr uintptr_t kHandlerWrite = 0x29C5075;  // mov byte [rsi+0x2E4], r14b ; mov dword [rsi+0x2E8], ebx
 constexpr uint8_t kHandlerWriteBytes[] = {0x44, 0x88, 0xB6, 0xE4, 0x02, 0x00, 0x00, 0x89, 0x9E, 0xE8, 0x02, 0x00, 0x00};
 constexpr uintptr_t kCollectorRead = 0x2C38E28;  // movzx ebx, byte [r15+0x2E4] (anchor 2 of 0x2C37340)
 constexpr uint8_t kCollectorReadBytes[] = {0x41, 0x0F, 0xB6, 0x9F, 0xE4, 0x02, 0x00, 0x00};
@@ -195,7 +195,7 @@ bool call_try(uintptr_t fn, uintptr_t lock) noexcept {
     __try {
         return reinterpret_cast<TryFn>(fn)(lock, 0);
     } __except (game::game_fault_continue(GetExceptionInformation(), "WorldAnchor",
-                                          "TryLock (exclusive) of a ServerField's lock (vf+0x28, exe+0x1593AD0)")) {
+                                          "TryLock (exclusive) of a ServerField's lock (vf+0x28, exe+0x1595650)")) {
         return false;  // never reached: the filter passes it on
     }
 }
@@ -203,7 +203,7 @@ void call_unlock(uintptr_t fn, uintptr_t lock) noexcept {
     __try {
         reinterpret_cast<UnlockFn>(fn)(lock, 0);
     } __except (game::game_fault_continue(GetExceptionInformation(), "WorldAnchor",
-                                          "Unlock (exclusive) of a ServerField's lock (vf+0x20, exe+0x1593AA0)")) {
+                                          "Unlock (exclusive) of a ServerField's lock (vf+0x20, exe+0x1595620)")) {
     }
 }
 
@@ -285,8 +285,8 @@ void note_result(const w::Decision& d, w::Result r, bool refused, const w::Slot&
         c_refused.fetch_add(1, std::memory_order_relaxed);
         if (!g_refused_logged) {
             g_refused_logged = true;
-            log::error("WorldAnchor: the lock of field 0x{:X} is not pa::WindowsRWLock<4,1> with TryLock exe+0x1593AD0 / "
-                       "Unlock exe+0x1593AA0 (build 1.0.0.2976 only): nothing written",
+            log::error("WorldAnchor: the lock of field 0x{:X} is not pa::WindowsRWLock<4,1> with TryLock exe+0x1595650 / "
+                       "Unlock exe+0x1595620 (build 1.0.0.2976 only): nothing written",
                        d.field);
         }
         return;
@@ -504,7 +504,7 @@ bool world_anchor_configure(const std::string& raw) {
     uint8_t a[sizeof kHandlerWriteBytes] = {}, b[sizeof kCollectorReadBytes] = {};
     if (!game::safe_read(g_base + kHandlerWrite, a, sizeof a) || std::memcmp(a, kHandlerWriteBytes, sizeof a) != 0 ||
         !game::safe_read(g_base + kCollectorRead, b, sizeof b) || std::memcmp(b, kCollectorReadBytes, sizeof b) != 0) {
-        log::error("Session2: user2_world_anchor: the slot's writer exe+0x29C2915 / reader exe+0x2C38E28 are not the bytes "
+        log::error("Session2: user2_world_anchor: the slot's writer exe+0x29C5075 / reader exe+0x2C38E28 are not the bytes "
                    "of build 1.0.0.2976; off");
         return false;
     }

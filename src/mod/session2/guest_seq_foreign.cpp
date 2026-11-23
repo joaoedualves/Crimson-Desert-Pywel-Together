@@ -52,16 +52,16 @@ constexpr uint8_t kCreateType[] = {0x41, 0x0F, 0xB6, 0x46, 0x08, 0x3C, 0x04, 0x7
 constexpr uint8_t kCreateCopy[] = {0xC4, 0xC1, 0x7B, 0x10, 0x06, 0xC5, 0xFB, 0x11, 0x45, 0x88, 0x41, 0x8B, 0x46, 0x08};  // 0xA9CC28
 // guest_seq_route's own point (its bytes are checked by that module; here only that it is the same code).
 constexpr uint8_t kRoutePoint[] = {0x41, 0x80, 0xFE, 0x04, 0x74};  // 0xC0612A cmp bl,4 ; je 0xC06179
-const Ctx kFixCode[] = {{0xD6C81C, kVecZero},   {0xD6CA0B, kVecStore},   {0xD6CA20, kVecInit},    {0xC05E84, kVecCount},
-                        {0xD6CA60, kVecStride}, {0xC05EE9, kVecActor},   {0xC05F1D, kVecType},    {0xD6C7C8, kPlayData},
-                        {0xD6CC4B, kCreateCall}, {0xC061EF, kVecFree},   {0xBDFCB9, kCreateArg},  {0xBDFE05, kCreateWalk},
-                        {0xBDFE58, kCreateType}, {0xBDFEF3, kCreateCopy}, {0xD6CBFE, kRoutePoint}};
+const Ctx kFixCode[] = {{0xD6D26C, kVecZero},   {0xD6D45B, kVecStore},   {0xD6D470, kVecInit},    {0xC068D4, kVecCount},
+                        {0xD6D4B0, kVecStride}, {0xC06939, kVecActor},   {0xC0696D, kVecType},    {0xD6D218, kPlayData},
+                        {0xD6D69B, kCreateCall}, {0xC06C3F, kVecFree},   {0xBE0709, kCreateArg},  {0xBE0855, kCreateWalk},
+                        {0xBE08A8, kCreateType}, {0xBE0943, kCreateCopy}, {0xD6D64E, kRoutePoint}};
 // The .pdata of the two functions the fix relies on.
-constexpr uint32_t kHandlerBegin = 0xD6C750, kHandlerEnd = 0xC0632F, kCreateBegin = 0xBDFC90, kCreateEnd = 0xA9D47E;
+constexpr uint32_t kHandlerBegin = 0xD6D1A0, kHandlerEnd = 0xC06D7F, kCreateBegin = 0xBE06E0, kCreateEnd = 0xA9DD2E;
 
 // The probes: 40-byte signatures (each unique in .rsrc of the 2976 exe, checked offline with capstone) at whole
 // instructions, no RIP-relative operand and no branch into the patched bytes (the whole RUNTIME_FUNCTION scanned).
-constexpr uint8_t kP1Sig[] = {0x4C, 0x89, 0x4C, 0x24, 0x20, 0x48, 0x89, 0x54, 0x24, 0x10, 0x55, 0x53, 0x56, 0x57, 0x41, 0x54, 0x41, 0x55, 0x41, 0x56, 0x41, 0x57, 0x48, 0x8D, 0xAC, 0x24, 0x88, 0xEF, 0xFF, 0xFF, 0xB8, 0x78, 0x11, 0x00, 0x00, 0xE8, 0x08, 0x81, 0x53, 0x04};  // 0x602940
+constexpr uint8_t kP1Sig[] = {0x4C, 0x89, 0x4C, 0x24, 0x20, 0x48, 0x89, 0x54, 0x24, 0x10, 0x55, 0x53, 0x56, 0x57, 0x41, 0x54, 0x41, 0x55, 0x41, 0x56, 0x41, 0x57, 0x48, 0x8D, 0xAC, 0x24, 0x88, 0xEF, 0xFF, 0xFF, 0xB8, 0x78, 0x11, 0x00, 0x00, 0xE8, 0x38, 0xC3, 0x53, 0x04};  // 0x602940
 constexpr uint8_t kP21Sig[] = {0x48, 0x89, 0x5C, 0x24, 0x08, 0x48, 0x89, 0x54, 0x24, 0x10, 0x55, 0x56, 0x57, 0x41,
                                0x54, 0x41, 0x55, 0x41, 0x56, 0x41, 0x57, 0x48, 0x8D, 0x6C, 0x24, 0xE0, 0x48, 0x81,
                                0xEC, 0x20, 0x01, 0x00, 0x00, 0x4D, 0x8B, 0xF8, 0x48, 0x8B, 0xF2, 0x48};  // 0x601470
@@ -80,7 +80,7 @@ constexpr uint8_t kP3Rbx[] = {0x49, 0x8D, 0x5E, 0x08};                          
 constexpr uint8_t kP3Next[] = {0x48, 0x83, 0xC3, 0x20};                                                 // 0x603538
 constexpr uint8_t kP3Vf178[] = {0x48, 0x8B, 0x0B, 0x48, 0x8B, 0x01, 0xFF, 0x90, 0x78, 0x01, 0x00, 0x00, 0x84, 0xC0};  // 0x603373
 // ClientActor::vf178 0x4FE260: [[WorldSystem]+0x30]+0x58 == [actor+0xA0] && byte [actor+0x94] (P3 replicates it).
-constexpr uint8_t kVf178[] = {0x48, 0x8B, 0x05, 0xF9, 0x5F, 0xC6, 0x06, 0x48, 0x8B, 0x50, 0x30, 0x48, 0x8B, 0x81, 0xA0, 0x00, 0x00, 0x00, 0x48, 0x39, 0x42, 0x58};  // 0x4FE260 (rip -> 0x6D69190)
+constexpr uint8_t kVf178[] = {0x48, 0x8B, 0x05, 0x49, 0xBE, 0xC6, 0x06, 0x48, 0x8B, 0x50, 0x30, 0x48, 0x8B, 0x81, 0xA0, 0x00, 0x00, 0x00, 0x48, 0x39, 0x42, 0x58};  // 0x4FE260 (rip -> 0x6D69190)
 // P4 (review H-1 c): the entry of 0x5EB310 (.pdata 0x5EB310-0x5EC372, its only caller 0x5EB2C0 from .xdata 0x558C398):
 // RCX = the order's owner (its stage at [rcx+0x10], 0x5EB34F / 0x5EB38F), R8 = the order ([r8] = the node, 0x5EB3AD).
 constexpr uint8_t kP4Sig[] = {0x48, 0x89, 0x5C, 0x24, 0x10, 0x4C, 0x89, 0x4C, 0x24, 0x20, 0x4C, 0x89, 0x44, 0x24, 0x18, 0x48, 0x89, 0x4C, 0x24, 0x08, 0x55, 0x56, 0x57, 0x41, 0x54, 0x41, 0x55, 0x41, 0x56, 0x41, 0x57, 0x48, 0x8D, 0xAC, 0x24, 0xE0, 0xFD, 0xFF, 0xFF, 0x48};
@@ -472,7 +472,7 @@ std::string line_of(const p::Event& e) {
         for (size_t i = 0; i < 3; ++i) binds += bind_text(v[4 + i], ids[i]);
         return std::format("GuestSeqForeign [{}] {} T{} | stage seq 0x{:X} '{}' resource {} owner 0x{:08X} "
                            "(this client 0x{:08X}) +0x60/+0x61 {}/{} | {} | {} actor(s):{}{}",
-                           late ? "foreign NOT player node" : "P1 start 0x6EC8A0", when, e.tid, v[1], name_of(e),
+                           late ? "foreign NOT player node" : "P1 start 0x6ECC10", when, e.tid, v[1], name_of(e),
                            (v[3] >> 32) ? std::format("0x{:08X}", static_cast<uint32_t>(v[3])) : std::string("unknown"),
                            static_cast<uint32_t>(v[2]), static_cast<uint32_t>(v[2] >> 32), (v[0] >> 8) & 0xFF,
                            (v[0] >> 16) & 0xFF, gsf::p1_name(static_cast<gsf::P1>(v[0] & 0xFF)), (v[0] >> 24) & 0xFFFF,
@@ -487,24 +487,24 @@ std::string line_of(const p::Event& e) {
             if (v[i]) keys += std::format(" 0x{:08X}(link {})", static_cast<uint32_t>(v[i]), (v[i] >> 32) & 0xFF);
         }
         return std::format("GuestSeqForeign [P2 SequencerControl {} {}] {} T{} | stage seq 0x{:X} '{}' owner 0x{:08X} "
-                           "(this client 0x{:08X}){} | target ids {}{} (first 0x{:08X} 0x{:08X}{}) | 0x2288B60 would "
+                           "(this client 0x{:08X}){} | target ids {}{} (first 0x{:08X} 0x{:08X}{}) | 0x228A780 would "
                            "count {}, resolve {}:{} | {}",
-                           ((v[0] >> 8) & 0xFF) ? "vf22" : "vf21", ((v[0] >> 8) & 0xFF) ? "0x6EBB50" : "0x6EB3A0", when,
+                           ((v[0] >> 8) & 0xFF) ? "vf22" : "vf21", ((v[0] >> 8) & 0xFF) ? "0x6EBEC0" : "0x6EB710", when,
                            e.tid, v[1], name_of(e), static_cast<uint32_t>(v[2]), static_cast<uint32_t>(v[2] >> 32),
-                           ((v[0] >> 18) & 1) ? " | desc+0 (0x22886F0, [stage+0x98]) = ANOTHER player's character" : "",
+                           ((v[0] >> 18) & 1) ? " | desc+0 (0x228A310, [stage+0x98]) = ANOTHER player's character" : "",
                            (v[0] >> 32) & 0xFF, ((v[0] >> 17) & 1) ? " (TRUNCATED to 16)" : "",
                            static_cast<uint32_t>(v[7]), static_cast<uint32_t>(v[7] >> 32),
                            ((v[0] >> 16) & 1) ? ", mission node 0x1FFFFFFF" : "", (v[0] >> 24) & 0xFF, (v[0] >> 40) & 0xFF,
                            keys.empty() ? " none" : keys, gsf::p2_name(static_cast<gsf::P2>(v[0] & 0xFF)));
     }
     if (e.kind == kEP4) {
-        return std::format("GuestSeqForeign [P4 client actor order 0x6D41B0] {} T{} | stage seq 0x{:X} '{}' owner 0x{:08X} "
+        return std::format("GuestSeqForeign [P4 client actor order 0x6D4520] {} T{} | stage seq 0x{:X} '{}' owner 0x{:08X} "
                            "(this client 0x{:08X}) | node 0x{:08X}: key 0x{:08X} link {} node type {} | {}",
                            when, e.tid, v[1], name_of(e), static_cast<uint32_t>(v[2]), static_cast<uint32_t>(v[2] >> 32),
                            static_cast<uint32_t>(v[3] >> 32), static_cast<uint32_t>(v[3]), (v[0] >> 8) & 0xFF,
                            node_type_text(static_cast<uint8_t>(v[0] >> 16)), gsf::p4_name(static_cast<gsf::P4>(v[0] & 0xFF)));
     }
-    return std::format("GuestSeqForeign [P3 align 0x6ED47A] {} T{} | stage seq 0x{:X} '{}' owner 0x{:08X} (this client "
+    return std::format("GuestSeqForeign [P3 align 0x6ED7EA] {} T{} | stage seq 0x{:X} '{}' owner 0x{:08X} (this client "
                        "0x{:08X}) | actor 0x{:08X}: {} | vf178 replica {} (+0x94 {})",
                        when, e.tid, v[1], name_of(e), static_cast<uint32_t>(v[2]), static_cast<uint32_t>(v[2] >> 32),
                        static_cast<uint32_t>(v[3]), gsf::p3_name(static_cast<gsf::P3>(v[0] & 0xFF)),
@@ -596,7 +596,7 @@ std::string summary() {
     return std::format(
         "GuestSeqForeign summary | guest_seq_foreign_player={} (handler layout {}): {} | written {}, write failures {}, "
         "copy hidden (Status 0x200) {} of {} read | learnt node map (exceptions = non-player nodes): {} pairs, notes {}, "
-        "skipped {}, full {} | NEUTRALIZED at a non-player node (late exception) {} | per resource:{} | P1 [{}] calls {}:{} | P4 0x6D41B0 [{}]:{} | guest_seq_foreign_probe={}: P2 [{} / {}] truncated {}:{} "
+        "skipped {}, full {} | NEUTRALIZED at a non-player node (late exception) {} | per resource:{} | P1 [{}] calls {}:{} | P4 0x6D4520 [{}]:{} | guest_seq_foreign_probe={}: P2 [{} / {}] truncated {}:{} "
         "| P3 [{}]:{} vf178-replica local {} | lines limited {}, ring lost {}, lines over budget {}",
         gsf::mode_name(static_cast<gsf::Mode>(g_mode.load())), g_layout_ok.load() ? "verified" : "NOT verified",
         fix.empty() ? " none" : fix, g_written.load(), g_write_fail.load(), g_hidden_seen.load(), g_status_read.load(),
@@ -622,14 +622,14 @@ bool read_pdata(std::vector<RUNTIME_FUNCTION>& out, std::string& why) {
     IMAGE_DOS_HEADER dos{};
     IMAGE_NT_HEADERS64 nt{};
     if (g_base != off::kImageBase || !game::safe_read(g_base, &dos, sizeof dos) || dos.e_magic != IMAGE_DOS_SIGNATURE ||
-        dos.e_lfanew <= 0 || dos.e_lfanew > 0x114F20 ||
+        dos.e_lfanew <= 0 || dos.e_lfanew > 0x115110 ||
         !game::safe_read(g_base + static_cast<uint32_t>(dos.e_lfanew), &nt, sizeof nt) ||
         nt.Signature != IMAGE_NT_SIGNATURE || nt.FileHeader.TimeDateStamp != off::kPeTimestamp) {
         why = "not build 1.0.0.2976 (base / PE timestamp)";
         return false;
     }
     const auto pd = nt.OptionalHeader.DataDirectory[IMAGE_DIRECTORY_ENTRY_EXCEPTION];
-    if (!pd.VirtualAddress || !pd.Size || pd.Size % sizeof(RUNTIME_FUNCTION) || pd.Size > 0x1000000) {
+    if (!pd.VirtualAddress || !pd.Size || pd.Size % sizeof(RUNTIME_FUNCTION) || pd.Size > 0x1000780) {
         why = ".pdata unreadable";
         return false;
     }
@@ -648,7 +648,7 @@ bool has_function(const std::vector<RUNTIME_FUNCTION>& pdata, uint32_t begin, ui
 bool install_fix(std::span<const gad::Section> secs, const std::vector<RUNTIME_FUNCTION>& pdata) {
     std::string why;
     if (!has_function(pdata, kHandlerBegin, kHandlerEnd) || !has_function(pdata, kCreateBegin, kCreateEnd)) {
-        why = ".pdata of 0xD6C750 / 0xBDFC90 not the expected";
+        why = ".pdata of 0xD6D1A0 / 0xBE06E0 not the expected";
     }
     for (const Ctx& c : kFixCode) {
         if (!why.empty()) break;
@@ -664,9 +664,9 @@ bool install_fix(std::span<const gad::Section> secs, const std::vector<RUNTIME_F
                   gsf::mode_name(mode), why);
         return false;
     }
-    log::info("GuestSeqForeign guest_seq_foreign_player={} (handler layout verified: 0xD6C750's binding vector "
-              "[rbp-0x80] / count [rbp-0x78] / 12-byte entries, 0xBDFC90's copy and type check) | in guest_seq_route's "
-              "0xD6CBFE hook, for a 2661 routed to X (owner = another player's character): {} | guest_seq_route={}{}",
+    log::info("GuestSeqForeign guest_seq_foreign_player={} (handler layout verified: 0xD6D1A0's binding vector "
+              "[rbp-0x80] / count [rbp-0x78] / 12-byte entries, 0xBE06E0's copy and type check) | in guest_seq_route's "
+              "0xD6D64E hook, for a 2661 routed to X (owner = another player's character): {} | guest_seq_route={}{}",
               gsf::mode_name(mode),
               mode == gsf::Mode::On
                   ? "the owner's binding of type 5/4 set to 0 from its first appearance, except at a (resource, node) P1 "
@@ -684,15 +684,15 @@ bool install_fix(std::span<const gad::Section> secs, const std::vector<RUNTIME_F
 void install_probes(std::span<const gad::Section> secs, const std::vector<RUNTIME_FUNCTION>& pdata, bool fix, bool probe,
                     bool present) {
     const ProbeDef defs[] = {
-        {kP1, 0x6EC8A0, 5, 0x6EC8A0, 0x6030C8, kP1Sig, {}, "P1 0x6EC8A0 entry (scene start)"},
-        {kP21, 0x6EB3A0, 5, 0x6EB3A0, 0x601C04, kP21Sig, {}, "P2 vf21 0x6EB3A0 entry (SequencerControl start)"},
-        {kP22, 0x6EBB50, 5, 0x6EBB50, 0x6021E1, kP22Sig, {}, "P2 vf22 0x6EBB50 entry (SequencerControl end)"},
-        {kP3, 0x6ED47A, 7, 0x6ED050, 0x603646, kP3Sig,
-         {{0x6ED0A0, kP3R15}, {0x6ED2E8, kP3Rbx}, {0x6ED4B8, kP3Next}, {0x6ED2F3, kP3Vf178}, {0x5DF1C0, kVf178}},
-         "P3 0x6ED47A in 0x6ED050 (before the alignment's vf1A0)"},
-        {kP4, 0x6D41B0, 5, 0x6D41B0, 0x5EC372, kP4Sig,
-         {{0x6D4233, kP4Stage}, {0x6D4251, kP4Match}, {0x6D430A, kP4Type}},
-         "P4 0x6D41B0 entry (client actor order, CreateClientActorDesc_Sequencer)"},
+        {kP1, 0x6ECC10, 5, 0x6ECC10, 0x603408, kP1Sig, {}, "P1 0x6ECC10 entry (scene start)"},
+        {kP21, 0x6EB710, 5, 0x6EB710, 0x601C04, kP21Sig, {}, "P2 vf21 0x6EB710 entry (SequencerControl start)"},
+        {kP22, 0x6EBEC0, 5, 0x6EBEC0, 0x602521, kP22Sig, {}, "P2 vf22 0x6EBEC0 entry (SequencerControl end)"},
+        {kP3, 0x6ED7EA, 7, 0x6ED3C0, 0x603986, kP3Sig,
+         {{0x6ED410, kP3R15}, {0x6ED658, kP3Rbx}, {0x6ED828, kP3Next}, {0x6ED663, kP3Vf178}, {0x5DF500, kVf178}},
+         "P3 0x6ED7EA in 0x6ED3C0 (before the alignment's vf1A0)"},
+        {kP4, 0x6D4520, 5, 0x6D4520, 0x5EC6B2, kP4Sig,
+         {{0x6D45A3, kP4Stage}, {0x6D45C1, kP4Match}, {0x6D467A, kP4Type}},
+         "P4 0x6D4520 entry (client actor order, CreateClientActorDesc_Sequencer)"},
     };
     const safetyhook::MidHookFn fns[kProbes] = {on_p1, on_p21, on_p22, on_p3, on_p4};
     std::string on, refused;

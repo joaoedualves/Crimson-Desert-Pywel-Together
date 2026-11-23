@@ -117,9 +117,9 @@ void start(Gate g, const char* role_name) {
     }
     g_ctl = Controller(original);
     log::info("BgSpeed ON ({}): no hook, no game memory. The copy without the foreground drops to 2-4 fps because its "
-              "main thread waits for its own GPU fence (0x417DB00 <- 0x3C328C0 <- 0x3B8E6E0, build 2976) while the "
+              "main thread waits for its own GPU fence (0x41820A0 <- 0x3C36E10 <- 0x3B92C30, build 2976) while the "
               "foreground copy fills the GPU, not because of a throttle of the game; the game's own focus handling "
-              "(input off 0x31157F0, Reflex/frame generation off 0x14A8D6D0) is left as it is. So: the foreground "
+              "(input off 0x3119D20, Reflex/frame generation off 0x14A8D6D0) is left as it is. So: the foreground "
               "window is checked every {} ms and, while it is another process's, this process's GPU scheduling class "
               "(D3DKMTSetProcessSchedulingPriorityClass) is {} (original {}{}); {}",
               role_name, kPollMs, class_name(g_ctl.boost()), class_name(g_ctl.original()),

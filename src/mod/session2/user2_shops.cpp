@@ -162,7 +162,7 @@ void user2_shops_start(const std::string& route_mode, bool shop_probe) {
     if (k.bad) log::warn("User2Shops: user2_shop_route={} is not 0, probe or 1: off", route_mode);
     if (k.mode == u2sh::Mode::Off) return;
     if (!shop_probe) {
-        log::warn("User2Shops: user2_shop_route={} needs shop_probe=1 (its points P 0x2B4C865 and S 0x235EC69): off",
+        log::warn("User2Shops: user2_shop_route={} needs shop_probe=1 (its points P 0x2B4EFB5 and S 0x23608D9): off",
                   route_mode);
         return;
     }
@@ -461,7 +461,7 @@ std::string line_of(const p::Event& e) {
                                u2sh::route_out_name(o));
         }
         case kESrv:
-            return std::format("User2Shops [server check] {} T{} | 0x235EB60 on the server for {}: entry stage id 0x{:X} | "
+            return std::format("User2Shops [server check] {} T{} | 0x23607D0 on the server for {}: entry stage id 0x{:X} | "
                                "vf48 gave 0x{:X}, user 2's manager 0x{:X} | {}{}",
                                when, e.tid, v[4] == 1 ? "the HOST" : v[4] == 2 ? "user 2" : "another", v[0], v[2], v[3],
                                u2sh::route_out_name(static_cast<RouteOut>(v[1])),
@@ -651,7 +651,7 @@ DWORD WINAPI shops_thread(LPVOID) {
     }
     g_sites_checked.store(true, std::memory_order_release);
     log::info("User2Shops (user2_shop_route={}): U2-a at the vf48 call of {} of {} scene handlers{}{} | U2-b at "
-              "shop_probe's 0x235EC69 | the drain wait (120 s after a shop 2916 of its own scene, > {} cells, once per "
+              "shop_probe's 0x23608D9 | the drain wait (120 s after a shop 2916 of its own scene, > {} cells, once per "
               "arm) | user2_funnels' vf48 / subject hooks and shop_probe's S / P right now: {} / {} (checked again on "
               "every use) | {}",
               u2s::mode_name(mode_now()), ok, u2sh::kSiteCount,

@@ -170,7 +170,7 @@ inline const char* skip_name(Skip s) {
         case Skip::FieldModeNoTick: return "field mode 2 (the game does not tick M either)";
         case Skip::NoManager: return "no M";
         case Skip::OwnNotReady: return "this client's own M+0x231 is not 3 yet";
-        case Skip::NotField: return "Q is not a ClientField (vf40 0xAE06A0)";
+        case Skip::NotField: return "Q is not a ClientField (vf40 0xAE0F50)";
         case Skip::EmptySlot: return "slot being filled";
         case Skip::StaleEpoch: return "routed on an earlier connection (slot cleared)";
         case Skip::OtherField: return "routed in another field than this frame's (slot cleared)";

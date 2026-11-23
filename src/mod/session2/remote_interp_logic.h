@@ -770,10 +770,10 @@ enum class Site : uint8_t { SetPos, SetRot, UpdPos, UpdRot };
 inline constexpr size_t kSites = 4;
 inline const char* site_name(Site s) {
     switch (s) {
-        case Site::SetPos: return "set pos 0x13C5A8E";
-        case Site::SetRot: return "set rot 0x13C61B0";
-        case Site::UpdPos: return "update pos 0x13C5F1A";
-        case Site::UpdRot: return "update rot 0x13C65E2";
+        case Site::SetPos: return "set pos 0x13C760E";
+        case Site::SetRot: return "set rot 0x13C7D30";
+        case Site::UpdPos: return "update pos 0x13C7A9A";
+        case Site::UpdRot: return "update rot 0x13C8162";
     }
     return "?";
 }

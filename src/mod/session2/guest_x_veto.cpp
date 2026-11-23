@@ -50,7 +50,7 @@ using gxv::Verdict;
 //                                                 from this function or by rel32 from anywhere in the PE)
 //   0x5F35D7  lea r11,[rsp+0x3E0] ...             the epilogue (rax = the gate's 0)
 //   R14 = the processor all along (callee-saved over the gate's call); [proc+8] = its stage manager G.
-constexpr uintptr_t kV1 = 0x5F2A3A, kV1Ctx = 0x5F2A27, kV1Epilogue = 0x6DD02C;
+constexpr uintptr_t kV1 = 0x5F2D7A, kV1Ctx = 0x5F2D67, kV1Epilogue = 0x6DD39C;
 constexpr uint32_t kV1Patch = 8;
 constexpr uint8_t kV1Bytes[] = {0x84, 0xC0, 0x0F, 0x84, 0x95, 0x0B, 0x00, 0x00};
 constexpr uint8_t kV1CtxBytes[] = {0x49, 0x8B, 0xF0, 0x4C, 0x8B, 0xF1, 0x33, 0xFF, 0x89, 0x7D,
@@ -58,16 +58,16 @@ constexpr uint8_t kV1CtxBytes[] = {0x49, 0x8B, 0xF0, 0x4C, 0x8B, 0xF1, 0x33, 0xF
 constexpr uint8_t kV1EpilogueBytes[] = {0x4C, 0x8D, 0x9C, 0x24, 0x20, 0x04, 0x00, 0x00};
 //   0x778AB0  P's "start a load" (the only `mov byte [P+0x15C], 1`, at 0x778B99): copies the request and sets the
 //             state 1; returns void. V0: inline hook at its entry (mov [rsp+0x10],rbx: 5 bytes).
-constexpr uintptr_t kV0 = 0x8812F0;
+constexpr uintptr_t kV0 = 0x881A10;
 constexpr uint32_t kV0Patch = 5;
 constexpr uint8_t kV0Bytes[] = {0x48, 0x89, 0x5C, 0x24, 0x10, 0x48, 0x89, 0x6C,
                                 0x24, 0x18, 0x48, 0x89, 0x74, 0x24, 0x20, 0x57};
 //   0xC07771  call 0xA9E100 (the 2981's branch, routed to X at 0xC07749 by guest_seq_route)
 //   0xC07776  nop ; lea rax,[rip+0x4D0B6E2]       the clear point (8 bytes; the lea is relocated by safetyhook; no
 //                                                 branch into 0xC07777..0xC0777D)
-constexpr uintptr_t kClear = 0xD6E751, kClearCtx = 0xD6E74C;
+constexpr uintptr_t kClear = 0xD6F1A1, kClearCtx = 0xD6F19C;
 constexpr uint32_t kClearPatch = 8;
-constexpr uint8_t kClearBytes[] = {0x90, 0x48, 0x8D, 0x05, 0x0F, 0x74, 0xFD, 0x04};
+constexpr uint8_t kClearBytes[] = {0x90, 0x48, 0x8D, 0x05, 0x47, 0xBC, 0xFD, 0x04};
 constexpr uint8_t kClearCtxBytes[] = {0xE8, 0xAF, 0x30, 0xE7, 0xFF};
 
 // guest_x_ui_veto (p8-s10.md §4): one mid hook per handler (gxv::Fn), read with capstone on the read-only PE.
@@ -106,14 +106,14 @@ struct FnPoint {
     uint32_t span_len = 0;
     uint64_t span_fnv = 0;
 };
-constexpr uintptr_t kUiControlRaxRva = 0x5B40000;  // 0x5E4F95 lea rax,[rip+0x5140EAC]: what UIControl's way out carries
+constexpr uintptr_t kUiControlRaxRva = 0x5B45300;  // 0x5E4F95 lea rax,[rip+0x5140EAC]: what UIControl's way out carries
 // dialogue
-constexpr uint8_t kQuestDlgBytes[] = {0xE9, 0x3B, 0x74, 0x9B, 0x0A};  // jmp .xtls 0xE045390
+constexpr uint8_t kQuestDlgBytes[] = {0xE9, 0x7B, 0x53, 0x3F, 0x0A};  // jmp .xtls 0xE045390
 constexpr uint8_t kTimelineEntry[] = {0x48, 0x8B, 0xC4, 0x48, 0x89, 0x58, 0x10, 0x4C, 0x89, 0x40, 0x18, 0x48, 0x89, 0x48, 0x08, 0x55, 0x56, 0x57, 0x41, 0x54, 0x41, 0x55, 0x41, 0x56, 0x41, 0x57, 0x48, 0x8D, 0xA8, 0xF8, 0xFE, 0xFF, 0xFF, 0x48, 0x81, 0xEC, 0xD0, 0x01, 0x00, 0x00, 0xC5, 0xF8, 0x29, 0x70, 0xB8};
 constexpr uint8_t kTimelineBytes[] = {0x49, 0x8B, 0xF0, 0x48, 0x8B, 0xDA, 0x4C, 0x8B, 0xE1};  // mov rsi,r8 ; mov rbx,rdx
 constexpr uint8_t kTimelineOut[] = {0x48, 0x8B, 0x9C, 0x24, 0x18, 0x02, 0x00, 0x00};       // mov rbx,[rsp+0x208]
-constexpr uint8_t kTimelineEndBytes[] = {0xE9, 0x8B, 0xF2, 0x9A, 0x0A};                     // jmp .xtls 0xE0363C0
-constexpr uint8_t kBlockInterBytes[] = {0xE9, 0xAB, 0x91, 0x32, 0x0B};                      // jmp .xtls 0xEFE0C60
+constexpr uint8_t kTimelineEndBytes[] = {0xE9, 0x1B, 0x00, 0x3E, 0x0A};                     // jmp .xtls 0xE0363C0
+constexpr uint8_t kBlockInterBytes[] = {0xE9, 0x2B, 0x4C, 0xCA, 0x0A};                      // jmp .xtls 0xEFE0C60
 constexpr uint8_t kSetInterEntry[] = {0x44, 0x88, 0x44, 0x24, 0x18, 0x48, 0x89, 0x54, 0x24, 0x10, 0x48,
                                       0x89, 0x4C, 0x24, 0x08, 0x55, 0x53, 0x56, 0x57, 0x41, 0x54, 0x41,
                                       0x55, 0x41, 0x56, 0x41, 0x57, 0x48, 0x8D, 0xAC, 0x24, 0xF8, 0xF7,
@@ -129,27 +129,27 @@ constexpr uint8_t kUiControlEntry[] = {0x48, 0x89, 0x5C, 0x24, 0x08, 0x48, 0x89,
 constexpr uint8_t kUiControlBytes[] = {0x49, 0x8B, 0xE8, 0x48, 0x8B, 0xDA, 0x4C, 0x8B, 0xF1};  // mov rbp,r8 ; mov rbx,rdx
 constexpr uint8_t kUiControlOut[] = {0x4C, 0x8D, 0x9C, 0x24, 0x90, 0x08, 0x00, 0x00};       // lea r11,[rsp+0x890]
 constexpr uint8_t kPhaseTagBytes[] = {0x48, 0x89, 0x5C, 0x24, 0x08, 0x57, 0x48, 0x83, 0xEC, 0x20};  // push ; sub (6)
-constexpr uint8_t kMinimapEntry[] = {0x48, 0x89, 0x5C, 0x24, 0x10, 0x48, 0x89, 0x4C, 0x24, 0x08, 0x55, 0x56, 0x57, 0x41, 0x54, 0x41, 0x55, 0x41, 0x56, 0x41, 0x57, 0x48, 0x8D, 0xAC, 0x24, 0xD0, 0xEC, 0xFF, 0xFF, 0xB8, 0x30, 0x14, 0x00, 0x00, 0xE8, 0x09, 0xE8, 0x54, 0x04, 0x48, 0x2B, 0xE0, 0xC5, 0xF8, 0x29, 0xB4, 0x24, 0x20, 0x14, 0x00, 0x00, 0xC5, 0xF8, 0x29, 0xBC, 0x24, 0x10, 0x14, 0x00, 0x00, 0xC5, 0x78, 0x29, 0x84, 0x24, 0x00, 0x14, 0x00, 0x00, 0xC5, 0x78, 0x29, 0x8C, 0x24, 0xF0, 0x13, 0x00, 0x00};
+constexpr uint8_t kMinimapEntry[] = {0x48, 0x89, 0x5C, 0x24, 0x10, 0x48, 0x89, 0x4C, 0x24, 0x08, 0x55, 0x56, 0x57, 0x41, 0x54, 0x41, 0x55, 0x41, 0x56, 0x41, 0x57, 0x48, 0x8D, 0xAC, 0x24, 0xD0, 0xEC, 0xFF, 0xFF, 0xB8, 0x30, 0x14, 0x00, 0x00, 0xE8, 0x39, 0x2A, 0x55, 0x04, 0x48, 0x2B, 0xE0, 0xC5, 0xF8, 0x29, 0xB4, 0x24, 0x20, 0x14, 0x00, 0x00, 0xC5, 0xF8, 0x29, 0xBC, 0x24, 0x10, 0x14, 0x00, 0x00, 0xC5, 0x78, 0x29, 0x84, 0x24, 0x00, 0x14, 0x00, 0x00, 0xC5, 0x78, 0x29, 0x8C, 0x24, 0xF0, 0x13, 0x00, 0x00};
 constexpr uint8_t kMinimapBytes[] = {0x4D, 0x8B, 0xE8, 0x48, 0x8B, 0xFA, 0x48, 0x8B, 0xF1};  // mov r13,r8 ; mov rdi,rdx
 constexpr uint8_t kMinimapOut[] = {0x4C, 0x8D, 0x9C, 0x24, 0x30, 0x14, 0x00, 0x00};       // lea r11,[rsp+0x13F0]
 constexpr uint8_t kFindPathBytes[] = {0x48, 0x8B, 0xC4, 0x48, 0x89, 0x58, 0x10, 0x55};    // mov rax,rsp ; mov [rax+0x10],rbx
-constexpr uint8_t kStageIconBytes[] = {0xE9, 0x0B, 0x36, 0x98, 0x08};                     // jmp .xtls 0x8F3C860
+constexpr uint8_t kStageIconBytes[] = {0xE9, 0xCB, 0xE4, 0x72, 0x08};                     // jmp .xtls 0x8F3C860
 constexpr uint8_t kGuideEntry[] = {0x48, 0x89, 0x5C, 0x24, 0x08, 0x55, 0x56, 0x57, 0x41, 0x54, 0x41,
                                    0x55, 0x41, 0x56, 0x41, 0x57, 0x48, 0x8D, 0xAC, 0x24, 0x40, 0xF8,
                                    0xFF, 0xFF, 0x48, 0x81, 0xEC, 0xC0, 0x08, 0x00, 0x00};
 constexpr uint8_t kGuideBytes[] = {0x4D, 0x8B, 0xF0, 0x48, 0x8B, 0xD9, 0xB8, 0xFF, 0xFF, 0x00, 0x00};  // mov r14,r8 ; mov rbx,rcx
 constexpr uint8_t kGuideOut[] = {0x48, 0x8B, 0x9C, 0x24, 0x00, 0x09, 0x00, 0x00};                    // mov rbx,[rsp+0x900]
 constexpr uint8_t kBgGuideBytes[] = {0x48, 0x89, 0x5C, 0x24, 0x10, 0x48, 0x89, 0x74, 0x24, 0x18};
-constexpr uint8_t kHintBytes[] = {0xE9, 0x0B, 0x89, 0x98, 0x08};     // jmp .xtls 0x8F44B10
-constexpr uint8_t kHintEndBytes[] = {0xE9, 0x1B, 0x90, 0x98, 0x08};  // jmp .xtls 0x8F4A140
+constexpr uint8_t kHintBytes[] = {0xE9, 0xFB, 0xD1, 0x72, 0x08};     // jmp .xtls 0x8F44B10
+constexpr uint8_t kHintEndBytes[] = {0xE9, 0x2B, 0x0D, 0x73, 0x08};  // jmp .xtls 0x8F4A140
 // camera / screen (entry points, whole first instructions; §7.3)
-constexpr uint8_t kFadeBytes[] = {0xE9, 0x1B, 0xB1, 0x98, 0x08};  // jmp .xtls
+constexpr uint8_t kFadeBytes[] = {0xE9, 0x1B, 0x25, 0x73, 0x08};  // jmp .xtls
 constexpr uint8_t kLetterBytes[] = {0xC4, 0xC1, 0x7A, 0x10, 0x50, 0x20, 0xB2, 0x01, 0xE9, 0x83, 0x79, 0x00, 0x00};
-constexpr uint8_t kSeqCamBytes[] = {0xE9, 0xBB, 0x8A, 0x97, 0x08};  // jmp .xtls
-constexpr uint8_t kDeactCamBytes[] = {0x4C, 0x8D, 0x0D, 0x31, 0x27, 0x85, 0x06, 0x45, 0x33, 0xC0, 0x33, 0xD2, 0xE9, 0x5F, 0xBC, 0xFF, 0xFF};  // lea r9,[rip..] (7)
-constexpr uint8_t kDeactCamEndBytes[] = {0x4C, 0x8D, 0x0D, 0x11, 0x27, 0x85, 0x06, 0x45, 0x33, 0xC0, 0xB2, 0x01, 0xE9, 0x3F, 0xBC, 0xFF, 0xFF};  // lea r9,[rip..] (7)
+constexpr uint8_t kSeqCamBytes[] = {0xE9, 0xBB, 0xFA, 0x71, 0x08};  // jmp .xtls
+constexpr uint8_t kDeactCamBytes[] = {0x4C, 0x8D, 0x0D, 0xC1, 0x83, 0x85, 0x06, 0x45, 0x33, 0xC0, 0x33, 0xD2, 0xE9, 0x5F, 0xBC, 0xFF, 0xFF};  // lea r9,[rip..] (7)
+constexpr uint8_t kDeactCamEndBytes[] = {0x4C, 0x8D, 0x0D, 0xA1, 0x83, 0x85, 0x06, 0x45, 0x33, 0xC0, 0xB2, 0x01, 0xE9, 0x3F, 0xBC, 0xFF, 0xFF};  // lea r9,[rip..] (7)
 constexpr uint8_t kDeactFadeBytes[] = {0x40, 0x53, 0x48, 0x83, 0xEC, 0x20, 0x48, 0x8B, 0x41, 0x10};  // push;sub (6)
-constexpr uint8_t kDeactFade2Bytes[] = {0xE9, 0xEB, 0x77, 0x97, 0x08};                          // jmp .xtls
+constexpr uint8_t kDeactFade2Bytes[] = {0xE9, 0x4B, 0xCB, 0x71, 0x08};                          // jmp .xtls
 constexpr uint8_t kPresetBytes[] = {0x48, 0x89, 0x5C, 0x24, 0x08, 0x48, 0x89, 0x74, 0x24, 0x10};
 constexpr uint8_t kPresetEndBytes[] = {0x41, 0x0F, 0xB6, 0x50, 0x20, 0x4D, 0x8B, 0x40, 0x28};  // movzx edx,[r8+0x20] (5)
 constexpr uint8_t kLockOnBytes[] = {0x48, 0x89, 0x5C, 0x24, 0x08, 0x4C, 0x89, 0x44, 0x24, 0x18};
@@ -159,40 +159,40 @@ constexpr uint8_t kPostBytes[] = {0x48, 0x89, 0x5C, 0x24, 0x10, 0x48, 0x89, 0x74
 
 using gxv::Fn;
 constexpr FnPoint kFnPoints[] = {
-    {Fn::SetQuestDialogAICategory, 0x2277DF0, 5, kQuestDlgBytes, ProcAt::Rcx},
-    {Fn::TimelineEvent, 0x227591D, 6, kTimelineBytes, ProcAt::Rcx, 0x22758F0, kTimelineEntry, 0x227613C, kTimelineOut,
+    {Fn::SetQuestDialogAICategory, 0x2279A10, 5, kQuestDlgBytes, ProcAt::Rcx},
+    {Fn::TimelineEvent, 0x227753D, 6, kTimelineBytes, ProcAt::Rcx, 0x2277510, kTimelineEntry, 0x2277D5C, kTimelineOut,
      0x811, 0x638B87276CA702B8},
-    {Fn::TimelineEventEnd, 0x2276180, 5, kTimelineEndBytes, ProcAt::Rcx},
-    {Fn::BlockInteraction, 0x25CFF60, 5, kBlockInterBytes, ProcAt::CtxRdx},
-    {Fn::SetInteraction, 0x25CF9CA, 7, kSetInterBytes, ProcAt::CtxRdx, 0x25CF9A0, kSetInterEntry, 0x25CFF37,
+    {Fn::TimelineEventEnd, 0x2277DA0, 5, kTimelineEndBytes, ProcAt::Rcx},
+    {Fn::BlockInteraction, 0x25D23F0, 5, kBlockInterBytes, ProcAt::CtxRdx},
+    {Fn::SetInteraction, 0x25D1E5A, 7, kSetInterBytes, ProcAt::CtxRdx, 0x25D1E30, kSetInterEntry, 0x25D23C7,
      kSetInterOut, 0x544, 0x28F2F0C5A3377E42},
-    {Fn::InputBlock, 0x6CD56E, 7, kInputBytes, ProcAt::Rcx, 0x6CD560, kInputEntry, 0x6CD59F, kInputOut,
-     0x36, 0x2386ED143A237F54},
-    {Fn::UIControl, 0x6CD5C5, 6, kUiControlBytes, ProcAt::Rcx, 0x6CD5B0, kUiControlEntry, 0x6CD729, kUiControlOut,
-     0x16C, 0xB6422D722C907FFE},
-    {Fn::ChangePhasePanelTag, 0x6D25B0, 5, kPhaseTagBytes, ProcAt::Rcx},
-    {Fn::UIShowMinimap, 0x6D61EE, 6, kMinimapBytes, ProcAt::Rcx, 0x6D61A0, kMinimapEntry, 0x6D6C22, kMinimapOut,
+    {Fn::InputBlock, 0x6CD8DE, 7, kInputBytes, ProcAt::Rcx, 0x6CD8D0, kInputEntry, 0x6CD90F, kInputOut,
+     0x36, 0x6B21E3CD6D25879B},
+    {Fn::UIControl, 0x6CD935, 6, kUiControlBytes, ProcAt::Rcx, 0x6CD920, kUiControlEntry, 0x6CDA99, kUiControlOut,
+     0x16C, 0x5F3A635513A2956A},
+    {Fn::ChangePhasePanelTag, 0x6D2920, 5, kPhaseTagBytes, ProcAt::Rcx},
+    {Fn::UIShowMinimap, 0x6D655E, 6, kMinimapBytes, ProcAt::Rcx, 0x6D6510, kMinimapEntry, 0x6D6F92, kMinimapOut,
      0xA3C, 0xA05FE59779F1CB90},
-    {Fn::UIFindPath, 0x6D6F70, 7, kFindPathBytes, ProcAt::Rcx},
-    {Fn::UIStageIcon, 0x6DC2E0, 5, kStageIconBytes, ProcAt::Rcx},
-    {Fn::UIStageGuide, 0x6DD50F, 6, kGuideBytes, ProcAt::Rcx, 0x6DD4F0, kGuideEntry, 0x6DDAA3, kGuideOut,
+    {Fn::UIFindPath, 0x6D72E0, 7, kFindPathBytes, ProcAt::Rcx},
+    {Fn::UIStageIcon, 0x6DC650, 5, kStageIconBytes, ProcAt::Rcx},
+    {Fn::UIStageGuide, 0x6DD87F, 6, kGuideBytes, ProcAt::Rcx, 0x6DD860, kGuideEntry, 0x6DDE13, kGuideOut,
      0x59C, 0x96A60DEF4E99B045},
-    {Fn::UIStageBackgroundGuide, 0x6DDAC0, 5, kBgGuideBytes, ProcAt::Rcx},
-    {Fn::UIHint, 0x6DDB80, 5, kHintBytes, ProcAt::Rcx},
-    {Fn::UIHintEnd, 0x6DDC70, 5, kHintEndBytes, ProcAt::Rcx},
-    {Fn::DeactiveSequencerCamera, 0x6D77F0, 7, kDeactCamBytes, ProcAt::Rcx},
-    {Fn::DeactiveSequencerCameraEnd, 0x6D7810, 7, kDeactCamEndBytes, ProcAt::Rcx},
-    {Fn::SequencerCamera, 0x6D7830, 5, kSeqCamBytes, ProcAt::Rcx},
-    {Fn::DeactivateSequencerCameraFadeIn, 0x6D76A0, 6, kDeactFadeBytes, ProcAt::Rcx},
-    {Fn::DeactivateSequencerCameraFadeInEnd, 0x6D7740, 5, kDeactFade2Bytes, ProcAt::Rcx},
-    {Fn::CameraPreset, 0x6D7300, 5, kPresetBytes, ProcAt::Rcx},
-    {Fn::CameraPresetEnd, 0x6D77D0, 5, kPresetEndBytes, ProcAt::Rcx},
-    {Fn::ForceLockOn, 0x6D3CD0, 5, kLockOnBytes, ProcAt::Rcx},
-    {Fn::LetterBox, 0x6DC2D0, 6, kLetterBytes, ProcAt::Rcx},
-    {Fn::FadeInOut, 0x6DEDA0, 5, kFadeBytes, ProcAt::Rcx},
-    {Fn::LookAt, 0x6DD050, 5, kLookAtBytes, ProcAt::Rcx},
-    {Fn::LookAtEnd, 0x6DD270, 5, kLookAtEndBytes, ProcAt::Rcx},
-    {Fn::PostProcess, 0x6DDEB0, 5, kPostBytes, ProcAt::Rcx},
+    {Fn::UIStageBackgroundGuide, 0x6DDE30, 5, kBgGuideBytes, ProcAt::Rcx},
+    {Fn::UIHint, 0x6DDEF0, 5, kHintBytes, ProcAt::Rcx},
+    {Fn::UIHintEnd, 0x6DDFE0, 5, kHintEndBytes, ProcAt::Rcx},
+    {Fn::DeactiveSequencerCamera, 0x6D7B60, 7, kDeactCamBytes, ProcAt::Rcx},
+    {Fn::DeactiveSequencerCameraEnd, 0x6D7B80, 7, kDeactCamEndBytes, ProcAt::Rcx},
+    {Fn::SequencerCamera, 0x6D7BA0, 5, kSeqCamBytes, ProcAt::Rcx},
+    {Fn::DeactivateSequencerCameraFadeIn, 0x6D7A10, 6, kDeactFadeBytes, ProcAt::Rcx},
+    {Fn::DeactivateSequencerCameraFadeInEnd, 0x6D7AB0, 5, kDeactFade2Bytes, ProcAt::Rcx},
+    {Fn::CameraPreset, 0x6D7670, 5, kPresetBytes, ProcAt::Rcx},
+    {Fn::CameraPresetEnd, 0x6D7B40, 5, kPresetEndBytes, ProcAt::Rcx},
+    {Fn::ForceLockOn, 0x6D4040, 5, kLockOnBytes, ProcAt::Rcx},
+    {Fn::LetterBox, 0x6DC640, 6, kLetterBytes, ProcAt::Rcx},
+    {Fn::FadeInOut, 0x6DF110, 5, kFadeBytes, ProcAt::Rcx},
+    {Fn::LookAt, 0x6DD3C0, 5, kLookAtBytes, ProcAt::Rcx},
+    {Fn::LookAtEnd, 0x6DD5E0, 5, kLookAtEndBytes, ProcAt::Rcx},
+    {Fn::PostProcess, 0x6DE220, 5, kPostBytes, ProcAt::Rcx},
 };
 constexpr size_t kFns = gxv::kFns;
 static_assert(std::size(kFnPoints) == kFns);
@@ -204,7 +204,7 @@ constexpr bool fn_points_in_order() {
 }
 static_assert(fn_points_in_order(), "kFnPoints follows gxv::Fn (the hook callbacks index it)");
 
-constexpr uintptr_t kVtStageManager = 0x59D57E8;  // pa::ClientSequencerStageManager (RTTI)
+constexpr uintptr_t kVtStageManager = 0x59DA8A8;  // pa::ClientSequencerStageManager (RTTI)
 constexpr uint32_t kProc_Mgr = 0x08, kProc_Stage = 0x10, kStage_Key = 0x30;
 constexpr uint32_t kMgr_Actor = 0x18, kActor_Key = 0x60;
 // The stage's data and name ([[[proc+0x10]+0x48]+0x1B8], as SetInteraction 0x2369410 reads it) and, for the two
@@ -489,7 +489,7 @@ std::string line_of(const p::Event& e) {
     const auto a = static_cast<Act>((v[0] >> 8) & 0xFF);
     switch (e.kind) {
         case kEV1:
-            return std::format("GuestXVeto [Loading] {} T{} | {} the stage chart function Loading (0x6DC360) of manager "
+            return std::format("GuestXVeto [Loading] {} T{} | {} the stage chart function Loading (0x6DC6D0) of manager "
                                "0x{:X} (character 0x{:08X}; own 0x{:08X}; current M 0x{:X} of 0x{:08X}; in the XTable "
                                "{}): {} | processor 0x{:X}, stage 0x{:X} (key 0x{:X}) | {}",
                                when, e.tid, a == Act::Veto ? "VETOED" : "WOULD VETO (probe)", v[2],
@@ -500,7 +500,7 @@ std::string line_of(const p::Event& e) {
                                                 "GameLoadingStartReq of this client"
                                               : "this client will start its own field reload now (session 9)");
         case kEV0:
-            return std::format("GuestXVeto [0x8812F0] {} T{} | {} a load request inside the X context (X 0x{:X}): P 0x{:X}, "
+            return std::format("GuestXVeto [0x881A10] {} T{} | {} a load request inside the X context (X 0x{:X}): P 0x{:X}, "
                                "request type {} / {}, called from exe+0x{:X} (V0 counts only; V1 is the veto)",
                                when, e.tid, "WOULD SKIP", v[1],
                                v[2], v[3] & 0xFF, (v[3] >> 8) & 0xFF, v[4]);
@@ -561,7 +561,7 @@ void summary() {
         fns += ";";
     }
     log::info("GuestXVeto summary (guest_x_stage_veto={}, guest_x_camera_veto={}{}, guest_x_ui_veto={}): V1 Loading {} | "
-              "calls past its gate {}, VETOED {}, would {}, own M {} | verdicts:{} | V0 0x8812F0 {} (count only): calls "
+              "calls past its gate {}, VETOED {}, would {}, own M {} | verdicts:{} | V0 0x881A10 {} (count only): calls "
               "{}, inside an X context {}, would skip {}, stale contexts dropped {} | X context: routed 2981 {} (clear "
               "point {}), cleared {}, kept (a frame above) {}, cleared at a routing hook's entry {} | handlers {}/{} "
               "hooked ({} vetoing, {} allowed), G = X / own M / calls:{} | limited {} lost {}",
@@ -610,29 +610,29 @@ bool span_ok(std::span<const gad::Section> secs, uintptr_t rva, uint32_t len, ui
 }
 
 bool install_v0(std::span<const gad::Section> secs) {
-    if (!context_ok(secs, kV0, kV0Bytes, "0x8812F0's entry")) return false;
+    if (!context_ok(secs, kV0, kV0Bytes, "0x881A10's entry")) return false;
     // P8 S26 (montura-regresion.md section 7.1): refused attempts logged and tried again (bounded), nothing written.
     auto h = game::prepare_inline(
         g_base + kV0, reinterpret_cast<void*>(&v0_detour),
         [](const std::vector<uint8_t>& o) {
             return o.size() == kV0Patch && std::memcmp(o.data(), kV0Bytes, kV0Patch) == 0;
         },
-        "GuestXVeto", "V0 0x8812F0");
+        "GuestXVeto", "V0 0x881A10");
     if (!h) {
-        log::error("GuestXVeto: 0x8812F0: the inline hook could not be prepared ({}); REFUSED",
+        log::error("GuestXVeto: 0x881A10: the inline hook could not be prepared ({}); REFUSED",
                    game::inline_error_text(h.error()));
         return false;
     }
     const auto& orig = h->original_bytes();
     if (orig.size() != kV0Patch || std::memcmp(orig.data(), kV0Bytes, kV0Patch) != 0) {
-        log::error("GuestXVeto: 0x8812F0: the hook would patch {} bytes, {} were verified; REFUSED, nothing written",
+        log::error("GuestXVeto: 0x881A10: the hook would patch {} bytes, {} were verified; REFUSED, nothing written",
                    orig.size(), kV0Patch);
         return false;
     }
-    g_v0_mark = freeze_watchdog_register("GuestXVeto", "V0 0x8812F0 (detour + the game's original)");
+    g_v0_mark = freeze_watchdog_register("GuestXVeto", "V0 0x881A10 (detour + the game's original)");
     g_v0_hook = std::move(*h);  // the detour calls through it: in place before enabling
     if (!g_v0_hook.enable()) {
-        log::error("GuestXVeto: 0x8812F0: the hook could not be enabled; REFUSED");
+        log::error("GuestXVeto: 0x881A10: the hook could not be enabled; REFUSED");
         return false;
     }
     return true;
@@ -660,17 +660,17 @@ DWORD WINAPI install_thread(LPVOID) {
         if (context_ok(secs, kV1Ctx, kV1CtxBytes, "Loading's gate call") &&
             context_ok(secs, kV1Epilogue, kV1EpilogueBytes, "Loading's epilogue") &&
             p8_install_mid(g_base, secs, kV1, kV1Patch, kV1Bytes, on_v1, g_v1_hook, "GuestXVeto",
-                           "V1, Loading's gate test 0x5F2A3A")) {
+                           "V1, Loading's gate test 0x5F2D7A")) {
             g_v1_on.store(true, std::memory_order_release);
         }
         if (install_v0(secs)) g_v0_on.store(true, std::memory_order_release);
         // The clear point first, then the routed 2981 may set the context (guest_x_context_routed_2981).
-        if (g_v0_on.load() && context_ok(secs, kClearCtx, kClearCtxBytes, "the 2981's call 0xBE1800") &&
+        if (g_v0_on.load() && context_ok(secs, kClearCtx, kClearCtxBytes, "the 2981's call 0xBE2250") &&
             p8_install_mid(g_base, secs, kClear, kClearPatch, kClearBytes, on_clear, g_clear_hook, "GuestXVeto",
-                           "the X context's clear point 0xD6E751")) {
+                           "the X context's clear point 0xD6F1A1")) {
             g_clear_on.store(true, std::memory_order_release);
         }
-        stage_line = std::format("V1 0x5F2A3A {}, V0 0x8812F0 {}, X context clear point 0xD6E751 {}",
+        stage_line = std::format("V1 0x5F2D7A {}, V0 0x881A10 {}, X context clear point 0xD6F1A1 {}",
                                  g_v1_on.load() ? "hooked" : "REFUSED", g_v0_on.load() ? "hooked" : "REFUSED",
                                  g_clear_on.load() ? "hooked" : "REFUSED (no 2981 context; tick context only)");
     }

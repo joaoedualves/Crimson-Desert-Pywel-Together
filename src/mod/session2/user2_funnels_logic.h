@@ -90,10 +90,10 @@ inline const char* mode_name(Mode m) {
 //     0x2A4A03B  SetMissionNewAlarmFalseReq 2354 (0x2A49F00), Ack 2212
 // 0x2896347 (the fast-travel apply's quest step) is left as is (both clients send 0: it never runs).
 // probe: counts what 1 would do, changes nothing (quest_per_user decides as before).
-inline constexpr uint32_t kRespawnVf40Ret = 0x2B03AA7, kTraceVf40Ret = 0x2F5744D, kTriggerVf40Ret = 0x2F5770F;
-inline constexpr uint32_t kQuestEventVf40Ret = 0x2BE074B, kMissionUiVf40Ret = 0x2D3C3A3,
-                          kMissionAlarmVf40Ret = 0x2D3D391, kChallengeDiscoverVf40Ret = 0x104C4B3D,
-                          kChallengeTimerVf40Ret = 0x2F405AD, kChangeCharacterVf40Ret = 0x2A4A32B;
+inline constexpr uint32_t kRespawnVf40Ret = 0x2B061F7, kTraceVf40Ret = 0x2F5B99D, kTriggerVf40Ret = 0x2F5BC5F;
+inline constexpr uint32_t kQuestEventVf40Ret = 0x2BE316B, kMissionUiVf40Ret = 0x2D40E33,
+                          kMissionAlarmVf40Ret = 0x2D41E21, kChallengeDiscoverVf40Ret = 0x104C4B3D,
+                          kChallengeTimerVf40Ret = 0x2F44AFD, kChangeCharacterVf40Ret = 0x2A4CAAB;
 inline constexpr uint16_t kOpTraceMission = 2458, kOpMissionTrigger = 3106, kOpMissionUiState = 2748,
                           kOpMissionNewAlarm = 3003, kOpChangePlayable = 3060;
 // Measured only at the ingress (the open decision about the guest's dialog choices, politica-misiones.md).
@@ -134,15 +134,15 @@ inline bool caller_answers_own(PolicyCaller c) {
 inline const char* policy_caller_name(PolicyCaller c) {
     switch (c) {
         case PolicyCaller::None: return "other";
-        case PolicyCaller::Respawn: return "respawn point 0x2B03AA7";
-        case PolicyCaller::Trigger: return "2112 zone 0x2F5770F";
-        case PolicyCaller::QuestEvent: return "game events 0x2BE074B";
+        case PolicyCaller::Respawn: return "respawn point 0x2B061F7";
+        case PolicyCaller::Trigger: return "2112 zone 0x2F5BC5F";
+        case PolicyCaller::QuestEvent: return "game events 0x2BE316B";
         case PolicyCaller::ChallengeDiscover: return "2215 challenge discover 0x104C4B3D";
-        case PolicyCaller::ChallengeTimer: return "2051 challenge timer 0x2F405AD";
-        case PolicyCaller::ChangeCharacter: return "2369 change character 0x2A4A32B";
-        case PolicyCaller::Trace: return "2372 trace 0x2F5744D";
-        case PolicyCaller::MissionUi: return "2477 mission UI 0x2D3C3A3";
-        case PolicyCaller::MissionAlarm: return "2354 new alarm 0x2D3D391";
+        case PolicyCaller::ChallengeTimer: return "2051 challenge timer 0x2F44AFD";
+        case PolicyCaller::ChangeCharacter: return "2369 change character 0x2A4CAAB";
+        case PolicyCaller::Trace: return "2372 trace 0x2F5B99D";
+        case PolicyCaller::MissionUi: return "2477 mission UI 0x2D40E33";
+        case PolicyCaller::MissionAlarm: return "2354 new alarm 0x2D41E21";
         default: return "?";
     }
 }
@@ -443,7 +443,7 @@ enum class FunnelOut : uint8_t {
 // (`call [rax+0x40]` at 0x2896344, only when the 2283's first u32 maps in the table at exe+0x6D6C1F8; both client
 // senders write 0 there). It runs only for a 2283 F3 let through: the traveller is user 2, so is the quest manager.
 inline bool vf40_caller_allowed(uint64_t ret_rva) {
-    return ret_rva == 0x2F5770F || ret_rva == 0x2F5744D || ret_rva == 0x2B03AA7 || ret_rva == 0x2896347;
+    return ret_rva == 0x2F5BC5F || ret_rva == 0x2F5B99D || ret_rva == 0x2B061F7 || ret_rva == 0x2898AA7;
 }
 
 inline FunnelOut decide_funnel(const FunnelIn& in) {
@@ -588,11 +588,11 @@ enum Funnel : uint8_t { kVf40 = 0, kVf48 = 1, kFindUser = 2, kDead = 3, kLoot = 
 
 inline const char* funnel_name(uint8_t f) {
     switch (f) {
-        case kVf40: return "vf40 0x2DFF2F0 (quest manager)";
-        case kVf48: return "vf48 0x2DFF360 (sequencer manager, count only)";
-        case kFindUser: return "FindUser 0x2D78C20 (count only)";
-        case kDead: return "0x2DFE560 from 0x2C1961E (DeadActor 0x62)";
-        case kLoot: return "0x2313BE0 from 0x2E8C624 (loot recipient)";
+        case kVf40: return "vf40 0x2E03D80 (quest manager)";
+        case kVf48: return "vf48 0x2E03DF0 (sequencer manager, count only)";
+        case kFindUser: return "FindUser 0x2D7D6B0 (count only)";
+        case kDead: return "0x2E02FF0 from 0x2C1E0AE (DeadActor 0x62)";
+        case kLoot: return "0x2315860 from 0x2E90D84 (loot recipient)";
     }
     return "?";
 }

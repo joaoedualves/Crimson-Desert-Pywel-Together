@@ -43,9 +43,9 @@ constexpr uint8_t kBodyAnimBytes[] = {0x48, 0x8B, 0xC4, 0x48, 0x89, 0x58, 0x18, 
                                       0x88, 0x48, 0x20, 0x55, 0x56, 0x57, 0x41, 0x54};
 constexpr uint8_t kArgsBytes[] = {0x45, 0x0F, 0xB6, 0xF8, 0x4C, 0x8B, 0xF2, 0x48, 0x8B, 0xF1};       // 0xA797B8
 constexpr uint8_t kName0Bytes[] = {0x49, 0x8B, 0x46, 0x18, 0x48, 0x8D, 0x8E, 0xE8, 0x00, 0x00, 0x00, 0x48};  // 0xA79BCD
-constexpr uint8_t kCall0Bytes[] = {0x4D, 0x8B, 0xC4, 0x48, 0x8B, 0xCB, 0xE8, 0xE6, 0xB8, 0xAD, 0x01};  // 0xA79C19
+constexpr uint8_t kCall0Bytes[] = {0x4D, 0x8B, 0xC4, 0x48, 0x8B, 0xCB, 0xE8, 0xF6, 0xD5, 0xAD, 0x01};  // 0xA79C19
 constexpr uint8_t kName1Bytes[] = {0x49, 0x8B, 0x46, 0x18, 0x48, 0x8D, 0x50, 0x18, 0x48, 0x8D, 0x8E, 0xE8};  // 0xA79F6F
-constexpr uint8_t kCall1Bytes[] = {0x4C, 0x8B, 0x85, 0x38, 0x01, 0x00, 0x00, 0x48, 0x8B, 0xCB, 0xE8, 0x36, 0xB5, 0xAD, 0x01};                        // 0xA79FBB
+constexpr uint8_t kCall1Bytes[] = {0x4C, 0x8B, 0x85, 0x38, 0x01, 0x00, 0x00, 0x48, 0x8B, 0xCB, 0xE8, 0x46, 0xD2, 0xAD, 0x01};                        // 0xA79FBB
 constexpr uintptr_t kConfigure = gba::kConfigure;
 constexpr uint32_t kConfigurePatch = 5;
 constexpr uint8_t kConfigureBytes[] = {0x48, 0x89, 0x5C, 0x24, 0x20, 0x4C, 0x89, 0x44,
@@ -201,14 +201,14 @@ std::string line_of(const p::Event& e) {
     const std::string when = p8_when(e.qpc_us);
     const auto key = static_cast<uint32_t>(v[0]);
     if (e.kind == kEBody) {
-        return std::format("GuestBodyAnim [BodyAnim 0xBBBA60] {} T{} | NPC 0x{:08X} (type {}, watched #{}) | body 0x{:X}, CC "
+        return std::format("GuestBodyAnim [BodyAnim 0xBBC4B0] {} T{} | NPC 0x{:08X} (type {}, watched #{}) | body 0x{:X}, CC "
                            "0x{:X}: before +0x70 0x{:X}, +0x78 0x{:X}, +0x23A {} | desc 0x{:X}: clip '{}' hash 0x{:08X}, "
                            "+0x28 {:.3f} +0x2C {:.3f} +0x30 {:.3f} +0x3C {:.3f} | p3 {} p4 {}",
                            when, e.tid, key, (v[0] >> 56) & 0xFF, (v[0] >> 48) & 0xFF, v[1], v[2], v[3], v[4],
                            (v[11] >> 32) & 0xFF, v[5], text_of(v + 6, 3), static_cast<uint32_t>(v[9]), f(v[10]),
                            f(v[9] >> 32), f(v[10] >> 32), f(v[11]), (v[0] >> 32) & 0xFF, (v[0] >> 40) & 0xFF);
     }
-    return std::format("GuestBodyAnim [configure 0x26977F0, layer {}] {} T{} | NPC 0x{:08X} (watched #{}) | graph 0x{:X} "
+    return std::format("GuestBodyAnim [configure 0x2699F50, layer {}] {} T{} | NPC 0x{:08X} (watched #{}) | graph 0x{:X} "
                        "(body 0x{:X}) | name '{}' 0x{:08X}, blend '{}' 0x{:08X} | xmm3 {:.3f}, p5 {:.3f} p6 {:.3f} p7 "
                        "{:.3f} p8 {:.3f} | resource [p9] 0x{:X}",
                        (v[0] >> 32) & 0xFF, when, e.tid, key, (v[0] >> 40) & 0xFF, v[1], v[2], text_of(v + 3, 2),
@@ -291,7 +291,7 @@ void g5_body() {
     for (size_t k = 0; k < static_cast<size_t>(gba::BodyState::Count); ++k) {
         if (c.state[k]) states += std::format(" {} {};", gba::body_state_name(static_cast<gba::BodyState>(k)), c.state[k]);
     }
-    log::info("GuestBodyAnim summary | BodyAnim 0xBBBA60 ({}): calls {}, NPC keys {}, watched {} | configure 0x26977F0 "
+    log::info("GuestBodyAnim summary | BodyAnim 0xBBC4B0 ({}): calls {}, NPC keys {}, watched {} | configure 0x2699F50 "
               "({}): calls {}, from BodyAnim L0 {} / L1 {}, other callers {}, watched {} | watched NPCs {}:{} with "
               "CC+0x78 {}; BodyAnim seen for {} ({} of them without CC+0x70 now) | lines limited {} lost {}",
               g_on_body.load() ? "hooked" : g_s1_owns.load() ? "P8Probe s1_diag owns it: see its lines" : "NOT hooked",
@@ -343,26 +343,26 @@ DWORD WINAPI install_thread(LPVOID) {
         Sleep(500);
     }
     // The configure point's context: BodyAnim's two call sites (their return addresses and rsi = body).
-    const Check common[] = {{0xBBBAA8, kArgsBytes}, {0xBBBEB3, kName0Bytes}, {0xBBBEFF, kCall0Bytes},
-                            {0xBBC25F, kName1Bytes}, {0xBBC2AB, kCall1Bytes}};
+    const Check common[] = {{0xBBC4F8, kArgsBytes}, {0xBBC903, kName0Bytes}, {0xBBC94F, kCall0Bytes},
+                            {0xBBCCAF, kName1Bytes}, {0xBBCCFB, kCall1Bytes}};
     const bool ctx_ok = checks_ok(secs, common, "BodyAnim's call sites");
     std::string body_text_install;
     if (g_s1_owns.load()) {
-        body_text_install = "0xBBBA60 left to P8Probe (s1_diag=1: its 'BodyAnim 0xBBBA60' lines)";
+        body_text_install = "0xBBC4B0 left to P8Probe (s1_diag=1: its 'BodyAnim 0xBBC4B0' lines)";
     } else if (ctx_ok && p8_install_mid(g_base, secs, kBodyAnim, kBodyAnimPatch, kBodyAnimBytes, on_bodyanim, g_hook_body,
-                                        "GuestBodyAnim", "BodyAnim entry 0xBBBA60")) {
+                                        "GuestBodyAnim", "BodyAnim entry 0xBBC4B0")) {
         g_on_body.store(true);
-        body_text_install = "0xBBBA60 hooked";
+        body_text_install = "0xBBC4B0 hooked";
     } else {
-        body_text_install = "0xBBBA60 NOT hooked (see the line above)";
+        body_text_install = "0xBBC4B0 NOT hooked (see the line above)";
     }
     if (ctx_ok && p8_install_mid(g_base, secs, kConfigure, kConfigurePatch, kConfigureBytes, on_configure, g_hook_cfg,
-                                 "GuestBodyAnim", "graph configuration entry 0x26977F0")) {
+                                 "GuestBodyAnim", "graph configuration entry 0x2699F50")) {
         g_on_cfg.store(true);
     }
-    log::info("GuestBodyAnim ON (guest_seq_bodyanim_diag=1, READ-ONLY): {} | 0x26977F0 {} | for the actors of "
-              "guest_seq_route's G5 watch list: 'GuestBodyAnim [BodyAnim 0xBBBA60]' (clip name / hash / times, CC+0x70/+0x78 "
-              "before) and '[configure 0x26977F0, layer N]' (graph, names, floats, resource); every call counted; "
+    log::info("GuestBodyAnim ON (guest_seq_bodyanim_diag=1, READ-ONLY): {} | 0x2699F50 {} | for the actors of "
+              "guest_seq_route's G5 watch list: 'GuestBodyAnim [BodyAnim 0xBBC4B0]' (clip name / hash / times, CC+0x70/+0x78 "
+              "before) and '[configure 0x2699F50, layer N]' (graph, names, floats, resource); every call counted; "
               "'GuestBodyAnim [G5 body]' every 5 s on change (CC+0x70/+0x78, +0x23A, layers' actions); summary every 60 s",
               body_text_install, g_on_cfg.load() ? "hooked" : "NOT hooked");
     return 0;

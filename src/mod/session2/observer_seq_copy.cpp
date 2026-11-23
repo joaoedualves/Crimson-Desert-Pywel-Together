@@ -202,7 +202,7 @@ std::string line_of(const p8p::Event& e) {
             }
             return std::format("{} sequencer 0x{:X} ({}): {} {}2661 ({} bytes) after the 2005 of its {} bound actor(s), "
                                "{:.3f} s after it became pending | on the guest: GuestSeqRoute [2661 ...] ROUTED and "
-                               "GuestStage [2661 result 0xD6CC96] created in X{}",
+                               "GuestStage [2661 result 0xD6D6E6] created in X{}",
                                head("copy", e), v[0], v[4] ? "live" : "snapshot", verb, v[2] ? "2981 + " : "", v[5], v[8],
                                static_cast<double>(v[3]) / 1e6,
                                v[9] ? " | AFTER the host's 2322 (its actors reached user 2 after its load: "

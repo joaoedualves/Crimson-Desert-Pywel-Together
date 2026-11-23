@@ -146,23 +146,23 @@ struct Site {
 };
 inline constexpr uint8_t kReqId = 5, kTimerId = 3;
 inline constexpr Site kSites[] = {
-    {2436, 0x2D510A9, kReqId, "StageBranchStateReq (-> 0x2B54120)"},
-    {2591, 0x2F57E4C, kReqId, "UpdateStageChartEventReq (0x2F57DF0 -> 0x2C0AA30)"},
-    {2105, 0x2D51490, kReqId, "StageBranchStateDelayEndReq (-> 0x2B54380)"},
-    {2704, 0x2D51BAF, kReqId, "UpdateStageChartDelayedEventReq (-> 0x2B54A60)"},
-    {2173, 0x2D50C0A, kReqId, "UpdateSequencerGamePlayDataEventReq (-> 0x2B53E50)"},
-    {2276, 0x2D4FF4A, kReqId, "DeleteSequencerReq (-> 0x2B392A0)"},
-    {2767, 0x2C53DBE, kReqId, "SequencerTriggerVolumeInOutReq (0x21C5750 at 0x2C53E0C)"},
+    {2436, 0x2D55B39, kReqId, "StageBranchStateReq (-> 0x2B56870)"},
+    {2591, 0x2F5C39C, kReqId, "UpdateStageChartEventReq (0x2F5C340 -> 0x2C0E920)"},
+    {2105, 0x2D55F20, kReqId, "StageBranchStateDelayEndReq (-> 0x2B56AD0)"},
+    {2704, 0x2D5663F, kReqId, "UpdateStageChartDelayedEventReq (-> 0x2B571B0)"},
+    {2173, 0x2D5569A, kReqId, "UpdateSequencerGamePlayDataEventReq (-> 0x2B565A0)"},
+    {2276, 0x2D549DA, kReqId, "DeleteSequencerReq (-> 0x2B3B9F0)"},
+    {2767, 0x2C5884E, kReqId, "SequencerTriggerVolumeInOutReq (0x21C7370 at 0x2C5889C)"},
     {2138, 0x1089F284, kReqId, "SequencerStageFailReq (.xtls 0x1089F230)"},
-    {2888, 0x2D530AF, kReqId, "ChangeSequencerPivotReq (-> 0x2B57A00)"},
-    {2325, 0x2D529F9, kReqId, "StageQuitReq (-> 0x2B55700)"},
-    {2406, 0x2D52219, kReqId, "SubTimelinePauseReq (-> 0x2B551F0)"},
-    {2968, 0x2D52609, kReqId, "SubTimelineResumeReq (-> 0x2B55470)"},
-    {3020, 0x2D50863, kReqId, "SetNextBranchTypeFromAIReq (-> 0x2B58350)"},
-    {2044, 0x1082FBE7, kTimerId, "StageBranchStateOnceTimer (.xtls 0x1082FB80 -> 0x2B57F30)"},
+    {2888, 0x2D57B3F, kReqId, "ChangeSequencerPivotReq (-> 0x2B5A150)"},
+    {2325, 0x2D57489, kReqId, "StageQuitReq (-> 0x2B57E50)"},
+    {2406, 0x2D56CA9, kReqId, "SubTimelinePauseReq (-> 0x2B57940)"},
+    {2968, 0x2D57099, kReqId, "SubTimelineResumeReq (-> 0x2B57BC0)"},
+    {3020, 0x2D552F3, kReqId, "SetNextBranchTypeFromAIReq (-> 0x2B5AAA0)"},
+    {2044, 0x1082FBE7, kTimerId, "StageBranchStateOnceTimer (.xtls 0x1082FB80 -> 0x2B5A680)"},
     // The deferred delete (tiendas-u2.md 12.2): without it a delete of one of user 2's scenes reached the host's
     // manager and was lost (an orphan scene in user 2's manager and in the guest's M).
-    {2054, 0x10835C57, kTimerId, "DeleteSequencerOnceTimer (.xtls 0x10835BF0 -> 0x2B393C0, the deferred delete)"},
+    {2054, 0x10835C57, kTimerId, "DeleteSequencerOnceTimer (.xtls 0x10835BF0 -> 0x2B3BB10, the deferred delete)"},
 };
 inline constexpr uint16_t kOpDeleteTimer = 2059;
 inline constexpr size_t kSiteCount = sizeof kSites / sizeof kSites[0];

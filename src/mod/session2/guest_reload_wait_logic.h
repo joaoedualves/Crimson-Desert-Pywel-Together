@@ -234,7 +234,7 @@ inline const char* verdict_text(Verdict v) {
         case Verdict::ControlLocal: return "kept: controlled by this guest";
         case Verdict::ControlNotUser: return "kept: its controller (+0x90) is not a user key";
         case Verdict::LoggedIn: return "kept: not waiting for its login (+0x5E not 8)";
-        case Verdict::VfOther: return "kept: its vf1D8 is not 0x5DF1A0";
+        case Verdict::VfOther: return "kept: its vf1D8 is not 0x5DF4E0";
         case Verdict::NotInSnapshot: return "kept: not in the wait list when the trip began";
         case Verdict::WasReady: return "kept: it was ready when the trip began";
         case Verdict::OtherInstance: return "kept: another actor with that key than when the trip began";

@@ -51,7 +51,7 @@ constexpr uint8_t kPresetSig[] = {0x48, 0x89, 0x5C, 0x24, 0x10, 0x55, 0x56, 0x57
 constexpr uint8_t kLetterSig[] = {0x0F, 0xB6, 0x51, 0x3C, 0xE9, 0x17, 0x01, 0x00,
                                   0x00, 0xCC, 0xCC, 0xCC, 0xCC, 0xCC, 0xCC, 0xCC};
 // The post process's slot 99 0xC3A440 (.pdata 0xC3A440-0xC3A510): push rbx (2) ; sub rsp,0x20 (4).
-constexpr uint8_t kPostSig[] = {0x40, 0x53, 0x48, 0x83, 0xEC, 0x20, 0x48, 0x8B, 0xD9, 0xE8, 0xE2, 0x40, 0xD4, 0x02, 0x48, 0x8B, 0x90, 0x50, 0x01, 0x00, 0x00, 0x4C, 0x8B, 0x42, 0x28, 0x4D, 0x85, 0xC0, 0x0F, 0x84, 0xA8, 0x00, 0x00, 0x00, 0x0F, 0xB6, 0x43, 0x39, 0x45, 0x33};
+constexpr uint8_t kPostSig[] = {0x40, 0x53, 0x48, 0x83, 0xEC, 0x20, 0x48, 0x8B, 0xD9, 0xE8, 0xE2, 0x7B, 0xD4, 0x02, 0x48, 0x8B, 0x90, 0x50, 0x01, 0x00, 0x00, 0x4C, 0x8B, 0x42, 0x28, 0x4D, 0x85, 0xC0, 0x0F, 0x84, 0xA8, 0x00, 0x00, 0x00, 0x0F, 0xB6, 0x43, 0x39, 0x45, 0x33};
 // SequencerAIDialog slot 99 0xC4D6B0 (.pdata 0xC4D6B0-0xC4E14D): mov rax,rsp (3) ; mov [rax+0x10],rbx (4).
 constexpr uint8_t kDialogSig[] = {0x48, 0x8B, 0xC4, 0x48, 0x89, 0x58, 0x10, 0x48, 0x89, 0x48, 0x08, 0x55, 0x56, 0x57,
                                   0x41, 0x54, 0x41, 0x55, 0x41, 0x56, 0x41, 0x57, 0x48, 0x8D, 0xA8, 0xD8, 0xF8, 0xFF,
@@ -61,7 +61,7 @@ constexpr uint8_t kDialogSig[] = {0x48, 0x8B, 0xC4, 0x48, 0x89, 0x58, 0x10, 0x48
 // [rdx+0x1E0],al ; ret. At the point RAX = the client world, RCX = the event, RDX = the context (still the argument).
 constexpr uint8_t kLoadSig[] = {0x48, 0x8B, 0x50, 0x10, 0x0F, 0xB6, 0x41, 0x38, 0x88, 0x82, 0xE0, 0x01,
                                 0x00, 0x00, 0xC3, 0xCC, 0xCC, 0xCC, 0xCC, 0xCC, 0xCC, 0xCC, 0xCC, 0xCC};
-constexpr uint8_t kLoadHead[] = {0x48, 0x8B, 0x05, 0xD9, 0x40, 0x49, 0x06};
+constexpr uint8_t kLoadHead[] = {0x48, 0x8B, 0x05, 0x19, 0x98, 0x49, 0x06};
 
 struct EvPoint {
     Ev ev;
@@ -73,12 +73,12 @@ struct EvPoint {
     std::span<const uint8_t> head; // at the entry, when the hook is not the entry
 };
 constexpr EvPoint kEvPoints[] = {
-    {Ev::CameraSelector, 0x34CFC20, 5, 0, 0, kCamSelSig, {}},
-    {Ev::PlayerCameraPreset, 0xC6CC40, 5, 0xC6CC40, 0xB27DDE, kPresetSig, {}},
-    {Ev::LetterBox, 0xDA4540, 9, 0, 0, kLetterSig, {}},
-    {Ev::PostProcess, 0xDA5B60, 6, 0xDA5B60, 0xDA5C30, kPostSig, {}},
-    {Ev::AIDialog, 0xDB9190, 7, 0xDB9190, 0xC4E14D, kDialogSig, {}},
-    {Ev::StartLoading, 0xC45747, 8, 0, 0, kLoadSig, kLoadHead},
+    {Ev::CameraSelector, 0x34D4150, 5, 0, 0, kCamSelSig, {}},
+    {Ev::PlayerCameraPreset, 0xC6D690, 5, 0xC6D690, 0xB27DDE, kPresetSig, {}},
+    {Ev::LetterBox, 0xDA4F90, 9, 0, 0, kLetterSig, {}},
+    {Ev::PostProcess, 0xDA65B0, 6, 0xDA65B0, 0xDA6680, kPostSig, {}},
+    {Ev::AIDialog, 0xDB9BE0, 7, 0xDB9BE0, 0xC4EB9D, kDialogSig, {}},
+    {Ev::StartLoading, 0xC46197, 8, 0, 0, kLoadSig, kLoadHead},
 };
 static_assert(std::size(kEvPoints) == gpr::kEvs);
 constexpr bool ev_points_in_order() {
@@ -90,17 +90,17 @@ constexpr bool ev_points_in_order() {
 static_assert(ev_points_in_order(), "kEvPoints follows gpr::Ev (the hook callbacks index it)");
 
 // S-A / S-D context (no hook there; checked so the offsets read are this build's).
-constexpr uint8_t kStartLookup[] = {0x48, 0x8B, 0x0D, 0x13, 0x42, 0x66, 0x06, 0x8B, 0x92, 0xE0, 0x02, 0x00, 0x00, 0x48, 0x8B, 0x89, 0x20, 0x01, 0x00, 0x00, 0xE8, 0x91, 0x3B, 0xC4, 0x02};
+constexpr uint8_t kStartLookup[] = {0x48, 0x8B, 0x0D, 0x53, 0x99, 0x66, 0x06, 0x8B, 0x92, 0xE0, 0x02, 0x00, 0x00, 0x48, 0x8B, 0x89, 0x20, 0x01, 0x00, 0x00, 0xE8, 0x91, 0x76, 0xC4, 0x02};
 // 0xA9D8F6 mov rcx,[0x6D691E0] ; mov edx,[rdx+0x298] ; mov rcx,[rcx+0x120] ; call 0x34DC130 (right before P1)
 constexpr uint8_t kTlIdCmp[] = {0x39, 0xA8, 0xF8, 0x01, 0x00, 0x00};  // 0x34DC175 cmp [rax+0x1D8],ebp
 constexpr uint8_t kTlIdSet[] = {0x89, 0x9F, 0xF8, 0x01, 0x00, 0x00};  // 0x34DBB03 mov [rdi+0x1D8],ebx
-constexpr uint8_t kCamRead[] = {0x48, 0x8B, 0x05, 0xDB, 0x80, 0x5D, 0x06, 0x33, 0xD2, 0x48, 0x8B, 0x88, 0x18, 0x01, 0x00, 0x00, 0x48, 0x8B, 0x41, 0x40, 0x48, 0x85, 0xC0, 0x48, 0x8D, 0x48, 0xD8};
+constexpr uint8_t kCamRead[] = {0x48, 0x8B, 0x05, 0x1B, 0xD8, 0x5D, 0x06, 0x33, 0xD2, 0x48, 0x8B, 0x88, 0x18, 0x01, 0x00, 0x00, 0x48, 0x8B, 0x41, 0x40, 0x48, 0x85, 0xC0, 0x48, 0x8D, 0x48, 0xD8};
 // 0xB27DEE mov rax,[0x6D691E0] ; xor edx,edx ; mov rcx,[rax+0x118] ; mov rax,[rcx+0x40] ; test ; lea rcx,[rax-0x28]
 constexpr uint8_t kBlockSet[] = {0x41, 0x88, 0xBD, 0x60, 0x02, 0x00, 0x00};  // 0xA98D3E mov [r13+0x230],dil
-const Bytes kSaCode[] = {{0xBE0FF6, kStartLookup}, {0x3824BE5, kTlIdCmp}, {0x382457D, kTlIdSet}};
+const Bytes kSaCode[] = {{0xBE1A46, kStartLookup}, {0x3829135, kTlIdCmp}, {0x3828ACD, kTlIdSet}};
 // S-D: G+0x230 is verified by its writer 0xA98D3E. (Step 1 live: 0x5E4E6E, InputBlock's call into 0xA98AD0, is where
 // guest_x_ui_veto puts its own 7-byte hook, so comparing its original bytes refused S-D; it only documented the path.)
-const Bytes kSdCode[] = {{0xC6D12E, kCamRead}, {0xBDBF0E, kBlockSet}, {0xBE0FF6, kStartLookup}};
+const Bytes kSdCode[] = {{0xC6DB7E, kCamRead}, {0xBDC95E, kBlockSet}, {0xBE1A46, kStartLookup}};
 // R-B: the dispatcher's two slot-99 calls (call [rax+0x318]) and what follows them (vivo1.md §2.3, s45-datos/ra/):
 // 0x36574C7 call ; 0x36574CD jmp 0x36575EC (the epilogue) | 0x36575D0 call ; 0x36575D6 mov rcx,[rsi+0xA8] (then slot
 // 101) | 0x3657600 mov al,1 (the dispatcher's own return: the event's RAX is never used).
@@ -108,7 +108,7 @@ constexpr uint8_t kRbCall1[] = {0x48, 0x8B, 0x01, 0xFF, 0x90, 0x18, 0x03, 0x00, 
 constexpr uint8_t kRbCall2[] = {0x48, 0x8B, 0x01, 0xFF, 0x90, 0x18, 0x03, 0x00, 0x00, 0x48, 0x8B, 0x8E, 0xA8, 0x00, 0x00,
                                 0x00};
 constexpr uint8_t kRbRet[] = {0xB0, 0x01, 0x48, 0x83, 0xC4, 0x38, 0x5E, 0x5D, 0xC3};
-const Bytes kRbCode[] = {{0x39A98B4, kRbCall1}, {0x39A99BD, kRbCall2}, {0x39A99F0, kRbRet}};
+const Bytes kRbCode[] = {{0x39ADE04, kRbCall1}, {0x39ADF0D, kRbCall2}, {0x39ADF40, kRbRet}};
 
 // ---------------------------------------------------------------- state
 
@@ -121,8 +121,8 @@ const Bytes kRbCode[] = {{0x39A98B4, kRbCall1}, {0x39A99BD, kRbCall2}, {0x39A99F
 struct Jmp {
     uint32_t at, to;
 };
-constexpr Jmp kRaLifetime[] = {{0x5D94F0, 0x8F08E30}, {0x5D9750, 0x8F094A0}, {0x5D97B0, 0x8F0E3D0}, {0x20516B0, 0xE0617E0}};
-constexpr uint32_t kRaDeletingDtor = 0x5D9750;  // the client vtable's slot 0
+constexpr Jmp kRaLifetime[] = {{0x5D9830, 0x8F08E30}, {0x5D9A90, 0x8F094A0}, {0x5D9AF0, 0x8F0E3D0}, {0x20532D0, 0xE0617E0}};
+constexpr uint32_t kRaDeletingDtor = 0x5D9A90;  // the client vtable's slot 0
 
 uintptr_t g_base = 0;
 std::atomic<bool> g_wanted{false};
@@ -710,7 +710,7 @@ std::string line_of(const p::Event& e) {
             if (e.kind == kESC) {
                 extra = std::format(" | writes P+0x1E0 = {} (was {}{}){}", v[8] & 0xFF, (v[8] >> 8) & 0xFF,
                                     ((v[8] >> 16) & 1) ? "" : ", P unreadable",
-                                    ((v[8] >> 17) & 1) ? "" : " | RAX is NOT [0x7245210] (unexpected)");
+                                    ((v[8] >> 17) & 1) ? "" : " | RAX is NOT [0x724B3A0] (unexpected)");
             }
             return std::format(
                 "GuestSeqPresent [{} {}] {} T{} | {}{} | timeline: root of [ctx+8] at depth {}{} (vtable exe+0x{:X}, node "
@@ -867,7 +867,7 @@ std::string summary() {
         a2.empty() ? " none (0 = its handlers are not hooked or no stage of X ran one)" : a2, ev,
         g_sd_on.load() ? "on" : "OFF", g_sd_frames.load(), sd.empty() ? " none;" : sd, g_sd_x_not_mgr.load(),
         g_sd_tl_capped.load(), g_sd_tl_scans.load(), gpr::kSdTlEvery,
-        g_sd_frames.load() ? cost_text(g_sd_cost) : std::string("0 frames (guest_seq_play's 0x8B6144 hook not active)"),
+        g_sd_frames.load() ? cost_text(g_sd_cost) : std::string("0 frames (guest_seq_play's 0x8B6864 hook not active)"),
         g_limited.load(), g_ring.dropped(), g_capped);
 }
 
@@ -960,7 +960,7 @@ bool read_pdata(std::vector<RUNTIME_FUNCTION>& out, std::string& why) {
     IMAGE_DOS_HEADER dos{};
     IMAGE_NT_HEADERS64 nt{};
     if (g_base != off::kImageBase || !game::safe_read(g_base, &dos, sizeof dos) || dos.e_magic != IMAGE_DOS_SIGNATURE ||
-        dos.e_lfanew <= 0 || dos.e_lfanew > 0x114F20 ||
+        dos.e_lfanew <= 0 || dos.e_lfanew > 0x115110 ||
         !game::safe_read(g_base + static_cast<uint32_t>(dos.e_lfanew), &nt, sizeof nt) ||
         nt.Signature != IMAGE_NT_SIGNATURE || nt.FileHeader.TimeDateStamp != off::kPeTimestamp) {
         why = "not build 1.0.0.2976 (base / PE timestamp)";
@@ -968,7 +968,7 @@ bool read_pdata(std::vector<RUNTIME_FUNCTION>& out, std::string& why) {
     }
     g_image_size.store(nt.OptionalHeader.SizeOfImage, std::memory_order_relaxed);  // before any hook (rva_of)
     const auto pd = nt.OptionalHeader.DataDirectory[IMAGE_DIRECTORY_ENTRY_EXCEPTION];
-    if (!pd.VirtualAddress || !pd.Size || pd.Size % sizeof(RUNTIME_FUNCTION) || pd.Size > 0x1000000) {
+    if (!pd.VirtualAddress || !pd.Size || pd.Size % sizeof(RUNTIME_FUNCTION) || pd.Size > 0x1000780) {
         why = ".pdata unreadable";
         return false;
     }
@@ -1032,7 +1032,7 @@ void verify_sa(std::span<const gad::Section> secs) {
     };
     log::info("GuestSeqPresent R-A table (the raw classification COMPUTED from the three native vtables, for S-A; what "
               "guest_seq_foreign_present applies is its own 'R-A ... ARMED' line; slots "
-              "+0x{:X}..+0x{:X}): client only (common and server = ret 0x3A6D80) {}:{} | client and server {}:{} | common "
+              "+0x{:X}..+0x{:X}): client only (common and server = ret 0x3A7190) {}:{} | client and server {}:{} | common "
               "differs {}:{} | client-only slots outside that range (the processor's own, NOT presentation): {}",
               gpr::kFnSlotLo, gpr::kFnSlotHi, t.n_client_only, list(t.client_only, t.n_client_only), t.n_client_server,
               list(t.client_server, t.n_client_server), t.n_common_differs,
@@ -1081,7 +1081,7 @@ void verify_ra(std::span<const gad::Section> secs, gpr::RaMode mode) {
     }
     // The lifetime evidence (per stage, deleted through slot 0): the .rsrc thunks it goes through.
     if (c[0] != kRaDeletingDtor || plan.use[0] != gpr::RaUse::Native) {
-        refuse("slot 0 (the deleting destructor) is not 0x5D9750 or not kept native");
+        refuse("slot 0 (the deleting destructor) is not 0x5D9A90 or not kept native");
         return;
     }
     for (const Jmp& j : kRaLifetime) {
@@ -1137,9 +1137,9 @@ void verify_ra(std::span<const gad::Section> secs, gpr::RaMode mode) {
     g_ra_mod_vt = reinterpret_cast<uint64_t>(page + 1);
     g_ra_mode.store(static_cast<uint8_t>(mode), std::memory_order_release);
     log::info("GuestSeqPresent R-A guest_seq_foreign_present={} ARMED{} | the mod's table at 0x{:X} (its [-1] = the "
-              "client's COL exe+0x{:X}; 105 slots, read-only page, never freed): {}; the other {} copied from 0x5997A38 "
+              "client's COL exe+0x{:X}; 105 slots, read-only page, never freed): {}; the other {} copied from 0x599CB30 "
               "| verified: base / PE timestamp, three COLs, the {} decisions, their {} trampolines, slot 0 and the {} "
-              "lifetime thunks | per foreign stage, in P1: vptr == exe+0x5997A38, [proc+0x10] == the stage, [proc+8] == "
+              "lifetime thunks | per foreign stage, in P1: vptr == exe+0x599CB30, [proc+0x10] == the stage, [proc+8] == "
               "[stage+0x28], P1 on guest_seq_play's frame thread; {}",
               gpr::ra_mode_name(mode), mode == gpr::RaMode::Probe ? " (probe: nothing is ever written)" : "",
               g_ra_mod_vt, gpr::kColProcClient, g_ra_cut_text,
@@ -1159,28 +1159,28 @@ void verify_rb(std::span<const gad::Section> secs, gpr::RaMode mode) {
     };
     if (!g_ev_on[static_cast<size_t>(Ev::CameraSelector)].load() ||
         !g_ev_on[static_cast<size_t>(Ev::PlayerCameraPreset)].load()) {
-        refuse("a camera start hook (0x34CFC20 / 0xC6CC40) is not installed (see its line)");
+        refuse("a camera start hook (0x34D4150 / 0xC6D690) is not installed (see its line)");
         return;
     }
     if (!code_ok(secs, kRbCode, why) || !code_ok(secs, kSaCode, why)) {
         refuse(why);
         return;
     }
-    if (q64(gpr::kVtTimeline) != g_base + 0x34C0B60 || q64(gpr::kVtTimeline + 8) != g_base + 0x34BD680) {
-        refuse("the timeline object's vtable exe+0x5C75F30 is not build 2976's");
+    if (q64(gpr::kVtTimeline) != g_base + 0x34C5090 || q64(gpr::kVtTimeline + 8) != g_base + 0x34C1BB0) {
+        refuse("the timeline object's vtable exe+0x5C7B5D0 is not build 2976's");
         return;
     }
     for (const Ev ev : {Ev::CameraSelector, Ev::PlayerCameraPreset}) {
         const uint32_t vt = gpr::ev_info(ev).vt;
         if (q64(vt + 8 * 97) != g_base + gpr::kRetRva || q64(vt + 8 * 98) != g_base + gpr::kRetRva) {
-            refuse(std::format("slots 97 / 98 of exe+0x{:X} are not the void ret 0x3A6D80", vt));
+            refuse(std::format("slots 97 / 98 of exe+0x{:X} are not the void ret 0x3A7190", vt));
             return;
         }
     }
     g_rb_mode.store(static_cast<uint8_t>(mode), std::memory_order_release);
-    log::info("GuestSeqPresent R-B guest_seq_foreign_timeline={} ARMED{} | CameraSelectorEventData 0x34CFC20 and "
-              "SequencerPlayerCameraPreset 0xC6CC40, slot 99 (the START) only, called back from 0x39A98BD / 0x39A99C6; "
-              "the timeline [ctx+8] (vptr exe+0x5C75F30) -> id +0x1D8 -> the stage P1 noted: foreign, M known, G != M, "
+    log::info("GuestSeqPresent R-B guest_seq_foreign_timeline={} ARMED{} | CameraSelectorEventData 0x34D4150 and "
+              "SequencerPlayerCameraPreset 0xC6D690, slot 99 (the START) only, called back from 0x39ADE0D / 0x39ADF16; "
+              "the timeline [ctx+8] (vptr exe+0x5C7B5D0) -> id +0x1D8 -> the stage P1 noted: foreign, M known, G != M, "
               "G = guest_seq_play's X of the owner, frame thread | {} | slots 100, 101 (end) and 103 native; the "
               "other event classes untouched",
               gpr::ra_mode_name(mode), mode == gpr::RaMode::Probe ? " (probe: nothing is ever skipped)" : "",
@@ -1219,11 +1219,11 @@ DWORD WINAPI install_thread(LPVOID) {
     int waited = 0;
     for (; waited < 1320 && !guest_seq_foreign_settled(); ++waited) Sleep(500);
     if (!guest_seq_foreign_settled()) {
-        log::warn("GuestSeqPresent: guest_seq_foreign has not settled after {} s: P1 (0x6EC8A0) may still be installed "
+        log::warn("GuestSeqPresent: guest_seq_foreign has not settled after {} s: P1 (0x6ECC10) may still be installed "
                   "later (S-A / R-A start with it; the summary says 'P1 hooked' once it is)",
                   waited / 2);
     } else if (!guest_seq_foreign_p1_hooked()) {
-        log::warn("GuestSeqPresent: guest_seq_foreign settled WITHOUT P1 (0x6EC8A0) (see its 'NOT installed' line): no "
+        log::warn("GuestSeqPresent: guest_seq_foreign settled WITHOUT P1 (0x6ECC10) (see its 'NOT installed' line): no "
                   "stage is noted, so R-A never acts, S-A has no line and S-A2 / S-B / S-C / S-D cannot tell whose "
                   "stage anything belongs to (all 'no stage')");
     }
@@ -1274,7 +1274,7 @@ DWORD WINAPI install_thread(LPVOID) {
     }
     log::info("GuestSeqPresent guest_seq_foreign_present_probe=1 (READ-ONLY, nothing written) | S-A in P1: {} (processor "
               "vtables {}) | S-A2 in guest_x_veto's handlers (G = X): {} | S-B/S-C hooked:{} | refused:{} | S-D in "
-              "guest_seq_play's frame hook 0x8B6144: {} | guest_seq_route={}{} | lines for FOREIGN stages / their events "
+              "guest_seq_play's frame hook 0x8B6864: {} | guest_seq_route={}{} | lines for FOREIGN stages / their events "
               "(others sampled), summary every 60 s",
               g_on.load() ? "on" : "OFF", g_sa_vt.load() ? "verified" : "NOT verified", g_on.load() ? "on" : "OFF",
               on.empty() ? " none" : on, refused.empty() ? " none" : refused,

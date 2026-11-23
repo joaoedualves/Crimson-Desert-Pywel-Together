@@ -47,21 +47,21 @@ constexpr uint8_t kEntry7[] = {0x48, 0x8B, 0xC4, 0x48, 0x89, 0x58, 0x10, 0x44, 0
 constexpr uint8_t kRideEnter[] = {0x48, 0x8B, 0xC4, 0x48, 0x89, 0x58, 0x10, 0x48, 0x89, 0x70, 0x18, 0x55, 0x57, 0x41, 0x54, 0x41};
 constexpr uint8_t kHandler[] = {0x48, 0x89, 0x5C, 0x24, 0x08, 0x55, 0x56, 0x57, 0x41, 0x54, 0x41, 0x55, 0x41, 0x56, 0x41, 0x57};
 constexpr uint8_t kVf54[] = {0x48, 0x89, 0x5C, 0x24, 0x08, 0x48, 0x89, 0x6C, 0x24, 0x10, 0x48, 0x89, 0x74, 0x24, 0x20, 0x57};
-constexpr uint8_t kThunkVf53[] = {0xE9, 0xCB, 0x76, 0xFE, 0x08};    // jmp 0x9DC90A0 (.xtls body: calls 0x2228260)
-constexpr uint8_t kThunkRideOff[] = {0xE9, 0x3B, 0xAC, 0xD4, 0x0A};  // jmp 0xE6F2E60 (.xtls body)
+constexpr uint8_t kThunkVf53[] = {0xE9, 0xEB, 0x97, 0xD3, 0x08};    // jmp 0x9DC90A0 (.xtls body: calls 0x2228260)
+constexpr uint8_t kThunkRideOff[] = {0xE9, 0x5B, 0xE5, 0x73, 0x0A};  // jmp 0xE6F2E60 (.xtls body)
 
-constexpr uintptr_t kCommonVf53 = 0x246F6C0, kClientVf53 = 0xB84E80, kRideOffThunk = 0x2470330, kClientVf54 = 0xB84EA0;
-constexpr uintptr_t kRideOnEnter = 0x77C3A0, kRideOffEnter = 0x77D370, kH2663 = 0xD11830, kH2916 = 0xD12300,
-                    kH2991 = 0xC9CA10;
-constexpr uintptr_t kCodeEnd = 0x5613000;
+constexpr uintptr_t kCommonVf53 = 0x2471990, kClientVf53 = 0xB857C0, kRideOffThunk = 0x2472600, kClientVf54 = 0xB857E0;
+constexpr uintptr_t kRideOnEnter = 0x77C8C0, kRideOffEnter = 0x77D890, kH2663 = 0xD12280, kH2916 = 0xD12D50,
+                    kH2991 = 0xC9D460;
+constexpr uintptr_t kCodeEnd = 0x5618000;
 
 // P8 S18 fix B (pendientes/p8-s18-desmontar-nativo.md §6, mount_sync_logic.h "the request gate") [V, capstone on the
 // installed PE]: the thunk 0x2329A90 `jmp 0xEE58A40` (5 B, a function start in .rsrc; no E8/E9 lands in +1..+4); its
 // network caller 0x863880 calls it at 0x8639C8 (`lea rdx,[rsp+0x20]; mov rcx,r15; call 0x2329A90; mov [r14],r12d`),
 // so the detour's return address is exe+0x8639CD; 0x1EC9C26 `or r8b,2; or [rcx+0x50],r8b` marks every received entry.
 constexpr uint8_t kThunkGate[] = {0x48, 0x89, 0x5C, 0x24, 0x10};  // jmp 0xEE58A40 (.xtls, never touched)
-constexpr uintptr_t kGateThunk = 0x258CAA0, kGateNetRet = 0x976BE3, kGateCallSite = 0x976BD6, kGateNetOr = 0x20DFF86;
-constexpr uint8_t kGateCallSiteBytes[] = {0x48, 0x8D, 0x54, 0x24, 0x20, 0x49, 0x8B, 0xCF, 0xE8, 0xBD, 0x5E, 0xC1, 0x01, 0x45, 0x89, 0x26};
+constexpr uintptr_t kGateThunk = 0x258EF30, kGateNetRet = 0x977303, kGateCallSite = 0x9772F6, kGateNetOr = 0x20E1BA6;
+constexpr uint8_t kGateCallSiteBytes[] = {0x48, 0x8D, 0x54, 0x24, 0x20, 0x49, 0x8B, 0xCF, 0xE8, 0x2D, 0x7C, 0xC1, 0x01, 0x45, 0x89, 0x26};
 constexpr uint8_t kGateNetOrBytes[] = {0x41, 0x80, 0xC8, 0x02, 0x44, 0x08, 0x41, 0x50};
 // CC fields the gate reads [V 0xEE58A40]: [CC+8] actor, [CC+0x80] pending entries, CC+0xA8 "pending taken" flag.
 constexpr uint32_t kCcActor = 0x08, kCcPending = 0x80, kCcPendingBusy = 0xA8;
@@ -88,13 +88,13 @@ constexpr uint32_t kCcAttach = 0x100, kAttachType = 0x08, kCc228 = 0x228, kComps
                    kActorTypeTab = 0x88, kMcCc = 0x60, kHierType = 0x18, kActorLocalCtl = 0x94;
 // TransformSync (+0xB4 sector-local position, +0xC0 sector x/z, +0xA4 rotation; read_world, hold_after).
 constexpr uint32_t kCompsTs = 0x1A0, kTsQuat = 0xA4, kTsPos = 0xB4, kTsSector = 0xC0;
-constexpr uintptr_t kHoldUpdate = 0x9A50D0;
+constexpr uintptr_t kHoldUpdate = 0x9A5950;
 // P8 S22 [V Ghidra + capstone]: vf54 ends with `if (rider->vf178()) 0xA45AC0(rider vc, horse key, 1)`, an action
 // request launched on the LOCAL player's components (vf42's tail does the same with 0 on dismount, .xtls 0x9DCF13B).
 // Every client in-game actor class has vf178 = 0x4FE260: `[this+0xA0] == [[WorldSystem+0x30]+0x58] && [this+0x94]`
 // (the remote player's character reads +0x94 = 1, but its +0xA0 is the other user). Judged by msl::seat_local_user;
 // a veto at 0xA45AC0's entry (2 callers, cold) drops any such request for the remote player's character (expected 0).
-constexpr uintptr_t kActionReq = 0xB852D0;
+constexpr uintptr_t kActionReq = 0xB85C10;
 constexpr uint8_t kActionReqBytes[] = {0x48, 0x89, 0x5C, 0x24, 0x10, 0x48, 0x89, 0x74, 0x24, 0x20, 0x55, 0x57, 0x41, 0x56};
 constexpr uint32_t kActorUser = 0xA0, kMgrLocalUser = 0x58;
 constexpr uint8_t kHoldEntry[] = {0x48, 0x8B, 0xC4, 0x48, 0x89, 0x58, 0x10, 0x48, 0x89, 0x70,
@@ -728,7 +728,7 @@ int gate_fault(EXCEPTION_POINTERS* ep) noexcept {
     c_faults.fetch_add(1);
     // Review (5): an outer frame of the game may still handle it (a C++ throw/catch): this is not by itself a crash.
     return game::game_fault_continue(ep, "MountSync",
-                                     "0xEE58A40 (the CC request gate behind 0x258CAA0) ran with the mod's copy of the "
+                                     "0xEE58A40 (the CC request gate behind 0x258EF30) ran with the mod's copy of the "
                                      "remote rider's entries; the exception is passed on to the game's handlers and "
                                      "fix B is off from now on (a crash only if nothing handles it)");
 }
@@ -1046,7 +1046,7 @@ bool guarded_vf53(uintptr_t vc, int32_t* res, uintptr_t rider, uint8_t seat, uin
     __try {
         g_vf53(vc, res, rider, seat, fifth);
         return true;
-    } __except (apply_fault(GetExceptionInformation(), "0x246F6C0 (CommonVehicle::vf53) replayed the other player's mount")) {
+    } __except (apply_fault(GetExceptionInformation(), "0x2471990 (CommonVehicle::vf53) replayed the other player's mount")) {
         return false;
     }
 }
@@ -1054,7 +1054,7 @@ bool guarded_rideoff(int32_t* res, uintptr_t horse, uint32_t* rider_key, uint64_
     __try {
         g_rideoff(res, horse, rider_key, p4, flag);
         return true;
-    } __except (apply_fault(GetExceptionInformation(), "0x2470330 (CommonVehicle RideOff) replayed the other player's dismount")) {
+    } __except (apply_fault(GetExceptionInformation(), "0x2472600 (CommonVehicle RideOff) replayed the other player's dismount")) {
         return false;
     }
 }
@@ -1065,7 +1065,7 @@ bool guarded_vf54(uintptr_t vc, int32_t* res, uintptr_t rider, uint8_t seat) noe
     __try {
         g_h_vf54.unsafe_call<uintptr_t>(vc, res, rider, static_cast<uint64_t>(seat));
         return true;
-    } __except (apply_fault(GetExceptionInformation(), "0xB84EA0 (ClientVehicle vf54) seated the other player's rider")) {
+    } __except (apply_fault(GetExceptionInformation(), "0xB857E0 (ClientVehicle vf54) seated the other player's rider")) {
         return false;
     }
 }
@@ -1769,7 +1769,7 @@ std::string line_of(const p8p::Event& e) {
     switch (e.kind) {
         case kBegin:
             return std::format(
-                "MountSync MountBegin {} T{} | vf53 0x246F6C0 rider 0x{:08X} horse 0x{:08X} seat(R9b) {} fifth {} | "
+                "MountSync MountBegin {} T{} | vf53 0x2471990 rider 0x{:08X} horse 0x{:08X} seat(R9b) {} fifth {} | "
                 "caller exe+0x{:X}{} | {}{}{} | transition {} | rider Link before: cur {} res 0x{:08X}/{} | seat "
                 "occupant 0x{:08X} reserve 0x{:08X} count {} | C8 rider {} horse {} | ctrl rider 0x{:08X} horse "
                 "0x{:08X} | rider method {} A0 0x{:08X} A1 0x{:08X}",
@@ -1791,13 +1791,13 @@ std::string line_of(const p8p::Event& e) {
                 (v[2] >> 16) & 1 ? ", PUBLISHED" : "", v[4], v[11]);
         case kRideOffCall:
             return std::format(
-                "MountSync MountDetach {} T{} | 0x2470330 RideOff rider 0x{:08X} horse 0x{:08X} p4 0x{:X} flag {} | "
+                "MountSync MountDetach {} T{} | 0x2472600 RideOff rider 0x{:08X} horse 0x{:08X} p4 0x{:X} flag {} | "
                 "*result 0x{:08X} | rider Link {} -> {} | caller exe+0x{:X} | {}{}{}{} | transition {}",
                 when, e.tid, v[0], v[1], v[2], v[3] & 0xFF, v[4], link_text(v[5]), link_text(v[6]), v[7],
                 (v[3] >> 8) & 1 ? "client" : "other thread", (v[3] >> 9) & 1 ? ", observer apply" : "",
                 (v[3] >> 10) & 1 ? ", inside vf53" : "", (v[3] >> 11) & 1 ? ", PUBLISHED" : "", v[8]);
         case kVf54Call:
-            return std::format("MountSync vf54 {} T{} | 0xB84EA0 vc of 0x{:08X} actor 0x{:08X} r9b {} | *result 0x{:08X} "
+            return std::format("MountSync vf54 {} T{} | 0xB857E0 vc of 0x{:08X} actor 0x{:08X} r9b {} | *result 0x{:08X} "
                                "| actor Link {} -> {} | attach type {} -> {} | caller exe+0x{:X} | {}{}",
                                when, e.tid, v[0], v[1], v[2], v[3], link_text(v[4]), link_text(v[5]), v[9] & 0xFF,
                                (v[9] >> 8) & 0xFF, v[6], v[7] ? "client" : "other thread", v[8] ? ", inside vf53" : "");
@@ -1828,10 +1828,10 @@ std::string line_of(const p8p::Event& e) {
         case kArgs:
             return std::format("MountSync {} args {} T{} | {} | rider 0x{:08X} horse 0x{:08X} transition {}",
                                e.flags == 1 ? "commit" : "detach", when, e.tid,
-                               e.flags == 1 ? std::format("0x246F6C0(RCX vc=0x{:X}, RDX &result, R8 rider=0x{:X}, R9b "
+                               e.flags == 1 ? std::format("0x2471990(RCX vc=0x{:X}, RDX &result, R8 rider=0x{:X}, R9b "
                                                           "seat={}, [rsp+0x28] fifth={}) (horse actor 0x{:X})",
                                                           v[0], v[1], v[3], v[4], v[2])
-                                            : std::format("0x2470330(&result, horse=0x{:X}, &rider key, p4=0x{:X}, "
+                                            : std::format("0x2472600(&result, horse=0x{:X}, &rider key, p4=0x{:X}, "
                                                           "flag={}) (rider actor 0x{:X}){}{}",
                                                           v[2], v[5], v[6], v[1],
                                                           v[10] ? " - WITHOUT the controller's Detach: its actions "
@@ -1841,7 +1841,7 @@ std::string line_of(const p8p::Event& e) {
                                                                           "15 s: the transaction is FORGOTTEN, nothing "
                                                                           "is called"
                                                           : (v[11] & 1) ? " - the native retirement already ran here "
-                                                                          "(RideOff / 0x3E9610): nothing is called"
+                                                                          "(RideOff / 0x3E9A20): nothing is called"
                                                           : (v[11] & 2) ? " - native FALLBACK: the link this client made "
                                                                           "is still there 2 s after the Detach and the "
                                                                           "rider is not in RideOn/RideOff (flag 0)"
@@ -1849,7 +1849,7 @@ std::string line_of(const p8p::Event& e) {
                                v[7], v[8], v[9]);
         case kCtlDetach:
             return std::format("MountSync MountDetach (observed) {} T{} | the controller's own link: rider 0x{:08X} "
-                               "left horse 0x{:08X} (Link+0x10 now {}) by a route that is not 0x2470330 | "
+                               "left horse 0x{:08X} (Link+0x10 now {}) by a route that is not 0x2472600 | "
                                "transition {} | {} | {} | PUBLISHED as a Detach (flag {}, p4 0)",
                                when, e.tid, v[0], v[1], link_text(v[3]), v[2],
                                v[4] == ~0ull ? std::string("no RideOff::Enter of it seen")
@@ -1884,7 +1884,7 @@ std::string line_of(const p8p::Event& e) {
                                    : "");
         case kGate:
             return std::format(
-                "MountSync gate [fix B] {} T{} | 0x258CAA0 from exe+0x976BE3 (a received action) | remote 0x{:08X} new "
+                "MountSync gate [fix B] {} T{} | 0x258EF30 from exe+0x977303 (a received action) | remote 0x{:08X} new "
                 "A0 0x{:08X} A1 0x{:08X} | method {} | current L0 0x{:08X} flags 0x{:02X} L1 0x{:08X} flags 0x{:02X} | "
                 "pending 0x40 {} CC+0xA8 {} | actor+0x96 {} C8 {} | new 0x40 {} +0x52 {} +0x51 bit 3 {} | RideOff "
                 "+0xD4 0x{:08X} | -> {} (unlocks so far {})",
@@ -1947,7 +1947,7 @@ std::string line_of(const p8p::Event& e) {
             };
             if (e.flags == kSeatSeated || e.flags == kSeatFailed || e.flags == kSeatFault) {
                 return std::format(
-                    "{}: vf54 0xB84EA0(vc=0x{:X},&res,rider=0x{:X},{}) -> *res 0x{:08X} | attach type {} -> {}, hierarchy "
+                    "{}: vf54 0xB857E0(vc=0x{:X},&res,rider=0x{:X},{}) -> *res 0x{:08X} | attach type {} -> {}, hierarchy "
                     "parent {} -> {}, CC+0x228 {} -> {} | {} | {} us | {}",
                     head, v[6], v[7], v[2] & 0xFF, v[3], v[4] & 0xFF, (v[4] >> 8) & 0xFF,
                     parent(v[5], (v[4] >> 48) & 1), parent(v[5] >> 32, (v[4] >> 49) & 1), (v[4] >> 16) & 0xFF,
@@ -1960,7 +1960,7 @@ std::string line_of(const p8p::Event& e) {
             return std::format("{}: {} | attach type {}, hierarchy parent {}, CC+0x228 {} | {}", head,
                                e.flags == kSeatAlready ? std::string("already seated here (attach type 4 under this horse)")
                                : e.flags == kSeatProbe
-                                   ? std::format("probe: would call vf54 0xB84EA0(vc=0x{:X},&res,rider=0x{:X},{})", v[6],
+                                   ? std::format("probe: would call vf54 0xB857E0(vc=0x{:X},&res,rider=0x{:X},{})", v[6],
                                                  v[7], v[2] & 0xFF)
                                    : std::format("REFUSED ({})", msl::seat_why_name(why)),
                                v[4] & 0xFF, parent(v[5], (v[4] >> 48) & 1), (v[4] >> 16) & 0xFF, types);
@@ -1977,13 +1977,13 @@ std::string line_of(const p8p::Event& e) {
                 case msl::SeatRel::Retire:
                     return std::format(
                         "MountSeat release {} T{} | 0x{:08X} still seated on 0x{:08X} {} and its Link still names the horse: "
-                        "0x2470330(&res, horse, &key, p4 0, flag {}) once -> {} (post {}) *res 0x{:08X} | Link {} -> {}",
+                        "0x2472600(&res, horse, &key, p4 0, flag {}) once -> {} (post {}) *res 0x{:08X} | Link {} -> {}",
                         when, e.tid, v[0], v[1], after, msl::kClientDetachFlag, outcome_name(v[8] & 0xFF),
                         msl::post_name(static_cast<msl::Post>((v[8] >> 8) & 0xFF)), v[9], link_text(v[6]),
                         link_text(v[10]));
                 case msl::SeatRel::Stuck:
                     return std::format("MountSeat STUCK SEATED {} T{} | 0x{:08X} on 0x{:08X}: attach type still 4 {} | "
-                                       "Link {} method {} | nothing called (0xBA67E0 is not used in this version)",
+                                       "Link {} method {} | nothing called (0xBA7230 is not used in this version)",
                                        when, e.tid, v[0], v[1], after, link_text(v[6]), v[7]);
                 case msl::SeatRel::Lost:
                     return std::format("MountSeat release {} T{} | 0x{:08X} on 0x{:08X}: the rider is unreadable here "
@@ -2014,7 +2014,7 @@ std::string line_of(const p8p::Event& e) {
                 v[3], v[4], v[10] == kRelinkLines ? " | further ones are only counted" : "");
         case kPeerStatus:
             return std::format(
-                "MountSync: the other PC publishes NO mount (its controller's 0x246F6C0 hook is not installed; Status "
+                "MountSync: the other PC publishes NO mount (its controller's 0x2471990 hook is not installed; Status "
                 "from 0x{:08X}, nonce 0x{:08X}, connection {}): the other player's mounts will not be seated here (its "
                 "rider is shown off the saddle, as before session 21) {}",
                 v[0], v[1], v[2], when);
@@ -2076,15 +2076,15 @@ DWORD WINAPI install_thread(LPVOID) {
     g_vf53 = reinterpret_cast<Vf53Fn>(g_base + kCommonVf53);
     g_rideoff = reinterpret_cast<RideOffFn>(g_base + kRideOffThunk);
     const Point pts[] = {
-        {kCommonVf53, 7, kEntry7, sizeof kEntry7, "CommonVehicle::vf53 0x246F6C0 (MountBegin/MountCommit)"},
-        {kClientVf53, 5, kThunkVf53, sizeof kThunkVf53, "the ClientVehicle vf53 thunk 0xB84E80 (jmp 0x9DC90A0)"},
-        {kRideOffThunk, 5, kThunkRideOff, sizeof kThunkRideOff, "the CommonVehicle RideOff thunk 0x2470330 (MountDetach)"},
-        {kClientVf54, 5, kVf54, sizeof kVf54, "ClientVehicle vf54 0xB84EA0"},
-        {kRideOnEnter, 7, kRideEnter, sizeof kRideEnter, "RideOn::Enter 0x77C3A0"},
-        {kRideOffEnter, 7, kRideEnter, sizeof kRideEnter, "RideOff::Enter 0x77D370"},
-        {kH2663, 5, kHandler, sizeof kHandler, "the 2663 InteractionPreemptionStepSuccessAck handler 0xD11830"},
-        {kH2916, 5, kHandler, sizeof kHandler, "the 2916 InteractionDoStepSuccessAck handler 0xD12300"},
-        {kH2991, 5, kHandler, sizeof kHandler, "the 2991 StartActionAck handler 0xC9CA10 (apply point)"},
+        {kCommonVf53, 7, kEntry7, sizeof kEntry7, "CommonVehicle::vf53 0x2471990 (MountBegin/MountCommit)"},
+        {kClientVf53, 5, kThunkVf53, sizeof kThunkVf53, "the ClientVehicle vf53 thunk 0xB857C0 (jmp 0x9DC90A0)"},
+        {kRideOffThunk, 5, kThunkRideOff, sizeof kThunkRideOff, "the CommonVehicle RideOff thunk 0x2472600 (MountDetach)"},
+        {kClientVf54, 5, kVf54, sizeof kVf54, "ClientVehicle vf54 0xB857E0"},
+        {kRideOnEnter, 7, kRideEnter, sizeof kRideEnter, "RideOn::Enter 0x77C8C0"},
+        {kRideOffEnter, 7, kRideEnter, sizeof kRideEnter, "RideOff::Enter 0x77D890"},
+        {kH2663, 5, kHandler, sizeof kHandler, "the 2663 InteractionPreemptionStepSuccessAck handler 0xD12280"},
+        {kH2916, 5, kHandler, sizeof kHandler, "the 2916 InteractionDoStepSuccessAck handler 0xD12D50"},
+        {kH2991, 5, kHandler, sizeof kHandler, "the 2991 StartActionAck handler 0xC9D460 (apply point)"},
     };
     void* detours[] = {reinterpret_cast<void*>(&common_detour),  reinterpret_cast<void*>(&thunk_detour),
                        reinterpret_cast<void*>(&rideoff_detour), reinterpret_cast<void*>(&vf54_detour),
@@ -2099,7 +2099,7 @@ DWORD WINAPI install_thread(LPVOID) {
     // The thunk only with the Common hook (it only marks the client call for it).
     for (size_t i = 0; i < std::size(pts); ++i) {
         if (i == 1 && !g_on_common.load()) {
-            summary += std::format("{}{} SKIPPED (needs 0x246F6C0)", summary.empty() ? "" : ", ", pts[i].what);
+            summary += std::format("{}{} SKIPPED (needs 0x2471990)", summary.empty() ? "" : ", ", pts[i].what);
             continue;
         }
         const bool ok = install_one(secs, pts[i], detours[i], *order[i], *ons[i], g_mark[i]);
@@ -2110,33 +2110,33 @@ DWORD WINAPI install_thread(LPVOID) {
     if (mode() == Mode::On && ride_dismount_mode() == rfl::Dismount::Native) {
         if (!bytes_at(kGateCallSite, kGateCallSiteBytes, sizeof kGateCallSiteBytes) ||
             !bytes_at(kGateNetOr, kGateNetOrBytes, sizeof kGateNetOrBytes)) {
-            log::error("MountSync: the 0x976A80 call site (exe+0x976BD6) or the network mark (exe+0x20DFF86) is not build "
+            log::error("MountSync: the 0x9771A0 call site (exe+0x9772F6) or the network mark (exe+0x20E1BA6) is not build "
                        "2976's; the gate detour (fix B) is REFUSED, nothing written");
-            gate_text = "gate detour 0x258CAA0 REFUSED (context bytes)";
+            gate_text = "gate detour 0x258EF30 REFUSED (context bytes)";
         } else {
             const Point gp{kGateThunk, 5, kThunkGate, sizeof kThunkGate,
-                           "the CC request gate thunk 0x258CAA0 (jmp 0xEE58A40; fix B)"};
+                           "the CC request gate thunk 0x258EF30 (jmp 0xEE58A40; fix B)"};
             const bool ok = install_one(secs, gp, reinterpret_cast<void*>(&gate_detour), g_h_gate, g_on_gate, g_mark[9]);
             gate_text = std::format("{} {}", gp.what, ok ? "hooked" : "REFUSED");
         }
     } else {
-        gate_text = std::format("gate detour 0x258CAA0 not installed (ride_dismount={}, mount_sync={})",
+        gate_text = std::format("gate detour 0x258EF30 not installed (ride_dismount={}, mount_sync={})",
                                 rfl::dismount_name(ride_dismount_mode()), msl::mode_name(mode()));
     }
     summary += ", " + gate_text;
     // P8 S21 ride_hold_pos (probe or 1): the mode-2 movement update's entry, its bytes verified like every point.
     if (hold_mode() != Mode::Off) {
         const Point hp{kHoldUpdate, 7, kHoldEntry, sizeof kHoldEntry,
-                       "the mode-2 movement update 0x9A50D0 (ride_hold_pos)"};
+                       "the mode-2 movement update 0x9A5950 (ride_hold_pos)"};
         const bool ok = install_one(secs, hp, reinterpret_cast<void*>(&hold_detour), g_h_hold, g_on_hold, g_mark[10]);
         summary += std::format(", {} {} ({})", hp.what, ok ? "hooked" : "REFUSED", msl::mode_name(hold_mode()));
     } else {
-        summary += ", 0x9A50D0 not installed (ride_hold_pos=0)";
+        summary += ", 0x9A5950 not installed (ride_hold_pos=0)";
     }
     // P8 S23 mount_seat=1 only: the riding action request's entry (14 verified bytes, 5 patched).
     if (seat_mode() == Mode::On) {
         const Point ap{kActionReq, 5, kActionReqBytes, sizeof kActionReqBytes,
-                       "the riding action request 0xB852D0 (mount_seat: never for the other player's character)"};
+                       "the riding action request 0xB85C10 (mount_seat: never for the other player's character)"};
         const bool ok = install_one(secs, ap, reinterpret_cast<void*>(&actreq_detour), g_h_actreq, g_on_actreq, g_mark[11]);
         summary += std::format(", {} {}", ap.what, ok ? "hooked" : "REFUSED");
     }
@@ -2145,21 +2145,21 @@ DWORD WINAPI install_thread(LPVOID) {
     log::info("MountSync {} (mount_sync, {}): {} | controller: publishes MountBegin/MountCommit/MountDetach of its own "
               "character (tunnel control state 5, nonce 0x{:08X}){} | observer: {}",
               msl::mode_name(m), g_guest.load() ? "guest" : "host", summary, g_nonce,
-              g_on_common.load() ? "" : " - NOT POSSIBLE without the 0x246F6C0 hook",
+              g_on_common.load() ? "" : " - NOT POSSIBLE without the 0x2471990 hook",
               m == Mode::On ? (g_on_2991.load() ? "holds the stream from a Begin until its Commit (<= 500 ms), replays "
-                                                   "0x246F6C0 at the dispatch of the rider's next StartActionAck, checks "
+                                                   "0x2471990 at the dispatch of the rider's next StartActionAck, checks "
                                                    "the postconditions, defers ride_filter for that transaction; "
                                                    "retires: native (wait for RideOff's own, fallback flag 0 after 2 s "
                                                    "outside 6/7) or S18 (first on-foot dispatch, flag 12) by ride_dismount"
-                                                 : "NOTHING (no apply point: 0xC9CA10 refused)")
+                                                 : "NOTHING (no apply point: 0xC9D460 refused)")
                             : "probe: logs what it would call, with the arguments; holds, calls and writes nothing");
     // P8 S26, mount_relink (review of bf255bb (1)): its stop conditions are this client's RideOn::Enter / RideOff::Enter
     // of the rider; without both hooks (or without the apply point) it is off, said once.
     if (relink_mode() != Mode::Off) {
         const bool hooks = g_on_enter_on.load() && g_on_enter_off.load() && g_on_2991.load();
         if (!hooks) {
-            log::warn("MountSync: mount_relink={} is OFF: it needs RideOn::Enter 0x77C3A0, RideOff::Enter 0x77D370 and "
-                      "the 2991 handler 0xC9CA10 hooked (its stop conditions and its apply point)",
+            log::warn("MountSync: mount_relink={} is OFF: it needs RideOn::Enter 0x77C8C0, RideOff::Enter 0x77D890 and "
+                      "the 2991 handler 0xC9D460 hooked (its stop conditions and its apply point)",
                       msl::mode_name(relink_mode()));
             g_relink_mode.store(static_cast<uint8_t>(Mode::Off), std::memory_order_release);
         }
@@ -2170,7 +2170,7 @@ DWORD WINAPI install_thread(LPVOID) {
     // P8 S26 (montura-regresion.md section 7.1): without 0x2228260 this PC publishes none of its own mounts.
     g_ctl_no_publish.store(!g_on_common.load());
     if (g_ctl_no_publish.load()) {
-        log::error("MountSync: this PC's CommonVehicle::vf53 0x246F6C0 is NOT hooked: none of its own mounts is "
+        log::error("MountSync: this PC's CommonVehicle::vf53 0x2471990 is NOT hooked: none of its own mounts is "
                    "published, so the other PC will show this character OFF THE SADDLE on every horse (as before "
                    "session 21). The other PC is told (Status every {} s) and the overlay says so",
                    msl::kStatusEveryMs / 1000);
@@ -2191,7 +2191,7 @@ DWORD WINAPI install_thread(LPVOID) {
                 last_summary = now;
                 log::info("{}", mount_sync_describe());
                 if (g_ctl_no_publish.load()) {
-                    log::error("MountSync: this PC still publishes NO mount (0x246F6C0 not hooked; Status sent {})",
+                    log::error("MountSync: this PC still publishes NO mount (0x2471990 not hooked; Status sent {})",
                                c_status_sent.load());
                 }
             }
@@ -2239,13 +2239,13 @@ void mount_sync_start(const std::string& raw, bool guest, const std::string& sea
     g_hold_mode.store(static_cast<uint8_t>(hold));
     log::info("MountSync: mount_seat={}{} | ride_hold_pos={}{}", msl::mode_name(seat),
               ps.known && ps.mode != Mode::Off && seat == Mode::Off ? " (asked for, but only with mount_sync=1)"
-              : seat == Mode::On   ? ": vf54 0xB84EA0 seats the remote rider after the observer's vf53, release watched"
+              : seat == Mode::On   ? ": vf54 0xB857E0 seats the remote rider after the observer's vf53, release watched"
               : seat == Mode::Probe ? ": judged and logged ('would call vf54'), nothing called"
                                     : "",
               msl::mode_name(hold),
               ph.known && ph.mode == Mode::On && hold == Mode::Probe ? " (1 asked for: probe without mount_sync=1)"
-              : hold == Mode::On   ? ": the remote player's empty-buffer pose at 0x9A50D0 is its current TransformSync"
-              : hold == Mode::Probe ? ": 0x9A50D0's early returns counted, nothing written"
+              : hold == Mode::On   ? ": the remote player's empty-buffer pose at 0x9A5950 is its current TransformSync"
+              : hold == Mode::Probe ? ": 0x9A5950's early returns counted, nothing written"
                                     : "");
     g_guest.store(guest);
     LARGE_INTEGER q;
@@ -2261,7 +2261,7 @@ void mount_sync_start(const std::string& raw, bool guest, const std::string& sea
     g_table.set_policy(d != rfl::Dismount::Rewrite ? msl::DetachPolicy::Native : msl::DetachPolicy::S18);
     log::info("MountSync: mount_sync={} on the {} (installing once the world exists) | ride_dismount={}: {}",
               msl::mode_name(p.mode), guest ? "guest" : "host", rfl::dismount_name(d),
-              d == rfl::Dismount::Native    ? "fix B (the gate detour 0x258CAA0 with mount_sync=1), native retirement"
+              d == rfl::Dismount::Native    ? "fix B (the gate detour 0x258EF30 with mount_sync=1), native retirement"
               : d == rfl::Dismount::Partial ? "fix A (ride_filter rewrites only the 0x40 dismount actions), native retirement"
                                             : "every dismount rewritten (S17), retirement at the first on-foot dispatch");
     CloseHandle(CreateThread(nullptr, 0, install_thread, nullptr, 0, nullptr));
@@ -2279,7 +2279,7 @@ bool mount_sync_rides(uint32_t key) noexcept {
 std::string mount_sync_hud_problem() {
     if (mode() == Mode::Off) return {};
     if (g_ctl_no_publish.load(std::memory_order_relaxed)) {
-        return "Monturas: este PC no publica las suyas (gancho 0x246F6C0 sin instalar): el otro jugador te verá "
+        return "Monturas: este PC no publica las suyas (gancho 0x2471990 sin instalar): el otro jugador te verá "
                "fuera de la silla";
     }
     const uint64_t peer = g_peer_no_publish_ms.load(std::memory_order_relaxed);
@@ -2548,7 +2548,7 @@ std::string local_user_selftest() {
     const bool proven = s.vf178 == msl::kVf178Actor && s.local_user && s.rider_user == s.local_user && s.rider_local != 0;
     return std::format(" | local-user self-test (0x{:08X}): vf178 exe+0x{:X}, +0xA0 {} the local user, +0x94 {} -> {}", lk,
                        s.vf178, s.rider_user && s.rider_user == s.local_user ? "IS" : "is NOT", s.rider_local,
-                       proven ? "local user (ok)" : "NOT PROVEN (the reads disagree with 0x5DF1C0)");
+                       proven ? "local user (ok)" : "NOT PROVEN (the reads disagree with 0x5DF500)");
 }
 // P8 S26 (montura-regresion.md sections 7.1 and 7.2): relinks, and whether each controller publishes.
 std::string s26_text() {
@@ -2558,7 +2558,7 @@ std::string s26_text() {
         " | P8 S26: mount_relink {}: relinks {}, would relink (probe) {} (the link the game retired before the "
         "rider's RideOn, applied again) | this PC's mounts published: {} | the other PC's: {}",
         msl::mode_name(relink_mode()), c_relink.load(), c_relink_probe.load(),
-        g_ctl_no_publish.load() ? std::format("NO (0x246F6C0 not hooked; Status sent {})", c_status_sent.load())
+        g_ctl_no_publish.load() ? std::format("NO (0x2471990 not hooked; Status sent {})", c_status_sent.load())
                                 : std::string("yes"),
         peer && now - peer < msl::kStatusShowMs
             ? std::format("NONE (its Status {} s ago; received {})", (now - peer) / 1000, c_status_recv.load())

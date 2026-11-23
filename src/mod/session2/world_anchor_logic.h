@@ -67,11 +67,11 @@ using u2f::parse_mode;
 
 // ---------------------------------------------------------------- build 1.0.0.2976 (RVAs, checked on the exe)
 
-inline constexpr uintptr_t kVtServerField = 0x5F6C7E8;  // pa::ServerField
-inline constexpr uintptr_t kVtFieldLock = 0x5BCEE40;    // pa::WindowsRWLock<4,1>, [field+8] (= field+0x1B8)
+inline constexpr uintptr_t kVtServerField = 0x5F721D8;  // pa::ServerField
+inline constexpr uintptr_t kVtFieldLock = 0x5BD4CD0;    // pa::WindowsRWLock<4,1>, [field+8] (= field+0x1B8)
 inline constexpr uint32_t kLockSlotUnlock = 0x20;       // vf4 0x1371B70 (u8 shared): exclusive -> owner -1, Release
 inline constexpr uint32_t kLockSlotTry = 0x28;          // vf5 0x1371BA0 (u8 shared): TryAcquireSRWLockExclusive
-inline constexpr uintptr_t kLockUnlock = 0x1593AA0, kLockTry = 0x1593AD0;
+inline constexpr uintptr_t kLockUnlock = 0x1595620, kLockTry = 0x1595650;
 inline constexpr uint32_t kFieldLock = 0x08, kFieldOpen = 0x4A, kFieldOwner = 0x180, kFieldGen = 0x2D0;
 inline constexpr uint32_t kFieldSlotOn = 0x2E4;   // u8, 0x29C2915 / collector 0x2C38E28
 inline constexpr uint32_t kFieldSlotKey = 0x2E8;  // u32, 0x29C291C / collector 0x2B06090

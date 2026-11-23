@@ -40,44 +40,44 @@ namespace p = p8p;
 //   0x2A4DEF0 mov [rsp+8],rbx ; mov [rsp+0x20],r9 ; mov [rsp+0x18],r8 ; push rbp   patch 5
 // 0x2A4E024/0x2A4E030: n = u32 [r9+8], entries [r9] stride 0xC (u32 node, u32 actor, 3 x u8);
 // 0x2A4E01F call 0x244BA90(stream, r8): u32 [r8+0] (owner actor), u64 [r8+8] (sequencer id), ...
-constexpr uintptr_t kPrepare = 0x2D41C70;
+constexpr uintptr_t kPrepare = 0x2D46700;
 constexpr uint8_t kPrepareBytes[] = {0x48, 0x89, 0x5C, 0x24, 0x08, 0x4C, 0x89, 0x4C,
                                      0x24, 0x20, 0x4C, 0x89, 0x44, 0x24, 0x18, 0x55};
-constexpr uintptr_t kPrepareLoop = 0x2D41DA4;  // mov eax,[r13+8] ; test eax,eax ; je ; mov r14d,eax ; nop ; mov rdi,[r13+0]
+constexpr uintptr_t kPrepareLoop = 0x2D46834;  // mov eax,[r13+8] ; test eax,eax ; je ; mov r14d,eax ; nop ; mov rdi,[r13+0]
 constexpr uint8_t kPrepareLoopBytes[] = {0x41, 0x8B, 0x45, 0x08, 0x85, 0xC0, 0x74, 0x73, 0x44,
                                          0x8B, 0xF0, 0x90, 0x49, 0x8B, 0x7D, 0x00};
-constexpr uintptr_t kPrepareOpcode = 0x2D41E1F;  // mov word [r15],0xA65
+constexpr uintptr_t kPrepareOpcode = 0x2D468AF;  // mov word [r15],0xA65
 constexpr uint8_t kPrepareOpcodeBytes[] = {0x66, 0x41, 0xC7, 0x07, 0x34, 0x09};
 
 // DeleteSequencerAck 2810's serializer (only caller 0x2879819 in 0x2879440):
 //   0x2A4E4C0 mov [rsp+8],rbx ; mov [rsp+0x20],r9 ; push rbp ...                  patch 5
 // 0x2A4E4E1 mov r12,r8 ... 0x2A4E5C2 mov rax,[r12] (the u64 sequencer id).
-constexpr uintptr_t kDelete = 0x2D42250;
+constexpr uintptr_t kDelete = 0x2D46CE0;
 constexpr uint8_t kDeleteBytes[] = {0x48, 0x89, 0x5C, 0x24, 0x08, 0x4C, 0x89, 0x4C,
                                     0x24, 0x20, 0x55, 0x56, 0x57, 0x41, 0x54, 0x41};
-constexpr uintptr_t kDeleteSeq = 0x2D42352;  // mov rax,[r12]
+constexpr uintptr_t kDeleteSeq = 0x2D46DE2;  // mov rax,[r12]
 constexpr uint8_t kDeleteSeqBytes[] = {0x49, 0x8B, 0x04, 0x24};
-constexpr uintptr_t kDeleteOpcode = 0x2D4239C;  // mov word [r14],0xAFA
+constexpr uintptr_t kDeleteOpcode = 0x2D46E2C;  // mov word [r14],0xAFA
 constexpr uint8_t kDeleteOpcodeBytes[] = {0x66, 0x41, 0xC7, 0x06, 0x63, 0x0A};
 
 // StageBranchStateAck 2981's serializer (only caller .xtls 0x103FB3FD: observed, never called):
 //   0x2A4F2D0 mov [rsp+8],rbx ; mov [rsp+0x20],r9 ; mov [rsp+0x18],r8 ; push rbp   patch 5
 // 0x2A4F3F8 mov rcx,[rbp+0x67] (r8's home) ; mov rax,[rcx] -> the u64 sequencer id; r9 -> the u32
 // written next (0x2A4F2F6 mov r13,r9 ... 0x2A4F41F mov rdx,r13 ; r8d = 4).
-constexpr uintptr_t kBranch = 0x2D43070;
+constexpr uintptr_t kBranch = 0x2D47B00;
 constexpr uint8_t kBranchBytes[] = {0x48, 0x89, 0x5C, 0x24, 0x08, 0x4C, 0x89, 0x4C,
                                     0x24, 0x20, 0x4C, 0x89, 0x44, 0x24, 0x18, 0x55};
-constexpr uintptr_t kBranchSeq = 0x2D43198;
+constexpr uintptr_t kBranchSeq = 0x2D47C28;
 constexpr uint8_t kBranchSeqBytes[] = {0x48, 0x8B, 0x4D, 0x67, 0x48, 0x8B, 0x01};
-constexpr uintptr_t kBranchOpcode = 0x2D43226;  // mov word [r15],0xBA5
+constexpr uintptr_t kBranchOpcode = 0x2D47CB6;  // mov word [r15],0xBA5
 constexpr uint8_t kBranchOpcodeBytes[] = {0x66, 0x41, 0xC7, 0x07, 0xC0, 0x0A};
 
 // PlayAllPreLoadSequencerAck 2322's emitter (only direct caller 0x287F1D4 in 0x287EF60):
 //   0x2999D80 mov [rsp+8],rbx ; push rbp ; push rsi ...                           patch 5
-constexpr uintptr_t kMilestone = 0x2C7A9A0;
+constexpr uintptr_t kMilestone = 0x2C7F430;
 constexpr uint8_t kMilestoneBytes[] = {0x48, 0x89, 0x5C, 0x24, 0x08, 0x55, 0x56, 0x57,
                                        0x41, 0x54, 0x41, 0x55, 0x41, 0x56, 0x41, 0x57};
-constexpr uintptr_t kMilestoneOpcode = 0x2C7AA97;  // mov word [r14],0x912
+constexpr uintptr_t kMilestoneOpcode = 0x2C7F527;  // mov word [r14],0x912
 constexpr uint8_t kMilestoneOpcodeBytes[] = {0x66, 0x41, 0xC7, 0x06, 0x7D, 0x0B};
 
 // MoveFieldCompleteCore 0x2BC7670 (r13 = field from r8 at 0x2BC769E, r14 = the travelling
@@ -86,21 +86,21 @@ constexpr uint8_t kMilestoneOpcodeBytes[] = {0x66, 0x41, 0xC7, 0x06, 0x7D, 0x0B}
 //             path falls through after 0x2BC84D4 call 0x287EF60)
 //   0x2BC84E2 mov rax,[r13+0x2D0]                                                patch 7
 // Outside every range the P8 probes patch or check (0x2BC8452..0x2BC8479, 0x2BC84D4..0x2BC84D8).
-constexpr uintptr_t kEntry = 0x2ED4302;
+constexpr uintptr_t kEntry = 0x2ED8852;
 constexpr uint32_t kEntryPatch = 7;
 constexpr uint8_t kEntryBytes[] = {0x49, 0x8B, 0x87, 0xD8, 0x02, 0x00, 0x00, 0x48, 0x85, 0xC0, 0x75, 0x07, 0xB8, 0xFF, 0xFF, 0x00};
-constexpr uintptr_t kEntryPred = 0x2ED42F9;
-constexpr uint8_t kEntryPredBytes[] = {0x48, 0x8B, 0x4F, 0x18, 0xE8, 0xCE, 0xAE, 0xC1, 0xFF};
-constexpr uintptr_t kEntryR13 = 0x2BC769E;  // mov r13,r8
+constexpr uintptr_t kEntryPred = 0x2ED8849;
+constexpr uint8_t kEntryPredBytes[] = {0x48, 0x8B, 0x4F, 0x18, 0xE8, 0xCE, 0x90, 0xC1, 0xFF};
+constexpr uintptr_t kEntryR13 = 0x2BCA0BE;  // mov r13,r8
 constexpr uint8_t kEntryR13Bytes[] = {0x4D, 0x8B, 0xE8};
-constexpr uintptr_t kEntryR14 = 0x2ED339A;  // mov r14,[rcx+8]
+constexpr uintptr_t kEntryR14 = 0x2ED78EA;  // mov r14,[rcx+8]
 constexpr uint8_t kEntryR14Bytes[] = {0x4C, 0x8B, 0x71, 0x08};
 
 constexpr uint32_t kPatch5 = 5;
 
 // pa::ToTargetSendTargetFinder's vtable (0x287D003 / 0x2BC78E3 lea) and its base ISendTargetFinder.
-constexpr uintptr_t kVtToTarget = 0x5F68760;
-constexpr uintptr_t kVtFinderBase = 0x5F68740;
+constexpr uintptr_t kVtToTarget = 0x5F6D9E0;
+constexpr uintptr_t kVtFinderBase = 0x5F6D9C0;
 
 constexpr uint32_t kActor_Key = 0x60, kActor_User = 0xA0, kUser_Key = 0x60;
 constexpr uint32_t kField_Owner = 0x180, kField_Key = 0x2D0;
@@ -112,7 +112,7 @@ constexpr uint32_t kBindingStride = 0x0C;
 enum Kind : uint16_t { kKPrepare = 0, kKPrepareMore, kKDelete, kKBranch, kKMilestone, kKEntry, kKindCount };
 constexpr const char* kKindName[kKindCount] = {"2661 PrepareSequencerAck", "2661 bindings", "2810 DeleteSequencerAck",
                                                "2981 StageBranchStateAck", "2322 PlayAllPreLoadSequencerAck",
-                                               "entry 0x2ED4302"};
+                                               "entry 0x2ED8852"};
 constexpr uint16_t kFlagPlayData = 1, kFlagVector = 2, kFlagSeq = 4, kFlagExtra = 8;
 constexpr size_t kInlineBindings = 6;  // in the 2661 event itself
 constexpr size_t kMoreBindings = 9;    // per continuation event
@@ -368,8 +368,8 @@ void on_entry_event(const p::Event& ev) {
         const size_t dropped = g_ledger.drop_user_before(user, ev.qpc_us);
         g_live.store(g_ledger.live());
         write_line(kKEntry, std::format("{} user 0x{:08X} actor 0x{:08X} completed its entry into field 0x{:X} (key "
-                                        "0x{:08X}) it OWNS: the native stage sync (0x2BE3A60) and preparation "
-                                        "(0x2B3F9B0, its 2322) run for it | ledger: {} sequencer(s) of its previous "
+                                        "0x{:08X}) it OWNS: the native stage sync (0x2BE6480) and preparation "
+                                        "(0x2B42100, its 2322) run for it | ledger: {} sequencer(s) of its previous "
                                         "field dropped | live sequencers {}",
                                         h, user, actor, ev.v[2], field_key, dropped, g_ledger.live()));
         return;
@@ -390,15 +390,15 @@ void on_entry_event(const p::Event& ev) {
     }
     write_line(kKEntry,
                std::format("{} user 0x{:08X} actor 0x{:08X} completed its entry into field 0x{:X} (key 0x{:08X}) "
-                           "owned by user 0x{:08X} -> NOT the owner (observer): natively 0x2ED359D skipped the stage "
-                           "sync 0x2BE3A60 and 0x2ED428E skipped 0x2B3F9B0 and its 2322 | the owner's live sequencers "
+                           "owned by user 0x{:08X} -> NOT the owner (observer): natively 0x2ED7AED skipped the stage "
+                           "sync 0x2BE6480 and 0x2ED87DE skipped 0x2B42100 and its 2322 | the owner's live sequencers "
                            "(prepared ToTarget the owner since {}): {}, also prepared for this user: {} | MISSING for "
                            "the observer: {} sequencer(s):{} | NPCs they bind ({}{}):{} | PLAN, NOT SENT "
                            "(observer_stage_sync=1 measures only): {} x 2661 (+ its 2981 state), then 2322 for actor "
                            "0x{:08X}; native order:{} | NOT SENT BECAUSE (p8-observador-escenas.md Fase 2): user 2's "
                            "client routes every 2661/2981 to the manager of ITS field owner (its own character, "
-                           "0xAE0710 via the one current ClientField), while these NPCs search the manager of the "
-                           "sequencer owner 0x{:08X} (0xB29470); see the guest's 'GuestStage' lines",
+                           "0xAE0FC0 via the one current ClientField), while these NPCs search the manager of the "
+                           "sequencer owner 0x{:08X} (0xB29DB0); see the guest's 'GuestStage' lines",
                            h, user, actor, ev.v[2], field_key, owner, p8_when(g_install_us.load()), n.owner_live,
                            n.delivered, n.missing.size(), seqs.empty() ? std::string(" none") : seqs,
                            n.bound_actors.size(),
@@ -435,7 +435,7 @@ void follow_ups() {
                                    w.owner_branches_untargeted, n.owner_live, n.missing.size(),
                                    w.milestones ? std::string()
                                                 : std::string(" | NO 2322 reached it: its loading state 0x11 waits on "
-                                                              "M+0x231 (guest: P8Probe [loading 0x882D87])")));
+                                                              "M+0x231 (guest: P8Probe [loading 0x8834A7])")));
         }
     }
 }
@@ -682,8 +682,8 @@ DWORD WINAPI stage_thread(LPVOID) {
         if (ok && d.kind == kKDelete) delete_on = true;
         (ok ? on : refused) += std::format(" {} (exe+0x{:X})", kKindName[d.kind], d.rva);
     }
-    if (!entry_on) observer_milestone_disable("the entry hook 0x2ED4302 is not installed");
-    if (!delete_on) observer_scene_copy_disable("the 2810 hook 0x2D42250 is not installed");
+    if (!entry_on) observer_milestone_disable("the entry hook 0x2ED8852 is not installed");
+    if (!delete_on) observer_scene_copy_disable("the 2810 hook 0x2D46CE0 is not installed");
     // P8 S1 (host_scene_diag.h): its own checked points, from this thread (nothing when s1_scene_diag=0).
     host_scene_diag_install(g_base, g_secs);
     g_install_us.store(p8_now_us());
@@ -739,8 +739,8 @@ bool observer_stage_install(uint32_t ini_value) {
         g_send_refused.store(true);
         log::error("ObserverStage: observer_stage_sync={} asks to SEND the stage/sequencer snapshot to user 2; that mode "
                    "is NOT implemented: replaying the owner's exact 2661/2981 is not coherent (user 2's client routes "
-                   "them to its own character's manager, 0xD6CBFE / 0xAE0710, while the NPCs they bind search the "
-                   "host character's manager, 0xB29470; every binding is type 5 and must already exist; the owner's "
+                   "them to its own character's manager, 0xD6D64E / 0xAE0FC0, while the NPCs they bind search the "
+                   "host character's manager, 0xB29DB0; every binding is type 5 and must already exist; the owner's "
                    "client drives these sequencers with C>S 2767/2591/2436 a second driver would duplicate: "
                    "pendientes/p8-observador-escenas.md Fase 2). Running as 1 (measure only). This key NEVER sends "
                    "anything, not even the 2322: the S2 experiment (the native 2322 for an observer) is "

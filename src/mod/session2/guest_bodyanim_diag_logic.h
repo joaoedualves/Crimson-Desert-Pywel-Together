@@ -26,10 +26,10 @@ inline constexpr uint32_t kHashSeqBodyAnim = 0x837487D4;      // seq_bodyanim_ac
 inline constexpr uint32_t kHashSeqBodyAnimLoop = 0x35DD392F;  // seq_bodyanim_action_loop (layer 1)
 inline constexpr uint32_t kHashWait = 0x26107D3C;             // the idle wait guest_seq_restore substitutes
 
-inline constexpr uintptr_t kBodyAnim = 0xBBBA60;
-inline constexpr uintptr_t kConfigure = 0x26977F0;
-inline constexpr uintptr_t kRetLayer0 = 0xBBBF0A;  // after 0xA79C1F call 0x2432F60 (CC+0x70's graph)
-inline constexpr uintptr_t kRetLayer1 = 0xBBC2BA;  // after 0xA79FC5 call 0x2432F60 (CC+0x78's graph)
+inline constexpr uintptr_t kBodyAnim = 0xBBC4B0;
+inline constexpr uintptr_t kConfigure = 0x2699F50;
+inline constexpr uintptr_t kRetLayer0 = 0xBBC95A;  // after 0xA79C1F call 0x2432F60 (CC+0x70's graph)
+inline constexpr uintptr_t kRetLayer1 = 0xBBCD0A;  // after 0xA79FC5 call 0x2432F60 (CC+0x78's graph)
 
 // Which BodyAnim call configured a graph (the return address at 0x2432F60's entry, as an RVA): 0 / 1 = layer, -1 =
 // another caller (counted, not read: its rsi is not a body).

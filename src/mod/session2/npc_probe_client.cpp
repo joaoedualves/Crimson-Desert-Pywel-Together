@@ -169,7 +169,7 @@ Snapshot snapshot(const Entry& e) noexcept {
         if (x1 && ptr(x1 + 8)) s.flags |= 8; // Handle de horario, distinto del cerebro.
     }
     const uintptr_t play = comps ? ptr(comps + 0xB0) : 0;
-    if (play && ptr(play) == g_base + 0x59CB770) {
+    if (play && ptr(play) == g_base + 0x59D0850) {
         s.flags |= 16;
         if (rd(play + 0x2E0,s.scene)) s.valid |= 64;
         if (rd(play + 0x3D9,s.wait_3d9)) s.valid |= 128;
@@ -389,7 +389,7 @@ void npc_probe_client_start(std::string_view activation, std::string_view family
     g_guest = guest; g_stop = static_cast<HANDLE>(stop_event);
     g_base = reinterpret_cast<uintptr_t>(GetModuleHandleW(nullptr));
     uint16_t mz{}; uint32_t pe_at{}, pe{}, stamp{};
-    if (!rd(g_base,mz) || mz != 0x5A4D || !rd(g_base + 0x3C,pe_at) || pe_at > 0x114F20 ||
+    if (!rd(g_base,mz) || mz != 0x5A4D || !rd(g_base + 0x3C,pe_at) || pe_at > 0x115110 ||
         !rd(g_base + pe_at,pe) || pe != 0x4550 || !rd(g_base + pe_at + 8,stamp) || stamp != game::build_2976::kPeTimestamp) {
         log::warn("NpcProbe: build distinta de 2976 o cabecera ilegible; no se leen actores"); return;
     }

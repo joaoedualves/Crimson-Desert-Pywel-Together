@@ -282,12 +282,12 @@ private:
 enum class Step : uint8_t { Alloc, Fill, Push, BuildSession, AllocGlobal, BuildCtor };
 inline const char* step_name(Step s) {
     switch (s) {
-        case Step::Alloc: return "allocating from the thread's own heap (0x4B7E0C0)";
+        case Step::Alloc: return "allocating from the thread's own heap (0x4B82660)";
         case Step::Fill: return "filling the packet buffer";
-        case Step::Push: return "pushing to the server's queue Q0 (0x3AB4C0)";
+        case Step::Push: return "pushing to the server's queue Q0 (0x3AB8D0)";
         case Step::BuildSession: return "building session 2 (our writes)";
-        case Step::AllocGlobal: return "allocating from the game's global heap (0x4B7E188, under its lock)";
-        case Step::BuildCtor: return "building session 2 (the game's constructor 0x165B9D0)";
+        case Step::AllocGlobal: return "allocating from the game's global heap (0x4B82728, under its lock)";
+        case Step::BuildCtor: return "building session 2 (the game's constructor 0x165D550)";
     }
     return "?";
 }

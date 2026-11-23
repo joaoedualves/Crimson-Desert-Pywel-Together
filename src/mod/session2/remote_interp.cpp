@@ -48,26 +48,26 @@ struct HookSite {
     const char* what;
 };
 constexpr HookSite kHooks[rip::kSites] = {
-    {0x13C5A8E, {0x4C, 0x63, 0x15, 0xB3, 0x8F, 0xDC, 0x05}, Site::SetPos, rip::kPosBuffer,
-     "the delay read of setInterpolatePositionData 0x13C5A50"},
-    {0x13C61B0, {0x4C, 0x63, 0x1D, 0x91, 0x88, 0xDC, 0x05}, Site::SetRot, rip::kRotBuffer,
-     "the delay read of setInterpolateRotateData 0x13C6160"},
-    {0x13C5F1A, {0x48, 0x63, 0x05, 0x27, 0x8B, 0xDC, 0x05}, Site::UpdPos, rip::kPosBuffer,
-     "the delay read of updateInterpolatePositionData 0x13C5EA0"},
-    {0x13C65E2, {0x48, 0x63, 0x05, 0x5F, 0x84, 0xDC, 0x05}, Site::UpdRot, rip::kRotBuffer,
-     "the delay read of updateInterpolateRotateData 0x13C6570"},
+    {0x13C760E, {0x4C, 0x63, 0x15, 0x83, 0xD5, 0xDC, 0x05}, Site::SetPos, rip::kPosBuffer,
+     "the delay read of setInterpolatePositionData 0x13C75D0"},
+    {0x13C7D30, {0x4C, 0x63, 0x1D, 0x61, 0xCE, 0xDC, 0x05}, Site::SetRot, rip::kRotBuffer,
+     "the delay read of setInterpolateRotateData 0x13C7CE0"},
+    {0x13C7A9A, {0x48, 0x63, 0x05, 0xF7, 0xD0, 0xDC, 0x05}, Site::UpdPos, rip::kPosBuffer,
+     "the delay read of updateInterpolatePositionData 0x13C7A20"},
+    {0x13C8162, {0x48, 0x63, 0x05, 0x2F, 0xCA, 0xDC, 0x05}, Site::UpdRot, rip::kRotBuffer,
+     "the delay read of updateInterpolateRotateData 0x13C80F0"},
 };
 constexpr uint32_t kHookLen = 7;
-constexpr uintptr_t kDelayGlobal = 0x718EA48;  // GlobalVariableInt value (object 0x6CB9510), default 200
+constexpr uintptr_t kDelayGlobal = 0x7194B98;  // GlobalVariableInt value (object 0x6CB9510), default 200
 
 // The emptying threshold: cmp r8,0x3E8 right before `jbe` (0x11B207A / 0x11B277C).
-constexpr uintptr_t kThreshold[2] = {0x13C5AF3, 0x13C61F5};
+constexpr uintptr_t kThreshold[2] = {0x13C7673, 0x13C7D75};
 constexpr uint8_t kThresholdOrig[7] = {0x49, 0x81, 0xF8, 0xE8, 0x03, 0x00, 0x00};
 constexpr uint8_t kThresholdNew[7] = {0x49, 0x81, 0xF8, 0xC4, 0x09, 0x00, 0x00};  // 2500
 static_assert(rip::kPatchedThreshold == 0x9C4);
 
 // The rule of the task: hooks and patches only inside [0x1000, 0x5613000) (never .xtls).
-constexpr uintptr_t kCodeBegin = 0x1000, kCodeEnd = 0x5613000;
+constexpr uintptr_t kCodeBegin = 0x1000, kCodeEnd = 0x5618000;
 
 constexpr uint64_t kSummaryMs = 60000;
 
@@ -435,7 +435,7 @@ bool write_code(uintptr_t rva, const uint8_t* bytes, size_t len) {
 bool install_hooks() {
     for (const HookSite& h : kHooks) {
         if (!in_allowed_range(h.rva, kHookLen)) {
-            log::error("RemoteInterp: {} (exe+0x{:X}) is outside [0x1000, 0x5613000); REFUSED, nothing hooked", h.what,
+            log::error("RemoteInterp: {} (exe+0x{:X}) is outside [0x1000, 0x5618000); REFUSED, nothing hooked", h.what,
                        h.rva);
             return false;
         }
@@ -464,7 +464,7 @@ bool patch_threshold() {
     for (uintptr_t rva : kThreshold) {
         if (!in_allowed_range(rva, sizeof kThresholdOrig) ||
             !gad::in_real_code(g_secs, static_cast<uint32_t>(rva), sizeof kThresholdOrig)) {
-            log::error("RemoteInterp: the emptying threshold exe+0x{:X} is not inside .rsrc/[0x1000, 0x5613000); "
+            log::error("RemoteInterp: the emptying threshold exe+0x{:X} is not inside .rsrc/[0x1000, 0x5618000); "
                        "REFUSED (threshold stays 1000 ms)",
                        rva);
             return false;
@@ -845,7 +845,7 @@ DWORD WINAPI interp_thread(LPVOID) {
                                  "approached at <= +0.5 / -0.25 ms per ms; 0xA and the rest: the game's"
                                : "probe: counts and the delay it WOULD use, nothing changed",
               g_threshold.load(),
-              mode == Mode::On ? (g_patch_state.load() == 1 ? " (exe+0x13C5AF3 / 0x13C61F5 patched)" : " (patch REFUSED)")
+              mode == Mode::On ? (g_patch_state.load() == 1 ? " (exe+0x13C7673 / 0x13C7D75 patched)" : " (patch REFUSED)")
                                : "");
     if (const auto cmode = static_cast<Mode>(g_combat.load()); cmode != Mode::Off) {
         log::info("RemoteInterp combat class ON ({}): an 0xB controller whose last {} arrival gaps are <= {} ms, or "

@@ -281,7 +281,7 @@ std::string line_of(const p::Event& e) {
             const auto a = static_cast<Act>((v[0] >> 8) & 0xFF);
             char name[32];
             gxv::stage_name(v + 9, 3, name, sizeof name);
-            const char* what = a == Act::Redirect ? "REDIRECTED (RAX := X: the lookup at 0x235ECB4 uses X)"
+            const char* what = a == Act::Redirect ? "REDIRECTED (RAX := X: the lookup at 0x2360924 uses X)"
                                : a == Act::Would  ? "WOULD REDIRECT (probe: the native lookup in M refuses it)"
                                                   : "left native";
             return std::format(
@@ -300,7 +300,7 @@ std::string line_of(const p::Event& e) {
             const bool r_seen = v[4] != ~0ull;
             return std::format(
                 "GuestXInter [result] {} T{} | stage id 0x{:X} of entry 0x{:X} ({}; {}): the lookup used manager 0x{:X} "
-                "({}) and {} | 0x235EB60 returned {}",
+                "({}) and {} | 0x23607D0 returned {}",
                 when, e.tid, v[2], v[1], gxi::verdict_name(verdict),
                 a == Act::Redirect ? "REDIRECTED" : a == Act::Would ? "would redirect" : "native",
                 v[3], v[3] == v[6] && v[6] ? "X" : v[3] == v[5] ? "M" : "?",
@@ -383,22 +383,22 @@ DWORD WINAPI install_thread(LPVOID) {
         Sleep(500);
     }
     // R and F first (read only), then A (the decision): A's record is read by R and F.
-    if (context_ok(secs, isl::kCtxLookup, isl::kCtxLookupBytes, "the lookup call 0x235ECA6") &&
-        context_ok(secs, isl::kCtxA, isl::kCtxABytes, "the vf48 call 0x235EC5E")) {
+    if (context_ok(secs, isl::kCtxLookup, isl::kCtxLookupBytes, "the lookup call 0x2360916") &&
+        context_ok(secs, isl::kCtxA, isl::kCtxABytes, "the vf48 call 0x23608CE")) {
         if (p8_install_mid(g_base, secs, isl::kPointR, isl::kPatchR, isl::kBytesR, on_r, g_r_hook, "GuestXInter",
-                           "R, after the lookup 0x235ECF5")) {
+                           "R, after the lookup 0x2360965")) {
             g_r_on.store(true, std::memory_order_release);
         }
         if (p8_install_mid(g_base, secs, isl::kPointF, isl::kPatchF, isl::kBytesF, on_f, g_f_hook, "GuestXInter",
-                           "F, the result 0x235EF99")) {
+                           "F, the result 0x2360C09")) {
             g_f_on.store(true, std::memory_order_release);
         }
         if (p8_install_mid(g_base, secs, isl::kPointA, isl::kPatchA, isl::kBytesA, on_a, g_a_hook, "GuestXInter",
-                           "A, the manager of the lookup 0x235EC69")) {
+                           "A, the manager of the lookup 0x23608D9")) {
             g_a_on.store(true, std::memory_order_release);
         }
     }
-    log::info("GuestXInter (guest_x_interaction_stage={}): A 0x235EC69 {}, R 0x235ECF5 {}, F 0x235EF99 {} | an entry "
+    log::info("GuestXInter (guest_x_interaction_stage={}): A 0x23608D9 {}, R 0x2360965 {}, F 0x2360C09 {} | an entry "
               "whose stage id is not a live stage of M but is one of a known X (another character's "
               "ClientSequencerStageManager, vtable exe+0x{:X}): {}",
               gxi::mode_name(static_cast<Mode>(g_mode.load())), g_a_on.load() ? "hooked" : "REFUSED",

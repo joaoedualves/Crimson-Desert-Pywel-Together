@@ -43,15 +43,15 @@ namespace cdmp::session2::wsy {
 
 // ---------------------------------------------------------------- the game (exe+, build 2976)
 
-inline constexpr uintptr_t kModuleSlot = 0x7160240;  // [exe+] -> M; M.vf60 = 0x6DA0A0 returns [M+0x60]
+inline constexpr uintptr_t kModuleSlot = 0x71662E0;  // [exe+] -> M; M.vf60 = 0x6DA0A0 returns [M+0x60]
 inline constexpr uint32_t kModuleScene = 0x60;       // S = [M+0x60]
 inline constexpr uint32_t kSceneWeather = 0xF70;  // 3663: 0x3E74450     // X = [S+0xF68]
 inline constexpr uint32_t kVtGetterSlot = 0x60;      // [[M]+0x60] = the getter the simulators call
-inline constexpr uintptr_t kGetterVf60 = 0x7D7940;
+inline constexpr uintptr_t kGetterVf60 = 0x7D8060;
 inline constexpr uint8_t kGetterVf60Bytes[5] = {0x48, 0x8B, 0x41, 0x60, 0xC3};  // mov rax,[rcx+0x60]; ret
-inline constexpr uintptr_t kClientSlot = 0x72451C8;  // 0x9ADF61: X_b = [[[exe+0x6D69198]+0x38]+0x38]
+inline constexpr uintptr_t kClientSlot = 0x724B358;  // 0x9ADF61: X_b = [[[exe+0x6D69198]+0x38]+0x38]
 inline constexpr uint32_t kClientHop1 = 0x48, kClientHop2 = 0x38;  // 3663: 0xAE8E2B
-inline constexpr uintptr_t kVtWeatherSystem = 0x619D3D0;  // [X] (VA 0x145D51268)
+inline constexpr uintptr_t kVtWeatherSystem = 0x61A2430;  // [X] (VA 0x145D51268)
 
 inline constexpr uint32_t kXViewer = 0x31;   // u8: 1 = the Weather Viewer's external values
 inline constexpr uint32_t kXHolder = 0x60;
@@ -60,15 +60,15 @@ inline constexpr uint32_t kXScroll = 0x124;  // 2 floats: the cloud scroll accum
 inline constexpr uint32_t kHolderA = 0x20, kHolderB = 0x28, kHolderC = 0x30;  // 3663: 0x4143B7D..0x4143C1D
 inline constexpr uint32_t kATempSample = 0x198;  // the ClimateTexture sample at the local camera (local, never sent)
 
-inline constexpr uintptr_t kUpdate = 0x4143B20;
+inline constexpr uintptr_t kUpdate = 0x4148010;
 inline constexpr uint8_t kUpdateHead[18] = {0x48, 0x8B, 0xC4, 0x53, 0x55, 0x56, 0x57, 0x41, 0x54, 0x41, 0x56, 0x41, 0x57, 0x48, 0x81, 0xEC, 0x90, 0x00};
 inline constexpr uint32_t kUpdateBoundaries[] = {5, 6, 7, 8, 12, 18};  // whole instructions of kUpdateHead
-inline constexpr uintptr_t kUpdateCall = 0x3E74457;
+inline constexpr uintptr_t kUpdateCall = 0x3E78947;
 inline constexpr uint8_t kUpdateCallBytes[5] = {0xE8, 0xC4, 0xF6, 0x2C, 0x00};  // call 0x3DC4730
 
 // The server tick as the game's client threads compute it (combat_follow.cpp, remote_motion.cpp): frame ms +
 // frame us / 1000 + the 2188 bias (ServerTimeInfoAck). On the guest it is the host's server tick.
-inline constexpr uintptr_t kClockBase = 0x71600E8, kClockFrac = 0x71600F0, kClockBias = 0x7245468;
+inline constexpr uintptr_t kClockBase = 0x71661A0, kClockFrac = 0x71661B0, kClockBias = 0x724B5F8;
 
 // ---------------------------------------------------------------- the vector (v1)
 

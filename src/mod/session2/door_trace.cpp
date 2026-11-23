@@ -16,7 +16,7 @@
 namespace cdmp::session2 {
 namespace {
 namespace dt = doortrace;
-constexpr uint32_t kRva = 0x2AD91E0, kEnd = 0x282E694;
+constexpr uint32_t kRva = 0x2ADB930, kEnd = 0x2830DF4;
 constexpr uint8_t kHead[] = {0x48, 0x89, 0x5C, 0x24, 0x08, 0x4C, 0x89, 0x44, 0x24, 0x18, 0x48, 0x89, 0x54, 0x24, 0x10, 0x55, 0x56, 0x57, 0x41, 0x54, 0x41, 0x55, 0x41, 0x56, 0x41, 0x57, 0x48, 0x8D, 0xAC, 0x24, 0xF0, 0xF7, 0xFF, 0xFF, 0x48, 0x81, 0xEC, 0x10, 0x09, 0x00, 0x00, 0x45, 0x8B, 0xF1, 0x4D, 0x8B, 0xE8};
 std::atomic<uint8_t> g_mode{0};
 bool g_guest = false;
@@ -136,12 +136,12 @@ bool verified_entry(uintptr_t base) {
   IMAGE_NT_HEADERS64 nt{};
   if (!game::safe_read(base, &dos, sizeof dos) ||
       dos.e_magic != IMAGE_DOS_SIGNATURE || dos.e_lfanew <= 0 ||
-      dos.e_lfanew > 0x114F20)
+      dos.e_lfanew > 0x115110)
     return false;
   if (!game::safe_read(base + static_cast<uint32_t>(dos.e_lfanew), &nt,
                        sizeof nt) ||
       nt.Signature != IMAGE_NT_SIGNATURE ||
-      nt.FileHeader.TimeDateStamp != 0x6AF5D198)
+      nt.FileHeader.TimeDateStamp != 0x6AFDC0CF)
     return false;
   std::vector<gad::Section> secs;
   if (!p8_exe_sections(base, secs) ||
@@ -154,7 +154,7 @@ bool verified_entry(uintptr_t base) {
   const auto pd =
       nt.OptionalHeader.DataDirectory[IMAGE_DIRECTORY_ENTRY_EXCEPTION];
   if (!pd.VirtualAddress || !pd.Size || pd.Size % sizeof(RUNTIME_FUNCTION) ||
-      pd.Size > 0x1000000)
+      pd.Size > 0x1000780)
     return false;
   std::vector<RUNTIME_FUNCTION> entries(pd.Size / sizeof(RUNTIME_FUNCTION));
   if (!game::safe_read(base + pd.VirtualAddress, entries.data(), pd.Size))
@@ -190,7 +190,7 @@ bool door_trace_install(uintptr_t base) {
   if (g_hook)
     return g_installed;
   if (!verified_entry(base)) {
-    log::error("DoorTrace REFUSED: 0x2AD91E0 no coincide con build2976/entrada "
+    log::error("DoorTrace REFUSED: 0x2ADB930 no coincide con build2976/entrada "
                "pdata/firma .rsrc; queda solo traza de paquetes");
     return false;
   }
@@ -200,7 +200,7 @@ bool door_trace_install(uintptr_t base) {
   };
   auto h = game::prepare_inline(
       base + kRva, reinterpret_cast<void *>(&native_detour), accept,
-      "DoorTrace", "resultado SpawnOnDemand entrada 0x2AD91E0");
+      "DoorTrace", "resultado SpawnOnDemand entrada 0x2ADB930");
   if (!h || !accept(h->original_bytes())) {
     log::error("DoorTrace REFUSED: no se pudo preparar gancho nativo con "
                "exactamente 5 bytes verificados; solo paquetes");
@@ -214,7 +214,7 @@ bool door_trace_install(uintptr_t base) {
   }
   g_installed = true;
   log::info(
-      "DoorTrace: entrada 0x2AD91E0, parche5B 48 89 5C 24 08; observa "
+      "DoorTrace: entrada 0x2ADB930, parche5B 48 89 5C 24 08; observa "
       "resultado original, no escribe estado ni llama creacion adicional");
   return true;
 }
@@ -294,7 +294,7 @@ void door_trace_flush() {
           "DoorTrace [nativo] {} epoca {} sujeto 0x{:08X} controlador 0x{:08X} "
           "dueno-campo 0x{:08X} recurso 0x{:08X} escenas {} resultado 0x{:08X} "
           "{} valido 0x{:02X} [1=sujeto 2=controlador 4=campo 8=dueno 10=error "
-          "20=constantes; ausente=NO MEDIDO] (0x2AD91E0; no modificado)",
+          "20=constantes; ausente=NO MEDIDO] (0x2ADB930; no modificado)",
           p8_when(e.qpc), e.epoch, e.subject, e.controller, e.field_owner,
           e.resource, e.items, e.error,
           dt::result_name(static_cast<dt::Result>(e.result)), e.valid);

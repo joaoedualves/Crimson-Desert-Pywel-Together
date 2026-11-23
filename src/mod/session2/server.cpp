@@ -440,7 +440,7 @@ bool guarded_push(uintptr_t queue, void* item) {
         g_push(reinterpret_cast<void*>(queue), &p);
         return true;
     } __except (game::game_fault_continue(GetExceptionInformation(), "Session2 Send",
-                                          "returning an S->C buffer to Q2 (0x3AB4C0, under the queue's lock)")) {
+                                          "returning an S->C buffer to Q2 (0x3AB8D0, under the queue's lock)")) {
         return false;  // never reached: the filter passes it on
     }
 }
@@ -1035,7 +1035,7 @@ bool array_remove(uintptr_t arr, uintptr_t session) {
 std::atomic<bool> g_finder_faulted{false};
 int finder_fault(EXCEPTION_POINTERS* ep) {
     g_finder_faulted.store(true);
-    return game::game_fault_continue(ep, "Session2 relay fix", "ToNear::vf1 (exe+0x2D6C210) built the recipients");
+    return game::game_fault_continue(ep, "Session2 relay fix", "ToNear::vf1 (exe+0x2D70CA0) built the recipients");
 }
 
 bool call_to_near(void* finder, void* out, uintptr_t& ret) {
@@ -1379,7 +1379,7 @@ void server_probe_log(const char* when) {
     // The server's world time (FieldTime, exe+0x6A6D238): user 2's MoveField and
     // LoadingCompleteReq 01 copy its save's time here (R1).
     uint8_t ft[32] = {};
-    if (game::safe_read(g_base + 0x6F31C98, ft, sizeof ft)) {
+    if (game::safe_read(g_base + 0x6F37C98, ft, sizeof ft)) {
         std::string h;
         for (uint8_t b : ft) h += std::format("{:02X}", b);
         log::info("Session2 probe ({}): server FieldTime {}", when, h);

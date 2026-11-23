@@ -459,8 +459,8 @@ inline Owner classify_owner(const UserFacts& f) {
 }
 
 // The three callers of LoadSlot 0x186F570 (all of them: xref scan of the exe), by return address.
-inline constexpr uint64_t kRetUserLogin = 0x2F242B0;      // UserLogin 2490 0x2C17520, call at 0x2C17881
-inline constexpr uint64_t kRetLobby3093 = 0x2F4B026;      // 3093 0x2C3E030, the lobby reload, call at 0x2C3E1CE
+inline constexpr uint64_t kRetUserLogin = 0x2F28800;      // UserLogin 2490 0x2C17520, call at 0x2C17881
+inline constexpr uint64_t kRetLobby3093 = 0x2F4F576;      // 3093 0x2C3E030, the lobby reload, call at 0x2C3E1CE
 inline constexpr uint64_t kRetCharacter3093 = 0x1042ABF8; // 3093, .xtls 0x1042AAF0 (SetupCharacter), call at 0x1042ABF3
 enum class LoadCaller : uint8_t { UserLogin, Lobby3093, Character3093, Other };
 inline LoadCaller load_caller(uint64_t return_rva) {
@@ -498,7 +498,7 @@ inline const char* save_caller_name(SaveCaller c) {
 }
 
 // The two callers of FlushPendingSaveData 0x1871930 (probe only).
-inline constexpr uint64_t kRetFlushLogout = 0x2BC2A6F;  // the character's logout phase 0x28F26C0, call at 0x28F273A
+inline constexpr uint64_t kRetFlushLogout = 0x2BC548F;  // the character's logout phase 0x28F26C0, call at 0x28F273A
 inline constexpr uint64_t kRetFlushTimer = 0x108393CD;  // .xtls 0x10839370, call at 0x108393C8
 inline const char* flush_caller_name(uint64_t return_rva) {
     if (return_rva == kRetFlushLogout) return "logout phase";

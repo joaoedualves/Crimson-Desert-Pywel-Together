@@ -97,7 +97,7 @@ inline const Section* section_of(std::span<const Section> secs, uint32_t rva) {
 // game's real code in this build), never .xtls (Denuvo) or anything else.
 inline bool in_real_code(std::span<const Section> secs, uint32_t rva, uint32_t len) {
     const Section* s = section_of(secs, rva);
-    if (!s || std::string_view(s->name) != ".reloc" || len == 0) return false;
+    if (!s || std::string_view(s->name) != ".xpdata" || len == 0) return false;
     return static_cast<uint64_t>(rva) + len <= static_cast<uint64_t>(s->va) + s->size;
 }
 

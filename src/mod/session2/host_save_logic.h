@@ -489,7 +489,7 @@ struct ProbeRecord {
 struct Manifest {
     uint32_t format = 1;
     std::string game_build = "1.0.0.2976";
-    std::string pe_timestamp = "0x6AF5D198";
+    std::string pe_timestamp = "0x6AFDC0CF";
     std::string mod_build;   // "0x1234abcd" (+ " dirty"), or "unknown"
     std::string generation;  // its folder name
     std::string created;     // local time "2026-10-14 19:02:32" (for people)
@@ -978,7 +978,7 @@ inline Classification classify_slot(const SlotFacts& f) {
     const uint32_t n = f.folder->number;
     switch (slot_class(n)) {
         case SlotClass::Host: break;
-        case SlotClass::CrossSave: return no("slot 3 is CrossSave (0x1A15930 branch 3 uploads it): excluded");
+        case SlotClass::CrossSave: return no("slot 3 is CrossSave (0x1A175A0 branch 3 uploads it): excluded");
         case SlotClass::GuestPool:
             return no(n == gsv::kGuestSlot ? "slot 204 is the guest's own slot (guest_own_save): never the host's"
                                            : "slots 200-207 are the guest pool: never the host's");

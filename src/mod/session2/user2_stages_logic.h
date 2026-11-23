@@ -60,8 +60,8 @@ inline constexpr uint16_t kOp2043 = 2047;  // UpdateStageOnceTimer -> .xtls 0x10
 inline constexpr uint16_t kOp2045 = 2049;  // UpdateScheduleStageOnceTimer -> .xtls 0x108309B0 -> 0x2ACDF90([mgr+0x148])
 inline constexpr uint16_t kOp2046 = 2050;  // UpdateFactionSpawnStageOnceTimer -> .xtls 0x10835A30 -> 0x2AA1B70([mgr+0x10])
 // ServerSequencerStageManager (vtable 0x5B17A58).
-inline constexpr uint32_t kVtStageMgr = 0x5F5A758;
-inline constexpr uint32_t kVtSchedMgr = 0x5F596D8;  // ServerNPCScheduleSpawnManger
+inline constexpr uint32_t kVtStageMgr = 0x5F5FAF0;
+inline constexpr uint32_t kVtSchedMgr = 0x5F5E9B8;  // ServerNPCScheduleSpawnManger
 // (+0x74 is not a count of active stages: S28 read 52065 there. Not read any more.)
 inline constexpr uint32_t kMgr_Actor = 0x18, kMgr_Faction = 0x10, kMgr_SeqList = 0x28, kMgr_SeqCount = 0x30,
                           kMgr_KeepCount = 0xD0, kMgr_Sched = 0x148, kMgr_CellX = 0x6B8,
@@ -88,7 +88,7 @@ inline constexpr uint32_t kTs_Local = 0xB4, kTs_Parent = 0xD0;
 // The field a TransformSync's field mover holds (TS+0x4F0, +0x10: fast_travel.cpp's kTsFieldMoverField) and the
 // ServerField vtable it must have.
 inline constexpr uint32_t kTs_Field = 0x518;
-inline constexpr uint32_t kVtServerField = 0x5F6C7E8;
+inline constexpr uint32_t kVtServerField = 0x5F721D8;
 
 // ---------------------------------------------------------------- positions and cells (0x288B7A0's arithmetic)
 
@@ -192,11 +192,11 @@ inline Arm arm_verdict(const MgrFacts& f) {
 }
 inline const char* arm_name(Arm a) {
     switch (a) {
-        case Arm::Ready: return "READY (state 0/1, lists empty: 0x2B3FF00 + the 2043 would arm it)";
+        case Arm::Ready: return "READY (state 0/1, lists empty: 0x2B42650 + the 2043 would arm it)";
         case Arm::Unreadable: return "manager unreadable";
         case Arm::Preparing: return "a preparation is running or pending (+0x689/+0x68A)";
         case Arm::Running: return "already running (state 2 or another value: see it)";
-        case Arm::ListsNotEmpty: return "its lists are NOT empty (0x2B3FF00 would orphan stages)";
+        case Arm::ListsNotEmpty: return "its lists are NOT empty (0x2B42650 would orphan stages)";
         case Arm::NoSched: return "no schedule spawn manager";
         default: return "?";
     }
@@ -384,7 +384,7 @@ inline CloseKey split_close_key(uint64_t k) {
 }
 inline const char* reason_name(uint8_t r) {
     switch (r) {
-        case 19: return "19 (unload at the owner's load, 0x2B3E3A0)";
+        case 19: return "19 (unload at the owner's load, 0x2B40AF0)";
         case 25: return "25 (the collector's pass)";
         case 30: return "30 (window?)";
         case 9: return "9";
@@ -669,7 +669,7 @@ inline ChainCount count_chains(const uint64_t* ticks_us, size_t n, uint64_t peri
 // a loop the guest saw as guards walking off and reappearing). U-e: at the controller write 0x2792A7B (mov
 // [r14+0x90],eax; r14 the new actor, rsi the descriptor, r13 the field) eax := user 2's user key for exactly those
 // NPCs, so the guest's client - next to them, with their stage bound in its own M - runs their AI.
-inline constexpr uint32_t kVtDescNpcSchedule = 0x5F477E0;  // pa::CreateServerActorDesc_NPCSchedule (vf3 0x27A6160)
+inline constexpr uint32_t kVtDescNpcSchedule = 0x5F4CB68;  // pa::CreateServerActorDesc_NPCSchedule (vf3 0x27A6160)
 inline constexpr uint32_t kActor_Ctl = 0x90, kActor_TypeInfo = 0x88, kDesc_User = 0x40, kField_Owner = 0x180;
 inline constexpr uint8_t kLogoutAiReason = 42;  // ServerAiActorComponent vf69's Logout (the client's AI 'logout')
 
@@ -1186,7 +1186,7 @@ inline const char* prep_drain_name(PrepDrain d) {
         case PrepDrain::TooFar: return "the host is beyond the off threshold";
         case PrepDrain::NotServerThread: return "not a server thread";
         case PrepDrain::Nested: return "inside another drain of this module";
-        case PrepDrain::UnknownCaller: return "an unknown caller of 0x2B3F9B0";
+        case PrepDrain::UnknownCaller: return "an unknown caller of 0x2B42100";
         case PrepDrain::Busy: return "a Troc of user 2 is running";
         default: return "?";
     }
@@ -1202,14 +1202,14 @@ inline bool hold_distance_drain(bool dprep_on, uint64_t now_us, uint64_t last_ho
 }
 
 // 0x287EF60's three callers (Ghidra xrefs, build 2976): their return addresses.
-inline constexpr uint32_t kPrepRetTick = 0x2B3E7B5;      // 0x287DBB0, the 2043 tick (+0x68A set)
-inline constexpr uint32_t kPrepRet2895 = 0x2B585DE;      // 0x2895EF0
-inline constexpr uint32_t kPrepRetMoveField = 0x2ED42F9; // TransformSync::MoveFieldCompleteCore 0x2BC7670
+inline constexpr uint32_t kPrepRetTick = 0x2B40F05;      // 0x287DBB0, the 2043 tick (+0x68A set)
+inline constexpr uint32_t kPrepRet2895 = 0x2B5AD2E;      // 0x2895EF0
+inline constexpr uint32_t kPrepRetMoveField = 0x2ED8849; // TransformSync::MoveFieldCompleteCore 0x2BC7670
 inline const char* prep_caller_name(uint32_t ret_rva) {
     switch (ret_rva) {
-        case kPrepRetTick: return "the 2043 tick 0x2B3E690";
-        case kPrepRet2895: return "0x2B58480";
-        case kPrepRetMoveField: return "MoveFieldCompleteCore 0x2ED3360";
+        case kPrepRetTick: return "the 2043 tick 0x2B40DE0";
+        case kPrepRet2895: return "0x2B5ABD0";
+        case kPrepRetMoveField: return "MoveFieldCompleteCore 0x2ED78B0";
         default: return "an UNKNOWN caller";
     }
 }

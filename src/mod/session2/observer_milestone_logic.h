@@ -169,8 +169,8 @@ inline const char* call_name(CallResult r) {
         case CallResult::Returned: return "returned";
         case CallResult::WrongRecipient: return "NOT CALLED: the ToTarget session is not the live session 2";
         case CallResult::BadFinder: return "NOT CALLED: the ToTarget object is not as built natively";
-        case CallResult::FaultCtor: return "FAULT in the ToTarget constructor 0x2D6C150";
-        case CallResult::FaultEmit: return "FAULT in the emitter 0x2C7A9A0";
+        case CallResult::FaultCtor: return "FAULT in the ToTarget constructor 0x2D70BE0";
+        case CallResult::FaultEmit: return "FAULT in the emitter 0x2C7F430";
         default: return "?";
     }
 }

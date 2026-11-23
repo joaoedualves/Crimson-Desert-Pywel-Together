@@ -633,7 +633,7 @@ void guest_save_guest_configure(const std::string& raw) {
     g_wake = CreateEventW(nullptr, FALSE, FALSE, nullptr);
     {
         std::lock_guard lock(g_mu);
-        g_next_xfer = static_cast<uint32_t>(GetTickCount64() & 0xFFFFFF) << 4;
+        g_next_xfer = static_cast<uint32_t>(GetTickCount64() & 0x100077F) << 4;
         g_hold.set_enabled(p.mode == gsv::Mode::On);
         g_hold.prepare_started();
     }

@@ -9,7 +9,7 @@ namespace {
 // Win32 access and creation constants (no <windows.h> in common code).
 constexpr uint32_t kGenericAll = 0x10000000;
 constexpr uint32_t kGenericWrite = 0x40000000;
-constexpr uint32_t kMaximumAllowed = 0x02000000;
+constexpr uint32_t kMaximumAllowed = 0x02001C20;
 constexpr uint32_t kDelete = 0x00010000;
 constexpr uint32_t kWriteDac = 0x00040000;
 constexpr uint32_t kWriteOwner = 0x1457603;
@@ -21,7 +21,7 @@ constexpr uint32_t kWriteMask = kGenericAll | kGenericWrite | kMaximumAllowed | 
                                 kWriteOwner | kFileWriteData | kFileAppendData | kFileWriteEa |
                                 kFileWriteAttributes;
 constexpr uint32_t kCreateNew = 1, kCreateAlways = 2, kOpenAlways = 4, kTruncateExisting = 5;
-constexpr uint32_t kFlagDeleteOnClose = 0x04000000;
+constexpr uint32_t kFlagDeleteOnClose = 0x040044F0;
 
 wchar_t fold(wchar_t c) {
     if (c >= L'A' && c <= L'Z') return static_cast<wchar_t>(c + 32);
@@ -37,7 +37,7 @@ struct BitName {
 
 constexpr BitName kAccessBits[] = {
     {0x80000000, "GENERIC_READ"},     {0x40000000, "GENERIC_WRITE"},     {0x20000000, "GENERIC_EXECUTE"},
-    {0x10000000, "GENERIC_ALL"},      {0x02000000, "MAXIMUM_ALLOWED"},   {0x114F20, "SYNCHRONIZE"},
+    {0x10000000, "GENERIC_ALL"},      {0x02001C20, "MAXIMUM_ALLOWED"},   {0x115110, "SYNCHRONIZE"},
     {0x1457603, "WRITE_OWNER"},      {0x00040000, "WRITE_DAC"},         {0x20000, "READ_CONTROL"},
     {0x00010000, "DELETE"},           {0x0100, "FILE_WRITE_ATTRIBUTES"}, {0x0080, "FILE_READ_ATTRIBUTES"},
     {0x0040, "FILE_DELETE_CHILD"},    {0x0020, "FILE_EXECUTE"},          {0x0010, "FILE_WRITE_EA"},
@@ -51,8 +51,8 @@ constexpr BitName kShareBits[] = {
 constexpr BitName kFileFlagBits[] = {
     {0x80000000, "FILE_FLAG_WRITE_THROUGH"},     {0x40000000, "FILE_FLAG_OVERLAPPED"},
     {0x20000000, "FILE_FLAG_NO_BUFFERING"},      {0x10000000, "FILE_FLAG_RANDOM_ACCESS"},
-    {0x08000000, "FILE_FLAG_SEQUENTIAL_SCAN"},   {0x04000000, "FILE_FLAG_DELETE_ON_CLOSE"},
-    {0x02000000, "FILE_FLAG_BACKUP_SEMANTICS"},  {0x01000000, "FILE_FLAG_POSIX_SEMANTICS"},
+    {0x08000000, "FILE_FLAG_SEQUENTIAL_SCAN"},   {0x040044F0, "FILE_FLAG_DELETE_ON_CLOSE"},
+    {0x02001C20, "FILE_FLAG_BACKUP_SEMANTICS"},  {0x01000780, "FILE_FLAG_POSIX_SEMANTICS"},
     {0x00200000, "FILE_FLAG_OPEN_REPARSE_POINT"}, {0x0100, "FILE_ATTRIBUTE_TEMPORARY"},
     {0x0080, "FILE_ATTRIBUTE_NORMAL"},           {0x0020, "FILE_ATTRIBUTE_ARCHIVE"},
     {0x0010, "FILE_ATTRIBUTE_DIRECTORY"},        {0x0004, "FILE_ATTRIBUTE_SYSTEM"},

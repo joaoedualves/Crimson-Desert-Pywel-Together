@@ -22,7 +22,7 @@ namespace off = build_2976;
 // Entry of the logger: arguments 10-13 on the stack ([rsp] = return address).
 // Seen at a call site (0x35AED1..0x35AF10): arg10 dword = code, arg11 dword =
 // severity, arg12 = const char* message (printf format), arg13 = first value.
-constexpr uintptr_t kErrorLogger = 0x3AACB0;
+constexpr uintptr_t kErrorLogger = 0x3AB0C0;
 constexpr uint8_t kErrorLoggerHead[] = {0xE9};  // starts with a jmp into .xtls
 constexpr uint32_t kArgCode = 0x50, kArgSeverity = 0x58, kArgText = 0x60, kArgValue = 0x68;
 constexpr int kExtraValues = 3;  // arguments 14-16 (more format values, if any)
@@ -66,7 +66,7 @@ bool copy_entry(uint64_t rsp, Entry& e) {
 
 // P8 session 8 pets: CreateOwnedActor 0x8AF580 failed (0x8BD530's branch 0x8BDC4A, its report call
 // 0x8BDF77 returns to 0x8BDF7C). Counted here, lock-free: the drained line is deduplicated after 10.
-constexpr uintptr_t kActorCreateFailedFrom = 0x9D732C;
+constexpr uintptr_t kActorCreateFailedFrom = 0x9D7BAC;
 std::atomic<uint64_t> g_create_failed_value{0};
 // P8 session 9 (child_reannounce): every failure's value in order (0 when none had the owner/actor form); its
 // count is the failure count.

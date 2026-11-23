@@ -42,38 +42,38 @@ inline bool player_key(uint32_t k) { return (k >> 28) == 0xA; }
 
 // M1: pa::gameClientScript::RemoteCatchFunctions vf2 (p1, float dt xmm1, actor r8, slot r9b, state [rsp+0x28]).
 // Referenced only by its vtable slot 0x56FFB58 (and .pdata).
-inline constexpr uintptr_t kVf2 = 0x138B170;
+inline constexpr uintptr_t kVf2 = 0x138CCF0;
 inline constexpr uint8_t kVf2Head[15] = {0x48, 0x89, 0x5C, 0x24, 0x08, 0x48, 0x89, 0x6C,
                                          0x24, 0x10, 0x48, 0x89, 0x74, 0x24, 0x20};
 inline constexpr uint32_t kVf2Patch = 5;  // mov [rsp+8],rbx
-inline constexpr uintptr_t kVf2Slot = 0x5B19198;
+inline constexpr uintptr_t kVf2Slot = 0x5B1E318;
 // M2: the bend's apply 0x1190FD0 (rcx unused, float dt xmm1, r8b f6==1, r9 actor, state [rsp+0x28]); one caller.
-inline constexpr uintptr_t kApply = 0x139F550;
+inline constexpr uintptr_t kApply = 0x13A10D0;
 inline constexpr uint8_t kApplyHead[11] = {0x48, 0x8B, 0xC4, 0x48, 0x89, 0x58, 0x10, 0x48, 0x89, 0x68, 0x18};
 inline constexpr uint32_t kApplyPatch = 7;  // mov rax,rsp | mov [rax+0x10],rbx
-inline constexpr uintptr_t kApplyCall = 0x138B2A1;  // in 0x117F7E0: call 0x1190FD0
+inline constexpr uintptr_t kApplyCall = 0x138CE21;  // in 0x117F7E0: call 0x1190FD0
 inline constexpr uint8_t kApplyCallBytes[5] = {0xE8, 0xAA, 0x42, 0x01, 0x00};
 // M3: TreeComponent::SetBend 0x349EA10 (tree rcx, const float dir[3] rdx, float amount xmm2); one caller.
-inline constexpr uintptr_t kSetBend = 0x37E33D0;
+inline constexpr uintptr_t kSetBend = 0x37E7920;
 inline constexpr uint8_t kSetBendHead[10] = {0x48, 0x89, 0x5C, 0x24, 0x08, 0x57, 0x48, 0x83, 0xEC, 0x30};
 inline constexpr uint32_t kSetBendPatch = 5;  // mov [rsp+8],rbx
-inline constexpr uintptr_t kSetBendCall = 0x139FAB2;  // in 0x1190FD0: call SetBend (rdx = state+0x380, xmm2 = state+0x378)
-inline constexpr uint8_t kSetBendCallBytes[5] = {0xE8, 0x19, 0x39, 0x44, 0x02};
+inline constexpr uintptr_t kSetBendCall = 0x13A1632;  // in 0x1190FD0: call SetBend (rdx = state+0x380, xmm2 = state+0x378)
+inline constexpr uint8_t kSetBendCallBytes[5] = {0xE8, 0xE9, 0x62, 0x44, 0x02};
 // M4: the RemoteCatch tick 0x59C0D0 (comp rcx, float dt xmm1); rdx / r8 / r9 are written before any read. Reached
 // by call 0x8A1697 (0x8A1640, the controlled actors' job) and jmp 0x8A5DA0 (the job 0x8A0FC0 schedules for an actor
 // NOT controlled here while one of its slots is not idle).
-inline constexpr uintptr_t kTick = 0x6845E0;
+inline constexpr uintptr_t kTick = 0x684950;
 inline constexpr uint8_t kTickHead[9] = {0x40, 0x55, 0x53, 0x56, 0x57, 0x41, 0x54, 0x41, 0x55};
 inline constexpr uint32_t kTickBoundaries[] = {2, 3, 4, 5, 7, 9};
 inline constexpr uint32_t kTickPatch[] = {5};  // push rbp | push rbx | push rsi | push rdi
-inline constexpr uintptr_t kTickJump = 0x9BDEF0;
-inline constexpr uint8_t kTickJumpBytes[5] = {0xE9, 0xEB, 0x66, 0xCC, 0xFF};
+inline constexpr uintptr_t kTickJump = 0x9BE770;
+inline constexpr uint8_t kTickJumpBytes[5] = {0xE9, 0xDB, 0x61, 0xCC, 0xFF};
 // The natives the observer calls in mode 1 (the ones 0x1190FD0 uses), checked by their first bytes:
 //   FUN_1405b1600(catch comp, u8 slot) -> the scene object of the slot's target (by its scene id) or null;
 //   FUN_140491ac0(object) -> its TreeComponent or null.
-inline constexpr uintptr_t kGetTarget = 0x699130;
+inline constexpr uintptr_t kGetTarget = 0x6994A0;
 inline constexpr uint8_t kGetTargetHead[11] = {0x48, 0x89, 0x5C, 0x24, 0x10, 0x48, 0x89, 0x74, 0x24, 0x18, 0x57};
-inline constexpr uintptr_t kFindTree = 0x566360;
+inline constexpr uintptr_t kFindTree = 0x5666A0;
 inline constexpr uint8_t kFindTreeHead[15] = {0x48, 0x89, 0x5C, 0x24, 0x08, 0x48, 0x89, 0x74,
                                               0x24, 0x10, 0x48, 0x89, 0x7C, 0x24, 0x18};
 
@@ -88,7 +88,7 @@ inline constexpr uint32_t kControl_F6a = 0x88;
 inline constexpr uint32_t kControl_F6b = 0x10;
 inline constexpr uint32_t kControl_F6 = 0xFA;
 inline constexpr uint32_t kComp_Owner = 0x08;
-inline constexpr uintptr_t kClientRemoteCatchVtbl = 0x5994CC8;  // pa::ClientRemoteCatchActorComponent
+inline constexpr uintptr_t kClientRemoteCatchVtbl = 0x5999DB0;  // pa::ClientRemoteCatchActorComponent
 inline constexpr uint32_t kLockVf[] = {0x18, 0x20, 0x30, 0x40};
 inline constexpr uint32_t kSlotBase = 0x20;
 inline constexpr uint32_t kSlotStride = 0x58;
@@ -108,7 +108,7 @@ inline constexpr uint32_t kState_Dir = 0x3C8;
 inline constexpr uint32_t kTree_Amount = 0x2A4;
 inline constexpr uint32_t kTree_Set = 0x2B4;
 inline constexpr uint32_t kTree_Flags = 0x59;
-inline constexpr uintptr_t kMainThreadId = 0x6F29B54;  // dword: the client's main thread
+inline constexpr uintptr_t kMainThreadId = 0x6F2FB54;  // dword: the client's main thread
 
 // As the natives (0x5947B4, 0x5A5370, FUN_1405b1600): a scene id is set when one of its first three dwords is.
 inline bool scene_set(const uint8_t* s) {

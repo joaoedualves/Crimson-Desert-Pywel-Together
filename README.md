@@ -7,7 +7,7 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Crimson%20Desert-1.0.0.3663-c9a35a?style=flat-square" alt="Game build 1.0.0.3663">
+  <img src="https://img.shields.io/badge/Crimson%20Desert-1.0.0.3732-c9a35a?style=flat-square" alt="Game build 1.0.0.3732">
   <img src="https://img.shields.io/badge/status-in%20testing-8a6a2e?style=flat-square" alt="Status: in testing">
   <img src="https://img.shields.io/badge/license-GPL--3.0-5c4630?style=flat-square" alt="License GPL-3.0">
   <img src="https://img.shields.io/badge/platform-Windows%20%7C%20Steam-3b3024?style=flat-square" alt="Windows, Steam">
@@ -46,7 +46,7 @@ This project is built on the work of **ByJunter**:
 <a id="what-we-changed"></a>
 <p><picture><source media="(prefers-color-scheme: dark)" srcset="docs/images/headings/h-changed-dark.png"><img src="docs/images/headings/h-changed-light.png" width="560" alt="What we changed"></picture></p>
 
-- Ported the NativeServer mod from game build 1.0.0.2976 to **1.0.0.3663** (addresses, signatures and packet layouts).
+- Ported the NativeServer mod from game build 1.0.0.2976 to **1.0.0.3663**, then to **1.0.0.3732** (addresses, signatures and packet layouts).
 - Smoother movement of the other player (adaptive interpolation, empty movement packets refilled on the host).
 - Guest no longer stays frozen after reviving at a save point, and the loading after death is shorter.
 - Horses: the other player's horse now moves together with its rider, on both sides.
@@ -55,7 +55,7 @@ This project is built on the work of **ByJunter**:
 <a id="known-limits"></a>
 <p><picture><source media="(prefers-color-scheme: dark)" srcset="docs/images/headings/h-limits-dark.png"><img src="docs/images/headings/h-limits-light.png" width="560" alt="Known limits"></picture></p>
 
-- Works only with game build **1.0.0.3663**. A Steam update can break it.
+- Works only with game build **1.0.0.3732**. A Steam update can break it.
 - **One guest** for now.
 - Same local network works. Over the internet only through a VPN that gives both PCs a shared network (Radmin, ZeroTier, Tailscale): **not tested yet**.
 - Not tested yet: enemies in both directions, combat. Some seated NPCs show without their sitting animation on the guest.
@@ -132,7 +132,7 @@ Este projeto foi feito em cima do trabalho do **ByJunter**:
 <a id="o-que-mudamos"></a>
 <p><picture><source media="(prefers-color-scheme: dark)" srcset="docs/images/headings/h-pt-changed-dark.png"><img src="docs/images/headings/h-pt-changed-light.png" width="560" alt="O que mudamos"></picture></p>
 
-- Port do mod NativeServer do build 1.0.0.2976 para o **1.0.0.3663** (endereços, assinaturas e formato dos pacotes).
+- Port do mod NativeServer do build 1.0.0.2976 para o **1.0.0.3663** e depois para o **1.0.0.3732** (endereços, assinaturas e formato dos pacotes).
 - Movimento do outro jogador mais liso (interpolação adaptativa e pacotes de movimento vazios preenchidos no host).
 - O guest não fica mais travado depois de reviver no ponto de salvamento, e o carregamento depois da morte ficou mais curto.
 - Cavalos: o cavalo do outro jogador agora anda junto com o cavaleiro, nos dois lados.
@@ -141,7 +141,7 @@ Este projeto foi feito em cima do trabalho do **ByJunter**:
 <a id="limitacoes"></a>
 <p><picture><source media="(prefers-color-scheme: dark)" srcset="docs/images/headings/h-pt-limits-dark.png"><img src="docs/images/headings/h-pt-limits-light.png" width="560" alt="Limitações conhecidas"></picture></p>
 
-- Só funciona no build **1.0.0.3663** do jogo. Uma atualização da Steam pode quebrar.
+- Só funciona no build **1.0.0.3732** do jogo. Uma atualização da Steam pode quebrar.
 - **Um guest** por enquanto.
 - Na mesma rede local funciona. Pela internet, só com uma VPN que coloque os dois PCs na mesma rede (Radmin, ZeroTier, Tailscale): **ainda não testado**.
 - Ainda sem teste: inimigos nos dois sentidos, combate. Alguns NPCs sentados aparecem sem a animação de sentar no guest.

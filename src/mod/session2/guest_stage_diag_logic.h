@@ -153,7 +153,7 @@ inline const char* route_text(Route r) {
         case Route::OwnersManager: return "the sequencer OWNER's manager (where its NPCs look: native case)";
         case Route::ObserverManager:
             return "ANOTHER character's manager (the field owner's in this client's view): the NPCs this sequencer "
-                   "binds look in the owner actor's manager (0xB29470) and will NOT find it";
+                   "binds look in the owner actor's manager (0xB29DB0) and will NOT find it";
     }
     return "?";
 }
@@ -171,8 +171,8 @@ inline const char* result_text(Result r) {
     switch (r) {
         case Result::Created: return "created (instance added to the manager's +0x170 map)";
         case Result::MissingBoundActor:
-            return "REJECTED: a bound actor (type 4/5) is not on this client (0xBE014E, the instance is destroyed)";
-        case Result::Duplicate: return "REJECTED: that sequencer id is already in this manager (0xAA6E90)";
+            return "REJECTED: a bound actor (type 4/5) is not on this client (0xBE0B9E, the instance is destroyed)";
+        case Result::Duplicate: return "REJECTED: that sequencer id is already in this manager (0xAA7740)";
         case Result::Other: return "REJECTED: other error";
     }
     return "?";

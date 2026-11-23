@@ -32,7 +32,7 @@ namespace {
 namespace g2976 = game::build_2976;
 using tbl::Mode;
 
-constexpr uintptr_t kCodeBegin = 0x1000, kCodeEnd = 0x5613000;
+constexpr uintptr_t kCodeBegin = 0x1000, kCodeEnd = 0x5618000;
 constexpr uint32_t kLoopMs = 10;
 constexpr uint64_t kWorldTickMs = 500;
 constexpr uint32_t kWorldTicks = 6;
@@ -511,7 +511,7 @@ bool install_hooks() {
     g_code_n = 0;
     for (const auto& s : secs) {
         const std::string_view n(s.name);
-        if ((n == ".reloc" || n == ".data1") && g_code_n < std::size(g_code)) {
+        if ((n == ".xpdata" || n == ".text1") && g_code_n < std::size(g_code)) {
             g_code[g_code_n++] = {g_base + s.va, g_base + s.va + s.size};
         }
     }
@@ -525,13 +525,13 @@ bool install_hooks() {
         const char* what;
     };
     const Check checks[] = {
-        {tbl::kVf2, tbl::kVf2Head, "RemoteCatchFunctions vf2 0x138B170's entry"},
-        {tbl::kApply, tbl::kApplyHead, "the bend's apply 0x139F550's entry"},
-        {tbl::kApplyCall, tbl::kApplyCallBytes, "vf2's call 0x138B2A1 (call 0x139F550)"},
-        {tbl::kSetBend, tbl::kSetBendHead, "TreeComponent::SetBend 0x37E33D0's entry"},
-        {tbl::kSetBendCall, tbl::kSetBendCallBytes, "the apply's call 0x139FAB2 (call SetBend)"},
-        {tbl::kTick, tbl::kTickHead, "the RemoteCatch tick 0x6845E0's entry"},
-        {tbl::kTickJump, tbl::kTickJumpBytes, "the remote actors' job 0x9BDEF0 (jmp 0x6845E0)"},
+        {tbl::kVf2, tbl::kVf2Head, "RemoteCatchFunctions vf2 0x138CCF0's entry"},
+        {tbl::kApply, tbl::kApplyHead, "the bend's apply 0x13A10D0's entry"},
+        {tbl::kApplyCall, tbl::kApplyCallBytes, "vf2's call 0x138CE21 (call 0x13A10D0)"},
+        {tbl::kSetBend, tbl::kSetBendHead, "TreeComponent::SetBend 0x37E7920's entry"},
+        {tbl::kSetBendCall, tbl::kSetBendCallBytes, "the apply's call 0x13A1632 (call SetBend)"},
+        {tbl::kTick, tbl::kTickHead, "the RemoteCatch tick 0x684950's entry"},
+        {tbl::kTickJump, tbl::kTickJumpBytes, "the remote actors' job 0x9BE770 (jmp 0x684950)"},
         {tbl::kGetTarget, tbl::kGetTargetHead, "FUN_1405b1600's entry (the slot's scene object)"},
         {tbl::kFindTree, tbl::kFindTreeHead, "FUN_140491ac0's entry (its TreeComponent)"},
     };
@@ -543,11 +543,11 @@ bool install_hooks() {
         }
     }
     if (!qword_at(tbl::kVf2Slot, g_base + tbl::kVf2)) {
-        log::error("TreeBend: the vtable slot 0x5B19198 does not hold 0x138B170; REFUSED, nothing written");
+        log::error("TreeBend: the vtable slot 0x5B1E318 does not hold 0x138CCF0; REFUSED, nothing written");
         return false;
     }
     if (!game::fast<uint32_t>(g_base + tbl::kMainThreadId)) {
-        log::error("TreeBend: the main thread's id 0x6F29B54 is unreadable; REFUSED, nothing written");
+        log::error("TreeBend: the main thread's id 0x6F2FB54 is unreadable; REFUSED, nothing written");
         return false;
     }
     // M4 first prepared (disabled), then the three mid hooks, then M4 enabled: any failure puts everything back.
@@ -556,25 +556,25 @@ bool install_hooks() {
         [](const std::vector<uint8_t>& o) {
             return o.size() == tbl::kTickPatch[0] && std::memcmp(o.data(), tbl::kTickHead, o.size()) == 0;
         },
-        "TreeBend", "the RemoteCatch tick 0x6845E0");
+        "TreeBend", "the RemoteCatch tick 0x684950");
     if (!h) {
-        log::error("TreeBend: the hook on the RemoteCatch tick 0x6845E0 could not be prepared ({}); REFUSED, nothing "
+        log::error("TreeBend: the hook on the RemoteCatch tick 0x684950 could not be prepared ({}); REFUSED, nothing "
                    "written",
                    game::inline_error_text(h.error()));
         return false;
     }
     if (h->original_bytes().size() != tbl::kTickPatch[0]) {
-        log::error("TreeBend: the hook on 0x6845E0 would patch {} bytes, not the 5 verified; REFUSED, nothing written",
+        log::error("TreeBend: the hook on 0x684950 would patch {} bytes, not the 5 verified; REFUSED, nothing written",
                    h->original_bytes().size());
         return false;
     }
     const bool mids =
         p8_install_mid(g_base, secs, tbl::kSetBend, tbl::kSetBendPatch, tbl::kSetBendHead, m3_fn, g_m3, "TreeBend",
-                       "TreeComponent::SetBend 0x37E33D0 (M3)") &&
+                       "TreeComponent::SetBend 0x37E7920 (M3)") &&
         p8_install_mid(g_base, secs, tbl::kApply, tbl::kApplyPatch, tbl::kApplyHead, m2_fn, g_m2, "TreeBend",
-                       "the bend's apply 0x139F550 (M2)") &&
+                       "the bend's apply 0x13A10D0 (M2)") &&
         p8_install_mid(g_base, secs, tbl::kVf2, tbl::kVf2Patch, tbl::kVf2Head, m1_fn, g_m1, "TreeBend",
-                       "RemoteCatchFunctions vf2 0x138B170 (M1)");
+                       "RemoteCatchFunctions vf2 0x138CCF0 (M1)");
     if (!mids) {
         g_m1 = {};
         g_m2 = {};
@@ -588,13 +588,13 @@ bool install_hooks() {
         g_m1 = {};
         g_m2 = {};
         g_m3 = {};
-        log::error("TreeBend: the hook on 0x6845E0 could not be enabled; everything put back; REFUSED");
+        log::error("TreeBend: the hook on 0x684950 could not be enabled; everything put back; REFUSED");
         return false;
     }
     g_hooks_on.store(true);
-    log::info("TreeBend: hooked at their entries (5/7/5/5 bytes patched): exe+0x138B170 (RemoteCatchFunctions vf2, M1), "
-              "exe+0x139F550 (the bend's apply, M2), exe+0x37E33D0 (TreeComponent::SetBend, M3: the thrower's values, "
-              "sent), exe+0x6845E0 (the RemoteCatch tick, M4: the observer {})",
+    log::info("TreeBend: hooked at their entries (5/7/5/5 bytes patched): exe+0x138CCF0 (RemoteCatchFunctions vf2, M1), "
+              "exe+0x13A10D0 (the bend's apply, M2), exe+0x37E7920 (TreeComponent::SetBend, M3: the thrower's values, "
+              "sent), exe+0x684950 (the RemoteCatch tick, M4: the observer {})",
               mode() == Mode::On ? "APPLIES the remote thrower's bend after the original"
                                  : "logs what it would apply; nothing of the game is written");
     return true;
@@ -688,7 +688,7 @@ void close_run(State& st, RunLog* rl, uint64_t now_ms_v, const char* why) {
     if (may_log(st)) {
         log::info("TreeBend bend run END {}: character 0x{:08X} | run {} | tree scene {} | frames {} (sent {}) | "
                   "amount first {:.3f} min {:.3f} max {:.3f} last {:.3f} | dir ({:.3f}, {:.3f}) | {} | native SetBend "
-                  "inside this PC's RemoteCatch tick 0x6845E0: {} of {} frames ({} in its own component's tick) | {}",
+                  "inside this PC's RemoteCatch tick 0x684950: {} of {} frames ({} in its own component's tick) | {}",
                   p8_when(now_ms_v * 1000), rl->key, rl->run, scene_text(rl->scene_lo, rl->scene_hi), rl->frames,
                   rl->sent, rl->first, rl->mn, rl->mx, rl->last, rl->dx, rl->dz, thread_text(rl->main, rl->tid),
                   rl->in_tick, rl->frames, rl->same_comp, why);
@@ -760,9 +760,9 @@ void on_bend_event(const p8p::Event& e, State& st) {
                       static_cast<uint32_t>(e.v[6]), p8_when(e.qpc_us), key, ctl_text(ctl), rl->run,
                       scene_text(e.v[4], e.v[5]), tbl::scene_set(b.scene) ? "" : " (NOT SET: not sent)", b.amount, b.dx,
                       b.dz, flag, thread_text(main, e.tid),
-                      in_tick ? (same_comp ? "INSIDE the RemoteCatch tick 0x6845E0 (its own component)"
-                                           : "INSIDE the RemoteCatch tick 0x6845E0 (another component)")
-                              : "OUTSIDE the RemoteCatch tick 0x6845E0",
+                      in_tick ? (same_comp ? "INSIDE the RemoteCatch tick 0x684950 (its own component)"
+                                           : "INSIDE the RemoteCatch tick 0x684950 (another component)")
+                              : "OUTSIDE the RemoteCatch tick 0x684950",
                       r.out ? "sent" : "NOT sent");
         }
     }
@@ -925,7 +925,7 @@ void log_summary(State& st, const char* when = "") {
         players += std::format(
             "{}0x{:08X} ({}): M1 vf2 {} (main {}, f6==1 {}, runs {}, inside the tick {}) | M2 r8b=1 {} r8b=0 {} | M3 "
             "SetBend {} (main {}, inside the tick {}, its own component's tick {}, last tid {}) | M4 tick {} (main {}, "
-            "last tid {}) | 0x9BAF10 as a remote {} (timer running {}, INLINE bends {}, during an apply {})",
+            "last tid {}) | 0x9BB790 as a remote {} (timer running {}, INLINE bends {}, during an apply {})",
             players.empty() ? "" : "; ", k, ctl_text(s.ctl.load()), s.m1_calls.load(), s.m1_main.load(), s.m1_f6.load(),
             s.m1_runs.load(), s.m1_in_tick.load(), s.m2_flag1.load(), s.m2_flag0.load(), s.m3_calls.load(),
             s.m3_main.load(), s.m3_in_tick.load(), s.m3_same_comp.load(), s.m3_tid.load(), s.m4_calls.load(),
@@ -941,11 +941,11 @@ void log_summary(State& st, const char* when = "") {
     // S29: 0x8A30C0's inline bend (needs rope_probe=1: its entry hook feeds tree_bend_note_pull).
     const std::string inline_text =
         rope_probe_pull_hooked()
-            ? std::format("0x9BAF10 (rope_probe's hook): remote players {} calls, INLINE bends on a remote {}; this PC's "
+            ? std::format("0x9BB790 (rope_probe's hook): remote players {} calls, INLINE bends on a remote {}; this PC's "
                           "own inline bends {}{} | own-bend records skipped (another writer) {}",
                           g_pull_remote.load(), g_fights_inline.load(), g_pull_own_inline.load(),
                           g_pull_seen.load() ? "" : " (no player call yet)", g_own_bend_skipped.load())
-            : std::string("0x9BAF10: NOT measured (needs rope_probe=1, whose entry hook counts it)");
+            : std::string("0x9BB790: NOT measured (needs rope_probe=1, whose entry hook counts it)");
     const std::string guards =
         std::format("application {}", g_apply_off.load() ? "OFF after a fault" : (mode() == Mode::On ? "on" : "probe"));
     std::string outcomes;
@@ -974,7 +974,7 @@ void log_summary(State& st, const char* when = "") {
     log::info("TreeBend summary{} ({}, tree_bend={}): hooks {} | {} | {} | context: {} | players (table {}/{} used, full {}, "
               "switches {}): {} | other actors: M1 {} M2 {} M4 {} (own "
               "characters at M4 {}) | M3 SetBend not from the apply {} | FIGHTS {} (the native bend ran for a remote "
-              "character here: M2/M3 {}, inline 0x9BAF10 {}) | thrower: bends refused {}, remote {}, unmatched {}; frames queued {} (sent to the "
+              "character here: M2/M3 {}, inline 0x9BB790 {}) | thrower: bends refused {}, remote {}, unmatched {}; frames queued {} (sent to the "
               "link {}, dropped {}, no conversation {}, waiting {}, refused by the queue to the host {}) | received: {} "
               "(bad {}, ignored {}, busy {}, connection resets {}) | observer: {} | own SetBend calls {} | lines not "
               "logged {}, ring dropped {}",
@@ -1057,8 +1057,8 @@ void tree_bend_start(const std::string& raw, bool guest) {
     g_guest.store(guest);
     g_mode.store(static_cast<uint8_t>(p.mode));
     log::info("TreeBend ON ({}, tree_bend={}): once the world is up, hooks at the entries of RemoteCatchFunctions vf2 "
-              "0x138B170 (M1), the bend's apply 0x139F550 (M2), TreeComponent::SetBend 0x37E33D0 (M3) and the "
-              "RemoteCatch tick 0x6845E0 (M4). This client's own bends are sent through the tunnel (control state 15, "
+              "0x138CCF0 (M1), the bend's apply 0x13A10D0 (M2), TreeComponent::SetBend 0x37E7920 (M3) and the "
+              "RemoteCatch tick 0x684950 (M4). This client's own bends are sent through the tunnel (control state 15, "
               "<= 20 Hz, End after 150 ms); the other player's are {} (docs/research/s25/gancho-cuerda.md section 14)",
               guest ? "guest" : "host", tbl::mode_name(p.mode),
               p.mode == Mode::On ? "APPLIED to the same tree here (FUN_1405b1600 -> FUN_140491ac0 -> SetBend)"
